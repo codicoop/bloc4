@@ -1,13 +1,13 @@
 version: "3.5"
 
 networks:
-  boilerplate-network:
-    name: boilerplate-network
+  bloc4-network:
+    name: bloc4-network
 
 services:
-  boilerplate-app:
+  bloc4-app:
     restart: on-failure
-    container_name: boilerplate-app
+    container_name: bloc4-app
     build:
       context: ..
       dockerfile: ./docker/Dockerfile
@@ -15,50 +15,50 @@ services:
     env_file: ./.env
     command: gunicorn project.wsgi:application --bind 0.0.0.0:8000 --reload --threads=10
     ports:
-      - "1234:8000"
+      - "1401:8000"
     volumes:
       - ../src:/srv
     depends_on:
-      - boilerplate-db
+      - bloc4-db
     networks:
-      - boilerplate-network
+      - bloc4-network
 
-  boilerplate-celery:
+  bloc4-celery:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile
       target: development
     command: "celery -A apps.celery worker --loglevel=INFO"
-    container_name: boilerplate-celery
+    container_name: bloc4-celery
     env_file: ./.env
     volumes:
       - ../src:/srv
     depends_on:
-      - boilerplate-redis
+      - bloc4-redis
 #    entrypoint: ["sh", "-c", "sleep 2073600"]
     networks:
-      - boilerplate-network
+      - bloc4-network
 
-  boilerplate-db:
-    container_name: boilerplate-db
+  bloc4-db:
+    container_name: bloc4-db
     image: postgres:14
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - ../dumps:/dumps
     networks:
-      - boilerplate-network
+      - bloc4-network
 
-  boilerplate-redis:
-    container_name: boilerplate-redis
+  bloc4-redis:
+    container_name: bloc4-redis
     image: redis
     networks:
-      - boilerplate-network
+      - bloc4-network
 
-  boilerplate-selenium:
-    container_name: boilerplate-selenium
+  bloc4-selenium:
+    container_name: bloc4-selenium
     image: selenium/standalone-chrome:4.16.0
     ports:
       - "4444:4444"
     networks:
-      - boilerplate-network
+      - bloc4-network

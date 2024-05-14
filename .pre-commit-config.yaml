@@ -1,0 +1,52 @@
+
+exclude: "/migrations/" # Don't run on Django migrations
+default_stages: ["pre-commit"]
+
+repos:
+  # Project-wide general
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: detect-private-key
+
+      # Check JSON, toml and yaml syntax
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+
+      # Protects the main branch from being committed to directly
+      - id: no-commit-to-branch
+        # args: [--branch, main, --branch, staging]
+
+       # Verifies that test files are named correctly
+      # - id: name-tests-test
+      #   args: [ --django ]
+
+  # Run the Ruff linter.
+  # https://docs.astral.sh/ruff/integrations/#pre-commit
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.1.4
+    hooks:
+      - id: ruff
+        args: [ --fix, --exit-non-zero-on-fix ]
+      - id: ruff-format
+
+  # Poetry checks
+  # https://python-poetry.org/docs/pre-commit-hooks/
+  - repo: https://github.com/python-poetry/poetry
+    rev: "1.7.0"
+    hooks:
+      - id: poetry-check
+      - id: poetry-lock
+
+# Sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
+# Taken from https://github.com/cookiecutter/cookiecutter-django
+ci:
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

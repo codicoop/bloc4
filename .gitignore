@@ -1,0 +1,22 @@
+.idea/
+.vscode/
+static
+__pycache__
+src/conf/maintenance_mode_state.txt
+
+# Ignore configuration file
+.env
+
+# Using this for pyenv in development environment.
+.python-version
+docker/compose-*
+
+# Ignore the node modules
+node_modules
+
+# Ignore Ruff cache. This is technically not needed since
+# Ruff adds its own .gitignore to the cache, but just to make sure.
+.ruff_cache/
+
+# Ignore the sass compiler file
+*.map

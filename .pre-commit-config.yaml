@@ -18,12 +18,12 @@ repos:
       - id: check-toml
       - id: check-yaml
 
-      # Protects the main branch from being committed to directly
+      # Protects the entities branch from being committed to directly
       - id: no-commit-to-branch
-        # args: [--branch, main, --branch, staging]
+        # args: [--branch, entities, --branch, staging]
 
-       # Verifies that test files are named correctly
-      # - id: name-tests-test
+       # Verifies that tests files are named correctly
+      # - id: name-tests-tests
       #   args: [ --django ]
 
   # Run the Ruff linter.

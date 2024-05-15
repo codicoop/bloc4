@@ -125,7 +125,8 @@ INSTALLED_APPS = [
     "apps.users",
     "apps.celery",
     "project",
-    "apps.demo",
+    "apps.entities",
+    "apps.provinces_towns",
 ]
 
 

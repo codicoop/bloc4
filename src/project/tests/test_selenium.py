@@ -12,7 +12,8 @@ from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
-from apps.demo.models import Data
+from apps.entities.models import Entity
+from apps.provinces_towns.models import Town
 from apps.users.models import User
 
 logging.basicConfig(level=logging.INFO)
@@ -57,14 +58,13 @@ class Strings(Enum):
     ADMIN_TITLE = _("Administració del lloc | Lloc administratiu de Django")
     LOGOUT = _("Log out")
     SIGNUP_TITLE = _("Projecte App | Registrar-se")
+    HOME_TITLE = _("Projecte App | Inici")
     PROFILE_TITLE = _("Projecte App | Detalls del perfil")
     REGISTRY_UPDATE_TITLE = _("Projecte App | Registry updated")
     PASSWORD_CHANGE_TITLE = _("Projecte App | Canvi de contrasenya")
     EMAIL_VALIDATION_TITLE = _("Projecte App | Mail validation")
-    DEMO_TITLE = _("Projecte App | Demo")
-    DEMO_CREATE = _("Projecte App | Demo Create")
-    DEMO_DETAILS = _("Projecte App | Demo Details")
-    DEMO_UPDATE = _("Projecte App | Demo Update")
+    ENTITIES_TITLE = _("Projecte App | Entities")
+    ENTITY_DETAILS = _("Projecte App | Entity Details")
 
 
 @override_settings(
@@ -95,15 +95,15 @@ class MySeleniumTests(StaticLiveServerTestCase):
     to serve the files without any need to `collectstatic` first.
     """
 
-    host = "boilerplate-app"
+    host = "bloc4-app"
     # Uncomment this code if you want Selenium to connect to the actual web
-    # service instead of the test one. Is assuming that Gunicorn is starting
+    # service instead of the tests one. Is assuming that Gunicorn is starting
     # it at the port 8000, because you have to use the internal port and
     # not the one that Docker is exposing outside.
     #
     # Beware that Selenium will be using the database in the state that you
     # have it now, but those tests are designed to work only with a fresh
-    # database, and also that the override_settings is only affecting the test
+    # database, and also that the override_settings is only affecting the tests
     # server that you will not be using.
     # live_server_url = 'http://{}:8000'.format(
     #     socket.gethostbyname(socket.gethostname())
@@ -119,7 +119,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         options.add_argument("--headless")
         options.add_argument("--no-sandbox")  # Disable sandboxing for Docker
         cls.selenium = webdriver.Remote(
-            command_executor="http://boilerplate-selenium:4444/wd/hub", options=options
+            command_executor="http://bloc4-selenium:4444/wd/hub", options=options
         )
         cls.selenium.implicitly_wait(10)  # Set implicit wait time
         cls.sample_data = {
@@ -158,16 +158,16 @@ class MySeleniumTests(StaticLiveServerTestCase):
 
     def _check_mail_sent(self, recipient, string_in_body=""):
         """
-        During the test, every time an email is sent it gets added to
+        During the tests, every time an email is sent it gets added to
         mail.outbox.
-        This makes it difficult to test whether a specific email is sent or not.
+        This makes it difficult to tests whether a specific email is sent or not.
 
-        Instructions to test the emails
+        Instructions to tests the emails
 
         If there's 1 email sent and pending to be tested:
         - Call this method normally.
         - After that, the email will be removed from the outbox, so you cannot
-        test it a second time.
+        tests it a second time.
 
         If there's more than 1 email:
         - Call this method as many times as emails are pending to be tested.
@@ -214,7 +214,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         If we do that in different tests, we cannot ensure this order and also
         the principle is to make tests that are standalone.
 
-        Because of that, we're using a single test method and splitting it
+        Because of that, we're using a single tests method and splitting it
         in other private methods to make it more organized.
         """
 
@@ -243,17 +243,11 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self._home()
         logging.info("Test Home finished.")
 
-        self._demo_list()
-        logging.info("Test Demo List finished.")
+        self._entities_list()
+        logging.info("Test Entities List finished.")
 
-        self._demo_create()
-        logging.info("Test Demo Create finished.")
-
-        self._demo_details()
-        logging.info("Test Demo Details finished.")
-
-        self._demo_update()
-        logging.info("Test Demo Update finished.")
+        self._entity_details()
+        logging.info("Test Entity Details finished.")
 
         logging.info("#####################################")
         logging.info("#### All tests Selenium finished ####")
@@ -306,7 +300,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         admin_menu = self.select_element_by_text(Strings.LOGOUT.value)
         admin_menu.click()
 
-        # Open the main menu to select the Sign Up option.
+        # Open the entities menu to select the Sign Up option.
         self.burger_menu_action()
 
         signup_menu_option = self.selenium.find_element(By.ID, "menu_signup")
@@ -452,100 +446,47 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self.logging_url_title_and_assert_title(Strings.PROFILE_TITLE.value)
 
     def _home(self):
-        # Open the main menu to select the Home option.
+        # Open the menu to select the Home option.
         self.burger_menu_action()
         home_menu_option = self.selenium.find_element(By.ID, "menu_home")
         home_menu_option.click()
 
-        self.logging_url_title_and_assert_title(Strings.DEMO_TITLE.value)
+        self.logging_url_title_and_assert_title(Strings.HOME_TITLE.value)
 
-    def _demo_list(self):
-        # Open the main menu to select the Home option.
+    def _entities_list(self):
+        # Create a new entity
+        Entity.objects.create(
+            email="mock@tests.tests",
+            fiscal_name="Entity Test",
+            nif="12345678X",
+            town=Town.objects.filter(name="Barcelona").first(),
+            postal_code=int("08080"),
+            address="Address Test",
+            country="Country Test",
+            person_responsible=User.objects.create_user(
+                name="Andrew",
+                surnames="McTest",
+                email="andrew@codi.coop",
+                password="0pl#9okm8ijn",
+                email_verification_code="1234",
+                email_verified=True,
+                is_active=True,
+                is_staff=True,
+                is_superuser=True,
+            ),
+            is_resident=True,
+        )
+        # Open the entities menu to select the Home option.
         self.burger_menu_action()
-        home_menu_option = self.selenium.find_element(By.ID, "menu_demo")
-        home_menu_option.click()
+        entities_menu_option = self.selenium.find_element(By.ID, "menu_entities")
+        entities_menu_option.click()
 
-        self.logging_url_title_and_assert_title(Strings.DEMO_TITLE.value)
+        self.logging_url_title_and_assert_title(Strings.ENTITIES_TITLE.value)
 
-    def _demo_create(self):
-        # Click on Create New Data to create a new record.
-        create_data = self.selenium.find_element(By.ID, "id_create_data")
-        create_data.click()
-        self.logging_url_title_and_assert_title(Strings.DEMO_CREATE.value)
-
-        # All the fields are filled in
-        demo_field_text_1 = self.selenium.find_element(By.NAME, "field_text_1")
-        demo_field_text_2 = self.selenium.find_element(By.NAME, "field_text_2")
-        demo_field_email = self.selenium.find_element(By.NAME, "field_email")
-        demo_field_radio = self.selenium.find_element(By.ID, "id_field_radio_0")
-        demo_field_boolean_checkbox = self.selenium.find_element(
-            By.NAME, "field_boolean_checkbox"
-        )
-        demo_field_select_dropdown = self.selenium.find_element(
-            By.NAME, "field_select_dropdown"
-        )
-        demo_field_password = self.selenium.find_element(By.NAME, "field_password")
-        demo_field_password_confirm = self.selenium.find_element(
-            By.NAME, "field_password_confirm"
-        )
-        demo_field_number = self.selenium.find_element(By.NAME, "field_number")
-
-        demo_field_text_1.send_keys("text_1")
-        demo_field_text_2.send_keys("text_2")
-        demo_field_email.send_keys("email@test.com")
-        demo_field_radio.click()
-        demo_field_boolean_checkbox.click()
-        demo_field_select_dropdown.send_keys("OP2")
-        demo_field_password.send_keys("password")
-        demo_field_password_confirm.send_keys("password")
-        demo_field_number.send_keys("1234")
-        demo_field_password.send_keys(Keys.RETURN)
-
-        self.logging_url_title_and_assert_title(Strings.DEMO_TITLE.value)
-
-    def _demo_details(self):
+    def _entity_details(self):
         # Click on data entry
-        data_id = Data.objects.values_list("id", flat=True).first()
-        data_button = self.selenium.find_element(By.ID, f"id_details_{data_id}")
-        data_button.click()
+        entity_id = Entity.objects.values_list("id", flat=True).first()
+        entity_button = self.selenium.find_element(By.ID, f"id_details_{entity_id}")
+        entity_button.click()
 
-        self.logging_url_title_and_assert_title(Strings.DEMO_DETAILS.value)
-
-    def _demo_update(self):
-        # Click on Edit Data to update record.
-        update_data = self.selenium.find_element(By.ID, "id_edit")
-        update_data.click()
-        self.logging_url_title_and_assert_title(Strings.DEMO_UPDATE.value)
-
-        # Data Updated
-        update_field_text_1 = self.selenium.find_element(By.ID, "id_field_text_1")
-        update_field_text_2 = self.selenium.find_element(By.ID, "id_field_text_2")
-        update_field_email = self.selenium.find_element(By.ID, "id_field_email")
-        update_field_radio = self.selenium.find_element(By.ID, "id_field_radio_1")
-        update_field_select_dropdown = self.selenium.find_element(
-            By.NAME, "field_select_dropdown"
-        )
-        update_field_password = self.selenium.find_element(By.NAME, "field_password")
-        update_field_password_confirm = self.selenium.find_element(
-            By.NAME, "field_password_confirm"
-        )
-        update_field_number = self.selenium.find_element(By.NAME, "field_number")
-
-        update_field_text_1.clear()
-        update_field_text_2.clear()
-        update_field_email.clear()
-        update_field_password.clear()
-        update_field_password_confirm.clear()
-        update_field_number.clear()
-        update_field_text_1.send_keys("update_text_1")
-        update_field_text_2.send_keys("update_text_2")
-        update_field_email.send_keys("update_email@test.com")
-        update_field_radio.click()
-        update_field_select_dropdown.send_keys("OP3")
-        update_field_password.send_keys("update_password")
-        update_field_password_confirm.send_keys("update_password")
-        update_field_number.send_keys("5678")
-        update_submit = self.selenium.find_element(By.ID, "id_submit")
-        update_submit.click()
-
-        self.logging_url_title_and_assert_title(Strings.DEMO_DETAILS.value)
+        self.logging_url_title_and_assert_title(Strings.ENTITY_DETAILS.value)

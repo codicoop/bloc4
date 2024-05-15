@@ -13,12 +13,12 @@ class UserManagerTestCase(TestCase):
             self.user = User.objects.create_user(
                 name="test_name",
                 surnames="test_surnames",
-                email="test@test.com",
+                email="tests@tests.com",
                 password="test_password",
             )
             self.assertEqual(self.user.name, "test_name")
             self.assertEqual(self.user.surnames, "test_surnames")
-            self.assertEqual(self.user.email, "test@test.com")
+            self.assertEqual(self.user.email, "tests@tests.com")
             self.assertEqual(self.user.email_verification_code, "0000")
             self.assertEqual(self.user.email_verified, False)
             self.assertEqual(self.user.is_active, True)
@@ -44,7 +44,7 @@ class UserManagerTestCase(TestCase):
             self.superuser = User.objects.create_superuser(
                 name="test_name",
                 surnames="test_surnames",
-                email="test@test.com",
+                email="tests@tests.com",
                 password="test_password",
                 is_staff=True,
                 is_superuser=True,
@@ -57,7 +57,7 @@ class UserManagerTestCase(TestCase):
                 self.superuser = User.objects.create_superuser(
                     name="test_name",
                     surnames="test_surnames",
-                    email="test@test.com",
+                    email="tests@tests.com",
                     password=None,
                     is_staff=True,
                     is_superuser=True,
@@ -71,7 +71,7 @@ class UserManagerTestCase(TestCase):
         self.user = User.objects.create_user(
             name="test_name",
             surnames="test_surnames",
-            email="test@test.com",
+            email="tests@tests.com",
             password="test_password",
         )
         self.assertEqual(self.user.full_name, "test_name test_surnames")

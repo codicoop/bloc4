@@ -3,7 +3,7 @@ name: hadolint
 on:
   push:
     branches:
-      - main
+      - entities
       - develop
     paths:
       - '/docker/Dockerfile'

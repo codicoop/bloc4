@@ -16,7 +16,7 @@ class AuthenticationFormTest(TestCase):
         self.user = User.objects.create_user(
             name="test_name",
             surnames="test_surnames",
-            email="test@test.com",
+            email="tests@tests.com",
             password="test_password",
         )
         self.form = AuthenticationForm(
@@ -44,7 +44,7 @@ class UserChangeFormTest(TestCase):
         self.user = User.objects.create_user(
             name="test_name",
             surnames="test_surnames",
-            email="test@test.com",
+            email="tests@tests.com",
             password="test_password",
         )
         self.form = UserChangeForm(
@@ -71,7 +71,7 @@ class UserSignUpFormTest(TestCase):
                 "surnames": "test_surnames",
                 "password1": "password1",
                 "password2": "password2",
-                "email": "test@test.com",
+                "email": "tests@tests.com",
                 "accept_conditions": True,
             }
         )
@@ -82,7 +82,7 @@ class UserSignUpFormTest(TestCase):
                 "surnames": "test_surnames",
                 "password1": "password1",
                 "password2": "password2",
-                "email": "test@test.com",
+                "email": "tests@tests.com",
                 "accept_conditions": True,
             },
         )
@@ -94,7 +94,7 @@ class ProfileDetailsFormTest(TestCase):
             data={
                 "name": "test_name",
                 "surnames": "test_surnames",
-                "email": "test@test.com",
+                "email": "tests@tests.com",
             }
         )
         self.assertTrue(self.form.is_valid)
@@ -103,7 +103,7 @@ class ProfileDetailsFormTest(TestCase):
             {
                 "name": "test_name",
                 "surnames": "test_surnames",
-                "email": "test@test.com",
+                "email": "tests@tests.com",
             },
         )
 
@@ -112,14 +112,14 @@ class PasswordResetFormTest(TestCase):
     def test_form(self):
         self.form = PasswordResetForm(
             data={
-                "email": "test@test.com",
+                "email": "tests@tests.com",
             }
         )
         self.assertTrue(self.form.is_valid())
         self.assertEqual(
             self.form.data,
             {
-                "email": "test@test.com",
+                "email": "tests@tests.com",
             },
         )
 

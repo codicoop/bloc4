@@ -190,24 +190,6 @@
         </ul>
       </nav>
       <div>
-      <!-- Opcions idioma -->
-      {# if language options #}
-      {% load language %}
-      {% get_current_language as LANGUAGE_CODE %}
-      {% get_available_languages as LANGUAGES %}
-      {% get_language_info_list for LANGUAGES as languages %}
-      <div class="text-sm pt-5 pl-2">
-        <ul class="flex divide-x divide-primary-600">
-          {% for language in languages %}
-          <!-- TODO: style hardcoded passar a css -->
-          <li class="px-1 uppercase {% if language.code == LANGUAGE_CODE %} font-bold{% endif %}">
-            <a href="{% change_lang language.code %}">
-              <p class="">{{ language.code }}</p>
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
       </div>
     {# endif #}
     </div>

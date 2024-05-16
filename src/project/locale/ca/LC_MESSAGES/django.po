@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-09 18:49+0200\n"
+"POT-Creation-Date: 2024-05-16 09:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,95 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: src/conf/settings.py:152
+
+#: project/models.py:30
+msgid "created by"
+msgstr ""
+
+#: project/settings.py:67
 msgid "English"
 msgstr "Anglès"
 
-#: src/conf/settings.py:153
+#: project/settings.py:68
 msgid "Catalan"
 msgstr "Català"
 
-#: src/conf/urls.py:31
+#: project/settings.py:375
+msgid "Name of the website."
+msgstr ""
+
+#: project/tests/test_selenium.py:57
+msgid "Administration panel"
+msgstr ""
+
+#: project/tests/test_selenium.py:58
+msgid "Administració del lloc | Lloc administratiu de Django"
+msgstr ""
+
+#: project/tests/test_selenium.py:59
+msgid "Log out"
+msgstr ""
+
+#: project/tests/test_selenium.py:60
+msgid "Projecte App | Registrar-se"
+msgstr ""
+
+#: project/tests/test_selenium.py:61
+msgid "Projecte App | Inici"
+msgstr ""
+
+#: project/tests/test_selenium.py:62
+msgid "Projecte App | Detalls del perfil"
+msgstr ""
+
+#: project/tests/test_selenium.py:63
+msgid "Projecte App | Registry updated"
+msgstr ""
+
+#: project/tests/test_selenium.py:64
+msgid "Projecte App | Canvi de contrasenya"
+msgstr ""
+
+#: project/tests/test_selenium.py:65
+msgid "Projecte App | Mail validation"
+msgstr ""
+
+#: project/tests/test_selenium.py:66
+msgid "Projecte App | Entities"
+msgstr ""
+
+#: project/tests/test_selenium.py:67
+msgid "Projecte App | Entity Details"
+msgstr ""
+
+#: project/urls.py:30
+msgid "entities/list/"
+msgstr ""
+
+#: project/urls.py:31
+msgid "entities/details/<uuid:id>"
+msgstr ""
+
+#: project/urls.py:32
 msgid "registration/"
+msgstr ""
+
+#: project/views.py:37
+msgid "Back"
+msgstr ""
+
+#: project/views.py:38
+msgid "Registry updated"
+msgstr ""
+
+#: project/views.py:39
+msgid "Registry successfully updated"
+msgstr ""
+
+#: project/views.py:40
+msgid "Done!"
+msgstr ""
+
+#: project/views.py:41
+msgid "The registry was updated correctly."
 msgstr ""

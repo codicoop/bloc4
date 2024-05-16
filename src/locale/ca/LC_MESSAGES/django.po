@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:43+0200\n"
+"POT-Creation-Date: 2024-05-16 13:57+0200\n"
 "PO-Revision-Date: 2024-05-15 18:56+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -113,7 +113,6 @@ msgid "County"
 msgstr "Comarca"
 
 #: templates/404.html:13 templates/500.html:13 templates/503.html:13
-#: templates/details.html:75
 msgid "Go back"
 msgstr "Enrere"
 
@@ -157,15 +156,14 @@ msgstr ""
 msgid "Logo of the business"
 msgstr ""
 
-#: templates/base.html:78 templates/base.html:126 templates/details.html:18
-#: templates/home.html:5 templates/home.html:19 templates/list.html:18
-#: templates/profile/details.html:22
+#: templates/base.html:78 templates/base.html:126 templates/home.html:5
+#: templates/home.html:19 templates/profile/details.html:22
 #: templates/registration/password_change_form.html:23
 #: templates/registration/send_verification_code.html:23
 msgid "Home"
 msgstr "Inici"
 
-#: templates/base.html:83 templates/base.html:174
+#: templates/base.html:83 templates/base.html:162
 #: templates/registration/password_change_form.html:32
 #: templates/registration/send_verification_code.html:32
 #, fuzzy
@@ -191,15 +189,11 @@ msgstr "Iniciar sessió"
 msgid "Sign up"
 msgstr "Registrar-se"
 
-#: templates/base.html:164 templates/list.html:5
-msgid "Entities"
-msgstr "Entitats"
-
-#: templates/base.html:185
+#: templates/base.html:173
 msgid "Administration panel"
 msgstr "Panell d'administració"
 
-#: templates/base.html:288
+#: templates/base.html:276
 msgid ""
 "We use cookies to optimize your experience and to analyze the web traffic. "
 "We don't sell data to third parties. If you continue navigating, we'll "
@@ -209,11 +203,11 @@ msgstr ""
 "trànsit web. No venem dades a tercers. Si continua navegant, nosaltres entén "
 "que estàs bé amb això."
 
-#: templates/base.html:300
+#: templates/base.html:288
 msgid "Accept"
 msgstr ""
 
-#: templates/base.html:310
+#: templates/base.html:298
 msgid "Deny"
 msgstr "Denega"
 
@@ -309,18 +303,6 @@ msgstr ""
 msgid "Delete the current file."
 msgstr "Suprimeix el fitxer actual."
 
-#: templates/details.html:5 templates/details.html:36
-msgid "Entity Details"
-msgstr "Detalls de l'entitat"
-
-#: templates/details.html:27
-msgid "Entities list"
-msgstr "Llista d'entitats"
-
-#: templates/details.html:67
-msgid "Nothing to see here."
-msgstr "Res a veure aquí."
-
 #: templates/home.html:25
 msgid "Pàgina home"
 msgstr ""
@@ -330,16 +312,6 @@ msgstr ""
 #| msgid "Initial home page"
 msgid "Internal home page"
 msgstr "Pàgina inicial"
-
-#: templates/list.html:26
-msgid "Entities List"
-msgstr "Llista d'entitats"
-
-#: templates/list.html:45
-msgid ""
-"There is nothing ot show because nothing has been created. Go ahead and "
-"start!"
-msgstr "No hi ha res a mostrar perquè no s'ha creat res. Endavant i comença!"
 
 #: templates/profile/details.html:5
 msgid "Profile details"
@@ -384,6 +356,14 @@ msgstr "Aquí podeu canviar la contrasenya."
 #| msgid "New password"
 msgid "Change password"
 msgstr "Nova contrasenya"
+
+#: templates/profile/details.html:121
+msgid "Your Entity"
+msgstr "La teva entitat"
+
+#: templates/profile/details.html:123
+msgid "Here you can see all the information about your entity."
+msgstr "Aquí pots veure tota la informació sobre la teva entitat."
 
 #: templates/registration/login.html:17
 msgid "Sign in to your account"
@@ -489,6 +469,27 @@ msgstr "Anar"
 #: templates/registration/user_validation_confirm.html:27
 msgid "Set"
 msgstr "Estableix"
+
+#~ msgid "Entities"
+#~ msgstr "Entitats"
+
+#~ msgid "Entity Details"
+#~ msgstr "Detalls de l'entitat"
+
+#~ msgid "Entities list"
+#~ msgstr "Llista d'entitats"
+
+#~ msgid "Nothing to see here."
+#~ msgstr "Res a veure aquí."
+
+#~ msgid "Entities List"
+#~ msgstr "Llista d'entitats"
+
+#~ msgid ""
+#~ "There is nothing ot show because nothing has been created. Go ahead and "
+#~ "start!"
+#~ msgstr ""
+#~ "No hi ha res a mostrar perquè no s'ha creat res. Endavant i comença!"
 
 #~ msgid "Back"
 #~ msgstr "Enrere"

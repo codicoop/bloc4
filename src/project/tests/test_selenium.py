@@ -97,13 +97,13 @@ class MySeleniumTests(StaticLiveServerTestCase):
 
     host = "bloc4-app"
     # Uncomment this code if you want Selenium to connect to the actual web
-    # service instead of the tests one. Is assuming that Gunicorn is starting
+    # service instead of the test one. Is assuming that Gunicorn is starting
     # it at the port 8000, because you have to use the internal port and
     # not the one that Docker is exposing outside.
     #
     # Beware that Selenium will be using the database in the state that you
     # have it now, but those tests are designed to work only with a fresh
-    # database, and also that the override_settings is only affecting the tests
+    # database, and also that the override_settings is only affecting the test
     # server that you will not be using.
     # live_server_url = 'http://{}:8000'.format(
     #     socket.gethostbyname(socket.gethostname())
@@ -158,16 +158,16 @@ class MySeleniumTests(StaticLiveServerTestCase):
 
     def _check_mail_sent(self, recipient, string_in_body=""):
         """
-        During the tests, every time an email is sent it gets added to
+        During the test, every time an email is sent it gets added to
         mail.outbox.
-        This makes it difficult to tests whether a specific email is sent or not.
+        This makes it difficult to test whether a specific email is sent or not.
 
-        Instructions to tests the emails
+        Instructions to test the emails
 
         If there's 1 email sent and pending to be tested:
         - Call this method normally.
         - After that, the email will be removed from the outbox, so you cannot
-        tests it a second time.
+        test it a second time.
 
         If there's more than 1 email:
         - Call this method as many times as emails are pending to be tested.
@@ -214,7 +214,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         If we do that in different tests, we cannot ensure this order and also
         the principle is to make tests that are standalone.
 
-        Because of that, we're using a single tests method and splitting it
+        Because of that, we're using a single test method and splitting it
         in other private methods to make it more organized.
         """
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 09:57+0200\n"
+"POT-Creation-Date: 2024-05-16 13:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,15 +78,7 @@ msgstr ""
 msgid "Projecte App | Entity Details"
 msgstr ""
 
-#: project/urls.py:30
-msgid "entities/list/"
-msgstr ""
-
-#: project/urls.py:31
-msgid "entities/details/<uuid:id>"
-msgstr ""
-
-#: project/urls.py:32
+#: project/urls.py:29
 msgid "registration/"
 msgstr ""
 

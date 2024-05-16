@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 09:57+0200\n"
+"POT-Creation-Date: 2024-05-16 13:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -179,59 +179,59 @@ msgstr ""
 msgid "privacy-policy/"
 msgstr ""
 
-#: apps/users/views.py:111 apps/users/views.py:213
+#: apps/users/views.py:117 apps/users/views.py:219
 msgid "Done!"
 msgstr ""
 
-#: apps/users/views.py:112
+#: apps/users/views.py:118
 msgid "Account verified"
 msgstr ""
 
-#: apps/users/views.py:113
+#: apps/users/views.py:119
 msgid "Account has been successfully verified."
 msgstr ""
 
-#: apps/users/views.py:115 apps/users/views.py:180 apps/users/views.py:193
-#: apps/users/views.py:217
+#: apps/users/views.py:121 apps/users/views.py:186 apps/users/views.py:199
+#: apps/users/views.py:223
 msgid "Go back"
 msgstr ""
 
-#: apps/users/views.py:131
+#: apps/users/views.py:137
 msgid ""
 "El correu indicat no correspon a cap compte registrat, si us plau verifica "
 "que l'hagis escrit correctament."
 msgstr ""
 
-#: apps/users/views.py:175 apps/users/views.py:176 apps/users/views.py:177
+#: apps/users/views.py:181 apps/users/views.py:182 apps/users/views.py:183
 msgid "Invalid link"
 msgstr ""
 
-#: apps/users/views.py:178
+#: apps/users/views.py:184
 msgid "The link is invalid. Please try again."
 msgstr ""
 
-#: apps/users/views.py:185 apps/users/views.py:186
+#: apps/users/views.py:191 apps/users/views.py:192
 msgid "Password reset sent"
 msgstr ""
 
-#: apps/users/views.py:188
+#: apps/users/views.py:194
 msgid ""
 "An email has been sent to your inbox. Please check it and follow the "
 "instructions to change your password."
 msgstr ""
 
-#: apps/users/views.py:198 apps/users/views.py:199 apps/users/views.py:200
+#: apps/users/views.py:204 apps/users/views.py:205 apps/users/views.py:206
 msgid "Password reset complete"
 msgstr ""
 
-#: apps/users/views.py:202
+#: apps/users/views.py:208
 msgid "Login"
 msgstr ""
 
-#: apps/users/views.py:214
+#: apps/users/views.py:220
 msgid "Password change"
 msgstr ""
 
-#: apps/users/views.py:215
+#: apps/users/views.py:221
 msgid "Password change successful."
 msgstr ""

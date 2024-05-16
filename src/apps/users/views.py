@@ -4,23 +4,19 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import (
     LoginView as BaseLoginView,
-)
-from django.contrib.auth.views import (
     PasswordChangeView as BasePasswordChangeView,
-)
-from django.contrib.auth.views import (
     PasswordResetConfirmView as BasePasswordResetConfirmView,
-)
-from django.contrib.auth.views import (
     PasswordResetView as BasePasswordResetView,
 )
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
 
+from apps.entities.forms import EntityForm
+from apps.entities.models import Entity
 from apps.users.forms import (
     AuthenticationForm,
     EmailVerificationCodeForm,
@@ -61,15 +57,24 @@ def signup_view(request):
 
 @login_required
 def details_view(request):
-    form = ProfileDetailsForm(request.POST or None, instance=request.user)
+    # Get information from the user's Entity
+    user_entity = get_object_or_404(Entity, person_responsible=request.user.id)
+    form_entity = EntityForm(instance=user_entity)
+
+    # Get user information
+    form_user = ProfileDetailsForm(request.POST or None, instance=request.user)
     new_email = request.user.email
-    if form.is_valid():
-        user = form.save(commit=False)
+    if form_user.is_valid():
+        user = form_user.save(commit=False)
         if new_email != user.email:
             user.email_verified = False
         user.save()
         return redirect("registration:profile_details_success")
-    return render(request, "profile/details.html", {"form": form})
+    return render(
+        request,
+        "profile/details.html",
+        {"form_user": form_user, "form_entity": form_entity},
+    )
 
 
 class EmailVerificationView(FormView, StandardSuccess):

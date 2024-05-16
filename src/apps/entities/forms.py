@@ -11,15 +11,15 @@ from project.fields.flowbite import (
 
 
 class EntityForm(forms.ModelForm):
-    email = FormEmailField(label=_("Email"))
-    fiscal_name = FormCharField(label=_("Fiscal name"))
-    nif = FormCharField(label=_("NIF"))
-    town = FormCharField(label=_("Towm"))
-    postal_code = FormIntegerField(label=_("Postal code"))
-    address = FormCharField(label=_("Address"))
-    country = FormCharField(label=_("Country"))
-    person_responsible = FormCharField(label=_("Person responsible"))
-    is_resident = FormBooleanField(label=_("Resident"))
+    email = FormEmailField(label=_("Email"), disabled=True)
+    fiscal_name = FormCharField(label=_("Fiscal name"), disabled=True)
+    nif = FormCharField(label=_("NIF"), disabled=True)
+    town = FormCharField(label=_("Towm"), disabled=True)
+    postal_code = FormIntegerField(label=_("Postal code"), disabled=True)
+    address = FormCharField(label=_("Address"), disabled=True)
+    country = FormCharField(label=_("Country"), disabled=True)
+    person_responsible = FormCharField(label=_("Person responsible"), disabled=True)
+    is_resident = FormBooleanField(label=_("Resident"), disabled=True)
 
     class Meta:
         model = Entity

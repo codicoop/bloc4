@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block form_fields %}
-  {{ form_user }}
+  {{ form }}
 
   {% if not user.email_verified %}
   <div class="flex items-center p-4 mb-4 bg-red-50 rounded-lg text-sm text-red-700 dark:text-red-500"
@@ -108,26 +108,19 @@
     </div>
   </div>
 </section>
-{% if form_entity %}
-  <section class="bg-gray-50 dark:bg-gray-900">
-    <div class="flex flex-col items-center justify-center px-6 pb-8 mx-auto
-    lg:pb-16 lg:-mt-9">
-      <div class="w-full bg-white rounded-lg shadow
-            dark:border dark:bg-gray-800 dark:border-gray-700
-            sm:max-w-lg
-            md:mt-0
-            xl:p-0">
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-          <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-            {% translate "Your Entity" %}
-          </h2>
-          <p>{% translate "Here you can see all the information about your entity." %}</p>
-            {% block form_entity_fields %}
-              {{ form_entity }}
-            {% endblock %}
-        </div>
-      </div>
-    </div>
-  </section>
+
+<!-- BACK VALUES -->
+{% if request.user.entity %}
+
+  <p>Correu electrònic entitat: {{ request.user.entity.email }}</p>
+  <p>Nom fiscal entitat: {{ user.entity.fiscal_name }}</p>
+  <p>NIF entitat: {{ request.user.entity.nif }}</p>
+  <p>Població entitat: {{ user.entity.town }}</p>
+  <p>Codi postal entitat: {{ request.user.entity.postal_code }}</p>
+  <p>Adreça entitat: {{ user.entity.address }}</p>
+  <p>País entitat: {{ request.user.entity.country }}</p>
+  <p>Persona responsable entitat: {{ user.entity.person_responsible }}</p>
+  <p>Resident entitat: {{ request.user.entity.is_resident }}</p>
+
 {% endif %}
 {% endblock %}

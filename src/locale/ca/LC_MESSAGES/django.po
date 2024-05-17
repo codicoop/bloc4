@@ -6,90 +6,490 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-09 18:49+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2024-05-16 13:57+0200\n"
+"PO-Revision-Date: 2024-05-15 18:56+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: src/templates/base.html:17
+"X-Generator: Poedit 3.4.4\n"
+
+#: apps/provinces_towns/models.py:6
+msgid "Andalucia"
+msgstr ""
+
+#: apps/provinces_towns/models.py:7
+msgid "Zaragoza"
+msgstr ""
+
+#: apps/provinces_towns/models.py:8
+msgid "Asturias"
+msgstr ""
+
+#: apps/provinces_towns/models.py:9
+msgid "Illes Balears"
+msgstr ""
+
+#: apps/provinces_towns/models.py:10
+msgid "Santa Cruz de Tenerife"
+msgstr ""
+
+#: apps/provinces_towns/models.py:11
+msgid "Cantàbria"
+msgstr ""
+
+#: apps/provinces_towns/models.py:12
+msgid "Castilla y León"
+msgstr ""
+
+#: apps/provinces_towns/models.py:13
+msgid "Castilla - La Mancha"
+msgstr ""
+
+#: apps/provinces_towns/models.py:14
+msgid "Catalunya"
+msgstr ""
+
+#: apps/provinces_towns/models.py:15
+msgid "País Valencià"
+msgstr ""
+
+#: apps/provinces_towns/models.py:16
+msgid "Extremadura"
+msgstr ""
+
+#: apps/provinces_towns/models.py:17
+msgid "Galícia"
+msgstr ""
+
+#: apps/provinces_towns/models.py:18
+msgid "Madrid"
+msgstr ""
+
+#: apps/provinces_towns/models.py:19
+msgid "Múrcia"
+msgstr ""
+
+#: apps/provinces_towns/models.py:20
+msgid "Navarra"
+msgstr ""
+
+#: apps/provinces_towns/models.py:21
+msgid "Euskal Herria"
+msgstr ""
+
+#: apps/provinces_towns/models.py:22
+msgid "La Rioja"
+msgstr ""
+
+#: apps/provinces_towns/models.py:23
+msgid "Ceuta"
+msgstr ""
+
+#: apps/provinces_towns/models.py:24
+msgid "Melilla"
+msgstr ""
+
+#: apps/provinces_towns/models.py:33
+msgid "Autonomous Community"
+msgstr "Comunitat Autònoma"
+
+#: apps/provinces_towns/models.py:37 apps/provinces_towns/models.py:62
+#: apps/provinces_towns/models.py:90
+msgid "Name"
+msgstr "Nom"
+
+#: apps/provinces_towns/models.py:55
+msgid "Province"
+msgstr "Província"
+
+#: apps/provinces_towns/models.py:83
+msgid "County"
+msgstr "Comarca"
+
+#: templates/404.html:13 templates/500.html:13 templates/503.html:13
+msgid "Go back"
+msgstr "Enrere"
+
+#: templates/404.html:16
+msgid "Error 404: Page not found"
+msgstr "Error 404: No s'ha trobat la pàgina"
+
+#: templates/404.html:20
+msgid ""
+"The page you were trying to access does not exist. Please check the spelling "
+"or go back to the beginning."
+msgstr ""
+"La pàgina a la qual estaves intentant accedir no existeix. Comproveu "
+"l'ortografia o tornar al principi."
+
+#: templates/500.html:16
+msgid "Error 500: Internal server error"
+msgstr "Error 500: Error intern del servidor"
+
+#: templates/500.html:20
+msgid ""
+"The server encountered an unexpected condition that prevented it from "
+"fulfilling the request."
+msgstr ""
+"El servidor ha trobat una condició inesperada que l'ha impedit Complir la "
+"sol·licitud."
+
+#: templates/503.html:16
+msgid "Error 503: Maintenance mode enabled"
+msgstr "Error 503: Mode de manteniment habilitat"
+
+#: templates/503.html:20
+msgid ""
+"The application is currently under maintenance, please try again in few "
+"minutes."
+msgstr ""
+"L'aplicació està actualment en manteniment, torneu-ho a provar en pocs "
+"minuts."
+
+#: templates/base.html:39
+msgid "Logo of the business"
+msgstr ""
+
+#: templates/base.html:78 templates/base.html:126 templates/home.html:5
+#: templates/home.html:19 templates/profile/details.html:22
+#: templates/registration/password_change_form.html:23
+#: templates/registration/send_verification_code.html:23
 msgid "Home"
+msgstr "Inici"
+
+#: templates/base.html:83 templates/base.html:162
+#: templates/registration/password_change_form.html:32
+#: templates/registration/send_verification_code.html:32
+#, fuzzy
+#| msgid "Profile details"
+msgid "Profile"
+msgstr "Detalls del perfil"
+
+#: templates/base.html:89
+msgid "Panell d'administració"
 msgstr ""
 
-#: src/templates/base.html:18
+#: templates/base.html:96
+msgid "Log out"
+msgstr "Tancar sessió"
+
+#: templates/base.html:138 templates/registration/login.html:5
+#: templates/registration/login_old.html:5
 msgid "Log in"
-msgstr ""
+msgstr "Iniciar sessió"
 
-#: src/templates/base.html:19 src/templates/registration/signup.html:4
+#: templates/base.html:150 templates/base_success.html:6
+#: templates/registration/signup.html:5 templates/registration/signup.html:18
 msgid "Sign up"
 msgstr "Registrar-se"
 
-#: src/templates/base.html:20
-#: src/templates/registration/password_reset_form.html:4
-msgid "Password recovery"
+#: templates/base.html:173
+msgid "Administration panel"
+msgstr "Panell d'administració"
+
+#: templates/base.html:276
+msgid ""
+"We use cookies to optimize your experience and to analyze the web traffic. "
+"We don't sell data to third parties. If you continue navigating, we'll "
+"understand that you are ok with that."
+msgstr ""
+"Utilitzem cookies per optimitzar la teva experiència i per analitzar el "
+"trànsit web. No venem dades a tercers. Si continua navegant, nosaltres entén "
+"que estàs bé amb això."
+
+#: templates/base.html:288
+msgid "Accept"
 msgstr ""
 
-#: src/templates/base.html:23 src/templates/profile/details.html:4
+#: templates/base.html:298
+msgid "Deny"
+msgstr "Denega"
+
+#: templates/base_form.html:52 templates/profile/details.html:64
+msgid "Save"
+msgstr "Desar"
+
+#: templates/base_success.html:29
+#, fuzzy
+#| msgid "Done!!"
+msgid "Done!"
+msgstr "Fet!"
+
+#: templates/base_success.html:32
+msgid "Registry successfully updated."
+msgstr "Registre actualitzat correctament."
+
+#: templates/base_success.html:40
+msgid "Back to home"
+msgstr "Torna a inici"
+
+#: templates/components/form_errors.html:10
+msgid "There has been an error!"
+msgstr "S'ha produït un error!"
+
+#: templates/components/form_errors.html:38
+msgid "There's an error in the form."
+msgstr "Hi ha un error en el formulari."
+
+#: templates/components/form_errors.html:41
+msgid "Please, check the fields marked in red."
+msgstr "Si us plau, comproveu els camps marcats en vermell."
+
+#: templates/demo_flowbite.html:51 templates/fields/field_default.html:36
+#: templates/fields/field_default.html:87
+#: templates/fields/field_default.html:140
+msgid "Show information"
+msgstr "Mostra la informació"
+
+#: templates/demo_flowbite.html:346
+msgid "Error alert"
+msgstr "Alerta d'error"
+
+#: templates/demo_flowbite.html:348
+msgid "There is an error in the form!"
+msgstr "Hi ha un error en el formulari!"
+
+#: templates/demo_flowbite.html:350
+msgid "Please check the fields marked in red"
+msgstr "Comproveu els camps marcats en vermell"
+
+#: templates/demo_flowbite.html:362
+msgid "Close error alert"
+msgstr "Tanca l'alerta d'error"
+
+#: templates/demo_flowbite.html:374
+msgid "Form error"
+msgstr "Error de formulari"
+
+#: templates/demo_flowbite.html:376
+msgid "There was an error!"
+msgstr "S'ha produït un error!"
+
+#: templates/demo_flowbite.html:416
+msgid "Upload a file"
+msgstr "Puja un fitxer"
+
+#: templates/demo_flowbite.html:498
+msgid "New file"
+msgstr "Fitxer nou"
+
+#: templates/demo_flowbite.html:519
+msgid "Current file"
+msgstr "Fitxer actual"
+
+#: templates/demo_flowbite.html:539
+msgid "Delete file"
+msgstr "Suprimeix el fitxer"
+
+#: templates/demo_flowbite.html:559
+msgid "This is the current uploaded file:"
+msgstr "Aquest és el fitxer pujat:"
+
+#: templates/demo_flowbite.html:584
+msgid ""
+"Select a new file. Beware that if there was a file already uploaded, it will "
+"be erased."
+msgstr ""
+"Seleccioni un fitxer nou. Tingueu en compte que si ja hi havia un fitxer "
+"pujat, aquest serà esborra't."
+
+#: templates/demo_flowbite.html:633
+msgid "Delete the current file."
+msgstr "Suprimeix el fitxer actual."
+
+#: templates/home.html:25
+msgid "Pàgina home"
+msgstr ""
+
+#: templates/home_internal.html:5
+#, fuzzy
+#| msgid "Initial home page"
+msgid "Internal home page"
+msgstr "Pàgina inicial"
+
+#: templates/profile/details.html:5
 msgid "Profile details"
 msgstr "Detalls del perfil"
 
-#: src/templates/base.html:24
-msgid "Log out"
+#: templates/profile/details.html:31
+msgid "Your profile"
+msgstr "El teu perfil"
+
+#: templates/profile/details.html:33
+msgid "Here you can see and edit all your data."
+msgstr "Aquí podeu veure i editar totes les vostres dades."
+
+#: templates/profile/details.html:47 templates/profile/details.html:90
+msgid "Warning!"
+msgstr "Alert!"
+
+#: templates/profile/details.html:48 templates/profile/details.html:91
+msgid "Your email is not verified. Before anything else, you must verify it."
 msgstr ""
+"El vostre correu electrònic no està verificat. Abans de res, cal verificar-"
+"ho."
 
-#: src/templates/base_success.html:6
-msgid "Done!!"
-msgstr "Fet!"
+#: templates/profile/details.html:50 templates/profile/details.html:93
+msgid "Verify email here."
+msgstr "Verifiqueu el correu electrònic aquí."
 
-#: src/templates/base_success.html:10
-msgid "Registry successfully updated."
-msgstr ""
+#: templates/profile/details.html:79
+#: templates/registration/password_change_form.html:5
+#: templates/registration/password_change_form.html:42
+#, fuzzy
+#| msgid "Password recovery"
+msgid "Password change"
+msgstr "Recuperació de contrasenya"
 
-#: src/templates/base_success.html:12
-msgid "Back"
-msgstr "Enrere"
+#: templates/profile/details.html:81
+msgid "Here you can change your password."
+msgstr "Aquí podeu canviar la contrasenya."
 
-#: src/templates/home.html:5
-msgid "Initial home page"
-msgstr ""
+#: templates/profile/details.html:104
+#, fuzzy
+#| msgid "New password"
+msgid "Change password"
+msgstr "Nova contrasenya"
 
-#: src/templates/profile/details.html:8
-msgid "Save"
-msgstr ""
+#: templates/profile/details.html:121
+msgid "Your Entity"
+msgstr "La teva entitat"
 
-#: src/templates/registration/login.html:5
-msgid "Log-in"
-msgstr ""
+#: templates/profile/details.html:123
+msgid "Here you can see all the information about your entity."
+msgstr "Aquí pots veure tota la informació sobre la teva entitat."
 
-#: src/templates/registration/login.html:9
-msgid "Enter your account details to authenticate."
-msgstr ""
+#: templates/registration/login.html:17
+msgid "Sign in to your account"
+msgstr "Inicieu la sessió al vostre compte"
 
-#: src/templates/registration/login.html:19
-msgid "Forgotten your password?"
-msgstr ""
+#: templates/registration/login.html:33
+#, fuzzy
+#| msgid "Sign up"
+msgid "Sign in"
+msgstr "Registrar-se"
 
-#: src/templates/registration/login.html:21
-msgid "If you are not registered yet:"
-msgstr ""
+#: templates/registration/login.html:38
+#, fuzzy
+#| msgid "Forgotten your password?"
+msgid "Forgot your password?"
+msgstr "Has oblidat la teva contrassenya?"
 
-#: src/templates/registration/login.html:24
+#: templates/registration/login.html:41
+msgid "Don’t have an account yet?"
+msgstr "Encara no tens un compte?"
+
+#: templates/registration/login.html:43
+#: templates/registration/login_old.html:80
 msgid "Sign-up"
-msgstr ""
+msgstr "Registre"
 
-#: src/templates/registration/password_reset_confirm.html:4
-msgid "New password"
-msgstr ""
+#: templates/registration/login_old.html:15
+msgid "Log-in"
+msgstr "Iniciar Sessió"
 
-#: src/templates/registration/password_reset_confirm.html:8
-msgid "Set"
-msgstr ""
+#: templates/registration/login_old.html:21
+msgid "Enter your account details to authenticate."
+msgstr "Introduïu les dades del vostre compte per autenticar-vos."
 
-#: src/templates/registration/password_reset_form.html:8
+#: templates/registration/login_old.html:66
+msgid "Go in"
+msgstr "Entra"
+
+#: templates/registration/login_old.html:73
+msgid "Forgotten your password?"
+msgstr "Has oblidat la teva contrassenya?"
+
+#: templates/registration/login_old.html:77
+msgid "If you are not registered yet:"
+msgstr "Si encara no esteu registrat:"
+
+#: templates/registration/password_change_form.html:50
+#: templates/registration/password_reset_confirm.html:29
+#: templates/registration/password_reset_form.html:26
+#: templates/registration/send_verification_code.html:51
 msgid "Send"
+msgstr "Envia"
+
+#: templates/registration/password_reset_confirm.html:5
+#: templates/registration/user_validation_confirm.html:5
+msgid "New password"
+msgstr "Nova contrasenya"
+
+#: templates/registration/password_reset_confirm.html:18
+#: templates/registration/password_reset_form.html:5
+#: templates/registration/password_reset_form.html:18
+msgid "Password recovery"
+msgstr "Recuperació de contrasenya"
+
+#: templates/registration/password_reset_confirm.html:21
+msgid ""
+"Introduce your email. A link will be sent to this address so you can reset "
+"your password."
 msgstr ""
+"Introdueix el teu correu electrònic. S'enviarà un enllaç a aquesta adreça "
+"perquè pugueu restablir la teva contrasenya."
+
+#: templates/registration/privacy_policy.html:6
+#: templates/registration/privacy_policy.html:18
+msgid "Privacy policy"
+msgstr "Política de privacitat"
+
+#: templates/registration/send_verification_code.html:5
+#: templates/registration/user_validation.html:5
+msgid "Mail validation"
+msgstr "Validació de correu"
+
+#: templates/registration/send_verification_code.html:42
+msgid "Email verification"
+msgstr "Verificació per correu electrònic"
+
+#: templates/registration/send_verification_code.html:47
+msgid ""
+"By clicking the button a verification code will be send to your email "
+"address. Check your email to find it."
+msgstr ""
+"Fent clic al botó s'enviarà un codi de verificació al teu correu electrònic "
+"adreça. Comproveu el vostre correu electrònic per trobar-lo."
+
+#: templates/registration/signup.html:26
+msgid "Create Account"
+msgstr "Crea un compte"
+
+#: templates/registration/user_validation.html:14
+msgid "Go"
+msgstr "Anar"
+
+#: templates/registration/user_validation_confirm.html:27
+msgid "Set"
+msgstr "Estableix"
+
+#~ msgid "Entities"
+#~ msgstr "Entitats"
+
+#~ msgid "Entity Details"
+#~ msgstr "Detalls de l'entitat"
+
+#~ msgid "Entities list"
+#~ msgstr "Llista d'entitats"
+
+#~ msgid "Nothing to see here."
+#~ msgstr "Res a veure aquí."
+
+#~ msgid "Entities List"
+#~ msgstr "Llista d'entitats"
+
+#~ msgid ""
+#~ "There is nothing ot show because nothing has been created. Go ahead and "
+#~ "start!"
+#~ msgstr ""
+#~ "No hi ha res a mostrar perquè no s'ha creat res. Endavant i comença!"
+
+#~ msgid "Back"
+#~ msgstr "Enrere"

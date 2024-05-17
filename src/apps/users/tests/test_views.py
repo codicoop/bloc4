@@ -9,7 +9,7 @@ class LoginTestCase(TestCase):
         self.user = User.objects.create_user(
             name="test_name",
             surnames="test_surnames",
-            email="test@test.com",
+            email="tests@tests.com",
         )
         self.user.set_password("password")
         self.user.save()

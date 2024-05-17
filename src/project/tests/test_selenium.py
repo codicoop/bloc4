@@ -12,7 +12,6 @@ from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
-from apps.demo.models import Data
 from apps.users.models import User
 
 logging.basicConfig(level=logging.INFO)
@@ -53,18 +52,14 @@ class Strings(Enum):
 
     """
 
-    MENU_ADMIN = _("Administration panel")
     ADMIN_TITLE = _("Administració del lloc | Lloc administratiu de Django")
     LOGOUT = _("Log out")
     SIGNUP_TITLE = _("Projecte App | Registrar-se")
+    HOME_TITLE = _("Projecte App | Inici")
     PROFILE_TITLE = _("Projecte App | Detalls del perfil")
     REGISTRY_UPDATE_TITLE = _("Projecte App | Registry updated")
     PASSWORD_CHANGE_TITLE = _("Projecte App | Canvi de contrasenya")
-    EMAIL_VALIDATION_TITLE = _("Projecte App | Mail validation")
-    DEMO_TITLE = _("Projecte App | Demo")
-    DEMO_CREATE = _("Projecte App | Demo Create")
-    DEMO_DETAILS = _("Projecte App | Demo Details")
-    DEMO_UPDATE = _("Projecte App | Demo Update")
+    EMAIL_VALIDATION_TITLE = _("Projecte App | Validació de correu")
 
 
 @override_settings(
@@ -95,7 +90,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
     to serve the files without any need to `collectstatic` first.
     """
 
-    host = "boilerplate-app"
+    host = "bloc4-app"
     # Uncomment this code if you want Selenium to connect to the actual web
     # service instead of the test one. Is assuming that Gunicorn is starting
     # it at the port 8000, because you have to use the internal port and
@@ -119,7 +114,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         options.add_argument("--headless")
         options.add_argument("--no-sandbox")  # Disable sandboxing for Docker
         cls.selenium = webdriver.Remote(
-            command_executor="http://boilerplate-selenium:4444/wd/hub", options=options
+            command_executor="http://bloc4-selenium:4444/wd/hub", options=options
         )
         cls.selenium.implicitly_wait(10)  # Set implicit wait time
         cls.sample_data = {
@@ -243,18 +238,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self._home()
         logging.info("Test Home finished.")
 
-        self._demo_list()
-        logging.info("Test Demo List finished.")
-
-        self._demo_create()
-        logging.info("Test Demo Create finished.")
-
-        self._demo_details()
-        logging.info("Test Demo Details finished.")
-
-        self._demo_update()
-        logging.info("Test Demo Update finished.")
-
         logging.info("#####################################")
         logging.info("#### All tests Selenium finished ####")
         logging.info("#####################################")
@@ -295,7 +278,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
             settings.DJANGO_SUPERUSER_PASSWORD,
         )
         self.burger_menu_action()
-        admin_menu = self.select_element_by_text(Strings.MENU_ADMIN.value)
+        admin_menu = self.selenium.find_element(By.ID, "menu_admin")
         admin_menu.click()
 
         self.logging_url_title_and_assert_title(Strings.ADMIN_TITLE.value)
@@ -306,7 +289,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         admin_menu = self.select_element_by_text(Strings.LOGOUT.value)
         admin_menu.click()
 
-        # Open the main menu to select the Sign Up option.
+        # Open the entities menu to select the Sign Up option.
         self.burger_menu_action()
 
         signup_menu_option = self.selenium.find_element(By.ID, "menu_signup")
@@ -330,7 +313,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
         signup_email.send_keys(self.sample_data["first_user"].email)
         signup_accept_conditions.click()
         signup_password2.send_keys(Keys.RETURN)
-
         self.logging_url_title_and_assert_title(Strings.PROFILE_TITLE.value)
 
     def _verify_email(self):
@@ -362,7 +344,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         # Click on the button Go Back.
         logging.info("Verified email.")
 
-        go_back = self.select_element_by_text("Go back")
+        go_back = self.selenium.find_element(By.ID, "id_back")
         go_back.click()
 
     def _update_profile(self):
@@ -423,7 +405,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         # Click on the button Go Back.
         logging.info("Verified email.")
 
-        go_back = self.select_element_by_text("Go back")
+        go_back = self.selenium.find_element(By.ID, "id_back")
         go_back.click()
 
     def _password_change(self):
@@ -452,100 +434,9 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self.logging_url_title_and_assert_title(Strings.PROFILE_TITLE.value)
 
     def _home(self):
-        # Open the main menu to select the Home option.
+        # Open the menu to select the Home option.
         self.burger_menu_action()
         home_menu_option = self.selenium.find_element(By.ID, "menu_home")
         home_menu_option.click()
 
-        self.logging_url_title_and_assert_title(Strings.DEMO_TITLE.value)
-
-    def _demo_list(self):
-        # Open the main menu to select the Home option.
-        self.burger_menu_action()
-        home_menu_option = self.selenium.find_element(By.ID, "menu_demo")
-        home_menu_option.click()
-
-        self.logging_url_title_and_assert_title(Strings.DEMO_TITLE.value)
-
-    def _demo_create(self):
-        # Click on Create New Data to create a new record.
-        create_data = self.selenium.find_element(By.ID, "id_create_data")
-        create_data.click()
-        self.logging_url_title_and_assert_title(Strings.DEMO_CREATE.value)
-
-        # All the fields are filled in
-        demo_field_text_1 = self.selenium.find_element(By.NAME, "field_text_1")
-        demo_field_text_2 = self.selenium.find_element(By.NAME, "field_text_2")
-        demo_field_email = self.selenium.find_element(By.NAME, "field_email")
-        demo_field_radio = self.selenium.find_element(By.ID, "id_field_radio_0")
-        demo_field_boolean_checkbox = self.selenium.find_element(
-            By.NAME, "field_boolean_checkbox"
-        )
-        demo_field_select_dropdown = self.selenium.find_element(
-            By.NAME, "field_select_dropdown"
-        )
-        demo_field_password = self.selenium.find_element(By.NAME, "field_password")
-        demo_field_password_confirm = self.selenium.find_element(
-            By.NAME, "field_password_confirm"
-        )
-        demo_field_number = self.selenium.find_element(By.NAME, "field_number")
-
-        demo_field_text_1.send_keys("text_1")
-        demo_field_text_2.send_keys("text_2")
-        demo_field_email.send_keys("email@test.com")
-        demo_field_radio.click()
-        demo_field_boolean_checkbox.click()
-        demo_field_select_dropdown.send_keys("OP2")
-        demo_field_password.send_keys("password")
-        demo_field_password_confirm.send_keys("password")
-        demo_field_number.send_keys("1234")
-        demo_field_password.send_keys(Keys.RETURN)
-
-        self.logging_url_title_and_assert_title(Strings.DEMO_TITLE.value)
-
-    def _demo_details(self):
-        # Click on data entry
-        data_id = Data.objects.values_list("id", flat=True).first()
-        data_button = self.selenium.find_element(By.ID, f"id_details_{data_id}")
-        data_button.click()
-
-        self.logging_url_title_and_assert_title(Strings.DEMO_DETAILS.value)
-
-    def _demo_update(self):
-        # Click on Edit Data to update record.
-        update_data = self.selenium.find_element(By.ID, "id_edit")
-        update_data.click()
-        self.logging_url_title_and_assert_title(Strings.DEMO_UPDATE.value)
-
-        # Data Updated
-        update_field_text_1 = self.selenium.find_element(By.ID, "id_field_text_1")
-        update_field_text_2 = self.selenium.find_element(By.ID, "id_field_text_2")
-        update_field_email = self.selenium.find_element(By.ID, "id_field_email")
-        update_field_radio = self.selenium.find_element(By.ID, "id_field_radio_1")
-        update_field_select_dropdown = self.selenium.find_element(
-            By.NAME, "field_select_dropdown"
-        )
-        update_field_password = self.selenium.find_element(By.NAME, "field_password")
-        update_field_password_confirm = self.selenium.find_element(
-            By.NAME, "field_password_confirm"
-        )
-        update_field_number = self.selenium.find_element(By.NAME, "field_number")
-
-        update_field_text_1.clear()
-        update_field_text_2.clear()
-        update_field_email.clear()
-        update_field_password.clear()
-        update_field_password_confirm.clear()
-        update_field_number.clear()
-        update_field_text_1.send_keys("update_text_1")
-        update_field_text_2.send_keys("update_text_2")
-        update_field_email.send_keys("update_email@test.com")
-        update_field_radio.click()
-        update_field_select_dropdown.send_keys("OP3")
-        update_field_password.send_keys("update_password")
-        update_field_password_confirm.send_keys("update_password")
-        update_field_number.send_keys("5678")
-        update_submit = self.selenium.find_element(By.ID, "id_submit")
-        update_submit.click()
-
-        self.logging_url_title_and_assert_title(Strings.DEMO_DETAILS.value)
+        self.logging_url_title_and_assert_title(Strings.HOME_TITLE.value)

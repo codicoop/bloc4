@@ -58,8 +58,8 @@ def signup_view(request):
 @login_required
 def details_view(request):
     # Get information from the user's Entity
-    user_entity = get_object_or_404(Entity, person_responsible=request.user.id)
-    form_entity = EntityForm(instance=user_entity)
+    user_entity = Entity.objects.filter(person_responsible=request.user.id).first()
+    form_entity = EntityForm(instance=user_entity) if user_entity else None
 
     # Get user information
     form_user = ProfileDetailsForm(request.POST or None, instance=request.user)

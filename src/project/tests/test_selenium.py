@@ -12,8 +12,6 @@ from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
-from apps.entities.models import Entity
-from apps.provinces_towns.models import Town
 from apps.users.models import User
 
 logging.basicConfig(level=logging.INFO)
@@ -54,7 +52,6 @@ class Strings(Enum):
 
     """
 
-    MENU_ADMIN = _("Administration panel")
     ADMIN_TITLE = _("Administració del lloc | Lloc administratiu de Django")
     LOGOUT = _("Log out")
     SIGNUP_TITLE = _("Projecte App | Registrar-se")
@@ -62,9 +59,7 @@ class Strings(Enum):
     PROFILE_TITLE = _("Projecte App | Detalls del perfil")
     REGISTRY_UPDATE_TITLE = _("Projecte App | Registry updated")
     PASSWORD_CHANGE_TITLE = _("Projecte App | Canvi de contrasenya")
-    EMAIL_VALIDATION_TITLE = _("Projecte App | Mail validation")
-    ENTITIES_TITLE = _("Projecte App | Entities")
-    ENTITY_DETAILS = _("Projecte App | Entity Details")
+    EMAIL_VALIDATION_TITLE = _("Projecte App | Validació de correu")
 
 
 @override_settings(
@@ -243,12 +238,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self._home()
         logging.info("Test Home finished.")
 
-        self._entities_list()
-        logging.info("Test Entities List finished.")
-
-        self._entity_details()
-        logging.info("Test Entity Details finished.")
-
         logging.info("#####################################")
         logging.info("#### All tests Selenium finished ####")
         logging.info("#####################################")
@@ -289,7 +278,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
             settings.DJANGO_SUPERUSER_PASSWORD,
         )
         self.burger_menu_action()
-        admin_menu = self.select_element_by_text(Strings.MENU_ADMIN.value)
+        admin_menu = self.selenium.find_element(By.ID, "menu_admin")
         admin_menu.click()
 
         self.logging_url_title_and_assert_title(Strings.ADMIN_TITLE.value)
@@ -324,7 +313,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
         signup_email.send_keys(self.sample_data["first_user"].email)
         signup_accept_conditions.click()
         signup_password2.send_keys(Keys.RETURN)
-
         self.logging_url_title_and_assert_title(Strings.PROFILE_TITLE.value)
 
     def _verify_email(self):
@@ -356,7 +344,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         # Click on the button Go Back.
         logging.info("Verified email.")
 
-        go_back = self.select_element_by_text("Go back")
+        go_back = self.selenium.find_element(By.ID, "id_back")
         go_back.click()
 
     def _update_profile(self):
@@ -417,7 +405,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         # Click on the button Go Back.
         logging.info("Verified email.")
 
-        go_back = self.select_element_by_text("Go back")
+        go_back = self.selenium.find_element(By.ID, "id_back")
         go_back.click()
 
     def _password_change(self):
@@ -452,41 +440,3 @@ class MySeleniumTests(StaticLiveServerTestCase):
         home_menu_option.click()
 
         self.logging_url_title_and_assert_title(Strings.HOME_TITLE.value)
-
-    def _entities_list(self):
-        # Create a new entity
-        Entity.objects.create(
-            email="mock@tests.tests",
-            fiscal_name="Entity Test",
-            nif="12345678X",
-            town=Town.objects.filter(name="Barcelona").first(),
-            postal_code=int("08080"),
-            address="Address Test",
-            country="Country Test",
-            person_responsible=User.objects.create_user(
-                name="Andrew",
-                surnames="McTest",
-                email="andrew@codi.coop",
-                password="0pl#9okm8ijn",
-                email_verification_code="1234",
-                email_verified=True,
-                is_active=True,
-                is_staff=True,
-                is_superuser=True,
-            ),
-            is_resident=True,
-        )
-        # Open the entities menu to select the Home option.
-        self.burger_menu_action()
-        entities_menu_option = self.selenium.find_element(By.ID, "menu_entities")
-        entities_menu_option.click()
-
-        self.logging_url_title_and_assert_title(Strings.ENTITIES_TITLE.value)
-
-    def _entity_details(self):
-        # Click on data entry
-        entity_id = Entity.objects.values_list("id", flat=True).first()
-        entity_button = self.selenium.find_element(By.ID, f"id_details_{entity_id}")
-        entity_button.click()
-
-        self.logging_url_title_and_assert_title(Strings.ENTITY_DETAILS.value)

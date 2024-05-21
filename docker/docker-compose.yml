@@ -23,22 +23,6 @@ services:
     networks:
       - bloc4-network
 
-  bloc4-celery:
-    build:
-      context: ..
-      dockerfile: ./docker/Dockerfile
-      target: development
-    command: "celery -A apps.celery worker --loglevel=INFO"
-    container_name: bloc4-celery
-    env_file: ./.env
-    volumes:
-      - ../src:/srv
-    depends_on:
-      - bloc4-redis
-#    entrypoint: ["sh", "-c", "sleep 2073600"]
-    networks:
-      - bloc4-network
-
   bloc4-db:
     container_name: bloc4-db
     image: postgres:14
@@ -46,19 +30,5 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - ../dumps:/dumps
-    networks:
-      - bloc4-network
-
-  bloc4-redis:
-    container_name: bloc4-redis
-    image: redis
-    networks:
-      - bloc4-network
-
-  bloc4-selenium:
-    container_name: bloc4-selenium
-    image: selenium/standalone-chrome:4.16.0
-    ports:
-      - "4444:4444"
     networks:
       - bloc4-network

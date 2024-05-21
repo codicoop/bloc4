@@ -123,7 +123,6 @@ INSTALLED_APPS = [
     "django_extensions",
     "phonenumber_field",
     "apps.users",
-    "apps.celery",
     "project",
     "apps.entities",
     "apps.provinces_towns",

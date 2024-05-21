@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.users.models import User
 from project.models import BaseModel
 from project.fields import flowbite
 
@@ -21,6 +20,7 @@ class Entity(BaseModel):
         help_text=_("Fiscal name"),
     )
     nif = flowbite.ModelCharField(
+        unique=True,
         max_length=9,
         blank=False,
         null=False,
@@ -54,7 +54,7 @@ class Entity(BaseModel):
         help_text=_("Country"),
     )
     person_responsible = models.ForeignKey(
-        User,
+        "users.User",
         verbose_name=_("person responsible"),
         on_delete=models.PROTECT,
         related_name="person_responsible",
@@ -68,3 +68,9 @@ class Entity(BaseModel):
 
     def __str__(self):
         return f"{self.fiscal_name}"
+
+    class Meta:
+        ordering = ["fiscal_name"]
+        unique_together = ("id", "person_responsible")
+        verbose_name = _("entity")
+        verbose_name_plural = _("entities")

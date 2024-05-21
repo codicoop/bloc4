@@ -115,11 +115,11 @@
   <p>Correu electrònic entitat: {{ request.user.entity.email }}</p>
   <p>Nom fiscal entitat: {{ user.entity.fiscal_name }}</p>
   <p>NIF entitat: {{ request.user.entity.nif }}</p>
-  <p>Població entitat: {{ user.entity.town }}</p>
+  <p>Població entitat: {{ user.entity.town.name }}</p>
   <p>Codi postal entitat: {{ request.user.entity.postal_code }}</p>
   <p>Adreça entitat: {{ user.entity.address }}</p>
   <p>País entitat: {{ request.user.entity.country }}</p>
-  <p>Persona responsable entitat: {{ user.entity.person_responsible }}</p>
+  <p>Persona responsable entitat: {{ user.entity.person_responsible.full_name }}</p>
   <p>Resident entitat: {{ request.user.entity.is_resident }}</p>
 
 {% endif %}

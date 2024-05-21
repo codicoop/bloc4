@@ -44,10 +44,9 @@ class UserManager(BaseUserManager):
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     name = flowbite.ModelCharField(_("name"), max_length=50)
     surnames = flowbite.ModelCharField(
-        _("surname"),
+        _("surnames"),
         max_length=50,
         default="",
-        blank=True,
     )
     email = flowbite.ModelEmailField(
         verbose_name=_("email address"),
@@ -56,6 +55,19 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     )
     email_verification_code = models.CharField(default="0000")
     email_verified = models.BooleanField(default=False)
+    entity = models.ForeignKey(
+        "entities.Entity",
+        verbose_name=_("Entity"),
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="entities",
+    )
+    is_janitor = models.BooleanField(
+        null=True,
+        blank=True,
+        default=False,
+    )
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 

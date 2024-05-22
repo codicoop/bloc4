@@ -57,6 +57,8 @@ class Entity(BaseModel):
         "users.User",
         verbose_name=_("person responsible"),
         on_delete=models.PROTECT,
+        null=True,
+        blank=True,
         related_name="person_responsible",
     )
     is_resident = flowbite.ModelBooleanField(

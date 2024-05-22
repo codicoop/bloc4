@@ -1,16 +1,18 @@
 from django.test import TestCase
 
-from apps.entities.tests.factories import EntityFactory
+from apps.entities.models import Entity
 from apps.users.models import User
 
 
 class UserManagerTestCase(TestCase):
     def setUp(self):
+        self.entity = Entity.objects.filter(email="codi@codi.coop").first()
         self.user = User.objects.create_user(
             name="test_name",
             surnames="test_surnames",
             email="test_user@tests.com",
             password="test_password",
+            entity=self.entity,
             is_janitor=True,
         )
         self.superuser = User.objects.create_superuser(
@@ -18,6 +20,7 @@ class UserManagerTestCase(TestCase):
             surnames="test_surnames",
             email="test_superuser@tests.com",
             password="test_password",
+            entity=self.entity,
             is_janitor=True,
             is_staff=True,
             is_superuser=True,
@@ -34,6 +37,16 @@ class UserManagerTestCase(TestCase):
             self.assertEqual(self.user.email, "test_user@tests.com")
             self.assertEqual(self.user.email_verification_code, "0000")
             self.assertFalse(self.user.email_verified)
+            self.assertEqual(self.user.entity.email, "codi@codi.coop")
+            self.assertEqual(self.user.entity.fiscal_name, "Codi Cooperatiu SCCL")
+            self.assertEqual(self.user.entity.nif, "F67151233")
+            self.assertEqual(self.user.entity.town.name, "Barcelona")
+            self.assertEqual(self.user.entity.postal_code, 8004)
+            self.assertEqual(
+                self.user.entity.address, "Carrer de Piquer, núm 27, Sobreatic 2º"
+            )
+            self.assertEqual(self.user.entity.country, "Spain")
+            self.assertTrue(self.user.entity.is_resident)
             self.assertTrue(self.user.is_janitor)
             self.assertTrue(self.user.is_active)
             self.assertFalse(self.user.is_staff)

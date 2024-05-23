@@ -54,12 +54,12 @@ class Strings(Enum):
 
     ADMIN_TITLE = _("Administració del lloc | Lloc administratiu de Django")
     LOGOUT = _("Log out")
-    SIGNUP_TITLE = _("Projecte App | Registrar-se")
-    HOME_TITLE = _("Projecte App | Inici")
-    PROFILE_TITLE = _("Projecte App | Detalls del perfil")
-    REGISTRY_UPDATE_TITLE = _("Projecte App | Registry updated")
-    PASSWORD_CHANGE_TITLE = _("Projecte App | Canvi de contrasenya")
-    EMAIL_VALIDATION_TITLE = _("Projecte App | Validació de correu")
+    SIGNUP_TITLE = _("Bloc IV | Registrar-se")
+    HOME_TITLE = _("Bloc IV | Inici")
+    PROFILE_TITLE = _("Bloc IV | Detalls del perfil")
+    REGISTRY_UPDATE_TITLE = _("Bloc IV | Registry updated")
+    PASSWORD_CHANGE_TITLE = _("Bloc IV | Canvi de contrasenya")
+    EMAIL_VALIDATION_TITLE = _("Bloc IV | Validació de correu")
 
 
 @override_settings(
@@ -278,7 +278,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
             settings.DJANGO_SUPERUSER_PASSWORD,
         )
         self.burger_menu_action()
-        admin_menu = self.selenium.find_element(By.ID, "menu_admin")
+        admin_menu = self.selenium.find_element(By.ID, "id_menu_admin")
         admin_menu.click()
 
         self.logging_url_title_and_assert_title(Strings.ADMIN_TITLE.value)

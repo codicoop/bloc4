@@ -21,8 +21,10 @@ from django.utils import formats, timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from apps.entities.models import Entity
 from apps.users.models import User
 from project.fields import flowbite
+from project.fields.flowbite import FormChoiceField
 from project.helpers import absolute_url
 from project.post_office import send
 
@@ -99,6 +101,14 @@ class UserSignUpForm(UserCreationForm):
             attrs={"autocomplete": "email", "placeholder": _("Email address")}
         ),
     )
+    entity = FormChoiceField(
+        label=_("Entity"),
+        queryset=Entity.objects.all(),
+    )
+    is_janitor = flowbite.FormBooleanField(
+        label=_("I am a Janitor of the selected entity"),
+        widget=forms.CheckboxInput,
+    )
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -108,6 +118,8 @@ class UserSignUpForm(UserCreationForm):
             "password1",
             "password2",
             "email",
+            "entity",
+            "is_janitor",
         )
 
     def __init__(self, *args, **kwargs):
@@ -120,6 +132,7 @@ class UserSignUpForm(UserCreationForm):
         self.fields["accept_conditions"] = flowbite.FormBooleanField(
             label=format_html(label_html), required=True
         )
+        self.fields["is_janitor"].required = False
 
     def get_privacy_policy_url(self):
         return reverse("registration:privacy_policy")
@@ -151,6 +164,10 @@ class ProfileDetailsForm(forms.ModelForm):
             }
         ),
     )
+    is_janitor = flowbite.FormBooleanField(
+        label=_("I am a Janitor at my entity"),
+        widget=forms.CheckboxInput,
+    )
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -158,7 +175,12 @@ class ProfileDetailsForm(forms.ModelForm):
             "name",
             "surnames",
             "email",
+            "is_janitor",
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["is_janitor"].disabled = True
 
 
 class PasswordResetForm(BasePasswordResetForm):

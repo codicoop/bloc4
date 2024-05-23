@@ -302,17 +302,23 @@ class MySeleniumTests(StaticLiveServerTestCase):
         signup_password1 = self.selenium.find_element(By.ID, "id_password1")
         signup_password2 = self.selenium.find_element(By.ID, "id_password2")
         signup_email = self.selenium.find_element(By.ID, "id_email")
+        signup_entity = self.selenium.find_element(By.ID, "id_entity")
+        signup_janitor = self.selenium.find_element(By.ID, "id_is_janitor")
         signup_accept_conditions = self.selenium.find_element(
             By.ID, "id_accept_conditions"
         )
+        signup_submit = self.selenium.find_element(By.ID, "id_submit")
 
         signup_name.send_keys(self.sample_data["first_user"].name)
         signup_surnames.send_keys(self.sample_data["first_user"].surnames)
         signup_password1.send_keys(self.sample_data["first_user"].password)
         signup_password2.send_keys(self.sample_data["first_user"].password)
         signup_email.send_keys(self.sample_data["first_user"].email)
+        signup_entity.send_keys("Codi Cooperatiu SCCL")
+        signup_janitor.click()
         signup_accept_conditions.click()
-        signup_password2.send_keys(Keys.RETURN)
+        signup_submit.click()
+
         self.logging_url_title_and_assert_title(Strings.PROFILE_TITLE.value)
 
     def _verify_email(self):

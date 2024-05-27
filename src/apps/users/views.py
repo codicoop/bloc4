@@ -4,8 +4,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import (
     LoginView as BaseLoginView,
+)
+from django.contrib.auth.views import (
     PasswordChangeView as BasePasswordChangeView,
+)
+from django.contrib.auth.views import (
     PasswordResetConfirmView as BasePasswordResetConfirmView,
+)
+from django.contrib.auth.views import (
     PasswordResetView as BasePasswordResetView,
 )
 from django.core.exceptions import ImproperlyConfigured, ValidationError

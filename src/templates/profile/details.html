@@ -127,11 +127,11 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <tbody>
                 <tr class="">
-                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                  <th scope="row" class="px-2 py-2 border-t border-primary-50 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
                     {% translate "Entity's email" %}
                   </th>
-                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.email }}email@correui.cat
+                  <td class="px-2 py-2 border-b border-t border-gray-200 dark:border-gray-700">
+                    {{ request.user.entity.email }}
                   </td>
                 </tr>
                 <tr class="">
@@ -139,7 +139,7 @@
                     {% translate "Fiscal name" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.fiscal_name }}Codi Cooperatiu SCCL
+                    {{ request.user.entity.fiscal_name }}
                   </td>
                 </tr>
                 <tr class="">
@@ -147,7 +147,7 @@
                     {% translate "Entity's VAT" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.nif }}F67151233
+                    {{ request.user.entity.nif }}
                   </td>
                 </tr>
                 <tr class="">
@@ -155,7 +155,7 @@
                     {% translate "Entity's town" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.town }}Barcelona
+                    {{ request.user.entity.town }}
                   </td>
                 </tr>
                 <tr class="">
@@ -163,7 +163,7 @@
                     {% translate "Entity's postal code" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.postal_code }}08004
+                    {{ request.user.entity.postal_code }}
                   </td>
                 </tr>
                 <tr class="">
@@ -171,7 +171,7 @@
                     {% translate "Entity's address" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.address }}C/de Piquer, 27, SAT 2a
+                    {{ request.user.entity.address }}
                   </td>
                 </tr>
                 <tr class="">
@@ -179,7 +179,7 @@
                     {% translate "Entity's country" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.country }}Espanya
+                    {{ request.user.entity.country }}
                   </td>
                 </tr>
                 <tr class="">
@@ -187,7 +187,7 @@
                     {% translate "Responsible person" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.person_responsible }}Pepeta Jim
+                    {{ request.user.entity.person_responsible }}
                   </td>
                 </tr>
                 <tr class="">
@@ -195,7 +195,7 @@
                     {% translate "Is it resident?" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.is_resident }}Sí
+                    {{ request.user.entity.is_resident }}
                   </td>
                 </tr>
               </tbody>

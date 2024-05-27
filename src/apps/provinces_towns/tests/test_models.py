@@ -1,9 +1,9 @@
 from django.test import TestCase
 
 from apps.provinces_towns.models import (
-    Province,
     AutonomousCommunityChoices,
     County,
+    Province,
     Town,
 )
 

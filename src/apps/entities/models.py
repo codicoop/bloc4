@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from project.models import BaseModel
 from project.fields import flowbite
+from project.models import BaseModel
 
 
 class Entity(BaseModel):

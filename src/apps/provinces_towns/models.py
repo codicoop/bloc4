@@ -25,10 +25,6 @@ class AutonomousCommunityChoices(models.IntegerChoices):
 
 
 class Province(models.Model):
-    class Meta:
-        verbose_name = "província"
-        verbose_name_plural = "provincies"
-
     autonomous_community = models.SmallIntegerField(
         _("Autonomous Community"),
         choices=AutonomousCommunityChoices.choices,
@@ -41,15 +37,15 @@ class Province(models.Model):
         unique=True,
     )
 
+    class Meta:
+        verbose_name = "província"
+        verbose_name_plural = "provincies"
+
     def __str__(self):
         return self.name
 
 
 class County(models.Model):
-    class Meta:
-        verbose_name = "comarca"
-        verbose_name_plural = "comarques"
-
     province = models.ForeignKey(
         Province,
         verbose_name=_("Province"),
@@ -66,18 +62,15 @@ class County(models.Model):
         unique=True,
     )
 
+    class Meta:
+        verbose_name = "comarca"
+        verbose_name_plural = "comarques"
+
     def __str__(self):
         return self.name
 
 
 class Town(models.Model):
-    class Meta:
-        verbose_name = "població"
-        verbose_name_plural = "poblacions"
-        ordering = [
-            "name",
-        ]
-
     county = models.ForeignKey(
         County,
         verbose_name=_("County"),
@@ -93,6 +86,13 @@ class Town(models.Model):
         max_length=255,
         unique=True,
     )
+
+    class Meta:
+        verbose_name = "població"
+        verbose_name_plural = "poblacions"
+        ordering = [
+            "name",
+        ]
 
     def __str__(self):
         return self.name

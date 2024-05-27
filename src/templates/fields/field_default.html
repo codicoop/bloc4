@@ -13,7 +13,7 @@
         {{ field }}
 
         {% if field.label %}
-        <label for="checkbox_unique" class="ms-2 text-sm font-medium
+        <label for="{{ field.auto_id }}" class="ms-2 text-sm font-medium
           {% if 1 == 2 %} text-red-700 dark:text-red-500
           {% else %} text-gray-900 dark:text-gray-300 {% endif %}"
         >

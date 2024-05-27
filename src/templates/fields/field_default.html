@@ -14,7 +14,7 @@
 
         {% if field.label %}
         <label for="{{ field.auto_id }}" class="ms-2 text-sm font-medium
-          {% if 1 == 2 %} text-red-700 dark:text-red-500
+          {% if field.error %} text-red-700 dark:text-red-500
           {% else %} text-gray-900 dark:text-gray-300 {% endif %}"
         >
             {{ field.label }}
@@ -61,13 +61,13 @@
   <div>
     {% if field.legend_tag %}
       <p class="block mb-2 text-sm font-medium
-        {% if 1 == 2 %} text-red-700 dark:text-red-500
+        {% if field.error %} text-red-700 dark:text-red-500
         {% else %} text-gray-900 dark:text-white {% endif %}">
         {{ field.legend_tag }}
       </p>
     {% elif field.label %}
       <label for="{{ field.auto_id }}" class="ms-2 text-sm font-medium
-        {% if 1 == 2 %} text-red-700 dark:text-red-500
+        {% if field.error %} text-red-700 dark:text-red-500
         {% else %} text-gray-900 dark:text-gray-300 {% endif %}">
         {{ field.label }}
       </label>

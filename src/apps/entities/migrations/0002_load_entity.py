@@ -13,7 +13,7 @@ def generate_entity(apps, schema_editor):
     codi_entity.town = town_model.objects.filter(name="Barcelona").first()
     codi_entity.postal_code = "08004"
     codi_entity.address = "Carrer de Piquer, núm 27, Sobreatic 2º"
-    codi_entity.is_resident = True
+    codi_entity.is_resident = False
     codi_entity.save()
 
     # Creation of the Bloc4 entity
@@ -26,7 +26,6 @@ def generate_entity(apps, schema_editor):
     bloc4_entity.address = "Carrer Constitució, 19"
     bloc4_entity.is_resident = True
     bloc4_entity.save()
-
 
     print("\n\tInitial entities created.")
 

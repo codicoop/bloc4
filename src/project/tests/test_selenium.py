@@ -54,12 +54,12 @@ class Strings(Enum):
 
     ADMIN_TITLE = _("Administració del lloc | Lloc administratiu de Django")
     LOGOUT = _("Log out")
-    SIGNUP_TITLE = _("Projecte App | Registrar-se")
-    HOME_TITLE = _("Projecte App | Inici")
-    PROFILE_TITLE = _("Projecte App | Detalls del perfil")
-    REGISTRY_UPDATE_TITLE = _("Projecte App | Registry updated")
-    PASSWORD_CHANGE_TITLE = _("Projecte App | Canvi de contrasenya")
-    EMAIL_VALIDATION_TITLE = _("Projecte App | Validació de correu")
+    SIGNUP_TITLE = _("Bloc IV | Registrar-se")
+    HOME_TITLE = _("Bloc IV | Inici")
+    PROFILE_TITLE = _("Bloc IV | Detalls del perfil")
+    REGISTRY_UPDATE_TITLE = _("Bloc IV | Registry updated")
+    PASSWORD_CHANGE_TITLE = _("Bloc IV | Canvi de contrasenya")
+    EMAIL_VALIDATION_TITLE = _("Bloc IV | Validació de correu")
 
 
 @override_settings(
@@ -278,7 +278,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
             settings.DJANGO_SUPERUSER_PASSWORD,
         )
         self.burger_menu_action()
-        admin_menu = self.selenium.find_element(By.ID, "menu_admin")
+        admin_menu = self.selenium.find_element(By.ID, "id_menu_admin")
         admin_menu.click()
 
         self.logging_url_title_and_assert_title(Strings.ADMIN_TITLE.value)
@@ -302,17 +302,23 @@ class MySeleniumTests(StaticLiveServerTestCase):
         signup_password1 = self.selenium.find_element(By.ID, "id_password1")
         signup_password2 = self.selenium.find_element(By.ID, "id_password2")
         signup_email = self.selenium.find_element(By.ID, "id_email")
+        signup_entity = self.selenium.find_element(By.ID, "id_entity")
+        signup_janitor = self.selenium.find_element(By.ID, "id_is_janitor")
         signup_accept_conditions = self.selenium.find_element(
             By.ID, "id_accept_conditions"
         )
+        signup_submit = self.selenium.find_element(By.ID, "id_submit")
 
         signup_name.send_keys(self.sample_data["first_user"].name)
         signup_surnames.send_keys(self.sample_data["first_user"].surnames)
         signup_password1.send_keys(self.sample_data["first_user"].password)
         signup_password2.send_keys(self.sample_data["first_user"].password)
         signup_email.send_keys(self.sample_data["first_user"].email)
+        signup_entity.send_keys("Codi Cooperatiu SCCL")
+        signup_janitor.click()
         signup_accept_conditions.click()
-        signup_password2.send_keys(Keys.RETURN)
+        signup_submit.click()
+
         self.logging_url_title_and_assert_title(Strings.PROFILE_TITLE.value)
 
     def _verify_email(self):

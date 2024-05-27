@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from apps.entities.models import Entity
 from apps.users.forms import (
     AuthenticationForm,
     EmailVerificationCodeForm,
@@ -65,6 +66,7 @@ class UserChangeFormTest(TestCase):
 
 class UserSignUpFormTest(TestCase):
     def test_form(self):
+        self.entity = Entity.objects.filter(fiscal_name="Codi Cooperatiu SCCL").first()
         self.form = UserSignUpForm(
             data={
                 "name": "test_name",
@@ -72,6 +74,8 @@ class UserSignUpFormTest(TestCase):
                 "password1": "password1",
                 "password2": "password2",
                 "email": "tests@tests.com",
+                "entity": self.entity,
+                "is_janitor": True,
                 "accept_conditions": True,
             }
         )
@@ -83,6 +87,8 @@ class UserSignUpFormTest(TestCase):
                 "password1": "password1",
                 "password2": "password2",
                 "email": "tests@tests.com",
+                "entity": self.entity,
+                "is_janitor": True,
                 "accept_conditions": True,
             },
         )

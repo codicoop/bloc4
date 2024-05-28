@@ -103,22 +103,6 @@
             {% translate "Password change" %}
           </h2>
           <p>{% translate "Here you can change your password." %}</p>
-          {% if not user.email_verified %}
-          <div class="flex items-center p-4 mb-4 bg-red-50 rounded-lg text-sm text-red-700 dark:text-red-500"
-              role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-            <span class="sr-only">Alert</span>
-            <div>
-              <span class="font-bold uppercase">{% translate "Warning!" %}</span>
-              {% translate "Your email is not verified. Before anything else, you must verify it." %}
-              <a class="font-bold hover:underline" href="{% url 'registration:send_verification_code' %}">
-                {% translate "Verify email here." %}
-              </a>
-            </div>
-          </div>
-          {% endif %}
           <a href="{% url 'registration:password_change' %}">
             <button
               class="w-full mt-8 px-5 py-2.5 rounded-lg bg-primary-600 text-white font-bold text-sm text-center cursor-pointer

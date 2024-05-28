@@ -8,12 +8,10 @@ For more information on Django's settings, visit:
 from pathlib import Path
 
 import environ
-import sentry_sdk
 import structlog
 from django.core.management.utils import get_random_secret_key
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env()
 
@@ -424,22 +422,4 @@ structlog.configure(
     ],
     logger_factory=structlog.stdlib.LoggerFactory(),
     cache_logger_on_first_use=True,
-)
-
-
-################################################################################
-#                                Sentry                                        #
-################################################################################
-
-# https://docs.sentry.io/platforms/python/guides/django/
-sentry_sdk.init(
-    dsn=env("SENTRY_DSN", default=""),
-    integrations=[DjangoIntegration()],
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True,
 )

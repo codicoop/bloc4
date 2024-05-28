@@ -58,7 +58,7 @@ ben llarga i t'agrairem que ens informis de la situació.
             id="email_verification",
             translated_templates={
                 "en": {
-                    "subject": "Email verification code for your account at " "{{project_name}}",
+                    "subject": "Email verification code for your account at {{project_name}}",
                     "body": """
     <p>Hello {{user_name}}!</p>
     <p>We're sending you this e-mail because today {{date}} at {{time}}
@@ -74,14 +74,14 @@ ben llarga i t'agrairem que ens informis de la situació.
                         """,
                 },
                 "ca": {
-                    "subject": "Email verification for your account at " "{{project_name}}",
+                    "subject": "Verificació del correu electrònic del teu compte a {{project_name}}",
                     "body": """
     <p>Hola {{user_name}}!</p>
-    <p>Us enviarem aquest correu electrònic perquè avui {{date}} a les {{time}}
+    <p>Us enviem aquest correu electrònic perquè avui {{date}} a les {{time}}
         heu sol·licitat verificar el vostre correu electrònic {{user_email}}
         per a {{absolute.url}}.</p>
     <p>Per a completar aquesta acció, introduïu el codi {{user_code}} fent clic
-        en el següent enllaç <a href="{{email_verification_url}}">{{email_verification_url}}</a>
+        al següent enllaç <a href="{{email_verification_url}}">{{email_verification_url}}</a>
     </p>
     <p>Si no has estat tu qui ho ha demanat, ignora aquest missatge.</p>
                         """,

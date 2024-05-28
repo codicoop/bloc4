@@ -196,7 +196,11 @@
                     {% translate "Responsible person" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.person_responsible }}
+                    {% if request.user.entity.is_resident %}
+                      {{ request.user.entity.person_responsible }}
+                    {% else %}
+                      {% translate "None assigned" %}
+                    {% endif %}
                   </td>
                 </tr>
                 <tr class="">
@@ -204,7 +208,11 @@
                     {% translate "Is it resident?" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.is_resident }}
+                    {% if request.user.entity.is_resident %}
+                      {% translate "Yes" %}
+                    {% else %}
+                      {% translate "No" %}
+                    {% endif %}
                   </td>
                 </tr>
               </tbody>

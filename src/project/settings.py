@@ -203,7 +203,6 @@ LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
     # Beware that "home" only ignores requests when a language is included in the
     # URL. See LOGIN_REQUIRED_IGNORE_PATHS comments above.
     "home",
-    "registration:signup",
     "registration:privacy_policy",
     "registration:login",
     "registration:password_reset",
@@ -426,16 +425,6 @@ structlog.configure(
     logger_factory=structlog.stdlib.LoggerFactory(),
     cache_logger_on_first_use=True,
 )
-
-
-################################################################################
-#                                  Celery                                      #
-################################################################################
-
-# We're using the only instance of Redis, but if we use caching in the future,
-# we might want to set up two Redis servers and this will need to change.
-# https://docs.celeryq.dev/en/stable/userguide/configuration.html#std:setting-broker_url
-CELERY_BROKER_URL = env("REDIS_URL", default=None)
 
 
 ################################################################################

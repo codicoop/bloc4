@@ -106,18 +106,6 @@ class ModelEmailField(models.EmailField):
         return super().formfield(**defaults)
 
 
-class FormChoiceField(forms.ModelChoiceField):
-    def get_bound_field(self, form, field_name):
-        return FlowBiteBoundCharField(form, self, field_name)
-
-
-class ModelChoiceField(models.Choices):
-    def formfield(self, **kwargs):
-        defaults = {"form_class": FormChoiceField}
-        defaults.update(kwargs)
-        return super().formfield(**defaults)
-
-
 class FlowBiteBoundBooleanField(BaseFlowBiteBoundField):
     base_classes = "w-4 h-4 border rounded text-primary-500"
     no_error_classes = (

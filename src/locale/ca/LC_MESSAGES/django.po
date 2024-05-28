@@ -370,10 +370,8 @@ msgid "Sign in to your account"
 msgstr "Inicieu la sessió al vostre compte"
 
 #: templates/registration/login.html:33
-#, fuzzy
-#| msgid "Sign up"
 msgid "Sign in"
-msgstr "Registrar-se"
+msgstr "Iniciar sessió"
 
 #: templates/registration/login.html:38
 #, fuzzy

@@ -52,7 +52,7 @@ class Strings(Enum):
 
     """
 
-    ADMIN_TITLE = _("Administració del lloc | Lloc administratiu de Django")
+    ADMIN_TITLE = _("Site administration | Django site admin")
     LOGOUT = _("Log out")
     HOME_TITLE = _("Bloc IV | Inici")
     PROFILE_TITLE = _("Bloc IV | Detalls del perfil")

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 13:57+0200\n"
+"POT-Creation-Date: 2024-05-28 12:52+0200\n"
 "PO-Revision-Date: 2024-05-15 18:56+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -95,20 +95,20 @@ msgstr ""
 msgid "Melilla"
 msgstr ""
 
-#: apps/provinces_towns/models.py:33
+#: apps/provinces_towns/models.py:29
 msgid "Autonomous Community"
 msgstr "Comunitat Autònoma"
 
-#: apps/provinces_towns/models.py:37 apps/provinces_towns/models.py:62
-#: apps/provinces_towns/models.py:90
+#: apps/provinces_towns/models.py:33 apps/provinces_towns/models.py:58
+#: apps/provinces_towns/models.py:83
 msgid "Name"
 msgstr "Nom"
 
-#: apps/provinces_towns/models.py:55
+#: apps/provinces_towns/models.py:51
 msgid "Province"
 msgstr "Província"
 
-#: apps/provinces_towns/models.py:83
+#: apps/provinces_towns/models.py:76
 msgid "County"
 msgstr "Comarca"
 
@@ -156,14 +156,14 @@ msgstr ""
 msgid "Logo of the business"
 msgstr ""
 
-#: templates/base.html:78 templates/base.html:126 templates/home.html:5
+#: templates/base.html:77 templates/base.html:125 templates/home.html:5
 #: templates/home.html:19 templates/profile/details.html:22
 #: templates/registration/password_change_form.html:23
 #: templates/registration/send_verification_code.html:23
 msgid "Home"
 msgstr "Inici"
 
-#: templates/base.html:83 templates/base.html:162
+#: templates/base.html:82 templates/base.html:150
 #: templates/registration/password_change_form.html:32
 #: templates/registration/send_verification_code.html:32
 #, fuzzy
@@ -171,11 +171,11 @@ msgstr "Inici"
 msgid "Profile"
 msgstr "Detalls del perfil"
 
-#: templates/base.html:89
-msgid "Panell d'administració"
-msgstr ""
+#: templates/base.html:88 templates/base.html:161
+msgid "Administration panel"
+msgstr "Panell d'administració"
 
-#: templates/base.html:96
+#: templates/base.html:95
 msgid "Log out"
 msgstr "Tancar sessió"
 
@@ -184,16 +184,7 @@ msgstr "Tancar sessió"
 msgid "Log in"
 msgstr "Iniciar sessió"
 
-#: templates/base.html:150 templates/base_success.html:6
-#: templates/registration/signup.html:5 templates/registration/signup.html:18
-msgid "Sign up"
-msgstr "Registrar-se"
-
-#: templates/base.html:173
-msgid "Administration panel"
-msgstr "Panell d'administració"
-
-#: templates/base.html:276
+#: templates/base.html:246
 msgid ""
 "We use cookies to optimize your experience and to analyze the web traffic. "
 "We don't sell data to third parties. If you continue navigating, we'll "
@@ -203,17 +194,21 @@ msgstr ""
 "trànsit web. No venem dades a tercers. Si continua navegant, nosaltres entén "
 "que estàs bé amb això."
 
-#: templates/base.html:288
+#: templates/base.html:258
 msgid "Accept"
 msgstr ""
 
-#: templates/base.html:298
+#: templates/base.html:268
 msgid "Deny"
 msgstr "Denega"
 
-#: templates/base_form.html:52 templates/profile/details.html:64
+#: templates/base_form.html:52 templates/profile/details.html:88
 msgid "Save"
 msgstr "Desar"
+
+#: templates/base_success.html:6
+msgid "Sign up"
+msgstr "Registrar-se"
 
 #: templates/base_success.html:29
 #, fuzzy
@@ -243,7 +238,7 @@ msgstr "Si us plau, comproveu els camps marcats en vermell."
 
 #: templates/demo_flowbite.html:51 templates/fields/field_default.html:36
 #: templates/fields/field_default.html:87
-#: templates/fields/field_default.html:140
+#: templates/fields/field_default.html:140 templates/profile/details.html:50
 msgid "Show information"
 msgstr "Mostra la informació"
 
@@ -304,8 +299,10 @@ msgid "Delete the current file."
 msgstr "Suprimeix el fitxer actual."
 
 #: templates/home.html:25
-msgid "Pàgina home"
-msgstr ""
+#, fuzzy
+#| msgid "Home"
+msgid "Home page"
+msgstr "Inici"
 
 #: templates/home_internal.html:5
 #, fuzzy
@@ -322,24 +319,36 @@ msgid "Your profile"
 msgstr "El teu perfil"
 
 #: templates/profile/details.html:33
-msgid "Here you can see and edit all your data."
+#, fuzzy
+#| msgid "Here you can see and edit all your data."
+msgid "Here you can see and edit your data."
 msgstr "Aquí podeu veure i editar totes les vostres dades."
 
-#: templates/profile/details.html:47 templates/profile/details.html:90
+#: templates/profile/details.html:36
+msgid "You are a janitor at BlocIV"
+msgstr ""
+
+#: templates/profile/details.html:54
+msgid ""
+"You can't edit this information, if you want to change it, contact the "
+"administration."
+msgstr ""
+
+#: templates/profile/details.html:71 templates/profile/details.html:114
 msgid "Warning!"
 msgstr "Alert!"
 
-#: templates/profile/details.html:48 templates/profile/details.html:91
+#: templates/profile/details.html:72 templates/profile/details.html:115
 msgid "Your email is not verified. Before anything else, you must verify it."
 msgstr ""
 "El vostre correu electrònic no està verificat. Abans de res, cal verificar-"
 "ho."
 
-#: templates/profile/details.html:50 templates/profile/details.html:93
+#: templates/profile/details.html:74 templates/profile/details.html:117
 msgid "Verify email here."
 msgstr "Verifiqueu el correu electrònic aquí."
 
-#: templates/profile/details.html:79
+#: templates/profile/details.html:103
 #: templates/registration/password_change_form.html:5
 #: templates/registration/password_change_form.html:42
 #, fuzzy
@@ -347,23 +356,71 @@ msgstr "Verifiqueu el correu electrònic aquí."
 msgid "Password change"
 msgstr "Recuperació de contrasenya"
 
-#: templates/profile/details.html:81
+#: templates/profile/details.html:105
 msgid "Here you can change your password."
 msgstr "Aquí podeu canviar la contrasenya."
 
-#: templates/profile/details.html:104
+#: templates/profile/details.html:128
 #, fuzzy
 #| msgid "New password"
 msgid "Change password"
 msgstr "Nova contrasenya"
 
-#: templates/profile/details.html:121
-msgid "Your Entity"
+#: templates/profile/details.html:148
+#, fuzzy
+#| msgid "Your Entity"
+msgid "Your entity"
 msgstr "La teva entitat"
 
-#: templates/profile/details.html:123
-msgid "Here you can see all the information about your entity."
-msgstr "Aquí pots veure tota la informació sobre la teva entitat."
+#: templates/profile/details.html:150
+#, fuzzy
+#| msgid "Here you can see and edit all your data."
+msgid "Here you can view your entity's data."
+msgstr "Aquí podeu veure i editar totes les vostres dades."
+
+#: templates/profile/details.html:156
+#, fuzzy
+#| msgid "Entity Details"
+msgid "Entity's email"
+msgstr "Detalls de l'entitat"
+
+#: templates/profile/details.html:164
+msgid "Fiscal name"
+msgstr ""
+
+#: templates/profile/details.html:172
+#, fuzzy
+#| msgid "Entities"
+msgid "Entity's VAT"
+msgstr "Entitats"
+
+#: templates/profile/details.html:180
+#, fuzzy
+#| msgid "Entities list"
+msgid "Entity's town"
+msgstr "Llista d'entitats"
+
+#: templates/profile/details.html:188
+msgid "Entity's postal code"
+msgstr ""
+
+#: templates/profile/details.html:196
+#, fuzzy
+#| msgid "Entity Details"
+msgid "Entity's address"
+msgstr "Detalls de l'entitat"
+
+#: templates/profile/details.html:204
+msgid "Entity's country"
+msgstr ""
+
+#: templates/profile/details.html:212
+msgid "Responsible person"
+msgstr ""
+
+#: templates/profile/details.html:220
+msgid "Is it resident?"
+msgstr ""
 
 #: templates/registration/login.html:17
 msgid "Sign in to your account"
@@ -378,15 +435,6 @@ msgstr "Iniciar sessió"
 #| msgid "Forgotten your password?"
 msgid "Forgot your password?"
 msgstr "Has oblidat la teva contrassenya?"
-
-#: templates/registration/login.html:41
-msgid "Don’t have an account yet?"
-msgstr "Encara no tens un compte?"
-
-#: templates/registration/login.html:43
-#: templates/registration/login_old.html:80
-msgid "Sign-up"
-msgstr "Registre"
 
 #: templates/registration/login_old.html:15
 msgid "Log-in"
@@ -407,6 +455,10 @@ msgstr "Has oblidat la teva contrassenya?"
 #: templates/registration/login_old.html:77
 msgid "If you are not registered yet:"
 msgstr "Si encara no esteu registrat:"
+
+#: templates/registration/login_old.html:80
+msgid "Sign-up"
+msgstr "Registre"
 
 #: templates/registration/password_change_form.html:50
 #: templates/registration/password_reset_confirm.html:29
@@ -456,10 +508,6 @@ msgstr ""
 "Fent clic al botó s'enviarà un codi de verificació al teu correu electrònic "
 "adreça. Comproveu el vostre correu electrònic per trobar-lo."
 
-#: templates/registration/signup.html:26
-msgid "Create Account"
-msgstr "Crea un compte"
-
 #: templates/registration/user_validation.html:14
 msgid "Go"
 msgstr "Anar"
@@ -468,14 +516,14 @@ msgstr "Anar"
 msgid "Set"
 msgstr "Estableix"
 
-#~ msgid "Entities"
-#~ msgstr "Entitats"
+#~ msgid "Here you can see all the information about your entity."
+#~ msgstr "Aquí pots veure tota la informació sobre la teva entitat."
 
-#~ msgid "Entity Details"
-#~ msgstr "Detalls de l'entitat"
+#~ msgid "Don’t have an account yet?"
+#~ msgstr "Encara no tens un compte?"
 
-#~ msgid "Entities list"
-#~ msgstr "Llista d'entitats"
+#~ msgid "Create Account"
+#~ msgstr "Crea un compte"
 
 #~ msgid "Nothing to see here."
 #~ msgstr "Res a veure aquí."

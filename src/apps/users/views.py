@@ -109,9 +109,8 @@ class PasswordResetView(AnonymousRequiredMixin, BasePasswordResetView):
         if len(user_list) == 0 or not user_list[0].is_active:
             error = ValidationError(
                 _(
-                    "El correu indicat no correspon a cap compte "
-                    "registrat, si us plau verifica que l'hagis "
-                    "escrit correctament."
+                    "This email address does not match any registered account, "
+                    "please check the spelling."
                 ),
                 code="inexistent_email",
             )

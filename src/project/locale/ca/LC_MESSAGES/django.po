@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 13:57+0200\n"
+"POT-Creation-Date: 2024-05-28 12:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,52 +30,36 @@ msgstr "Anglès"
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:375
+#: project/settings.py:373
 msgid "Name of the website."
 msgstr ""
 
-#: project/tests/test_selenium.py:57
-msgid "Administration panel"
+#: project/tests/test_selenium.py:55
+msgid "Site administration | Django site admin"
 msgstr ""
 
-#: project/tests/test_selenium.py:58
-msgid "Administració del lloc | Lloc administratiu de Django"
-msgstr ""
-
-#: project/tests/test_selenium.py:59
+#: project/tests/test_selenium.py:56
 msgid "Log out"
 msgstr ""
 
+#: project/tests/test_selenium.py:57
+msgid "Bloc IV | Inici"
+msgstr ""
+
+#: project/tests/test_selenium.py:58
+msgid "Bloc IV | Detalls del perfil"
+msgstr ""
+
+#: project/tests/test_selenium.py:59
+msgid "Bloc IV | Registry updated"
+msgstr ""
+
 #: project/tests/test_selenium.py:60
-msgid "Projecte App | Registrar-se"
+msgid "Bloc IV | Canvi de contrasenya"
 msgstr ""
 
 #: project/tests/test_selenium.py:61
-msgid "Projecte App | Inici"
-msgstr ""
-
-#: project/tests/test_selenium.py:62
-msgid "Projecte App | Detalls del perfil"
-msgstr ""
-
-#: project/tests/test_selenium.py:63
-msgid "Projecte App | Registry updated"
-msgstr ""
-
-#: project/tests/test_selenium.py:64
-msgid "Projecte App | Canvi de contrasenya"
-msgstr ""
-
-#: project/tests/test_selenium.py:65
-msgid "Projecte App | Mail validation"
-msgstr ""
-
-#: project/tests/test_selenium.py:66
-msgid "Projecte App | Entities"
-msgstr ""
-
-#: project/tests/test_selenium.py:67
-msgid "Projecte App | Entity Details"
+msgid "Bloc IV | Validació de correu"
 msgstr ""
 
 #: project/urls.py:29

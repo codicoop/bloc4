@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 13:57+0200\n"
+"POT-Creation-Date: 2024-05-28 12:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,72 +18,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/users/forms.py:32 apps/users/forms.py:96 apps/users/forms.py:145
-#: apps/users/forms.py:166
+#: apps/users/forms.py:31 apps/users/forms.py:87 apps/users/forms.py:108
 msgid "Email"
 msgstr ""
 
-#: apps/users/forms.py:37
+#: apps/users/forms.py:36
 msgid "Email adress"
 msgstr ""
 
-#: apps/users/forms.py:42 apps/users/forms.py:43 apps/users/forms.py:88
-#: apps/users/forms.py:89
+#: apps/users/forms.py:41 apps/users/forms.py:42
 msgid "Password"
 msgstr ""
 
-#: apps/users/forms.py:46
+#: apps/users/forms.py:45
 msgid "Remember me"
 msgstr ""
 
-#: apps/users/forms.py:56
+#: apps/users/forms.py:55
 msgid "Change password"
 msgstr ""
 
-#: apps/users/forms.py:58
+#: apps/users/forms.py:57
 msgid ""
 "The current password is not displayed for security reasons. Use this field "
 "and save the changes to set a new password. While writing the new password "
 "will be visible to make it easier for you to copy and send it to the user."
 msgstr ""
 
-#: apps/users/forms.py:80 apps/users/forms.py:81 apps/users/forms.py:137
-#: apps/users/forms.py:138
+#: apps/users/forms.py:79 apps/users/forms.py:80
 msgid "Name"
 msgstr ""
 
-#: apps/users/forms.py:84 apps/users/forms.py:85 apps/users/forms.py:141
-#: apps/users/forms.py:142
+#: apps/users/forms.py:83 apps/users/forms.py:84
 msgid "Surnames"
 msgstr ""
 
-#: apps/users/forms.py:92 apps/users/forms.py:93
-msgid "Password confirmation"
-msgstr ""
-
-#: apps/users/forms.py:99 apps/users/forms.py:150 apps/users/forms.py:172
+#: apps/users/forms.py:92 apps/users/forms.py:114
 msgid "Email address"
 msgstr ""
 
-#: apps/users/forms.py:119
-msgid "I have read and agree with the {}"
-msgstr ""
-
-#: apps/users/forms.py:222 apps/users/forms.py:224 apps/users/forms.py:245
-#: apps/users/forms.py:246
+#: apps/users/forms.py:164 apps/users/forms.py:166 apps/users/forms.py:187
+#: apps/users/forms.py:188
 msgid "New password"
 msgstr ""
 
-#: apps/users/forms.py:228 apps/users/forms.py:230 apps/users/forms.py:250
-#: apps/users/forms.py:252
+#: apps/users/forms.py:170 apps/users/forms.py:172 apps/users/forms.py:192
+#: apps/users/forms.py:194
 msgid "New password confirmation"
 msgstr ""
 
-#: apps/users/forms.py:239 apps/users/forms.py:242
+#: apps/users/forms.py:181 apps/users/forms.py:184
 msgid "Old password"
 msgstr ""
 
-#: apps/users/forms.py:259 apps/users/forms.py:261
+#: apps/users/forms.py:201 apps/users/forms.py:203
 msgid "Verification code"
 msgstr ""
 
@@ -95,143 +83,143 @@ msgstr ""
 msgid "Superusers must have a password"
 msgstr ""
 
-#: apps/users/models.py:45 apps/users/models.py:73
+#: apps/users/models.py:45 apps/users/models.py:85
 msgid "name"
 msgstr ""
 
 #: apps/users/models.py:47
-msgid "surname"
+msgid "surnames"
 msgstr ""
 
-#: apps/users/models.py:53
+#: apps/users/models.py:52
 msgid "email address"
 msgstr ""
 
-#: apps/users/models.py:82
+#: apps/users/models.py:60
+msgid "Entity"
+msgstr ""
+
+#: apps/users/models.py:94
 msgid "user"
 msgstr ""
 
-#: apps/users/models.py:83
+#: apps/users/models.py:95
 msgid "users"
 msgstr ""
 
-#: apps/users/urls.py:26
-msgid "sign-up/"
-msgstr ""
-
-#: apps/users/urls.py:27
+#: apps/users/urls.py:25
 msgid "sign-in/"
 msgstr ""
 
-#: apps/users/urls.py:29
+#: apps/users/urls.py:27
 msgid "log-out/"
 msgstr ""
 
-#: apps/users/urls.py:36
+#: apps/users/urls.py:34
 msgid "password-reset/"
 msgstr ""
 
-#: apps/users/urls.py:41
+#: apps/users/urls.py:39
 msgid "password-reset/<uidb64>/<token>/"
 msgstr ""
 
-#: apps/users/urls.py:46
+#: apps/users/urls.py:44
 msgid "password-reset/invalid-link/"
 msgstr ""
 
-#: apps/users/urls.py:51
+#: apps/users/urls.py:49
 msgid "password-reset/done/"
 msgstr ""
 
-#: apps/users/urls.py:56
+#: apps/users/urls.py:54
 msgid "password-reset/complete/"
 msgstr ""
 
-#: apps/users/urls.py:61
+#: apps/users/urls.py:59
 msgid "password-change/"
 msgstr ""
 
-#: apps/users/urls.py:66
+#: apps/users/urls.py:64
 msgid "password-change/done/"
 msgstr ""
 
-#: apps/users/urls.py:72
+#: apps/users/urls.py:70
 msgid "profile/modified/"
 msgstr ""
 
-#: apps/users/urls.py:79
+#: apps/users/urls.py:77
 msgid "profile/details/"
 msgstr ""
 
-#: apps/users/urls.py:84
+#: apps/users/urls.py:82
 msgid "user-validation/"
 msgstr ""
 
-#: apps/users/urls.py:89
+#: apps/users/urls.py:87
 msgid "send-verification-code/"
 msgstr ""
 
-#: apps/users/urls.py:94
+#: apps/users/urls.py:92
 msgid "email-verification-complete/"
 msgstr ""
 
-#: apps/users/urls.py:99
+#: apps/users/urls.py:97
 msgid "privacy-policy/"
 msgstr ""
 
-#: apps/users/views.py:117 apps/users/views.py:219
+#: apps/users/views.py:92 apps/users/views.py:193
 msgid "Done!"
 msgstr ""
 
-#: apps/users/views.py:118
+#: apps/users/views.py:93
 msgid "Account verified"
 msgstr ""
 
-#: apps/users/views.py:119
+#: apps/users/views.py:94
 msgid "Account has been successfully verified."
 msgstr ""
 
-#: apps/users/views.py:121 apps/users/views.py:186 apps/users/views.py:199
-#: apps/users/views.py:223
+#: apps/users/views.py:96 apps/users/views.py:160 apps/users/views.py:173
+#: apps/users/views.py:197
 msgid "Go back"
 msgstr ""
 
-#: apps/users/views.py:137
+#: apps/users/views.py:112
 msgid ""
-"El correu indicat no correspon a cap compte registrat, si us plau verifica "
-"que l'hagis escrit correctament."
+"This email address does not match any registered account, please check the "
+"spelling."
 msgstr ""
 
-#: apps/users/views.py:181 apps/users/views.py:182 apps/users/views.py:183
+#: apps/users/views.py:155 apps/users/views.py:156 apps/users/views.py:157
 msgid "Invalid link"
 msgstr ""
 
-#: apps/users/views.py:184
+#: apps/users/views.py:158
 msgid "The link is invalid. Please try again."
 msgstr ""
 
-#: apps/users/views.py:191 apps/users/views.py:192
+#: apps/users/views.py:165 apps/users/views.py:166
 msgid "Password reset sent"
 msgstr ""
 
-#: apps/users/views.py:194
+#: apps/users/views.py:168
 msgid ""
 "An email has been sent to your inbox. Please check it and follow the "
 "instructions to change your password."
 msgstr ""
 
-#: apps/users/views.py:204 apps/users/views.py:205 apps/users/views.py:206
+#: apps/users/views.py:178 apps/users/views.py:179 apps/users/views.py:180
 msgid "Password reset complete"
 msgstr ""
 
-#: apps/users/views.py:208
+#: apps/users/views.py:182
 msgid "Login"
 msgstr ""
 
-#: apps/users/views.py:220
+#: apps/users/views.py:194
 msgid "Password change"
 msgstr ""
 
-#: apps/users/views.py:221
+#: apps/users/views.py:195
 msgid "Password change successful."
 msgstr ""

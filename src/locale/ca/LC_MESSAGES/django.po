@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-28 12:52+0200\n"
-"PO-Revision-Date: 2024-05-28 13:30+0200\n"
+"PO-Revision-Date: 2024-05-28 14:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -125,7 +125,7 @@ msgid ""
 "The page you were trying to access does not exist. Please check the spelling "
 "or go back to the beginning."
 msgstr ""
-"La pàgina a la que estaves intentant accedir no existeix. Comproveu "
+"La pàgina a la que estaves intentant accedir no existeix. Comprova "
 "l'ortografia o torna l'inici."
 
 #: templates/500.html:16
@@ -149,7 +149,7 @@ msgid ""
 "The application is currently under maintenance, please try again in few "
 "minutes."
 msgstr ""
-"L'aplicació està actualment en manteniment, torneu-ho a provar en pocs "
+"L'aplicació està actualment en manteniment, torna-ho a provar d'aquí uns "
 "minuts."
 
 #: templates/base.html:39
@@ -230,7 +230,7 @@ msgstr "Hi ha un error en el formulari."
 
 #: templates/components/form_errors.html:41
 msgid "Please, check the fields marked in red."
-msgstr "Si us plau, comproveu els camps marcats en vermell."
+msgstr "Si us plau, comprova els camps marcats en vermell."
 
 #: templates/demo_flowbite.html:51 templates/fields/field_default.html:36
 #: templates/fields/field_default.html:87
@@ -248,7 +248,7 @@ msgstr "Hi ha un error en el formulari!"
 
 #: templates/demo_flowbite.html:350
 msgid "Please check the fields marked in red"
-msgstr "Comproveu els camps marcats en vermell"
+msgstr "Comprova els camps marcats en vermell"
 
 #: templates/demo_flowbite.html:362
 msgid "Close error alert"
@@ -287,7 +287,7 @@ msgid ""
 "Select a new file. Beware that if there was a file already uploaded, it will "
 "be erased."
 msgstr ""
-"Seleccioni un fitxer nou. Tingueu en compte que si ja hi havia un fitxer "
+"Selecciona un fitxer nou. Tingues en compte que si ja hi havia un fitxer "
 "pujat, s'esborrarà."
 
 #: templates/demo_flowbite.html:633
@@ -312,7 +312,7 @@ msgstr "El teu perfil"
 
 #: templates/profile/details.html:33
 msgid "Here you can see and edit your data."
-msgstr "Aquí podeu veure i editar les vostres dades."
+msgstr "Aquí pots veure i editar les teves dades."
 
 #: templates/profile/details.html:36
 msgid "You are a janitor at BlocIV"
@@ -333,8 +333,8 @@ msgstr "Alerta!"
 #: templates/profile/details.html:72 templates/profile/details.html:115
 msgid "Your email is not verified. Before anything else, you must verify it."
 msgstr ""
-"El vostre correu electrònic no està verificat. Abans de res, cal verificar-"
-"lo."
+"El teu correu electrònic no està verificat. Per poder accedir a la resta "
+"d'apartats, primer cal verificar-lo."
 
 #: templates/profile/details.html:74 templates/profile/details.html:117
 msgid "Verify email here."
@@ -416,7 +416,7 @@ msgstr "Iniciar Sessió"
 
 #: templates/registration/login_old.html:21
 msgid "Enter your account details to authenticate."
-msgstr "Introduïu les dades del vostre compte per autenticar-vos."
+msgstr "Introdueix les dades del vostre compte per autenticar-te."
 
 #: templates/registration/login_old.html:66
 msgid "Go in"
@@ -428,7 +428,7 @@ msgstr "Has oblidat la teva contrassenya?"
 
 #: templates/registration/login_old.html:77
 msgid "If you are not registered yet:"
-msgstr "Si encara no esteu registrat:"
+msgstr "Si encara no estàs registrat:"
 
 #: templates/registration/login_old.html:80
 msgid "Sign-up"
@@ -458,7 +458,7 @@ msgid ""
 "your password."
 msgstr ""
 "Introdueix el teu correu electrònic. S'enviarà un enllaç a aquesta adreça "
-"perquè pugueu restablir la teva contrasenya."
+"perquè puguis restablir la teva contrasenya."
 
 #: templates/registration/privacy_policy.html:6
 #: templates/registration/privacy_policy.html:18

@@ -54,11 +54,11 @@ class Strings(Enum):
 
     ADMIN_TITLE = _("Site administration | Django site admin")
     LOGOUT = _("Log out")
-    HOME_TITLE = _("Bloc IV | Inici")
-    PROFILE_TITLE = _("Bloc IV | Detalls del perfil")
-    REGISTRY_UPDATE_TITLE = _("Bloc IV | Registry updated")
-    PASSWORD_CHANGE_TITLE = _("Bloc IV | Canvi de contrasenya")
-    EMAIL_VALIDATION_TITLE = _("Bloc IV | Validació de correu")
+    HOME_TITLE = "Bloc IV | Inici"
+    PROFILE_TITLE = "Bloc IV | Detalls del perfil"
+    REGISTRY_UPDATE_TITLE = "Bloc IV | Registry updated"
+    PASSWORD_CHANGE_TITLE = "Bloc IV | Canvi de contrasenya"
+    EMAIL_VALIDATION_TITLE = "Bloc IV | Validació de correu"
 
 
 @override_settings(

@@ -6,21 +6,22 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-28 12:52+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2024-05-28 12:56+0200\n"
+"PO-Revision-Date: 2024-05-28 12:57+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.3\n"
 
 #: project/models.py:30
 msgid "created by"
-msgstr ""
+msgstr "creat per"
 
 #: project/settings.py:67
 msgid "English"
@@ -31,57 +32,37 @@ msgid "Catalan"
 msgstr "Català"
 
 #: project/settings.py:373
-msgid "Name of the website."
-msgstr ""
+msgid "Project name"
+msgstr "Nom del projecte"
 
 #: project/tests/test_selenium.py:55
 msgid "Site administration | Django site admin"
-msgstr ""
+msgstr "Administració del lloc | Lloc administratiu de Django"
 
 #: project/tests/test_selenium.py:56
 msgid "Log out"
-msgstr ""
-
-#: project/tests/test_selenium.py:57
-msgid "Bloc IV | Inici"
-msgstr ""
-
-#: project/tests/test_selenium.py:58
-msgid "Bloc IV | Detalls del perfil"
-msgstr ""
-
-#: project/tests/test_selenium.py:59
-msgid "Bloc IV | Registry updated"
-msgstr ""
-
-#: project/tests/test_selenium.py:60
-msgid "Bloc IV | Canvi de contrasenya"
-msgstr ""
-
-#: project/tests/test_selenium.py:61
-msgid "Bloc IV | Validació de correu"
-msgstr ""
+msgstr "Tancar sessió"
 
 #: project/urls.py:29
 msgid "registration/"
-msgstr ""
+msgstr "registre/"
 
 #: project/views.py:37
 msgid "Back"
-msgstr ""
+msgstr "Enrere"
 
 #: project/views.py:38
 msgid "Registry updated"
-msgstr ""
+msgstr "Registre actualitzat"
 
 #: project/views.py:39
 msgid "Registry successfully updated"
-msgstr ""
+msgstr "Registre correctament actualitzat"
 
 #: project/views.py:40
 msgid "Done!"
-msgstr ""
+msgstr "Fet!"
 
 #: project/views.py:41
 msgid "The registry was updated correctly."
-msgstr ""
+msgstr "El registre ha estat actualitzat correctament."

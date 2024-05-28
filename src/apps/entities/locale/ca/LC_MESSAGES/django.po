@@ -6,17 +6,18 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-28 12:32+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2024-05-28 12:58+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.3\n"
 
 #: apps/entities/models.py:14
 msgid "Email address"
@@ -28,7 +29,7 @@ msgstr "Nom fiscal"
 
 #: apps/entities/models.py:27
 msgid "NIF"
-msgstr ""
+msgstr "NIF"
 
 #: apps/entities/models.py:28
 msgid "Tax identification number"
@@ -39,8 +40,6 @@ msgid "Town"
 msgstr "Població"
 
 #: apps/entities/models.py:41
-#, fuzzy
-#| msgid "Postal code"
 msgid "Postal Code"
 msgstr "Codi postal"
 
@@ -66,11 +65,11 @@ msgstr "L'entitat disposa de locals permanents a Bloc4"
 
 #: apps/entities/models.py:77
 msgid "entity"
-msgstr ""
+msgstr "entitat"
 
 #: apps/entities/models.py:78
 msgid "entities"
-msgstr ""
+msgstr "entitats"
 
 #~ msgid "Towm"
 #~ msgstr "Població"

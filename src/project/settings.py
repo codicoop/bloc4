@@ -370,7 +370,7 @@ DJANGO_SUPERUSER_PASSWORD = env("DJANGO_SUPERUSER_PASSWORD", default=None)
 # https://django-constance.readthedocs.io/en/latest/#configuration
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 DEFAULT_PROJECT_NAME = env.str("DEFAULT_PROJECT_NAME", default="")
-CONSTANCE_CONFIG = {"PROJECT_NAME": (DEFAULT_PROJECT_NAME, _("Name of the website."))}
+CONSTANCE_CONFIG = {"PROJECT_NAME": (DEFAULT_PROJECT_NAME, _("Project name"))}
 
 
 ################################################################################

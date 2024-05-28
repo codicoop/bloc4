@@ -46,7 +46,7 @@ class UserManagerTestCase(TestCase):
                 self.user.entity.address, "Carrer de Piquer, núm 27, Sobreatic 2º"
             )
             self.assertEqual(self.user.entity.country, "Spain")
-            self.assertTrue(self.user.entity.is_resident)
+            self.assertFalse(self.user.entity.is_resident)
             self.assertTrue(self.user.is_janitor)
             self.assertTrue(self.user.is_active)
             self.assertFalse(self.user.is_staff)

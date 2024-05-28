@@ -1,13 +1,11 @@
 from django.test import TestCase
 
-from apps.entities.models import Entity
 from apps.users.forms import (
     AuthenticationForm,
     EmailVerificationCodeForm,
     PasswordResetForm,
     ProfileDetailsForm,
     UserChangeForm,
-    UserSignUpForm,
 )
 from apps.users.models import User
 
@@ -61,36 +59,6 @@ class UserChangeFormTest(TestCase):
         self.assertNotEquals(
             self.old_user_password,
             self.user.password,
-        )
-
-
-class UserSignUpFormTest(TestCase):
-    def test_form(self):
-        self.entity = Entity.objects.filter(fiscal_name="Codi Cooperatiu SCCL").first()
-        self.form = UserSignUpForm(
-            data={
-                "name": "test_name",
-                "surnames": "test_surnames",
-                "password1": "password1",
-                "password2": "password2",
-                "email": "tests@tests.com",
-                "entity": self.entity,
-                "is_janitor": True,
-                "accept_conditions": True,
-            }
-        )
-        self.assertEqual(
-            self.form.data,
-            {
-                "name": "test_name",
-                "surnames": "test_surnames",
-                "password1": "password1",
-                "password2": "password2",
-                "email": "tests@tests.com",
-                "entity": self.entity,
-                "is_janitor": True,
-                "accept_conditions": True,
-            },
         )
 
 

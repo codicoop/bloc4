@@ -36,6 +36,10 @@
 {% block form_fields %}
   {{ form }}
 
+  <!-- TODO Layout this field value
+  {{ request.user.is_janitor }}
+  -->
+
   {% if not user.email_verified %}
   <div class="flex items-center p-4 mb-4 bg-red-50 rounded-lg text-sm text-red-700 dark:text-red-500"
       role="alert">

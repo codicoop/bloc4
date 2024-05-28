@@ -54,7 +54,6 @@ class Strings(Enum):
 
     ADMIN_TITLE = _("Administració del lloc | Lloc administratiu de Django")
     LOGOUT = _("Log out")
-    SIGNUP_TITLE = _("Bloc IV | Registrar-se")
     HOME_TITLE = _("Bloc IV | Inici")
     PROFILE_TITLE = _("Bloc IV | Detalls del perfil")
     REGISTRY_UPDATE_TITLE = _("Bloc IV | Registry updated")
@@ -126,6 +125,12 @@ class MySeleniumTests(StaticLiveServerTestCase):
                 email_verification_code="1234",
             ),
         }
+        cls.user = User.objects.create_user(
+            name=cls.sample_data["first_user"].name,
+            surnames=cls.sample_data["first_user"].surnames,
+            email=cls.sample_data["first_user"].email,
+            password=cls.sample_data["first_user"].password,
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -221,11 +226,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self._admin_login()
         logging.info("Test Login finished.")
 
-        # Crea un nou usuari.
-        # Verifica que al menú de l'app apareix el botó per crear un usuari new.
-        self._signup()
-        logging.info("Test Signup finished.")
-
+        # Verifica el correu de l'usuari autenticat
         self._verify_email()
         logging.info("Test Verify email finished.")
 
@@ -284,44 +285,30 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self.logging_url_title_and_assert_title(Strings.ADMIN_TITLE.value)
         logging.info("Logged in to admin with initial superuser.")
 
-    def _signup(self):
+    def _verify_email(self):
         # Log out to return to the home page
         admin_menu = self.select_element_by_text(Strings.LOGOUT.value)
         admin_menu.click()
 
-        # Open the entities menu to select the Sign Up option.
+        # Open the menu to select the Login option.
         self.burger_menu_action()
 
-        signup_menu_option = self.selenium.find_element(By.ID, "menu_signup")
+        signup_menu_option = self.selenium.find_element(By.ID, "menu_login")
         signup_menu_option.click()
 
-        self.logging_url_title_and_assert_title(Strings.SIGNUP_TITLE.value)
+        email = self.selenium.find_element(By.ID, "id_username")
+        password = self.selenium.find_element(By.ID, "id_password")
+        email.send_keys(self.sample_data["first_user"].email)
+        password.send_keys(self.sample_data["first_user"].password)
+        password.send_keys(Keys.RETURN)
 
-        signup_name = self.selenium.find_element(By.ID, "id_name")
-        signup_surnames = self.selenium.find_element(By.ID, "id_surnames")
-        signup_password1 = self.selenium.find_element(By.ID, "id_password1")
-        signup_password2 = self.selenium.find_element(By.ID, "id_password2")
-        signup_email = self.selenium.find_element(By.ID, "id_email")
-        signup_entity = self.selenium.find_element(By.ID, "id_entity")
-        signup_janitor = self.selenium.find_element(By.ID, "id_is_janitor")
-        signup_accept_conditions = self.selenium.find_element(
-            By.ID, "id_accept_conditions"
-        )
-        signup_submit = self.selenium.find_element(By.ID, "id_submit")
+        # Open the menu to select the Profile option.
+        self.burger_menu_action()
 
-        signup_name.send_keys(self.sample_data["first_user"].name)
-        signup_surnames.send_keys(self.sample_data["first_user"].surnames)
-        signup_password1.send_keys(self.sample_data["first_user"].password)
-        signup_password2.send_keys(self.sample_data["first_user"].password)
-        signup_email.send_keys(self.sample_data["first_user"].email)
-        signup_entity.send_keys("Codi Cooperatiu SCCL")
-        signup_janitor.click()
-        signup_accept_conditions.click()
-        signup_submit.click()
+        signup_menu_option = self.selenium.find_element(By.ID, "menu_profile")
+        signup_menu_option.click()
 
         self.logging_url_title_and_assert_title(Strings.PROFILE_TITLE.value)
-
-    def _verify_email(self):
         # Verify email
         button_alert = self.selenium.find_element(By.ID, "id_verify_email")
         button_alert.click()
@@ -365,7 +352,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
         update_surnames.clear()
         update_name.send_keys("Andrews")
         update_surnames.send_keys("McDolls")
-
         update_surnames.send_keys(Keys.RETURN)
 
         self.logging_url_title_and_assert_title(Strings.REGISTRY_UPDATE_TITLE.value)

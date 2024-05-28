@@ -18,13 +18,10 @@ from django.contrib.auth.forms import (
 )
 from django.urls import reverse
 from django.utils import formats, timezone
-from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from apps.entities.models import Entity
 from apps.users.models import User
 from project.fields import flowbite
-from project.fields.flowbite import FormChoiceField
 from project.helpers import absolute_url
 from project.post_office import send
 
@@ -77,74 +74,6 @@ class UserChangeForm(forms.ModelForm):
         return instance
 
 
-class UserSignUpForm(UserCreationForm):
-    name = flowbite.FormCharField(
-        label=_("Name"),
-        widget=forms.TextInput(attrs={"autofocus": True, "placeholder": _("Name")}),
-    )
-    surnames = flowbite.FormCharField(
-        label=_("Surnames"),
-        widget=forms.TextInput(attrs={"placeholder": _("Surnames")}),
-    )
-    password1 = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(attrs={"placeholder": _("Password")}),
-        label=_("Password"),
-    )
-    password2 = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(attrs={"placeholder": _("Password confirmation")}),
-        label=_("Password confirmation"),
-    )
-    email = flowbite.FormEmailField(
-        label=_("Email"),
-        max_length=254,
-        widget=forms.EmailInput(
-            attrs={"autocomplete": "email", "placeholder": _("Email address")}
-        ),
-    )
-    entity = FormChoiceField(
-        label=_("Entity"),
-        queryset=Entity.objects.all(),
-    )
-    is_janitor = flowbite.FormBooleanField(
-        label=_("I am a Janitor of the selected entity"),
-        widget=forms.CheckboxInput,
-    )
-
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = (
-            "name",
-            "surnames",
-            "password1",
-            "password2",
-            "email",
-            "entity",
-            "is_janitor",
-        )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        privacy_policy_url = self.get_privacy_policy_url()
-        privacy_policy_link = '<a href="{}" class="text-primary-500 font-bold hover:underline" target="_blank">privacy policy</a>'.format(  # noqa: E501
-            privacy_policy_url
-        )
-        label_html = _("I have read and agree with the {}").format(privacy_policy_link)
-        self.fields["accept_conditions"] = flowbite.FormBooleanField(
-            label=format_html(label_html), required=True
-        )
-        self.fields["is_janitor"].required = False
-
-    def get_privacy_policy_url(self):
-        return reverse("registration:privacy_policy")
-
-    def save(self, commit=True):
-        obj = super().save(commit)
-        obj.set_boolean_datetime(
-            "privacy_policy_accepted", self.cleaned_data["accept_conditions"]
-        )
-        return obj
-
-
 class ProfileDetailsForm(forms.ModelForm):
     name = flowbite.FormCharField(
         label=_("Name"),
@@ -164,10 +93,6 @@ class ProfileDetailsForm(forms.ModelForm):
             }
         ),
     )
-    is_janitor = flowbite.FormBooleanField(
-        label=_("I am a Janitor at my entity"),
-        widget=forms.CheckboxInput,
-    )
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -175,12 +100,7 @@ class ProfileDetailsForm(forms.ModelForm):
             "name",
             "surnames",
             "email",
-            "is_janitor",
         )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["is_janitor"].disabled = True
 
 
 class PasswordResetForm(BasePasswordResetForm):

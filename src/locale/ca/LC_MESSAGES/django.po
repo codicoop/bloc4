@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-28 12:52+0200\n"
-"PO-Revision-Date: 2024-05-28 14:37+0200\n"
+"POT-Creation-Date: 2024-05-28 14:38+0200\n"
+"PO-Revision-Date: 2024-05-28 14:40+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -155,6 +155,10 @@ msgstr ""
 #: templates/base.html:39
 msgid "Logo of the business"
 msgstr "Logotip de l'empresa"
+
+#: templates/base.html:69
+msgid "Unverified email"
+msgstr "E-mail pendent de verificar"
 
 #: templates/base.html:77 templates/base.html:125 templates/home.html:5
 #: templates/home.html:19 templates/profile/details.html:22
@@ -363,32 +367,32 @@ msgid "Here you can view your entity's data."
 msgstr "Aquí podeu veure les dades de la teva entitat."
 
 #: templates/profile/details.html:156
-msgid "Entity's email"
-msgstr "Correu electrònic de l'entitat"
+msgid "Email"
+msgstr "Correu electrònic"
 
 #: templates/profile/details.html:164
 msgid "Fiscal name"
 msgstr "Nom fiscal"
 
 #: templates/profile/details.html:172
-msgid "Entity's VAT"
-msgstr "NIF de l'entitat"
+msgid "VAT"
+msgstr "NIF"
 
 #: templates/profile/details.html:180
-msgid "Entity's town"
-msgstr "Municipi de l'entitat"
+msgid "Town"
+msgstr "Municipi"
 
 #: templates/profile/details.html:188
-msgid "Entity's postal code"
-msgstr "Codi postal de l'entitat"
+msgid "Postal code"
+msgstr "Codi postal"
 
 #: templates/profile/details.html:196
-msgid "Entity's address"
-msgstr "Adreça de l'entitat"
+msgid "Address"
+msgstr "Adreça"
 
 #: templates/profile/details.html:204
-msgid "Entity's country"
-msgstr "País de l'entitat"
+msgid "Country"
+msgstr "Comarca"
 
 #: templates/profile/details.html:212
 msgid "Responsible person"
@@ -489,6 +493,21 @@ msgstr "Anar"
 #: templates/registration/user_validation_confirm.html:27
 msgid "Set"
 msgstr "Estableix"
+
+#~ msgid "Entity's email"
+#~ msgstr "Correu electrònic de l'entitat"
+
+#~ msgid "Entity's VAT"
+#~ msgstr "NIF de l'entitat"
+
+#~ msgid "Entity's town"
+#~ msgstr "Municipi de l'entitat"
+
+#~ msgid "Entity's address"
+#~ msgstr "Adreça de l'entitat"
+
+#~ msgid "Entity's country"
+#~ msgstr "País de l'entitat"
 
 #~ msgid "Here you can see all the information about your entity."
 #~ msgstr "Aquí pots veure tota la informació sobre la teva entitat."

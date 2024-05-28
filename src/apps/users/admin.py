@@ -87,8 +87,10 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
                     "is_active",
                     "is_superuser",
                     "email_verified",
-                    "roles_explanation_field",
-                    "groups",
+                    # Hiding these fields until we have permission groups and
+                    # we actually need to add the explanation:
+                    # "roles_explanation_field",
+                    # "groups",
                 ),
             },
         ),

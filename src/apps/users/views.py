@@ -1,6 +1,5 @@
 from itertools import islice
 
-from constance import config
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import (
     LoginView as BaseLoginView,
@@ -39,11 +38,6 @@ class LoginView(AnonymousRequiredMixin, BaseLoginView):
     template_name = "registration/login.html"
     success_url = reverse_lazy("registration:profile_details")
     form_class = AuthenticationForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["project_email"] = config.PROJECT_EMAIL
-        return context
 
 
 @login_required

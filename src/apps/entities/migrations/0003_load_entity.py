@@ -33,6 +33,7 @@ def generate_entity(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ('entities', '0001_initial'),
+        ('entities', '0002_initial'),
     ]
 
     operations = [

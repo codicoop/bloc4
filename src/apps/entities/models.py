@@ -35,9 +35,11 @@ class Entity(BaseModel):
         on_delete=models.SET_NULL,
         related_name="entities",
     )
-    postal_code = flowbite.ModelIntegerField(
+    postal_code = flowbite.ModelCharField(
+        max_length=5,
         blank=False,
         null=False,
+        verbose_name=_("Postal Code"),
         help_text=_("Postal Code"),
     )
     address = flowbite.ModelCharField(

@@ -196,7 +196,7 @@
                     {% translate "Responsible person" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {% if request.user.entity.is_resident %}
+                    {% if request.user.entity.person_responsible %}
                       {{ request.user.entity.person_responsible }}
                     {% else %}
                       {% translate "None assigned" %}
@@ -208,7 +208,7 @@
                     {% translate "Is it resident?" %}
                   </th>
                   <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {% if request.user.entity.is_resident %}
+                    {% if request.user.entity.is_resident == True %}
                       {% translate "Yes" %}
                     {% else %}
                       {% translate "No" %}

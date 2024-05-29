@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-28 14:46+0200\n"
-"PO-Revision-Date: 2024-05-28 14:48+0200\n"
+"POT-Creation-Date: 2024-05-29 11:42+0200\n"
+"PO-Revision-Date: 2024-05-29 11:50+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.3\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: project/models.py:24
 msgid "created_at"
@@ -31,17 +31,21 @@ msgstr "creat per"
 msgid "updated at"
 msgstr "actualitzat a"
 
-#: project/settings.py:67
+#: project/settings.py:65
 msgid "English"
 msgstr "Anglès"
 
-#: project/settings.py:68
+#: project/settings.py:66
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:373
-msgid "Project name"
-msgstr "Nom del projecte"
+#: project/settings.py:374
+msgid "Name of the website."
+msgstr "Nom de la página web."
+
+#: project/settings.py:375
+msgid "Contact email address."
+msgstr "Correu electrònic de contacte."
 
 #: project/tests/test_selenium.py:55
 msgid "Site administration | Django site admin"
@@ -74,3 +78,6 @@ msgstr "Fet!"
 #: project/views.py:41
 msgid "The registry was updated correctly."
 msgstr "El registre ha estat actualitzat correctament."
+
+#~ msgid "Project name"
+#~ msgstr "Nom del projecte"

@@ -83,7 +83,7 @@
                 </li>
                 {% if request.user.has_admin_role %}
                 <li>
-                  <a href="{% url 'registration:profile_details' %}"
+                  <a href="{% url 'admin:index' %}"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem">{% translate "Panell d'administració" %}</a>
                 </li>

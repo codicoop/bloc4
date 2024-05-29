@@ -37,12 +37,10 @@
   class="inline-flex text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
   {% translate "Forgot your password?" %}
 </a>
-<p class="text-sm font-light text-gray-500 dark:text-gray-400">
-  {% translate "Don’t have an account? Only the BlocIV admins can register new accounts." %}
-  <a href="mailto:hola@codi.coop" class="font-medium text-primary-600 hover:underline dark:text-primary-500">
-    {% translate "Send them a message" %}
-  </a>
-  {% translate "to ask for a registration." %}
-</p>
+
+<!-- TODO Layout this value to show the contact email address
+    {{ config.CONTACT_EMAIL }}
+-->
+
 {% endblock %}
 

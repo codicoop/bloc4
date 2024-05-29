@@ -264,6 +264,7 @@ TEMPLATES = [
         ],
         "OPTIONS": {
             "context_processors": [
+                "constance.context_processors.config",
                 "maintenance_mode.context_processors.maintenance_mode",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -368,7 +369,11 @@ DJANGO_SUPERUSER_PASSWORD = env("DJANGO_SUPERUSER_PASSWORD", default=None)
 # https://django-constance.readthedocs.io/en/latest/#configuration
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 DEFAULT_PROJECT_NAME = env.str("DEFAULT_PROJECT_NAME", default="")
-CONSTANCE_CONFIG = {"PROJECT_NAME": (DEFAULT_PROJECT_NAME, _("Project name"))}
+DEFAULT_CONTACT_EMAIL = env.str("DEFAULT_CONTACT_EMAIL", default="")
+CONSTANCE_CONFIG = {
+    "PROJECT_NAME": (DEFAULT_PROJECT_NAME, _("Name of the website.")),
+    "CONTACT_EMAIL": (DEFAULT_CONTACT_EMAIL, _("Contact email address.")),
+}
 
 
 ################################################################################

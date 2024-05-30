@@ -8,12 +8,10 @@ For more information on Django's settings, visit:
 from pathlib import Path
 
 import environ
-import sentry_sdk
 import structlog
 from django.core.management.utils import get_random_secret_key
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env()
 
@@ -123,9 +121,9 @@ INSTALLED_APPS = [
     "django_extensions",
     "phonenumber_field",
     "apps.users",
-    "apps.celery",
     "project",
-    "apps.demo",
+    "apps.entities",
+    "apps.provinces_towns",
 ]
 
 
@@ -203,7 +201,6 @@ LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
     # Beware that "home" only ignores requests when a language is included in the
     # URL. See LOGIN_REQUIRED_IGNORE_PATHS comments above.
     "home",
-    "registration:signup",
     "registration:privacy_policy",
     "registration:login",
     "registration:password_reset",
@@ -267,7 +264,9 @@ TEMPLATES = [
         ],
         "OPTIONS": {
             "context_processors": [
+                "constance.context_processors.config",
                 "maintenance_mode.context_processors.maintenance_mode",
+                "constance.context_processors.config",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -371,7 +370,11 @@ DJANGO_SUPERUSER_PASSWORD = env("DJANGO_SUPERUSER_PASSWORD", default=None)
 # https://django-constance.readthedocs.io/en/latest/#configuration
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 DEFAULT_PROJECT_NAME = env.str("DEFAULT_PROJECT_NAME", default="")
-CONSTANCE_CONFIG = {"PROJECT_NAME": (DEFAULT_PROJECT_NAME, _("Name of the website."))}
+DEFAULT_CONTACT_EMAIL = env.str("DEFAULT_CONTACT_EMAIL", default="")
+CONSTANCE_CONFIG = {
+    "PROJECT_NAME": (DEFAULT_PROJECT_NAME, _("Name of the website.")),
+    "CONTACT_EMAIL": (DEFAULT_CONTACT_EMAIL, _("Contact email address.")),
+}
 
 
 ################################################################################
@@ -425,32 +428,4 @@ structlog.configure(
     ],
     logger_factory=structlog.stdlib.LoggerFactory(),
     cache_logger_on_first_use=True,
-)
-
-
-################################################################################
-#                                  Celery                                      #
-################################################################################
-
-# We're using the only instance of Redis, but if we use caching in the future,
-# we might want to set up two Redis servers and this will need to change.
-# https://docs.celeryq.dev/en/stable/userguide/configuration.html#std:setting-broker_url
-CELERY_BROKER_URL = env("REDIS_URL", default=None)
-
-
-################################################################################
-#                                Sentry                                        #
-################################################################################
-
-# https://docs.sentry.io/platforms/python/guides/django/
-sentry_sdk.init(
-    dsn=env("SENTRY_DSN", default=""),
-    integrations=[DjangoIntegration()],
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True,
 )

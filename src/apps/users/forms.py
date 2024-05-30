@@ -18,7 +18,6 @@ from django.contrib.auth.forms import (
 )
 from django.urls import reverse
 from django.utils import formats, timezone
-from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from apps.users.models import User
@@ -34,7 +33,7 @@ class AuthenticationForm(BaseAuthenticationForm):
             attrs={
                 "autofocus": True,
                 "autocomplete": "email",
-                "placeholder": _("Email adress"),
+                "placeholder": _("Email address"),
             }
         ),
     )
@@ -73,63 +72,6 @@ class UserChangeForm(forms.ModelForm):
         if self.cleaned_data.get("new_password", ""):
             instance.set_password(self.cleaned_data["new_password"])
         return instance
-
-
-class UserSignUpForm(UserCreationForm):
-    name = flowbite.FormCharField(
-        label=_("Name"),
-        widget=forms.TextInput(attrs={"autofocus": True, "placeholder": _("Name")}),
-    )
-    surnames = flowbite.FormCharField(
-        label=_("Surnames"),
-        widget=forms.TextInput(attrs={"placeholder": _("Surnames")}),
-    )
-    password1 = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(attrs={"placeholder": _("Password")}),
-        label=_("Password"),
-    )
-    password2 = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(attrs={"placeholder": _("Password confirmation")}),
-        label=_("Password confirmation"),
-    )
-    email = flowbite.FormEmailField(
-        label=_("Email"),
-        max_length=254,
-        widget=forms.EmailInput(
-            attrs={"autocomplete": "email", "placeholder": _("Email address")}
-        ),
-    )
-
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = (
-            "name",
-            "surnames",
-            "password1",
-            "password2",
-            "email",
-        )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        privacy_policy_url = self.get_privacy_policy_url()
-        privacy_policy_link = '<a href="{}" class="text-primary-500 font-bold hover:underline" target="_blank">privacy policy</a>'.format(  # noqa: E501
-            privacy_policy_url
-        )
-        label_html = _("I have read and agree with the {}").format(privacy_policy_link)
-        self.fields["accept_conditions"] = flowbite.FormBooleanField(
-            label=format_html(label_html), required=True
-        )
-
-    def get_privacy_policy_url(self):
-        return reverse("registration:privacy_policy")
-
-    def save(self, commit=True):
-        obj = super().save(commit)
-        obj.set_boolean_datetime(
-            "privacy_policy_accepted", self.cleaned_data["accept_conditions"]
-        )
-        return obj
 
 
 class ProfileDetailsForm(forms.ModelForm):

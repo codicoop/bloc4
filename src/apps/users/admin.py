@@ -44,12 +44,17 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
     list_display = (
         "email",
         "full_name",
+        "entity",
+        "is_janitor",
         "is_staff",
         "is_superuser",
         "email_verified",
     )
-    list_filter = ("is_superuser",)
-    search_fields = ("email", "name", "surnames")
+    list_filter = (
+        "is_superuser",
+        "entity",
+    )
+    search_fields = ("email", "name", "surnames", "entity", "is_janitor")
     ordering = ("email",)
     fieldsets = (("Autenticació", {"fields": ("email", "password")}),)
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -69,6 +74,7 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
                 "fields": (
                     "name",
                     "surnames",
+                    "entity",
                 )
             },
         ),
@@ -76,12 +82,15 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
             "Permisos i autoritzacions",
             {
                 "fields": (
+                    "is_janitor",
                     "is_staff",
                     "is_active",
                     "is_superuser",
                     "email_verified",
-                    "roles_explanation_field",
-                    "groups",
+                    # Hiding these fields until we have permission groups and
+                    # we actually need to add the explanation:
+                    # "roles_explanation_field",
+                    # "groups",
                 ),
             },
         ),

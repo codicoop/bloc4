@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CeleryConfig(AppConfig):
+class ProvincesTownsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "apps.celery"
+    name = "apps.provinces_towns"

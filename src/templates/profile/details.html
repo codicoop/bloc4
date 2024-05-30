@@ -30,7 +30,31 @@
   <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
     {% translate "Your profile" %}
   </h1>
-  <p>{% translate "Here you can see and edit all your data." %}</p>
+  <p>{% translate "Here you can see and edit your data." %}</p>
+  {% if user.is_janitor %}
+    <p class="inline-block text-sm font-medium text-gray-900 dark:text-gray-300">
+      {% translate "You are a janitor at BlocIV" %}
+    </p>
+    <button
+      type="button"
+      data-tooltip-target="is_janitor_helptext"
+      data-tooltip-style="dark"
+      class="ml-1 -mt-4">
+      <svg aria-hidden="true"
+        class="w-4 h-4 text-gray-400 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"
+        fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd"
+        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+        clip-rule="evenodd"></path>
+      </svg>
+      <span class="sr-only">{% translate 'Show information' %}</span>
+    </button>
+    <div role="tooltip" id="is_janitor_helptext"
+      class="inline-block absolute invisible z-10 py-2 px-3 max-w-sm text-xs font-normal text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+      {% translate "You can't edit this information, if you want to change it, contact the administration." %}
+      <div class="tooltip-arrow" data-popper-arrow></div>
+    </div>
+  {% endif %}
 {% endblock %}
 
 {% block form_fields %}
@@ -66,46 +90,137 @@
 {% endblock %}
 
 {% block after_form_content %}
-<section class="bg-gray-50 dark:bg-gray-900">
-  <div class="flex flex-col items-center justify-center px-6 pb-8 mx-auto
-  lg:pb-16 lg:-mt-9">
-    <div class="w-full bg-white rounded-lg shadow
-          dark:border dark:bg-gray-800 dark:border-gray-700
-          sm:max-w-lg
-          md:mt-0
-          xl:p-0">
-      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-        <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-          {% translate "Password change" %}
-        </h2>
-        <p>{% translate "Here you can change your password." %}</p>
-        {% if not user.email_verified %}
-        <div class="flex items-center p-4 mb-4 bg-red-50 rounded-lg text-sm text-red-700 dark:text-red-500"
-            role="alert">
-          <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-          </svg>
-          <span class="sr-only">Alert</span>
-          <div>
-            <span class="font-bold uppercase">{% translate "Warning!" %}</span>
-            {% translate "Your email is not verified. Before anything else, you must verify it." %}
-            <a class="font-bold hover:underline" href="{% url 'registration:send_verification_code' %}">
-              {% translate "Verify email here." %}
-            </a>
-          </div>
+  <section class="bg-gray-50 dark:bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 pb-8 mx-auto
+    lg:pb-16 lg:-mt-9">
+      <div class="w-full bg-white rounded-lg shadow
+            dark:border dark:bg-gray-800 dark:border-gray-700
+            sm:max-w-lg
+            md:mt-0
+            xl:p-0">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            {% translate "Password change" %}
+          </h2>
+          <p>{% translate "Here you can change your password." %}</p>
+          <a href="{% url 'registration:password_change' %}">
+            <button
+              class="w-full mt-8 px-5 py-2.5 rounded-lg bg-primary-600 text-white font-bold text-sm text-center cursor-pointer
+              hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300
+              dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800
+                disabled:opacity-50 disabled:bg-gray-400" id="id_password_change">
+              {% translate 'Change password' %}
+            </button>
+          </a>
         </div>
-        {% endif %}
-        <a href="{% url 'registration:password_change' %}">
-          <button
-            class="w-full mt-8 px-5 py-2.5 rounded-lg bg-primary-600 text-white font-bold text-sm text-center cursor-pointer
-            hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300
-            dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800
-              disabled:opacity-50 disabled:bg-gray-400" id="id_password_change">
-            {% translate 'Change password' %}
-          </button>
-        </a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- BACK VALUES -->
+  {% if request.user.entity %}
+  <section class="bg-gray-50 dark:bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 pb-8 mx-auto
+    lg:pb-16 lg:-mt-9">
+      <div class="w-full bg-white rounded-lg shadow
+            dark:border dark:bg-gray-800 dark:border-gray-700
+            sm:max-w-lg
+            md:mt-0
+            xl:p-0">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            {% translate "Your entity" %}
+          </h2>
+          <p>{% translate "Here you can view your entity's data." %}</p>
+          <div class="relative overflow-x-auto shadow-sm rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <tbody>
+                <tr class="">
+                  <th scope="row" class="px-2 py-2 border-t border-primary-50 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                    {% translate "Email" %}
+                  </th>
+                  <td class="px-2 py-2 border-b border-t border-gray-200 dark:border-gray-700">
+                    {{ request.user.entity.email }}
+                  </td>
+                </tr>
+                <tr class="">
+                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                    {% translate "Fiscal name" %}
+                  </th>
+                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                    {{ request.user.entity.fiscal_name }}
+                  </td>
+                </tr>
+                <tr class="">
+                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                    {% translate "VAT" %}
+                  </th>
+                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                    {{ request.user.entity.nif }}
+                  </td>
+                </tr>
+                <tr class="">
+                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                    {% translate "Town" %}
+                  </th>
+                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                    {{ request.user.entity.town }}
+                  </td>
+                </tr>
+                <tr class="">
+                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                    {% translate "Postal code" %}
+                  </th>
+                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                    {{ request.user.entity.postal_code }}
+                  </td>
+                </tr>
+                <tr class="">
+                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                    {% translate "Address" %}
+                  </th>
+                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                    {{ request.user.entity.address }}
+                  </td>
+                </tr>
+                <tr class="">
+                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                    {% translate "Country" %}
+                  </th>
+                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                    {{ request.user.entity.country }}
+                  </td>
+                </tr>
+                <tr class="">
+                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                    {% translate "Responsible person" %}
+                  </th>
+                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                    {% if request.user.entity.person_responsible %}
+                      {{ request.user.entity.person_responsible }}
+                    {% else %}
+                      {% translate "None assigned" %}
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr class="">
+                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                    {% translate "Is it resident?" %}
+                  </th>
+                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                    {% if request.user.entity.is_resident == True %}
+                      {% translate "Yes" %}
+                    {% else %}
+                      {% translate "No" %}
+                    {% endif %}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
 {% endblock %}

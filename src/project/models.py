@@ -20,7 +20,12 @@ class SetBooleanDatetimeMixin:
 
 class BaseModel(SetBooleanDatetimeMixin, models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_at = models.DateTimeField(auto_now_add=True, null=False, editable=False)
+    created_at = models.DateTimeField(
+        _("created_at"),
+        auto_now_add=True,
+        null=False,
+        editable=False,
+    )
     created_by = models.ForeignKey(
         "users.User",
         null=True,
@@ -29,7 +34,12 @@ class BaseModel(SetBooleanDatetimeMixin, models.Model):
         on_delete=models.CASCADE,
         verbose_name=_("created by"),
     )
-    updated_at = models.DateTimeField(auto_now=True, null=False, editable=False)
+    updated_at = models.DateTimeField(
+        _("updated at"),
+        auto_now=True,
+        null=False,
+        editable=False,
+    )
 
     class Meta:
         abstract = True

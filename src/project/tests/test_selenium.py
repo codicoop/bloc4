@@ -2,6 +2,7 @@ import logging
 from dataclasses import dataclass
 from enum import Enum
 
+from constance import config
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core import mail
@@ -54,11 +55,11 @@ class Strings(Enum):
 
     ADMIN_TITLE = _("Site administration | Django site admin")
     LOGOUT = _("Log out")
-    HOME_TITLE = "Bloc IV | Inici"
-    PROFILE_TITLE = "Bloc IV | Detalls del perfil"
-    REGISTRY_UPDATE_TITLE = "Bloc IV | Registry updated"
-    PASSWORD_CHANGE_TITLE = "Bloc IV | Canvi de contrasenya"
-    EMAIL_VALIDATION_TITLE = "Bloc IV | Validació de correu"
+    HOME_TITLE = f"{config.PROJECT_NAME} | Inici"
+    PROFILE_TITLE = f"{config.PROJECT_NAME} | Detalls del perfil"
+    REGISTRY_UPDATE_TITLE = f"{config.PROJECT_NAME} | Registry updated"
+    PASSWORD_CHANGE_TITLE = f"{config.PROJECT_NAME} | Canvi de contrasenya"
+    EMAIL_VALIDATION_TITLE = f"{config.PROJECT_NAME} | Validació de correu"
 
 
 @override_settings(

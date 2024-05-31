@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-29 12:09+0200\n"
+"POT-Creation-Date: 2024-05-31 15:54+0200\n"
 "PO-Revision-Date: 2024-05-29 11:48+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -327,8 +327,8 @@ msgid ""
 "You can't edit this information, if you want to change it, contact the "
 "administration."
 msgstr ""
-"No pots modificar aquestes dades. Si necessites fer-ne un canvi, "
-"contacta amb l'administració."
+"No pots modificar aquestes dades. Si necessites fer-ne un canvi, contacta "
+"amb l'administració."
 
 #: templates/profile/details.html:71
 msgid "Warning!"
@@ -430,11 +430,11 @@ msgstr "Has oblidat la teva contrasenya?"
 msgid ""
 "Don’t have an account? Only the BlocIV admins can register new accounts. "
 "Send them a message to"
-msgstr ""
+msgstr "No tens un compte? Només els administradors de Bloc4 poden enregistrar nous usuaris. Envia'ls un missatge a"
 
 #: templates/registration/login.html:45
 msgid "and ask for a registration."
-msgstr ""
+msgstr "i demana un nou registre."
 
 #: templates/registration/login_old.html:15
 msgid "Log-in"
@@ -518,7 +518,8 @@ msgstr "Codi de verificació enviat"
 
 #: templates/registration/user_validation.html:20
 msgid "Write here the verification code that you have received in your email."
-msgstr "Escriu aquí el codi de verificació que has rebut al teu correu electrònic."
+msgstr ""
+"Escriu aquí el codi de verificació que has rebut al teu correu electrònic."
 
 #: templates/registration/user_validation_confirm.html:27
 msgid "Set"

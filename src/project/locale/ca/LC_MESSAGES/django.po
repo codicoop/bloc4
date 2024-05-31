@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-29 11:42+0200\n"
+"POT-Creation-Date: 2024-05-31 15:54+0200\n"
 "PO-Revision-Date: 2024-05-29 11:50+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,19 +39,19 @@ msgstr "Anglès"
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:374
+#: project/settings.py:375
 msgid "Name of the website."
 msgstr "Nom de la página web."
 
-#: project/settings.py:375
+#: project/settings.py:376
 msgid "Contact email address."
 msgstr "Correu electrònic de contacte."
 
-#: project/tests/test_selenium.py:55
+#: project/tests/test_selenium.py:56
 msgid "Site administration | Django site admin"
 msgstr "Administració del lloc | Lloc administratiu de Django"
 
-#: project/tests/test_selenium.py:56
+#: project/tests/test_selenium.py:57
 msgid "Log out"
 msgstr "Tancar sessió"
 

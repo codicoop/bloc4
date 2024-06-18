@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          "50":"#F2F0FA",
+          "50":"#F0ECFE",
           "100":"#E4E0F5",
           "200":"#DCD7EA",
           "300":"#CAB3FF",
@@ -22,7 +22,7 @@ module.exports = {
           "950":"#20153C"
         },
         gray: {
-          "50":"##F5F5F5",
+          "50":"#F5F5F5",
           "100":"#E2E2E2",
           "200":"#D6D6D6",
           "300":"#C8C8C5",

@@ -1752,7 +1752,7 @@ input:checked + .toggle-bg {
 
 .border-primary-50 {
   --tw-border-opacity: 1;
-  border-color: rgb(242 240 250 / var(--tw-border-opacity));
+  border-color: rgb(240 236 254 / var(--tw-border-opacity));
 }
 
 .border-red-200 {
@@ -1801,7 +1801,8 @@ input:checked + .toggle-bg {
 }
 
 .bg-gray-50 {
-  background-color: ##F5F5F5;
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 245 245 / var(--tw-bg-opacity));
 }
 
 .bg-gray-600 {
@@ -1835,7 +1836,7 @@ input:checked + .toggle-bg {
 
 .bg-primary-50 {
   --tw-bg-opacity: 1;
-  background-color: rgb(242 240 250 / var(--tw-bg-opacity));
+  background-color: rgb(240 236 254 / var(--tw-bg-opacity));
 }
 
 .bg-primary-500 {

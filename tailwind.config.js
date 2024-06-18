@@ -24,8 +24,8 @@ module.exports = {
       }
     },
     fontFamily: {
-      'body': ['Montserrat', 'sans-serif'],
-      'sans': ['Montserrat', 'sans-serif']
+      'body': ['General Sans', 'sans-serif'],
+      'sans': ['General Sans', 'sans-serif']
     }
   },
   plugins: [

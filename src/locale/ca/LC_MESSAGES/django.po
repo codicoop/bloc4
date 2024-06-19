@@ -491,7 +491,7 @@ msgid ""
 "Don’t have an account? Only the BlocIV admins can register new accounts. "
 "Send them a message to"
 msgstr ""
-"No tens un compte? Només els administradors de Bloc4 poden enregistrar nous "
+"No tens un compte? Només els administradors de Bloc4 poden donar d'alta nous "
 "usuaris. Envia'ls un missatge a"
 
 #: templates/registration/login.html:45

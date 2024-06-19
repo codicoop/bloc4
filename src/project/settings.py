@@ -124,6 +124,7 @@ INSTALLED_APPS = [
     "project",
     "apps.entities",
     "apps.provinces_towns",
+    "rooms",
 ]
 
 

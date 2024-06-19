@@ -1,7 +1,7 @@
 from django.contrib import admin
 
+from apps.rooms.models import Room
 from project.admin import ModelAdmin
-from rooms.models import Room
 
 
 @admin.register(Room)

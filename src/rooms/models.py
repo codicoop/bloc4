@@ -59,7 +59,7 @@ class Room(BaseModel):
         blank=True,
         default="",
         null=False,
-        help_text=_("Equipment available in the room"),
+        help_text=_("Available equipment in the room"),
     )
     room_type = flowbite.ModelCharField(
         _("Room type"),

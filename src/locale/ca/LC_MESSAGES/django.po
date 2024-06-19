@@ -170,7 +170,7 @@ msgstr "sala"
 
 #: rooms/models.py:72
 msgid "rooms"
-msgstr "salas"
+msgstr "sales"
 
 #: templates/404.html:13 templates/500.html:13 templates/503.html:13
 msgid "Go back"

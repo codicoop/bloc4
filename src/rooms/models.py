@@ -40,6 +40,7 @@ class Room(BaseModel):
     capacity = flowbite.ModelIntegerField(
         _("Capacity"),
         blank=False,
+        default=0,
         null=False,
         help_text=_("Maximum seating capacity of the room"),
     )

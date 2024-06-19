@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-19 10:42+0200\n"
-"PO-Revision-Date: 2024-06-19 10:52+0200\n"
+"POT-Creation-Date: 2024-06-19 12:31+0200\n"
+"PO-Revision-Date: 2024-06-19 12:33+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -124,51 +124,51 @@ msgstr "Nom de la sala"
 msgid "Location"
 msgstr "Localització"
 
-#: rooms/models.py:31
+#: rooms/models.py:32
 msgid "Room location"
 msgstr "Localització de la sala"
 
-#: rooms/models.py:34
-msgid "Price"
-msgstr "Preu"
-
-#: rooms/models.py:37
+#: rooms/models.py:35
 msgid "Hourly price"
 msgstr "Preu per hora"
 
-#: rooms/models.py:40
+#: rooms/models.py:39
+msgid "Price per hour of the room"
+msgstr "Preu per hora de la sala"
+
+#: rooms/models.py:42
 msgid "Capacity"
 msgstr "Capacitat"
 
-#: rooms/models.py:43
+#: rooms/models.py:46
 msgid "Maximum seating capacity of the room"
 msgstr "Capacitat màxima de persones a la sala"
 
-#: rooms/models.py:46
+#: rooms/models.py:49
 msgid "Picture"
 msgstr "Imatge"
 
-#: rooms/models.py:51
+#: rooms/models.py:54
 msgid "Photo of the room"
 msgstr "Fotografia de la sala"
 
-#: rooms/models.py:54
+#: rooms/models.py:57
 msgid "Equipment"
 msgstr "Equipament"
 
-#: rooms/models.py:58
-msgid "Equipment available in the room"
+#: rooms/models.py:62
+msgid "Available equipment in the room"
 msgstr "Equipament disponible a la sala"
 
-#: rooms/models.py:61 rooms/models.py:66
+#: rooms/models.py:65 rooms/models.py:70
 msgid "Room type"
 msgstr "Tipus de sala"
 
-#: rooms/models.py:71
+#: rooms/models.py:75
 msgid "room"
 msgstr "sala"
 
-#: rooms/models.py:72
+#: rooms/models.py:76
 msgid "rooms"
 msgstr "sales"
 
@@ -586,6 +586,9 @@ msgstr ""
 #: templates/registration/user_validation_confirm.html:27
 msgid "Set"
 msgstr "Estableix"
+
+#~ msgid "Price"
+#~ msgstr "Preu"
 
 #~ msgid "Entity's email"
 #~ msgstr "Correu electrònic de l'entitat"

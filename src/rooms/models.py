@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from project.fields import flowbite
 from project.models import BaseModel
-from project.storage_backends import PrivateMediaStorage
+from project.storage_backends import PublicMediaStorage
 
 
 class Room(BaseModel):
@@ -32,11 +32,11 @@ class Room(BaseModel):
         help_text=_("Room location"),
     )
     price = flowbite.ModelFloatField(
-        _("Price"),
+        _("Hourly price"),
         blank=False,
         default=0,
         null=False,
-        help_text=_("Hourly price"),
+        help_text=_("Price per hour of the room"),
     )
     capacity = flowbite.ModelIntegerField(
         _("Capacity"),
@@ -49,7 +49,7 @@ class Room(BaseModel):
         _("Picture"),
         blank=True,
         null=True,
-        storage=PrivateMediaStorage(),
+        storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
         help_text=_("Photo of the room"),
     )

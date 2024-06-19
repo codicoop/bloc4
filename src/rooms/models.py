@@ -26,7 +26,8 @@ class Room(BaseModel):
     location = flowbite.ModelCharField(
         _("Location"),
         max_length=50,
-        blank=False,
+        blank=True,
+        default="",
         null=False,
         help_text=_("Room location"),
     )

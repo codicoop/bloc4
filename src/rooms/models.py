@@ -56,7 +56,8 @@ class Room(BaseModel):
     equipment = flowbite.ModelCharField(
         _("Equipment"),
         max_length=500,
-        blank=False,
+        blank=True,
+        default="",
         null=False,
         help_text=_("Equipment available in the room"),
     )

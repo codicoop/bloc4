@@ -34,6 +34,7 @@ class Room(BaseModel):
     price = flowbite.ModelFloatField(
         _("Price"),
         blank=False,
+        default=0,
         null=False,
         help_text=_("Hourly price"),
     )

@@ -1,0 +1,36 @@
+{% extends "../base.html" %}
+{% load i18n %}
+
+{# Blocks de base.html #}
+{% block page_title %}{% translate "Reservations" %}{% endblock %}
+{% block bodyclasses %}{% endblock %}
+{% block mainclasses %} reservations {% endblock %}
+{% block extra_js %}{% endblock %}
+
+
+{% block main %}
+  {% for reservation in reservations %}
+    {{ reservation.room }}
+    {{ reservation.date }}
+    {{ reservation.start_time }}
+    {{ reservation.end_time }}
+    {{ reservation.motivation }}
+    {{ reservation.assistants }}
+    {{ reservation.is_paid | yesno:"Yes,No"}}
+    {{ reservation.total_price }}
+    {{ reservation.reserved_by }}
+    {{ reservation.status }}
+    {{ reservation.created_at }}
+  {% endfor %}
+
+  <form method="post" action="">
+    {% csrf_token %}
+      <div>
+        <button class="btn btn--primary form__submit" type="submit" name="create">{% translate "Create reservation" %}</button>
+      </div>
+      <div>
+        <button class="btn btn--primary form__submit" type="submit" name="calendar">{% translate "Check calendar" %}</button>
+      </div>
+  </form>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+  {% load static %}
+    <meta charset='utf-8' />
+
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <link href='https://fonts.googleapis.com/css?family=Comfortaa|Lato:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'styles/calendar.css' %}" type="text/css">
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/ca.js"></script>
+    <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var newActivityURL = "/admin/cc_courses/activity/add/"
+      var newReservationURL = "/admin/facilities_reservations/reservation/add/"
+      var newActivityParameters = ""
+      var newReservationParameters = ""
+
+      let dialog = document.getElementById("confirmation-dialog");
+      document.getElementById("cancel").addEventListener("click", function() {
+          dialog.close();
+          newEventParameters = ""
+      });
+      document.getElementById("confirm-activity").addEventListener("click", function() {
+        dialog.close();
+        params = "?" + newActivityParameters.join("&")
+        url = newActivityURL + params
+        window.open(url);
+      });
+      document.getElementById("confirm-reservation").addEventListener("click", function() {
+        dialog.close();
+        params = "?" + newReservationParameters.join("&")
+        url = newReservationURL + params
+        console.log(url)
+        window.open(url);
+      });
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'ca',
+        headerToolbar: {
+          left: 'dayGridMonth,customTimeGridWeek',
+          center: 'title',
+          right: 'prev,next'
+        },
+        views: {
+          customTimeGridWeek: {
+            type: 'timeGrid',
+            buttonText: 'Setmana',
+            duration: { days: 7 },
+
+            // Date Clicking & Selecting:
+            selectable: true,
+            selectMirror: false,
+
+            select: function(info) {
+              var date_start = info.start.toLocaleString(
+                "ca", {year: 'numeric', month: '2-digit', day: '2-digit'}
+              )
+              var date_end = info.end.toLocaleString(
+                "ca", {year: 'numeric', month: '2-digit', day: '2-digit'}
+              )
+              var starting_time = info.start.toLocaleString(
+                "ca", {hour: 'numeric', minute: 'numeric'}
+              )
+              var ending_time = info.end.toLocaleString(
+                "ca", {hour: 'numeric', minute: 'numeric'}
+              )
+              newActivityParameters = [
+                "date_start=" + date_start,
+                "date_end=" + date_end,
+                "starting_time=" + starting_time,
+                "ending_time=" + ending_time
+              ]
+              newReservationParameters = [
+                "start=" + date_start + " " + starting_time,
+                "end=" + date_end + " " + ending_time,
+              ]
+              dialog.showModal();
+            },
+
+            // Time Grid:
+            allDaySlot: false,
+            slotMaxTime: "22:00:00",
+            slotMinTime: "08:00:00",
+            expandRows: true,
+          },
+        },
+
+        // Date & Time Display:
+        weekends: true,
+
+        events: {
+          url: '/reservations/ajax/calendar/',
+          error: function() {
+              alert("No s'han pogut carregar les reserves. Recarrega la pàgina i si d'aquí uns minuts segueix fallant, si us plau avisa'ns.");
+          }
+        },
+
+        eventClick: function(info) {
+          var eventObj = info.event;
+          if (eventObj.url) {
+            window.open(eventObj.url);
+            info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+          }
+        },
+
+      });
+
+      calendar.render();
+    });
+
+    </script>
+  </head>
+  <body>
+    <div id="calendar-container">
+      {% if reservations %}
+      <div id="legend-container">
+        {% for reservation in reservations %}
+        <span class="bootstrap-badge">{{ reservation }}</span>
+        {% endfor %}
+        <span class="bootstrap-badge" style="background-color:{{ legend_activities_outside_color }};">
+          Sense sala reservada</span>
+      </div>
+      {% endif %}
+      <div id='calendar'></div>
+    </div>
+  <dialog id="confirmation-dialog">
+    <h2>Crear una nova...</h2>
+    <button id="confirm-activity">Sessió</button>
+    <button id="confirm-reservation">Reserva</button>
+    <button id="cancel">Tancar</button>
+  </dialog>
+
+  </body>
+</html>

@@ -1,0 +1,50 @@
+{% extends "../base.html" %}
+{% load i18n %}
+
+{# Blocks de base.html #}
+{% block page_title %}{% translate "Reservations" %}{% endblock %}
+{% block bodyclasses %}{% endblock %}
+{% block mainclasses %} reservations {% endblock %}
+{% block extra_js %}{% endblock %}
+
+
+{% block main %}
+	{% if messages %}
+  <div class="modal">
+    <div class="modal__background" onclick="hideModal(event)"></div>
+    <div class="modal__card">
+      <div class="modal__title title-1">
+        <p>Confirmació</p>
+      </div>
+      <div class="modal__close" onclick="hideModal(event)">
+        <svg
+          class="icon-pathfill-primary"
+          xmlns="http://www.w3.org/2000/svg"
+          viewbox="0 0 9.46 9.46">
+          <path
+            d="M 0.73,9.46 0,8.73 4,4.73 0,0.73 0.73,0 l 4,4 4,-4 0.73,0.73 -4,4 4,4 -0.73,0.73 -4,-4 z" />
+        </svg>
+      </div>
+      <div class="modal__form form">
+        <div class="modal__intro text-md">
+          {% for message in messages %}
+          <div class="text-md">
+            <p>{{ message }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <form method="post" action="">
+    {{ form }}
+
+    {% csrf_token %}
+      <div>
+        <button class="btn btn--primary form__submit" type="submit">{% translate "Create reservation" %}</button>
+      </div>
+  </form>
+{% endblock %}
+
+

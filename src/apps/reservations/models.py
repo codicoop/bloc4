@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta, date
+
+from django.core.validators import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -18,17 +21,16 @@ class Reservation(BaseModel):
 
     date = models.DateField(
         _("Date"),
-        auto_now_add=True,
         null=False,
         blank=False,
     )
-    start_time = models.DateTimeField(
+    start_time = models.TimeField(
         _("Start time"),
         null=False,
         blank=False,
         help_text=_("Start time of the reservation"),
     )
-    end_time = models.DateTimeField(
+    end_time = models.TimeField(
         _("End time"),
         null=False,
         blank=False,
@@ -105,4 +107,56 @@ class Reservation(BaseModel):
         unique_together = ["date", "start_time", "end_time", "room_id"]
 
     def __str__(self):
-        return f"{self.room} | {self.date} {self.start_time} {self.end_time}"
+        return f"{self.room} | {self.date}"
+
+    def clean(self, *args, **kwargs):
+        super().clean()
+        errors = {}
+
+        # Validates that the reservation date is later than the current date.
+        if self.date < date.today():
+            errors.update(
+                {
+                    "date": ValidationError(
+                        _("The date must be greater than the current date.")
+                    )
+                },
+            )
+
+        # Validates that the reservation end time is later than the start time.
+        if self.end_time < self.start_time:
+            errors.update(
+                {
+                    "end_time": ValidationError(
+                        _("The end time must be greater than the start time.")
+                    )
+                },
+            )
+
+        # Validates that the reservation duration is between 1 and 20 hours.
+        if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
+            str(self.start_time), "%H:%M:%S"
+        ) < timedelta(hours=1):
+            errors.update(
+                {
+                    "end_time": ValidationError(
+                        _(
+                            "The reservation must have a minimum duration of one "
+                            "hour."
+                        )
+                    )
+                },
+            )
+        if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
+            str(self.start_time), "%H:%M:%S"
+        ) > timedelta(hours=20):
+            errors.update(
+                {
+                    "end_time": ValidationError(
+                        _("The maximum standby time is 20 hours.")
+                    )
+                },
+            )
+
+        if errors:
+            raise ValidationError(errors)

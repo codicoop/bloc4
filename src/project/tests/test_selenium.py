@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+import datetime
 from enum import Enum
 
 from constance import config
@@ -13,6 +14,8 @@ from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+from apps.reservations.forms import ReservationForm
+from apps.rooms.models import Room
 from apps.users.models import User
 
 logging.basicConfig(level=logging.INFO)
@@ -57,9 +60,13 @@ class Strings(Enum):
     LOGOUT = _("Log out")
     HOME_TITLE = f"{config.PROJECT_NAME} | Inici"
     PROFILE_TITLE = f"{config.PROJECT_NAME} | Detalls del perfil"
-    REGISTRY_UPDATE_TITLE = f"{config.PROJECT_NAME} | Registry updated"
-    PASSWORD_CHANGE_TITLE = f"{config.PROJECT_NAME} | Canvi de contrasenya"
+    REGISTRY_UPDATE_TITLE = f"{config.PROJECT_NAME} | Registre actualitzat"
+    PASSWORD_CHANGE_TITLE = f"{config.PROJECT_NAME} | Modificar la contrasenya"
     EMAIL_VALIDATION_TITLE = f"{config.PROJECT_NAME} | Validació de correu"
+    RESERVATION_LIST_TITLE = f"{config.PROJECT_NAME} | Reservations List"
+    CREATE_RESERVATION_TITLE = f"{config.PROJECT_NAME} | Create Reservation"
+    CHECK_CALENDAR_TITLE = ""
+    SUCCESSFUL_RESERVATION = f"{config.PROJECT_NAME} | Successful reservation"
 
 
 @override_settings(
@@ -239,6 +246,15 @@ class MySeleniumTests(StaticLiveServerTestCase):
 
         self._home()
         logging.info("Test Home finished.")
+
+        self._reservations_list()
+        logging.info("Test Reservations List finished.")
+
+        self._reservations_create()
+        logging.info("Test Create Reservation finished.")
+
+        self._reservations_calendar()
+        logging.info("Test Reservations Calendar finished.")
 
         logging.info("#####################################")
         logging.info("#### All tests Selenium finished ####")
@@ -433,3 +449,56 @@ class MySeleniumTests(StaticLiveServerTestCase):
         home_menu_option.click()
 
         self.logging_url_title_and_assert_title(Strings.HOME_TITLE.value)
+
+    def _reservations_list(self):
+        # Open the menu to select the Reservations option.
+        self.burger_menu_action()
+        home_menu_option = self.selenium.find_element(By.ID, "menu_reservations")
+        home_menu_option.click()
+
+        self.logging_url_title_and_assert_title(Strings.RESERVATION_LIST_TITLE.value)
+
+    def _reservations_create(self):
+        # Create a new room
+        room_test = Room.objects.create(
+            name="Test Room",
+            location="Test Location",
+            price=50,
+            capacity=10,
+            equipment="Equipment Test",
+            room_type=Room.RoomTypeChoices.EVENT_ROOM,
+        )
+
+        # Create a new reservation.
+        button_create = self.selenium.find_element(By.ID, "create_reservation")
+        button_create.click()
+
+        self.logging_url_title_and_assert_title(Strings.CREATE_RESERVATION_TITLE.value)
+
+        room = self.selenium.find_element(By.ID, "id_room")
+        date = self.selenium.find_element(By.ID, "id_date")
+        start_time = self.selenium.find_element(By.ID, "id_start_time")
+        end_time = self.selenium.find_element(By.ID, "id_end_time")
+        motivation = self.selenium.find_element(By.ID, "id_motivation")
+        assistants = self.selenium.find_element(By.ID, "id_assistants")
+        button_create = self.selenium.find_element(By.ID, "id_create_reservation")
+        room.send_keys(room_test.name)
+        date.send_keys("02.08.2024")
+        start_time.send_keys("10:00")
+        end_time.send_keys("12:00")
+        motivation.send_keys("Test Motivation")
+        assistants.send_keys("Test Assistants")
+        button_create.click()
+
+        # Go back to the reservations list.
+        go_back = self.selenium.find_element(By.ID, "id_back")
+        go_back.click()
+
+        self.logging_url_title_and_assert_title(Strings.RESERVATION_LIST_TITLE.value)
+
+    def _reservations_calendar(self):
+        # Check Reservations Calendar
+        button_calendar = self.selenium.find_element(By.ID, "check_calendar")
+        button_calendar.click()
+
+        self.logging_url_title_and_assert_title(Strings.CHECK_CALENDAR_TITLE.value)

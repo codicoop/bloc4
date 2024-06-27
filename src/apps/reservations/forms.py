@@ -20,22 +20,20 @@ class ReservationForm(forms.ModelForm):
     start_time = forms.TimeField(
         widget=forms.TimeInput(
             attrs={
-                "type": "time",
                 "class": "form-control",
                 "required": True,
                 "help_text": _("Start time"),
-                "placeholder": _("Start time"),
+                "placeholder": "00:00",
             }
         )
     )
     end_time = forms.TimeField(
         widget=forms.TimeInput(
             attrs={
-                "type": "time",
                 "class": "form-control",
                 "required": True,
                 "help_text": _("End time"),
-                "placeholder": _("End time"),
+                "placeholder": "00:00",
             }
         )
     )

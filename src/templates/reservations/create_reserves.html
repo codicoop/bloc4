@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {# Blocks de base.html #}
-{% block page_title %}{% translate "Reservations" %}{% endblock %}
+{% block page_title %}{% translate "Create Reservation" %}{% endblock %}
 {% block bodyclasses %}{% endblock %}
 {% block mainclasses %} reservations {% endblock %}
 {% block extra_js %}{% endblock %}
@@ -42,7 +42,7 @@
 
     {% csrf_token %}
       <div>
-        <button class="btn btn--primary form__submit" type="submit">{% translate "Create reservation" %}</button>
+        <button class="btn btn--primary form__submit" type="submit" id="id_create_reservation">{% translate "Create reservation" %}</button>
       </div>
   </form>
 {% endblock %}

@@ -4,6 +4,7 @@ from datetime import timedelta, datetime
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse, NoReverseMatch
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -97,6 +98,14 @@ def create_reservation_view(request):
 class ReservationSuccessView(StandardSuccess):
     page_title = _("Successful reservation")
     description = _("Successful reservation.")
+    url = reverse_lazy("reservations:reservations_list")
+
+    def get_url(self):
+        try:
+            reversed_url = reverse(self.url)
+        except NoReverseMatch:
+            return self.url
+        return reversed_url
 
 
 class ReservationsCalendarView(TemplateView):
@@ -130,7 +139,9 @@ class AjaxCalendarFeed(View):
                     )
                 ),
                 "end": date_to_full_calendar_format(
-                    timezone.make_aware(datetime.combine(reservation.date, reservation.end_time))
+                    timezone.make_aware(
+                        datetime.combine(reservation.date, reservation.end_time)
+                    )
                 ),
             }
             data.append(reservation_data)

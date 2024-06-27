@@ -1,11 +1,9 @@
-from datetime import timedelta, datetime
-
+from datetime import datetime, timedelta
 
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse, NoReverseMatch
-from django.utils.dateparse import parse_datetime
+from django.shortcuts import redirect, render
+from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, View
@@ -13,7 +11,6 @@ from django.views.generic.list import ListView
 
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
-from apps.reservations.services import send_confirmation_reservation
 from apps.rooms.models import Room
 from project.views import StandardSuccess
 
@@ -121,13 +118,6 @@ class ReservationsCalendarView(TemplateView):
 class AjaxCalendarFeed(View):
     def get(self, request, *args, **kwargs):
         data = []
-
-        # FullCalendar passes ISO8601 formatted date strings
-        try:
-            start = parse_datetime(request.GET["start"])
-            end = parse_datetime(request.GET["end"])
-        except:
-            return JsonResponse(data, safe=False)
 
         reservations = Reservation.objects.all()
         for reservation in reservations:

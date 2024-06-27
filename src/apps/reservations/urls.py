@@ -3,11 +3,11 @@ from django.urls import path
 from django.utils.translation import gettext_lazy as _
 
 from apps.reservations.views import (
-    create_reservation_view,
-    ReservationSuccessView,
-    ReservationsListView,
-    ReservationsCalendarView,
     AjaxCalendarFeed,
+    ReservationsCalendarView,
+    ReservationsListView,
+    ReservationSuccessView,
+    create_reservation_view,
 )
 
 app_name = "reservations"

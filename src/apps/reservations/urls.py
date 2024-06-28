@@ -17,9 +17,21 @@ urlpatterns = [
         _(""), login_required(ReservationsListView.as_view()), name="reservations_list"
     ),
     path(
-        _("calendar/"), ReservationsCalendarView.as_view(), name="reservations_calendar"
+        _("calendar/"),
+        login_required(ReservationsCalendarView.as_view()),
+        name="reservations_calendar",
     ),
-    path("ajax/calendar/", AjaxCalendarFeed.as_view(), name="ajax_calendar_feed"),
-    path(_("create"), create_reservation_view, name="create_reservation"),
-    path(_("success"), ReservationSuccessView.as_view(), name="reservations_success"),
+    path(
+        "ajax/calendar/",
+        login_required(AjaxCalendarFeed.as_view()),
+        name="ajax_calendar_feed",
+    ),
+    path(
+        _("create"), login_required(create_reservation_view), name="create_reservation"
+    ),
+    path(
+        _("success"),
+        login_required(ReservationSuccessView.as_view()),
+        name="reservations_success",
+    ),
 ]

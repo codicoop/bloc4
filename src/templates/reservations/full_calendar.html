@@ -1,140 +1,175 @@
+{% extends "../base.html" %}
+{% load i18n static %}
 
-<!DOCTYPE html>
-<html lang='en'>
-  <head>
-  {% load static %}
-    <meta charset='utf-8' />
+{# Blocks de base.html #}
+{% block page_title %}{% translate "Reservations List" %}{% endblock %}
+{% block bodyclasses %}{% endblock %}
+{% block mainclasses %} reservations {% endblock %}
+{% block extra_js %}{% endblock %}
 
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
-    <link href='https://fonts.googleapis.com/css?family=Comfortaa|Lato:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="{% static 'styles/calendar.css' %}" type="text/css">
+{% block extra_head %}
+<link href="{% static 'fullcalendar/main.min.css' %}" rel="stylesheet" />
+<link href="{% static 'styles/calendar.css' %}" type="text/css" rel="stylesheet" />
+<script src="{% static 'fullcalendar/index.global.min.js' %}"></script>
+<script src="{% static 'fullcalendar/locales/ca.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var newActivityURL = "/admin/cc_courses/activity/add/"
+  var newReservationURL = "/admin/facilities_reservations/reservation/add/"
+  var newActivityParameters = ""
+  var newReservationParameters = ""
 
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/ca.js"></script>
-    <script>
+  let dialog = document.getElementById("confirmation-dialog");
+  document.getElementById("cancel").addEventListener("click", function() {
+      dialog.close();
+      newEventParameters = ""
+  });
+  document.getElementById("confirm-activity").addEventListener("click", function() {
+    dialog.close();
+    params = "?" + newActivityParameters.join("&")
+    url = newActivityURL + params
+    window.open(url);
+  });
+  document.getElementById("confirm-reservation").addEventListener("click", function() {
+    dialog.close();
+    params = "?" + newReservationParameters.join("&")
+    url = newReservationURL + params
+    console.log(url)
+    window.open(url);
+  });
 
-    document.addEventListener('DOMContentLoaded', function() {
-      var calendarEl = document.getElementById('calendar');
-      var newActivityURL = "/admin/cc_courses/activity/add/"
-      var newReservationURL = "/admin/facilities_reservations/reservation/add/"
-      var newActivityParameters = ""
-      var newReservationParameters = ""
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'ca',
+    headerToolbar: {
+      left: 'dayGridMonth,customTimeGridWeek',
+      center: 'title',
+      right: 'prev,next'
+    },
+    views: {
+      customTimeGridWeek: {
+        type: 'timeGrid',
+        buttonText: 'Setmana',
+        duration: { days: 7 },
 
-      let dialog = document.getElementById("confirmation-dialog");
-      document.getElementById("cancel").addEventListener("click", function() {
-          dialog.close();
-          newEventParameters = ""
-      });
-      document.getElementById("confirm-activity").addEventListener("click", function() {
-        dialog.close();
-        params = "?" + newActivityParameters.join("&")
-        url = newActivityURL + params
-        window.open(url);
-      });
-      document.getElementById("confirm-reservation").addEventListener("click", function() {
-        dialog.close();
-        params = "?" + newReservationParameters.join("&")
-        url = newReservationURL + params
-        console.log(url)
-        window.open(url);
-      });
+        // Date Clicking & Selecting:
+        selectable: true,
+        selectMirror: false,
 
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        locale: 'ca',
-        headerToolbar: {
-          left: 'dayGridMonth,customTimeGridWeek',
-          center: 'title',
-          right: 'prev,next'
-        },
-        views: {
-          customTimeGridWeek: {
-            type: 'timeGrid',
-            buttonText: 'Setmana',
-            duration: { days: 7 },
-
-            // Date Clicking & Selecting:
-            selectable: true,
-            selectMirror: false,
-
-            select: function(info) {
-              var date_start = info.start.toLocaleString(
-                "ca", {year: 'numeric', month: '2-digit', day: '2-digit'}
-              )
-              var date_end = info.end.toLocaleString(
-                "ca", {year: 'numeric', month: '2-digit', day: '2-digit'}
-              )
-              var starting_time = info.start.toLocaleString(
-                "ca", {hour: 'numeric', minute: 'numeric'}
-              )
-              var ending_time = info.end.toLocaleString(
-                "ca", {hour: 'numeric', minute: 'numeric'}
-              )
-              newActivityParameters = [
-                "date_start=" + date_start,
-                "date_end=" + date_end,
-                "starting_time=" + starting_time,
-                "ending_time=" + ending_time
-              ]
-              newReservationParameters = [
-                "start=" + date_start + " " + starting_time,
-                "end=" + date_end + " " + ending_time,
-              ]
-              dialog.showModal();
-            },
-
-            // Time Grid:
-            allDaySlot: false,
-            slotMaxTime: "22:00:00",
-            slotMinTime: "08:00:00",
-            expandRows: true,
-          },
+        select: function(info) {
+          var date_start = info.start.toLocaleString(
+            "ca", {year: 'numeric', month: '2-digit', day: '2-digit'}
+          )
+          var date_end = info.end.toLocaleString(
+            "ca", {year: 'numeric', month: '2-digit', day: '2-digit'}
+          )
+          var starting_time = info.start.toLocaleString(
+            "ca", {hour: 'numeric', minute: 'numeric'}
+          )
+          var ending_time = info.end.toLocaleString(
+            "ca", {hour: 'numeric', minute: 'numeric'}
+          )
+          newActivityParameters = [
+            "date_start=" + date_start,
+            "date_end=" + date_end,
+            "starting_time=" + starting_time,
+            "ending_time=" + ending_time
+          ]
+          newReservationParameters = [
+            "start=" + date_start + " " + starting_time,
+            "end=" + date_end + " " + ending_time,
+          ]
+          dialog.showModal();
         },
 
-        // Date & Time Display:
-        weekends: true,
+        // Time Grid:
+        allDaySlot: false,
+        slotMaxTime: "22:00:00",
+        slotMinTime: "08:00:00",
+        expandRows: true,
+      },
+    },
 
-        events: {
-          url: '/reservations/ajax/calendar/',
-          error: function() {
-              alert("No s'han pogut carregar les reserves. Recarrega la pàgina i si d'aquí uns minuts segueix fallant, si us plau avisa'ns.");
-          }
-        },
+    // Date & Time Display:
+    weekends: true,
 
-        eventClick: function(info) {
-          var eventObj = info.event;
-          if (eventObj.url) {
-            window.open(eventObj.url);
-            info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
-          }
-        },
+    events: {
+      url: '/reservations/ajax/calendar/',
+      error: function() {
+          alert("No s'han pogut carregar les reserves. Recarrega la pàgina i si d'aquí uns minuts segueix fallant, si us plau avisa'ns.");
+      }
+    },
 
-      });
+    eventClick: function(info) {
+      var eventObj = info.event;
+      if (eventObj.url) {
+        window.open(eventObj.url);
+        info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+      }
+    },
 
-      calendar.render();
-    });
+  });
 
-    </script>
-  </head>
-  <body>
-    <div id="calendar-container">
-      {% if reservations %}
-      <div id="legend-container">
-        {% for reservation in reservations %}
-        <span class="bootstrap-badge">{{ reservation }}</span>
-        {% endfor %}
-        <span class="bootstrap-badge" style="background-color:{{ legend_activities_outside_color }};">
-          Sense sala reservada</span>
-      </div>
-      {% endif %}
-      <div id='calendar'></div>
-    </div>
-  <dialog id="confirmation-dialog">
-    <h2>Crear una nova...</h2>
-    <button id="confirm-activity">Sessió</button>
-    <button id="confirm-reservation">Reserva</button>
-    <button id="cancel">Tancar</button>
-  </dialog>
+  calendar.render();
+});
+</script>
+{% endblock %}
 
-  </body>
-</html>
+{% block main %}
+<nav class="flex mb-4" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <li class="inline-flex items-center">
+      <a href="{% url 'home' %}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-400 dark:hover:text-white">
+        <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 20 20">
+          <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+        </svg>
+        {% translate 'Home' %}
+      </a>
+    </li>
+  </ol>
+</nav>
+
+<ul class="flex text-sm font-medium text-center text-gray-500 rounded-lg shadow dark:divide-gray-700 dark:text-gray-400">
+  <li class="w-full focus-within:z-10">
+      <a href="{% url 'reservations:reservations_calendar' %}" class="inline-block w-full p-4 bg-white border-r rounded-s-lg border-primary-200 
+        dark:border-primary-700
+        hover:text-primary-700 hover:bg-primary-50 dark:hover:text-white dark:bg-primary-800 dark:hover:bg-primary-700
+        focus:ring-4 focus:outline-none focus:ring-primary-700">
+        {% translate "Calendar" %}
+      </a>
+  </li>
+  <li class="w-full focus-within:z-10">
+      <a href="{% url 'reservations:reservations_list' %}" class="inline-block w-full p-4 text-primary-900 bg-primary-100 border-s-0 border-primary-200 rounded-e-lg active
+      dark:border-primary-700 
+      focus:ring-4 focus:ring-primary-700 focus:outline-none
+      dark:bg-primary-700 dark:text-white" aria-current="page">
+        {% translate "Your bookings" %}
+      </a>
+  </li>
+</ul>
+
+<h1 class="mt-4 mb-4 text-2xl font-bold leading-tight tracking-tight text-primary-900 md:text-3xl dark:text-white">
+  {% translate "Booking calendar" %}
+</h1>
+
+<div id="calendar-container">
+  {% if reservations %}
+  <div id="legend-container">
+    {% for reservation in reservations %}
+    <span class="bootstrap-badge">{{ reservation }}</span>
+    {% endfor %}
+    <span class="bootstrap-badge" style="background-color:{{ legend_activities_outside_color }};">
+      Sense sala reservada</span>
+  </div>
+  {% endif %}
+  <div id="calendar" class="my-calendar"></div>
+</div>
+<dialog id="confirmation-dialog">
+<h2>Crear una nova...</h2>
+<button id="confirm-activity">Sessió</button>
+<button id="confirm-reservation">Reserva</button>
+<button id="cancel">Tancar</button>
+</dialog>
+
+{% endblock %}

@@ -12,6 +12,7 @@
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap">
   <title>{{ config.PROJECT_NAME }} | {% block page_title %}{% endblock %}</title>
+  {% block extra_head %}{% endblock %}
 </head>
 
 <body class="bg-gray-50 dark:bg-gray-900

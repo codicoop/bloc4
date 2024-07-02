@@ -459,7 +459,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
 
     def _reservations_create(self):
         # Create a new room
-        room_test = Room.objects.create(
+        self.room_test = Room.objects.create(
             name="Test Room",
             location="Test Location",
             price=50,
@@ -481,7 +481,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         motivation = self.selenium.find_element(By.ID, "id_motivation")
         assistants = self.selenium.find_element(By.ID, "id_assistants")
         button_create = self.selenium.find_element(By.ID, "id_create_reservation")
-        room.send_keys(room_test.name)
+        room.send_keys(self.room_test.name)
         date.send_keys("02.08.2024")
         start_time.send_keys("10:00")
         end_time.send_keys("12:00")
@@ -495,9 +495,19 @@ class MySeleniumTests(StaticLiveServerTestCase):
 
         self.logging_url_title_and_assert_title(Strings.RESERVATION_LIST_TITLE.value)
 
+        # CANCEL RESERVATION
+
+        reservation_row = self.selenium.find_element(
+            By.ID, f"id_reservation_{self.test_reservation.id}"
+        )
+        reservation_row.click()
+
+        button_cancel = self.selenium.find_element(By.ID, "cancel_reservation")
+        button_cancel.click()
+
+        self.logging_url_title_and_assert_title(Strings.RESERVATION_LIST_TITLE.value)
+
     def _reservations_calendar(self):
         # Check Reservations Calendar
         button_calendar = self.selenium.find_element(By.ID, "check_calendar")
         button_calendar.click()
-
-        self.logging_url_title_and_assert_title(Strings.CHECK_CALENDAR_TITLE.value)

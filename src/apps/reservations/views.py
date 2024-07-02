@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django.db.models import Q
 from django.http import JsonResponse
@@ -11,6 +11,7 @@ from django.views.generic.list import ListView
 
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
+from apps.reservations.services import send_mail_reservation
 from apps.rooms.models import Room
 from project.views import StandardSuccess
 
@@ -31,12 +32,22 @@ class ReservationsListView(ListView):
             return redirect("reservations:create_reservation")
         if "calendar" in request.POST:
             return redirect("reservations:reservations_calendar")
+        if "cancel_reservation" in request.POST:
+            try:
+                reservation = Reservation.objects.get(
+                    id=request.POST.get("cancel_reservation")
+                )
+            except Reservation.DoesNotExist:
+                return JsonResponse({"error": _("Reservation not found.")}, status=404)
+            reservation.delete()
+            send_mail_reservation(reservation, "reservation_canceled")
+            return redirect("reservations:reservations_list")
 
 
 def create_reservation_view(request):
     if request.method == "GET":
         form = ReservationForm()
-    else:
+    if request.method == "POST":
         form = ReservationForm(request.POST)
 
         # Validation of room availability
@@ -76,15 +87,10 @@ def create_reservation_view(request):
             room_time_hours = room_time.total_seconds() // 3600
             reservation.total_price = room_time_hours * float(room.price)
 
-            # The end of the reservation is modified according to full reservation hours
-            reservation.end_time = datetime.strptime(
-                form.data["start_time"], "%H:%M"
-            ) + timedelta(hours=room_time_hours)
-
             reservation.save()
             form.save()
-            # send_confirmation_reservation(form.data)
-        return redirect("reservations:reservations_success")
+            send_mail_reservation(reservation, "reservation_request")
+            return redirect("reservations:reservations_success")
     return render(
         request,
         "reservations/create_reserves.html",

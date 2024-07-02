@@ -24,7 +24,7 @@ class ReservationModelTest(TestCase):
                 "status": Reservation.StatusChoices.PENDING,
             }
         )
-        self.form_error_less_a_hour = ReservationForm(
+        self.form_error_no_full_hour = ReservationForm(
             data={
                 "date": "2024-02-08",
                 "start_time": "10:00",
@@ -49,7 +49,7 @@ class ReservationModelTest(TestCase):
 
     def test_form_errors(self):
         self.assertFalse(self.form_error_greater_current_date.is_valid())
-        self.assertFalse(self.form_error_less_a_hour.is_valid())
+        self.assertFalse(self.form_error_no_full_hour.is_valid())
         self.assertFalse(self.form_error_more_20_hours.is_valid())
 
         with self.subTest("Model validations"):
@@ -58,8 +58,8 @@ class ReservationModelTest(TestCase):
                 ["The date must be greater than the " "current date."],
             )
             self.assertEqual(
-                self.form_error_less_a_hour.errors["end_time"],
-                ["The reservation must have a minimum duration of one hour."],
+                self.form_error_no_full_hour.errors["end_time"],
+                ["The reservation duration must be a whole number of hours."],
             )
 
             self.assertEqual(

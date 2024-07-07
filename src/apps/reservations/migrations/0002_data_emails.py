@@ -10,7 +10,7 @@ def populate_mail_templates(apps, schema_editor):
 
     templates = [
         dict(
-            id="reservation_request",
+            id="reservation_request_user",
             translated_templates={
                 "en": {
                     "subject": "You have requested a new room reservation in Bloc4",
@@ -61,7 +61,7 @@ def populate_mail_templates(apps, schema_editor):
             },
         ),
         dict(
-            id="reservation_confirmed",
+            id="reservation_confirmed_user",
             translated_templates={
                 "en": {
                     "subject": "Your Bloc4 reservation is confirmed",
@@ -105,7 +105,7 @@ def populate_mail_templates(apps, schema_editor):
             },
         ),
         dict(
-            id="reservation_rejected",
+            id="reservation_rejected_user",
             translated_templates={
                 "en": {
                     "subject": "Your Bloc4 reservation has been rejected",
@@ -130,7 +130,7 @@ def populate_mail_templates(apps, schema_editor):
             },
         ),
         dict(
-            id="reservation_canceled",
+            id="reservation_canceled_user",
             translated_templates={
                 "en": {
                     "subject": "Your Bloc4 reservation has been cancelled",
@@ -152,6 +152,88 @@ def populate_mail_templates(apps, schema_editor):
      amb hora d'inici {{ start_time_reservation }}
      i hora de finalització {{ end_time_reservation }} ha estat cancel·lada.
     </p>
+                            """,
+                },
+            },
+        ),
+        dict(
+            id="reservation_request_bloc4",
+            translated_templates={
+                "en": {
+                    "subject": "{{user_name}} has made a new reservation request",
+                    "body": """
+        <p>Hello reservation manager!</p>
+        <br><br>
+        <p>Today {{current_date}} at {{current_time}} we have
+         received a new reservation.</p>
+        <p>These are the details:</p>
+         <ul>
+            <li>Room reserved: {{room}}</li>
+            <li>Date: {{ date_reservation }}</li>
+            <li>Start time: {{ start_time_reservation }}</li>
+            <li>End time: {{ end_time_reservation }}</li>
+            <li>Reserved by the entity: {{ entity }}</li>
+            <li>Responsible person: {{ reserved_by }}</li>
+            <li>Total price: {{ total_price }}</li>
+        </ul>
+
+        <p>The current status of the reservation is <b>{{ status }}</b>.</p>
+        <p>You can manage the request for this reservation in the
+         application administrator at the following link:
+         <a href="{{ reservation_url_admin }}">{{ reservation_url_admin }}</a>
+         </p>
+
+
+                """,
+                },
+                "ca": {
+                    "subject": "{{user_name}} ha fet una nova sol·licitud de reserva",
+                    "body": """
+        <p>Hola gestor de reserves!</p>
+        <br><br>
+        <p>Avui {{current_date}} a {{current_time}} hem rebut una nova reserva.</p>
+        <p>Aquests són els detalls:</p>
+         <ul>
+            <li>Sala reservada: {{room}}</li>
+            <li>Data: {{ date_reservation }}</li>
+            <li>Hora d'inici: {{ start_time_reservation }}</li>
+            <li>Hora de finalització: {{ end_time_reservation }}</li>
+            <li>Reservada per l'entitat: {{ entity }}</li>
+            <li>Persona responsable: {{ reserved_by }}</li>
+            <li>Preu total: {{ total_price }}</li>
+        </ul>
+
+        <p>L'estat actual de la reserva és <b>{{ status }}</b>.</p>
+        <p>Podeu gestionar la sol·licitud d'aquesta reserva a
+        administrador de l'aplicació en el següent enllaç:
+        <a href="{{ reservation_url_admin }}">{{ reservation_url_admin }}</a>
+        </p>
+                """,
+                },
+            },
+        ),
+        dict(
+            id="reservation_canceled_bloc4",
+            translated_templates={
+                "en": {
+                    "subject": "{{user_name}} has cancelled the reservation",
+                    "body": """
+    <p>Hello reservation manager!</p>
+    <br><br>
+    <p>{{user_name}} has cancelled the reservation of the room
+     {{room}} for {{ date_reservation }} with start time {{ start_time_reservation }}}
+      and end time {{end_time_reservation}}</p>
+
+                            """,
+                },
+                "ca": {
+                    "subject": "{{user_name}} ha cancel·lat la seva reserva",
+                    "body": """
+    <p>Hola gestor de reserves!</p>
+    <br><br>
+    <p>{{user_name}} ha cancel·lat la reserva de la sala
+    {{room}} per a {{date_reservation}} amb hora d'inici {{start_time_reservation}}
+     i hora de finalització {{end_time_reservation}}</p>
                             """,
                 },
             },

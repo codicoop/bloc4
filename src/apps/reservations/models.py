@@ -2,6 +2,7 @@ from datetime import date, datetime, timedelta
 
 from django.core.validators import ValidationError
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from project.fields import flowbite
@@ -108,6 +109,12 @@ class Reservation(BaseModel):
 
     def __str__(self):
         return f"{self.room} | {self.date}"
+
+    def get_admin_url(self):
+        return reverse(
+            "admin:reservations_reservation_change",
+            args=(self.pk,),
+        )
 
     def clean(self, *args, **kwargs):
         super().clean()

@@ -39,8 +39,10 @@ class ReservationsListView(ListView):
                 )
             except Reservation.DoesNotExist:
                 return JsonResponse({"error": _("Reservation not found.")}, status=404)
-            reservation.delete()
-            send_mail_reservation(reservation, "reservation_canceled")
+            reservation.status = Reservation.StatusChoices.CANCELED
+            reservation.save()
+            send_mail_reservation(reservation, "reservation_canceled_user")
+            send_mail_reservation(reservation, "reservation_canceled_bloc4")
             return redirect("reservations:reservations_list")
 
 
@@ -89,7 +91,8 @@ def create_reservation_view(request):
 
             reservation.save()
             form.save()
-            send_mail_reservation(reservation, "reservation_request")
+            send_mail_reservation(reservation, "reservation_request_user")
+            send_mail_reservation(reservation, "reservation_request_bloc4")
             return redirect("reservations:reservations_success")
     return render(
         request,

@@ -32,9 +32,10 @@ def send_mail_reservation(reservation, action):
         "reservation_url_admin":
             f"{settings.ABSOLUTE_URL}/admin/reservations/reservation/{reservation.id}",
     }
-    send(
-        sender=settings.DEFAULT_RESERVATIONS_EMAIL,
-        recipients=recipients,
-        template=action,
-        context=context,
-    )
+    if settings.DEFAULT_RESERVATIONS_EMAIL:
+        send(
+            sender=settings.DEFAULT_RESERVATIONS_EMAIL,
+            recipients=recipients,
+            template=action,
+            context=context,
+        )

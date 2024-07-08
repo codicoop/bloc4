@@ -99,6 +99,11 @@ class Reservation(BaseModel):
         on_delete=models.CASCADE,
         related_name="reservation_canceled_by",
     )
+    canceled_at = models.DateTimeField(
+        verbose_name=_("canceled_at"),
+        null=True,
+        blank=True,
+    )
     status = flowbite.ModelSelectDropdownField(
         choices=StatusChoices,
         null=False,

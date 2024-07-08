@@ -23,6 +23,7 @@ class ReservationAdmin(ModelAdmin):
         "entity",
         "reserved_by",
         "canceled_by",
+        "canceled_at",
         "status",
     )
     list_filter = (
@@ -32,6 +33,7 @@ class ReservationAdmin(ModelAdmin):
         "entity",
         "reserved_by",
         "canceled_by",
+        "canceled_at",
         "status",
     )
     search_fields = (
@@ -41,6 +43,7 @@ class ReservationAdmin(ModelAdmin):
         "entity",
         "reserved_by",
         "canceled_by",
+        "canceled_at",
         "status",
     )
     fields = (
@@ -55,6 +58,7 @@ class ReservationAdmin(ModelAdmin):
         "entity",
         "reserved_by",
         "canceled_by",
+        "canceled_at",
         "status",
         "actions_field",
     )

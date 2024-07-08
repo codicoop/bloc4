@@ -167,7 +167,16 @@
             {% translate 'Status unknown' %}
           {% endif %}
         </p>
-        {% if reservation.status == "pending" %}
+        {% if reservation.status == reservation.StatusChoices.CANCELED %}
+          <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
+            {% translate 'Canceled by' %}
+          </p>
+          <p class="text-gray-500 dark:text-gray-400 col-start-2">
+            {{ reservation.canceled_by }}
+          </p>
+
+        {% endif %}
+        {% if reservation.status == reservation.StatusChoices.PENDING or reservation.status == reservation.StatusChoices.CONFIRMED %}
           <form method="post" action>
             {% csrf_token %}
             <button class="relative flex items-center justify-center p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2

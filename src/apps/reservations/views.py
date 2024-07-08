@@ -40,6 +40,7 @@ class ReservationsListView(ListView):
             except Reservation.DoesNotExist:
                 return JsonResponse({"error": _("Reservation not found.")}, status=404)
             reservation.status = Reservation.StatusChoices.CANCELED
+            reservation.canceled_by = request.user
             reservation.save()
             send_mail_reservation(reservation, "reservation_canceled_user")
             send_mail_reservation(reservation, "reservation_canceled_bloc4")

@@ -91,6 +91,14 @@ class Reservation(BaseModel):
         on_delete=models.CASCADE,
         related_name="reservation_reserved_by",
     )
+    canceled_by = models.ForeignKey(
+        "users.User",
+        verbose_name=_("canceled by"),
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="reservation_canceled_by",
+    )
     status = flowbite.ModelSelectDropdownField(
         choices=StatusChoices,
         null=False,

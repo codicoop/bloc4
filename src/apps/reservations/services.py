@@ -10,8 +10,8 @@ def send_mail_reservation(reservation, action):
     else:
         recipients = [reservation.reserved_by.email]
     context = {
-        "user_name": reservation.reserved_by.full_name,
         "reserved_by": reservation.reserved_by,
+        "canceled_by": reservation.canceled_by,
         "current_date": str(
             formats.date_format(
                 timezone.now().date(),

@@ -1,3 +1,4 @@
+from constance import config
 from django.conf import settings
 from django.utils import formats, timezone
 
@@ -6,7 +7,7 @@ from project.post_office import send
 
 def send_mail_reservation(reservation, action):
     if "bloc4" in action:
-        recipients = [settings.DEFAULT_RESERVATIONS_EMAIL]
+        recipients = [config.RESERVATIONS_EMAIL]
     else:
         recipients = [reservation.reserved_by.email]
     context = {
@@ -32,9 +33,9 @@ def send_mail_reservation(reservation, action):
         "reservation_url_admin":
             f"{settings.ABSOLUTE_URL}/admin/reservations/reservation/{reservation.id}",
     }
-    if settings.DEFAULT_RESERVATIONS_EMAIL:
+    if config.RESERVATIONS_EMAIL:
         send(
-            sender=settings.DEFAULT_RESERVATIONS_EMAIL,
+            sender=config.RESERVATIONS_EMAIL,
             recipients=recipients,
             template=action,
             context=context,

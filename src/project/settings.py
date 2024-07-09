@@ -374,6 +374,9 @@ CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 DEFAULT_PROJECT_NAME = env.str("DEFAULT_PROJECT_NAME", default="")
 DEFAULT_CONTACT_EMAIL = env.str("DEFAULT_CONTACT_EMAIL", default="")
 DEFAULT_RESERVATIONS_EMAIL = env.str("DEFAULT_RESERVATIONS_EMAIL", default="")
+DEFAULT_MAXIMUN_ADVANCE_RESERVATION_DAYS = env.int(
+    "DEFAULT_MAXIMUN_ADVANCE_RESERVATION_DAYS", default=""
+)
 CONSTANCE_CONFIG = {
     "PROJECT_NAME": (DEFAULT_PROJECT_NAME, _("Name of the website.")),
     "CONTACT_EMAIL": (DEFAULT_CONTACT_EMAIL, _("Contact email address.")),
@@ -381,6 +384,9 @@ CONSTANCE_CONFIG = {
         DEFAULT_RESERVATIONS_EMAIL,
         _("Reservations email address."),
     ),
+    "MAXIMUN_ADVANCE_RESERVATION_DAYS":
+        (DEFAULT_MAXIMUN_ADVANCE_RESERVATION_DAYS,
+         _("Maximum advance reservation days.")),
 }
 
 

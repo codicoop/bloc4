@@ -1,5 +1,6 @@
 from datetime import date, datetime, timedelta
 
+from constance import config
 from django.core.validators import ValidationError
 from django.db import models
 from django.urls import reverse
@@ -133,6 +134,19 @@ class Reservation(BaseModel):
         super().clean()
         errors = {}
 
+        # Validation that reservation is made within maximum day in advance configured.
+        future_date = date.today() + timedelta(
+            days=config.MAXIMUN_ADVANCE_RESERVATION_DAYS
+        )
+        if self.date > future_date:
+            errors.update(
+                {
+                    "date": ValidationError(
+                        _("The maximum advance reservation period"
+                          f" is {config.MAXIMUN_ADVANCE_RESERVATION_DAYS} days.")
+                    )
+                },
+            )
         # Validates that the reservation date is later than the current date.
         if self.date < date.today():
             errors.update(

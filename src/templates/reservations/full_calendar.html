@@ -149,7 +149,11 @@
 <h1 class="mt-4 mb-4 text-2xl font-bold leading-tight tracking-tight text-primary-900 md:text-3xl dark:text-white">
   {% translate "Reservations calendar" %}
 </h1>
-
+<div class="mb-6 flex justify-end">
+  <a href="{% url 'reservations:create_reservation' %}" class="text-white bg-primary-800 hover:bg-primary-900 focus:outline-none focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+    {% translate "New reservation" %}
+  </a>
+</div>
 <div id="calendar-container">
   <div id="calendar" class="my-calendar"></div>
 </div>

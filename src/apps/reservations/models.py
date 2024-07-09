@@ -142,11 +142,15 @@ class Reservation(BaseModel):
             errors.update(
                 {
                     "date": ValidationError(
-                        _("The maximum advance reservation period"
-                          f" is {config.MAXIMUN_ADVANCE_RESERVATION_DAYS} days.")
+                        _(
+                            "The maximum advance reservation period"
+                            f" is {config.MAXIMUN_ADVANCE_RESERVATION_DAYS} days."
+                        )
                     )
                 },
             )
+            raise ValidationError(errors)
+
         # Validates that the reservation date is later than the current date.
         if self.date < date.today():
             errors.update(
@@ -156,7 +160,7 @@ class Reservation(BaseModel):
                     )
                 },
             )
-
+            raise ValidationError(errors)
         # Validates that the reservation end time is later than the start time.
         if self.end_time < self.start_time:
             errors.update(
@@ -166,6 +170,7 @@ class Reservation(BaseModel):
                     )
                 },
             )
+            raise ValidationError(errors)
 
         # Validates that the reservation duration is between 1 and 20 hours.
         if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
@@ -181,6 +186,7 @@ class Reservation(BaseModel):
                     )
                 },
             )
+            raise ValidationError(errors)
         if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
             str(self.start_time), "%H:%M:%S"
         ) > timedelta(hours=20):
@@ -191,6 +197,7 @@ class Reservation(BaseModel):
                     )
                 },
             )
+            raise ValidationError(errors)
 
         # Validation of the exact duration of the reservation in full hours
         total_time = datetime.strptime(
@@ -204,5 +211,4 @@ class Reservation(BaseModel):
                     )
                 },
             )
-        if errors:
             raise ValidationError(errors)

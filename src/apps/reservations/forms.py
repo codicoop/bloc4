@@ -7,47 +7,47 @@ from project.fields import flowbite
 
 
 class ReservationForm(forms.ModelForm):
-    date = forms.DateField(
+    date = flowbite.FormDateField(
         widget=forms.DateInput(
             attrs={
                 "type": "date",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                        "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                        "focus:border-primary-60 dark:bg-gray-700 "
-                        "dark:border-gray-600 dark:placeholder-gray-400 "
-                        "dark:text-white dark:focus:ring-primary-500 "
-                        "dark:focus:border-primary-500",
+                "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "focus:border-primary-60 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("Date"),
             }
         )
     )
-    start_time = forms.TimeField(
+    start_time = flowbite.FormTimeField(
         widget=forms.TimeInput(
             attrs={
                 "type": "time",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                        "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                        "focus:border-primary-60 dark:bg-gray-700 "
-                        "dark:border-gray-600 dark:placeholder-gray-400 "
-                        "dark:text-white dark:focus:ring-primary-500 "
-                        "dark:focus:border-primary-500",
+                "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "focus:border-primary-60 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("Start time"),
                 "placeholder": "00:00",
             }
         )
     )
-    end_time = forms.TimeField(
+    end_time = flowbite.FormTimeField(
         widget=forms.TimeInput(
             attrs={
                 "type": "time",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                        "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                        "focus:border-primary-60 dark:bg-gray-700 "
-                        "dark:border-gray-600 dark:placeholder-gray-400 "
-                        "dark:text-white dark:focus:ring-primary-500 "
-                        "dark:focus:border-primary-500",
+                "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "focus:border-primary-60 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("End time"),
                 "placeholder": "00:00",
@@ -81,11 +81,11 @@ class ReservationForm(forms.ModelForm):
         widget=forms.Select(
             attrs={
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                         "border-gray-300 text-gray-900 focus:ring-primary-500 "
-                         "focus:border-primary-500 dark:bg-gray-700 "
-                         "dark:border-gray-600 dark:placeholder-gray-400 "
-                         "dark:text-white dark:focus:ring-primary-500 "
-                         "dark:focus:border-primary-500",
+                "border-gray-300 text-gray-900 focus:ring-primary-500 "
+                "focus:border-primary-500 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
                 "autofocus": True,
                 "autocomplete": True,
                 "help_text": _("Room"),

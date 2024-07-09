@@ -123,9 +123,10 @@ class ReservationsCalendarView(TemplateView):
         context = super().get_context_data(**kwargs)
         reservations = Reservation.objects.all().exclude(
             status__in=[
-            Reservation.StatusChoices.CANCELED,
-            Reservation.StatusChoices.REFUSED,
-        ])
+                Reservation.StatusChoices.CANCELED,
+                Reservation.StatusChoices.REFUSED,
+            ]
+        )
         context["reservations"] = reservations
         return context
 
@@ -135,9 +136,10 @@ class AjaxCalendarFeed(View):
         data = []
         reservations = Reservation.objects.all().exclude(
             status__in=[
-            Reservation.StatusChoices.CANCELED,
-            Reservation.StatusChoices.REFUSED,
-        ])
+                Reservation.StatusChoices.CANCELED,
+                Reservation.StatusChoices.REFUSED,
+            ]
+        )
         for reservation in reservations:
             reservation_data = {
                 "room": reservation.room.name,

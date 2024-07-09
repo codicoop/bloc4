@@ -384,9 +384,10 @@ CONSTANCE_CONFIG = {
         DEFAULT_RESERVATIONS_EMAIL,
         _("Reservations email address."),
     ),
-    "MAXIMUN_ADVANCE_RESERVATION_DAYS":
-        (DEFAULT_MAXIMUN_ADVANCE_RESERVATION_DAYS,
-         _("Maximum advance reservation days.")),
+    "MAXIMUN_ADVANCE_RESERVATION_DAYS": (
+        DEFAULT_MAXIMUN_ADVANCE_RESERVATION_DAYS,
+        _("Maximum advance reservation days."),
+    ),
 }
 
 

@@ -60,7 +60,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
             "Specifies whether the user has verified their email. "
             "You can only access the different sections of"
             " the application when you have verified it."
-        )
+        ),
     )
     entity = models.ForeignKey(
         "entities.Entity",
@@ -81,7 +81,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
             "If the box is unchecked, the user will not be able to authenticate"
             " to access the application. It is usually only disabled when"
             " you want to unsubscribe a user but retaining their data."
-        )
+        ),
     )
     is_staff = models.BooleanField(default=False)
 

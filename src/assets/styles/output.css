@@ -2825,6 +2825,11 @@ input:checked + .toggle-bg {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+:is(.dark .dark\:text-primary-100) {
+  --tw-text-opacity: 1;
+  color: rgb(228 224 245 / var(--tw-text-opacity));
+}
+
 :is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(173 173 173 / var(--tw-placeholder-opacity));

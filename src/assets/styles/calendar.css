@@ -8,6 +8,9 @@
 .my-calendar.fc {
   --fc-today-bg-color: #E4E0F5;
 }
+.my-calendar.fc .fc-event {
+  overflow: hidden;
+}
 /* Les fletxes per canviar el mes */
 .my-calendar.fc .fc-button {
   background-color: #927ed0;
@@ -24,6 +27,12 @@
 .my-calendar.fc .fc-button.fc-button-active:hover {
   background-color: #745AC4;
   border-color: #745AC4;
+}
+
+/* Punt event calendari mes */
+:root {
+  --fc-event-border-color: #745AC4;
+  --fc-event-bg-color: #927ed0;
 }
 
 @media (min-width: 680px) {

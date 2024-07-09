@@ -57,7 +57,7 @@
       <h2 id="accordion-color-heading-{{ reservation.id }}">
         <button type="button"
           class="flex items-center justify-between gap-3 w-full p-5 rounded-xl font-medium rtl:text-right shadow-md
-          {% if reservation.status == 'canceled' %}
+          {% if reservation.status == reservation.StatusChoices.CANCELED or reservation.status == reservation.StatusChoices.REFUSED %}
             bg-gray-300 text-gray-600 hover:bg-gray-200
           {% else %}bg-primary-300 text-gray-500 hover:bg-primary-200 {% endif %}
           focus:ring-4 focus:ring-primary-200

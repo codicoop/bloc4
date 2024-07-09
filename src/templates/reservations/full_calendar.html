@@ -132,25 +132,25 @@
 
 <ul class="flex mb-8 text-sm font-medium text-center text-gray-500 rounded-lg shadow dark:divide-gray-700 dark:text-gray-400">
   <li class="w-full focus-within:z-10">
-      <a href="{% url 'reservations:reservations_calendar' %}" class="inline-block w-full p-4 bg-white border-r rounded-s-lg border-primary-200 
+      <a href="{% url 'reservations:reservations_calendar' %}" class="inline-block w-full p-4 ext-primary-900 bg-primary-100 border-r rounded-s-lg border-primary-200 active
         dark:border-primary-700
-        hover:text-primary-700 hover:bg-primary-50 dark:hover:text-white dark:bg-primary-800 dark:hover:bg-primary-700
         focus:ring-4 focus:outline-none focus:ring-primary-700">
         {% translate "Calendar" %}
       </a>
-  </li>
-  <li class="w-full focus-within:z-10">
-      <a href="{% url 'reservations:reservations_list' %}" class="inline-block w-full p-4 text-primary-900 bg-primary-100 border-s-0 border-primary-200 rounded-e-lg active
+    </li>
+    <li class="w-full focus-within:z-10">
+      <a href="{% url 'reservations:reservations_list' %}" class="inline-block w-full p-4 bg-white border-s-0 border-primary-200 rounded-e-lg 
       dark:border-primary-700 
+      hover:text-primary-700 hover:bg-primary-50 dark:hover:text-white dark:bg-primary-700 dark:hover:bg-primary-700
       focus:ring-4 focus:ring-primary-700 focus:outline-none
-      dark:bg-primary-700 dark:text-white" aria-current="page">
-        {% translate "Your bookings" %}
+     dark:text-white" aria-current="page">
+        {% translate "Your reservations" %}
       </a>
   </li>
 </ul>
 
 <h1 class="mt-4 mb-4 text-2xl font-bold leading-tight tracking-tight text-primary-900 md:text-3xl dark:text-white">
-  {% translate "Booking calendar" %}
+  {% translate "Reservations calendar" %}
 </h1>
 
 <div id="calendar-container">

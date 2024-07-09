@@ -1,4 +1,7 @@
-/* Layout */
+.my-calendar.fc .fc-toolbar-title {
+  font-size: 20px;
+  line-height: 24px;
+}
 .my-calendar.fc .fc-toolbar-title:first-letter {
   text-transform: capitalize;
 }
@@ -21,4 +24,11 @@
 .my-calendar.fc .fc-button.fc-button-active:hover {
   background-color: #745AC4;
   border-color: #745AC4;
+}
+
+@media (min-width: 680px) {
+  .my-calendar.fc .fc-toolbar-title {
+    font-size: 28px;
+    line-height: 32px;
+  }
 }

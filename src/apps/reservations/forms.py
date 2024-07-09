@@ -11,7 +11,7 @@ class ReservationForm(forms.ModelForm):
         widget=forms.DateInput(
             attrs={
                 "type": "date",
-                "class": "form-control",
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-60 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("Date"),
             }
@@ -21,7 +21,7 @@ class ReservationForm(forms.ModelForm):
         widget=forms.TimeInput(
             attrs={
                 "type": "time",
-                "class": "form-control",
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-60 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("Start time"),
                 "placeholder": "00:00",
@@ -32,7 +32,7 @@ class ReservationForm(forms.ModelForm):
         widget=forms.TimeInput(
             attrs={
                 "type": "time",
-                "class": "form-control",
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-60 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("End time"),
                 "placeholder": "00:00",
@@ -65,7 +65,7 @@ class ReservationForm(forms.ModelForm):
         queryset=Room.objects.all(),
         widget=forms.Select(
             attrs={
-                "class": "form-control",
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500",
                 "autofocus": True,
                 "autocomplete": True,
                 "help_text": _("Room"),

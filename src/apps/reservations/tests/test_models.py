@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from django.test import TestCase
 
 from apps.entities.tests.factories import EntityFactory
@@ -15,7 +16,7 @@ class ReservationModelTest(TestCase):
         self.entity = EntityFactory()
         self.form_error_greater_current_date = ReservationForm(
             data={
-                "date": "2024-02-08",
+                "date": date.today() + timedelta(days=-1),
                 "start_time": "10:00",
                 "end_time": "11:00",
                 "room": self.room.id,
@@ -26,18 +27,20 @@ class ReservationModelTest(TestCase):
         )
         self.form_error_no_full_hour = ReservationForm(
             data={
-                "date": "2024-02-08",
+                "date": date.today() + timedelta(days=+1),
                 "start_time": "10:00",
                 "end_time": "10:30",
                 "room": self.room.id,
                 "entity": self.entity.id,
+                "motivation": "Test Motivation",
+                "assistants": "Test Assistants",
                 "reserved_by": 1,
                 "status": Reservation.StatusChoices.PENDING,
             }
         )
         self.form_error_more_20_hours = ReservationForm(
             data={
-                "date": "2024-02-08",
+                "date": date.today() + timedelta(days=+1),
                 "start_time": "02:00",
                 "end_time": "23:00",
                 "room": self.room.id,
@@ -55,14 +58,14 @@ class ReservationModelTest(TestCase):
         with self.subTest("Model validations"):
             self.assertEqual(
                 self.form_error_greater_current_date.errors["date"],
-                ["The date must be greater than the " "current date."],
+                ["La data ha de ser posterior a l'actual."],
             )
             self.assertEqual(
                 self.form_error_no_full_hour.errors["end_time"],
-                ["The reservation duration must be a whole number of hours."],
+                ["La durada mínima d'una reserva és d'una hora."],
             )
 
             self.assertEqual(
                 self.form_error_more_20_hours.errors["end_time"],
-                ["The maximum standby time is 20 hours."],
+                ["La durada máxima d'una reserva és de 20 hores."],
             )

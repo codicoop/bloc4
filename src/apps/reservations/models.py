@@ -161,6 +161,7 @@ class Reservation(BaseModel):
                 },
             )
             raise ValidationError(errors)
+
         # Validates that the reservation end time is later than the start time.
         if self.end_time < self.start_time:
             errors.update(

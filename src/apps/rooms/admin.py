@@ -11,8 +11,6 @@ class RoomAdmin(ModelAdmin):
         "location",
         "price",
         "capacity",
-        "picture",
-        "equipment",
         "room_type",
     )
     list_filter = ("name", "price", "capacity", "equipment")

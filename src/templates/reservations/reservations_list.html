@@ -28,7 +28,7 @@
       <a href="{% url 'reservations:reservations_calendar' %}" class="inline-block w-full p-4 bg-white border-r rounded-s-lg border-primary-200
         dark:border-primary-700
         hover:text-primary-700 hover:bg-primary-50 dark:hover:text-white dark:bg-primary-800 dark:hover:bg-primary-700
-        focus:ring-4 focus:outline-none focus:ring-primary-700">
+        focus:ring-4 focus:outline-none focus:ring-primary-700" id="check_calendar">
         {% translate "Calendar" %}
       </a>
   </li>
@@ -222,7 +222,7 @@
                   <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                     <form method="post" action="" class="w-full">
                       {% csrf_token %}
-                      <button data-modal-hide="default-modal" type="submit" 
+                      <button data-modal-hide="default-modal" type="submit"
                         class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
                         hover:bg-primary-300" name="cancel_reservation" value="{{ reservation.id }}" id="id_cancel_reservation_{{ reservation.id }}">
                         {% translate 'Cancel reservation' %}

@@ -15,15 +15,10 @@ class ReservationAdmin(ModelAdmin):
         "date",
         "start_time",
         "end_time",
-        "motivation",
-        "assistants",
         "room",
-        "is_paid",
         "total_price",
         "entity",
         "reserved_by",
-        "canceled_by",
-        "canceled_at",
         "status",
     )
     list_filter = (

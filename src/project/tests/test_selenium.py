@@ -61,7 +61,7 @@ class Strings(Enum):
     REGISTRY_UPDATE_TITLE = f"{config.PROJECT_NAME} | Registre actualitzat"
     PASSWORD_CHANGE_TITLE = f"{config.PROJECT_NAME} | Modificar la contrasenya"
     EMAIL_VALIDATION_TITLE = f"{config.PROJECT_NAME} | Validació de correu"
-    RESERVATION_LIST_TITLE = f"{config.PROJECT_NAME} | Reservations List"
+    RESERVATION_LIST_TITLE = f"{config.PROJECT_NAME} | Llistat de reserves"
     CREATE_RESERVATION_TITLE = f"{config.PROJECT_NAME} | Create Reservation"
     CHECK_CALENDAR_TITLE = ""
     SUCCESSFUL_RESERVATION = f"{config.PROJECT_NAME} | Successful reservation"

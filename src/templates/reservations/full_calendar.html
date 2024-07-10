@@ -80,7 +80,7 @@
     weekends: true,
 
     events: {
-      url: '/reservations/ajax/calendar/',
+      url: '/reserves/ajax/calendar/',
       error: function() {
           alert("No s'han pogut carregar les reserves. Recarrega la pàgina i si d'aquí uns minuts segueix fallant, si us plau avisa'ns.");
       }
@@ -135,8 +135,8 @@
       </a>
     </li>
     <li class="w-full focus-within:z-10">
-      <a href="{% url 'reservations:reservations_list' %}" class="inline-block w-full p-4 bg-white border-s-0 border-primary-200 rounded-e-lg 
-      dark:border-primary-700 
+      <a href="{% url 'reservations:reservations_list' %}" class="inline-block w-full p-4 bg-white border-s-0 border-primary-200 rounded-e-lg
+      dark:border-primary-700
       hover:text-primary-700 hover:bg-primary-50 dark:hover:text-white dark:bg-primary-700 dark:hover:bg-primary-700
       focus:ring-4 focus:ring-primary-700 focus:outline-none
      dark:text-white" aria-current="page">

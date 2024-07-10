@@ -236,6 +236,10 @@
         </div>
       </div>
     </div>
+    {% empty %}
+    <div>
+      <p>{% translate 'You have made no reservations yet. When you do, they will appear here.' %}</p>
+    </div>
   {% endfor %}
 </div>
 

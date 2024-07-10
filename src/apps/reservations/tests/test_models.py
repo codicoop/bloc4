@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+
 from django.test import TestCase
 
 from apps.entities.tests.factories import EntityFactory

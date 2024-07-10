@@ -62,7 +62,7 @@ class Strings(Enum):
     PASSWORD_CHANGE_TITLE = f"{config.PROJECT_NAME} | Modificar la contrasenya"
     EMAIL_VALIDATION_TITLE = f"{config.PROJECT_NAME} | Validació de correu"
     RESERVATION_LIST_TITLE = f"{config.PROJECT_NAME} | Llistat de reserves"
-    CREATE_RESERVATION_TITLE = f"{config.PROJECT_NAME} | Create Reservation"
+    CREATE_RESERVATION_TITLE = f"{config.PROJECT_NAME} | Crear reserva"
     CHECK_CALENDAR_TITLE = ""
     SUCCESSFUL_RESERVATION = f"{config.PROJECT_NAME} | Successful reservation"
 
@@ -467,7 +467,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
             equipment="Equipment Test",
             room_type=Room.RoomTypeChoices.EVENT_ROOM,
         )
-
         # Create a new reservation.
         button_create = self.selenium.find_element(By.ID, "create_reservation")
         button_create.click()
@@ -482,9 +481,9 @@ class MySeleniumTests(StaticLiveServerTestCase):
         assistants = self.selenium.find_element(By.ID, "id_assistants")
         button_create = self.selenium.find_element(By.ID, "id_create_reservation")
         room.send_keys(self.room_test.name)
-        date.send_keys("02.08.2024")
-        start_time.send_keys("10:00")
-        end_time.send_keys("12:00")
+        date.send_keys("08.08.2024")
+        start_time.send_keys("1000AM")
+        end_time.send_keys("1100AM")
         motivation.send_keys("Test Motivation")
         assistants.send_keys("Test Assistants")
         button_create.click()

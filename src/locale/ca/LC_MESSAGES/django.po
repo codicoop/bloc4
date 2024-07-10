@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-09 16:22+0200\n"
-"PO-Revision-Date: 2024-07-09 16:50+0200\n"
+"POT-Creation-Date: 2024-07-10 10:47+0200\n"
+"PO-Revision-Date: 2024-07-10 10:48+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -154,23 +154,21 @@ msgstr "Data"
 msgid "Start time"
 msgstr "Hora inici"
 
-#: apps/reservations/forms.py:52 apps/reservations/models.py:36
+#: apps/reservations/forms.py:51 apps/reservations/models.py:36
 msgid "End time"
 msgstr "Hora final"
 
-#: apps/reservations/forms.py:63 apps/reservations/forms.py:64
-#: apps/reservations/models.py:42
+#: apps/reservations/forms.py:61 apps/reservations/models.py:42
 #: templates/reservations/reservations_list.html:117
 msgid "Motivation"
 msgstr "Motiu"
 
-#: apps/reservations/forms.py:74 apps/reservations/forms.py:75
-#: apps/reservations/models.py:50
+#: apps/reservations/forms.py:71 apps/reservations/models.py:50
 #: templates/reservations/reservations_list.html:127
 msgid "Assistants"
 msgstr "Assistents"
 
-#: apps/reservations/forms.py:91 apps/reservations/forms.py:92
+#: apps/reservations/forms.py:87
 #: templates/reservations/reservations_list.html:87
 msgid "Room"
 msgstr "Sala"
@@ -234,7 +232,7 @@ msgstr "entitat"
 
 #: apps/reservations/models.py:89
 msgid "reserved by"
-msgstr "Reservat per"
+msgstr "reservat per"
 
 #: apps/reservations/models.py:97
 msgid "canceled by"
@@ -261,27 +259,27 @@ msgstr "reserva"
 msgid "reservations"
 msgstr "reserves"
 
-#: apps/reservations/models.py:145
+#: apps/reservations/models.py:146
 msgid "The maximum advance reservation period"
 msgstr "Període màxim de reserva anticipada"
 
-#: apps/reservations/models.py:155
+#: apps/reservations/models.py:159
 msgid "The date must be greater than the current date."
 msgstr "La data ha de ser posterior a l'actual."
 
-#: apps/reservations/models.py:165
+#: apps/reservations/models.py:169
 msgid "The end time must be greater than the start time."
 msgstr "L'hora de finalització ja de ser posterior a l'hora d'inici."
 
-#: apps/reservations/models.py:178
+#: apps/reservations/models.py:183
 msgid "The reservation must have a minimum duration of one hour."
 msgstr "La durada mínima d'una reserva és d'una hora."
 
-#: apps/reservations/models.py:190
+#: apps/reservations/models.py:196
 msgid "The maximum standby time is 20 hours."
 msgstr "La durada máxima d'una reserva és de 20 hores."
 
-#: apps/reservations/models.py:203
+#: apps/reservations/models.py:210
 msgid "The reservation duration must be a whole number of hours."
 msgstr "La reserva ha de tenir una durada d'hores senceres."
 
@@ -299,7 +297,7 @@ msgstr "complet"
 
 #: apps/reservations/views.py:41
 msgid "Reservation not found."
-msgstr "Reserva no trobada"
+msgstr "Reserva no trobada."
 
 #: apps/reservations/views.py:70
 msgid "The room is not available for this time period."
@@ -422,7 +420,7 @@ msgstr "E-mail pendent de verificar"
 #: templates/registration/password_change_form.html:23
 #: templates/registration/send_verification_code.html:23
 #: templates/reservations/create_reserves.html:22
-#: templates/reservations/full_calendar.html:124
+#: templates/reservations/full_calendar.html:123
 #: templates/reservations/reservations_list.html:20
 msgid "Home"
 msgstr "Inici"
@@ -519,7 +517,7 @@ msgstr "Hi ha un error en el formulari!"
 
 #: templates/demo_flowbite.html:350
 msgid "Please check the fields marked in red"
-msgstr "Comprova els camps marcats en vermell"
+msgstr "Si us plau, comprova els camps marcats en vermell"
 
 #: templates/demo_flowbite.html:362
 msgid "Close error alert"
@@ -619,7 +617,7 @@ msgstr "Modificar la contrasenya"
 
 #: templates/profile/details.html:105
 msgid "Here you can change your password."
-msgstr "Aquí podeu canviar la contrasenya."
+msgstr "Aquí pots canviar la contrasenya."
 
 #: templates/profile/details.html:112
 msgid "Change password"
@@ -631,7 +629,7 @@ msgstr "La teva entitat"
 
 #: templates/profile/details.html:134
 msgid "Here you can view your entity's data."
-msgstr "Aquí podeu veure les dades de la teva entitat."
+msgstr "Aquí pots veure les dades de la teva entitat."
 
 #: templates/profile/details.html:140
 msgid "Email"
@@ -801,8 +799,9 @@ msgid "Create Reservation"
 msgstr "Crear reserva"
 
 #: templates/reservations/create_reserves.html:39
-#: templates/reservations/full_calendar.html:162
-#: templates/reservations/full_calendar.html:183
+#: templates/reservations/full_calendar.html:153
+#: templates/reservations/full_calendar.html:165
+#: templates/reservations/full_calendar.html:186
 #: templates/reservations/reservations_list.html:50
 msgid "New reservation"
 msgstr "Nova reserva"
@@ -826,22 +825,22 @@ msgstr "Crear reserva"
 msgid "Reservations List"
 msgstr "Llistat de reserves"
 
-#: templates/reservations/full_calendar.html:135
+#: templates/reservations/full_calendar.html:134
 #: templates/reservations/reservations_list.html:32
 msgid "Calendar"
 msgstr "Calendari"
 
-#: templates/reservations/full_calendar.html:144
+#: templates/reservations/full_calendar.html:143
 #: templates/reservations/reservations_list.html:40
 #: templates/reservations/reservations_list.html:46
 msgid "Your reservations"
 msgstr "Les teves reserves"
 
-#: templates/reservations/full_calendar.html:150
+#: templates/reservations/full_calendar.html:149
 msgid "Reservations calendar"
 msgstr "Calendari de reserves"
 
-#: templates/reservations/full_calendar.html:174
+#: templates/reservations/full_calendar.html:177
 msgid "Do you want to create a new reservation in this time?"
 msgstr "Vols crear una nova reserva durant aquest període?"
 
@@ -917,6 +916,10 @@ msgid ""
 msgstr ""
 "Segur que vols eliminar aquesta reserva? Aquesta acció no es pot desfer. Si "
 "elimines la reserva l'administració será notificada."
+
+#: templates/reservations/reservations_list.html:241
+msgid "You have made no reservations yet. When you do, they will appear here."
+msgstr "Encara no tens cap reserva feta. Quan en tinguis, apareixeran aquí."
 
 #~ msgid "Price"
 #~ msgstr "Preu"

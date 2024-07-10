@@ -1,8 +1,10 @@
+from django.core.validators import validate_image_file_extension
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from project.fields import flowbite
 from project.models import BaseModel
+from project.storage_backends import PrivateMediaStorage
 
 
 class Entity(BaseModel):
@@ -68,6 +70,14 @@ class Entity(BaseModel):
         null=False,
         default=False,
         help_text=_("The entity has permanent premises in Bloc4"),
+    )
+    logo = flowbite.ModelImageField(
+        _("Logo"),
+        blank=True,
+        null=True,
+        storage=PrivateMediaStorage(),
+        validators=[validate_image_file_extension],
+        help_text=_("Logo of the entity"),
     )
 
     def __str__(self):

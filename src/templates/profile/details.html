@@ -214,7 +214,15 @@
                       {% translate "No" %}
                     {% endif %}
                   </td>
-                </tr>
+                  </tr>
+                  <tr class="">
+                    <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
+                      {% translate "Logo" %}
+                    </th>
+                    <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                      <img src="{{ request.user.entity.logo }}" class="h-8 me-10">
+                    </td>
+                  </tr>
               </tbody>
             </table>
           </div>

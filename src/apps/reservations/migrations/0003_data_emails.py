@@ -261,6 +261,7 @@ def populate_mail_templates(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ('reservations', '0001_initial'),
+        ('reservations', '0002_initial'),
     ]
 
     operations = [

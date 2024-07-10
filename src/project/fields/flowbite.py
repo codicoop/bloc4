@@ -158,7 +158,7 @@ class ModelImageField(models.ImageField):
 
 class FormDateField(forms.DateField):
     def get_bound_field(self, form, field_name):
-        return FlowBiteBoundBooleanField(form, self, field_name)
+        return FlowBiteBoundCharField(form, self, field_name)
 
 
 class ModelDateField(models.DateField):
@@ -170,7 +170,7 @@ class ModelDateField(models.DateField):
 
 class FormTimeField(forms.TimeField):
     def get_bound_field(self, form, field_name):
-        return FlowBiteBoundBooleanField(form, self, field_name)
+        return FlowBiteBoundCharField(form, self, field_name)
 
 
 class ModelTimeField(models.TimeField):

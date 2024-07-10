@@ -34,7 +34,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("Start time"),
-                "placeholder": "00:00",
             }
         )
     )
@@ -50,7 +49,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("End time"),
-                "placeholder": "00:00",
             }
         )
     )
@@ -61,7 +59,6 @@ class ReservationForm(forms.ModelForm):
                 "autofocus": True,
                 "autocomplete": True,
                 "help_text": _("Motivation"),
-                "placeholder": _("Motivation"),
             }
         )
     )
@@ -72,7 +69,6 @@ class ReservationForm(forms.ModelForm):
                 "autofocus": True,
                 "autocomplete": True,
                 "help_text": _("Assistants"),
-                "placeholder": _("Assistants"),
             }
         )
     )
@@ -89,7 +85,6 @@ class ReservationForm(forms.ModelForm):
                 "autofocus": True,
                 "autocomplete": True,
                 "help_text": _("Room"),
-                "placeholder": _("Room"),
                 "required": True,
             }
         ),

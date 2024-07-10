@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-10 10:47+0200\n"
-"PO-Revision-Date: 2024-07-10 10:48+0200\n"
+"PO-Revision-Date: 2024-07-10 10:54+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -207,7 +207,7 @@ msgstr "Assistents de la reserva"
 
 #: apps/reservations/models.py:59 apps/rooms/models.py:75
 msgid "room"
-msgstr "sala"
+msgstr "Sala"
 
 #: apps/reservations/models.py:66
 msgid "Is paid?"
@@ -228,19 +228,19 @@ msgstr "Preu total de la reserva"
 
 #: apps/reservations/models.py:81
 msgid "entity"
-msgstr "entitat"
+msgstr "Entitat"
 
 #: apps/reservations/models.py:89
 msgid "reserved by"
-msgstr "reservat per"
+msgstr "Reservat per"
 
 #: apps/reservations/models.py:97
 msgid "canceled by"
-msgstr "cancel·lat per"
+msgstr "Cancel·lat per"
 
 #: apps/reservations/models.py:104
 msgid "canceled_at"
-msgstr "cancel·lat a"
+msgstr "Cancel·lat a"
 
 #: apps/reservations/models.py:113
 #: templates/reservations/reservations_list.html:168
@@ -249,15 +249,15 @@ msgstr "Estat de la reserva"
 
 #: apps/reservations/models.py:114
 msgid "status"
-msgstr "estat"
+msgstr "Estat"
 
 #: apps/reservations/models.py:120
 msgid "reservation"
-msgstr "reserva"
+msgstr "Reserva"
 
 #: apps/reservations/models.py:121
 msgid "reservations"
-msgstr "reserves"
+msgstr "Reserves"
 
 #: apps/reservations/models.py:146
 msgid "The maximum advance reservation period"
@@ -365,7 +365,7 @@ msgstr "Tipus de sala"
 
 #: apps/rooms/models.py:76
 msgid "rooms"
-msgstr "sales"
+msgstr "Sales"
 
 #: templates/404.html:13 templates/500.html:13 templates/503.html:13
 msgid "Go back"
@@ -903,7 +903,7 @@ msgstr "Cancel·lat a"
 #: templates/reservations/reservations_list.html:197
 #: templates/reservations/reservations_list.html:228
 msgid "Cancel reservation"
-msgstr "Cancelar reserva"
+msgstr "Cancel·lar reserva"
 
 #: templates/reservations/reservations_list.html:206
 msgid "Delete confirmation"

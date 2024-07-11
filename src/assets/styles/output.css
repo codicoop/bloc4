@@ -1109,6 +1109,10 @@ input:checked + .toggle-bg {
   right: 0px;
 }
 
+.right-6 {
+  right: 1.5rem;
+}
+
 .start-0 {
   inset-inline-start: 0px;
 }
@@ -1119,6 +1123,18 @@ input:checked + .toggle-bg {
 
 .top-3 {
   top: 0.75rem;
+}
+
+.top-6 {
+  top: 1.5rem;
+}
+
+.right-12 {
+  right: 3rem;
+}
+
+.top-2 {
+  top: 0.5rem;
 }
 
 .z-10 {
@@ -1369,6 +1385,10 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
+.h-14 {
+  height: 3.5rem;
+}
+
 .max-h-full {
   max-height: 100%;
 }
@@ -1415,6 +1435,10 @@ input:checked + .toggle-bg {
 
 .w-full {
   width: 100%;
+}
+
+.w-14 {
+  width: 3.5rem;
 }
 
 .max-w-2xl {

@@ -61,6 +61,4 @@ class ReservationsCalendarViewTest(TestCase):
     def test_get(self):
         response = self.client.get(reverse("reservations:ajax_calendar_feed"))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.request["PATH_INFO"], "/ca/reserves/ajax/calendar/"
-        )
+        self.assertEqual(response.request["PATH_INFO"], "/ca/reserves/ajax/calendar/")

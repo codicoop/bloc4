@@ -134,82 +134,85 @@ class Reservation(BaseModel):
         super().clean()
         errors = {}
 
-        # Validation that reservation is made within maximum day in advance configured.
-        future_date = date.today() + timedelta(
-            days=config.MAXIMUN_ADVANCE_RESERVATION_DAYS
-        )
-        if self.date > future_date:
-            errors.update(
-                {
-                    "date": ValidationError(
-                        _(
-                            "The maximum advance reservation period"
-                            f" is {config.MAXIMUN_ADVANCE_RESERVATION_DAYS} days."
+        if self.date:
+            # Validation reservation is made within maximum day in advance configured.
+            future_date = date.today() + timedelta(
+                days=config.MAXIMUN_ADVANCE_RESERVATION_DAYS
+            )
+            if self.date > future_date:
+                errors.update(
+                    {
+                        "date": ValidationError(
+                            _(
+                                "The maximum advance reservation period"
+                                f" is {config.MAXIMUN_ADVANCE_RESERVATION_DAYS} days."
+                            )
                         )
-                    )
-                },
-            )
-            raise ValidationError(errors)
+                    },
+                )
+                raise ValidationError(errors)
 
-        # Validates that the reservation date is later than the current date.
-        if self.date < date.today():
-            errors.update(
-                {
-                    "date": ValidationError(
-                        _("The date must be greater than the current date.")
-                    )
-                },
-            )
-            raise ValidationError(errors)
-
-        # Validates that the reservation end time is later than the start time.
-        if self.end_time < self.start_time:
-            errors.update(
-                {
-                    "end_time": ValidationError(
-                        _("The end time must be greater than the start time.")
-                    )
-                },
-            )
-            raise ValidationError(errors)
-
-        # Validates that the reservation duration is between 1 and 20 hours.
-        if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
-            str(self.start_time), "%H:%M:%S"
-        ) < timedelta(hours=1):
-            errors.update(
-                {
-                    "end_time": ValidationError(
-                        _(
-                            "The reservation must have a minimum duration of one "
-                            "hour."
+            # Validates that the reservation date is later than the current date.
+            if self.date < date.today():
+                errors.update(
+                    {
+                        "date": ValidationError(
+                            _("The date must be greater than the current date.")
                         )
-                    )
-                },
-            )
-            raise ValidationError(errors)
-        if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
-            str(self.start_time), "%H:%M:%S"
-        ) > timedelta(hours=20):
-            errors.update(
-                {
-                    "end_time": ValidationError(
-                        _("The maximum standby time is 20 hours.")
-                    )
-                },
-            )
-            raise ValidationError(errors)
+                    },
+                )
+                raise ValidationError(errors)
+        if self.start_time and self.end_time:
+            # Validates that the reservation end time is later than the start time.
+            if self.end_time < self.start_time:
+                errors.update(
+                    {
+                        "end_time": ValidationError(
+                            _("The end time must be greater than the start time.")
+                        )
+                    },
+                )
+                raise ValidationError(errors)
 
-        # Validation of the exact duration of the reservation in full hours
-        total_time = datetime.strptime(
-            str(self.end_time), "%H:%M:%S"
-        ) - datetime.strptime(str(self.start_time), "%H:%M:%S")
-        if total_time % timedelta(hours=1) != timedelta(0):
-            errors.update(
-                {
-                    "end_time": ValidationError(
-                        _("The reservation duration must be a whole number of hours.")
-                    )
-                },
-            )
-            raise ValidationError(errors)
+            # Validates that the reservation duration is between 1 and 20 hours.
+            if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
+                str(self.start_time), "%H:%M:%S"
+            ) < timedelta(hours=1):
+                errors.update(
+                    {
+                        "end_time": ValidationError(
+                            _(
+                                "The reservation must have a minimum duration of one "
+                                "hour."
+                            )
+                        )
+                    },
+                )
+                raise ValidationError(errors)
+            if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
+                str(self.start_time), "%H:%M:%S"
+            ) > timedelta(hours=20):
+                errors.update(
+                    {
+                        "end_time": ValidationError(
+                            _("The maximum standby time is 20 hours.")
+                        )
+                    },
+                )
+                raise ValidationError(errors)
+
+            # Validation of the exact duration of the reservation in full hours
+            total_time = datetime.strptime(
+                str(self.end_time), "%H:%M:%S"
+            ) - datetime.strptime(str(self.start_time), "%H:%M:%S")
+            if total_time % timedelta(hours=1) != timedelta(0):
+                errors.update(
+                    {
+                        "end_time": ValidationError(
+                        _(
+                            "The reservation duration must be a whole number of hours."
+                        )
+                        )
+                    },
+                )
+                raise ValidationError(errors)

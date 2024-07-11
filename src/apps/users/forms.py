@@ -157,9 +157,7 @@ class PasswordResetForm(BasePasswordResetForm):
 
 class PasswordResetConfirmForm(BaseSetPasswordForm):
     new_password1 = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(
-            attrs={"autofocus": True}
-        ),
+        widget=forms.PasswordInput(attrs={"autofocus": True}),
         label=_("New password"),
     )
     new_password2 = flowbite.FormPasswordField(

@@ -54,6 +54,17 @@ def create_reservation_view(request):
     if request.method == "POST":
         form = ReservationForm(request.POST)
 
+        # Validation of the date format
+        try:
+            datetime.strptime(form.data["date"], "%Y-%m-%d")
+        except Exception:
+            form.add_error("date", "")
+            return render(
+                request,
+                "reservations/create_reserves.html",
+                {"form": form},
+            )
+
         # Validation of room availability
         room = Reservation.objects.filter(
             (

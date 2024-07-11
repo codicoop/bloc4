@@ -67,7 +67,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
         verbose_name=_("Entity"),
         on_delete=models.PROTECT,
         null=True,
-        blank=True,
+        blank=False,
         related_name="entities",
     )
     is_janitor = models.BooleanField(

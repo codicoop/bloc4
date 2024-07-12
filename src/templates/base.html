@@ -81,11 +81,6 @@
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem">{% translate "Home" %}</a>
                 </li>
-                <li>
-                  <a href="{% url 'registration:profile_details' %}"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                    role="menuitem">{% translate "Profile" %}</a>
-                </li>
                 {% if request.user.has_admin_role %}
                 <li>
                   <a href="{% url 'admin:index' %}"
@@ -94,10 +89,10 @@
                 </li>
                 {% endif %}
                 <li>
-                  <form method="post" action="{% url 'registration:logout' %}">
+                  <form class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" method="post" action="{% url 'registration:logout' %}">
                     {% csrf_token %}
                     <button type="submit"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">{% translate "Log out" %}</button>
+                    class=" text-sm text-gray-700 dark:text-gray-300">{% translate "Log out" %}</button>
                   </form>
                 </li>
               </ul>

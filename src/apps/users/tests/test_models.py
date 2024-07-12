@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils.translation import gettext as _
 
 from apps.entities.models import Entity
 from apps.users.models import User
@@ -41,7 +42,7 @@ class UserManagerTestCase(TestCase):
             self.assertEqual(self.user.entity.fiscal_name, "Codi Cooperatiu SCCL")
             self.assertEqual(self.user.entity.nif, "F67151233")
             self.assertEqual(self.user.entity.town.name, "Barcelona")
-            self.assertEqual(self.user.entity.postal_code, 8004)
+            self.assertEqual(self.user.entity.postal_code, "08004")
             self.assertEqual(
                 self.user.entity.address, "Carrer de Piquer, núm 27, Sobreatic 2º"
             )
@@ -60,7 +61,9 @@ class UserManagerTestCase(TestCase):
                     email=None,
                     password="test_password",
                 )
-            self.assertEqual(str(error.exception), "Users must have an email address")
+            self.assertEqual(
+                str(error.exception), _("Users must have an email address")
+            )
 
     def test_create_superuser(self):
         """
@@ -82,7 +85,7 @@ class UserManagerTestCase(TestCase):
                     is_staff=True,
                     is_superuser=True,
                 )
-            self.assertEqual(str(error.exception), "Superusers must have a password")
+            self.assertEqual(str(error.exception), _("Superusers must have a password"))
 
     def test_full_name(self):
         """

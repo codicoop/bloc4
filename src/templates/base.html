@@ -7,7 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static 'styles/output.css' %}">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+  <link rel="apple-touch-icon" href="{% static 'images/favicon.ico' %}">
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap">
   <title>{{ config.PROJECT_NAME }} | {% block page_title %}{% endblock %}</title>
+  {% block extra_head %}{% endblock %}
 </head>
 
 <body class="bg-gray-50 dark:bg-gray-900
@@ -76,11 +81,6 @@
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem">{% translate "Home" %}</a>
                 </li>
-                <li>
-                  <a href="{% url 'registration:profile_details' %}"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                    role="menuitem">{% translate "Profile" %}</a>
-                </li>
                 {% if request.user.has_admin_role %}
                 <li>
                   <a href="{% url 'admin:index' %}"
@@ -89,10 +89,10 @@
                 </li>
                 {% endif %}
                 <li>
-                  <form method="post" action="{% url 'registration:logout' %}">
+                  <form class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" method="post" action="{% url 'registration:logout' %}">
                     {% csrf_token %}
                     <button type="submit"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">{% translate "Log out" %}</button>
+                    class=" text-sm text-gray-700 dark:text-gray-300">{% translate "Log out" %}</button>
                   </form>
                 </li>
               </ul>
@@ -118,7 +118,7 @@
             <li>
               <a href="{% url 'home' %}"
                 id="menu_home"
-                class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
                 <svg class="w-7 h-7 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
                   <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
                 </svg>
@@ -130,7 +130,7 @@
             <li>
               <a href="{% url 'registration:login' %}"
                 id="menu_login"
-                class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
                 <svg class="w-7 h-7 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
                   <path fill-rule="evenodd" d="M11.403 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6.403a3.01 3.01 0 0 1-1.743-1.612l-3.025 3.025A3 3 0 1 1 9.99 9.768l3.025-3.025A3.01 3.01 0 0 1 11.403 5Z" clip-rule="evenodd"/>
                   <path fill-rule="evenodd" d="M13.232 4a1 1 0 0 1 1-1H20a1 1 0 0 1 1 1v5.768a1 1 0 1 1-2 0V6.414l-6.182 6.182a1 1 0 0 1-1.414-1.414L17.586 5h-3.354a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
@@ -143,18 +143,28 @@
             <!-- Perfil -->
             <li>
               <a href="{% url 'registration:profile_details' %}" id="menu_profile"
-                class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
                 <svg class="w-8 h-8 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
                   <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
                 </svg>
                 <span class="ms-3">{% translate "Profile" %}</span>
               </a>
             </li>
+            <!-- Reservations -->
+            <li>
+              <a href="{% url 'reservations:reservations_list' %}" id="menu_reservations"
+                class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
+                <svg class="w-7 h-7 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
+                  <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"/>
+                </svg>
+                <span class="ms-3">{% translate "Reservations" %}</span>
+              </a>
+            </li>
               {% if request.user.has_admin_role %}
               <!-- Admin -->
               <li>
                 <a href="{% url 'admin:index' %}" id="id_menu_admin"
-                  class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                  class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
                   <svg class="w-7 h-7 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
                     <path fill-rule="evenodd" d="M4 4a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2v14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2V5a1 1 0 0 1-1-1Zm5 2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1Zm-5 4a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1h-1Zm-3 4a2 2 0 0 0-2 2v3h2v-3h2v3h2v-3a2 2 0 0 0-2-2h-2Z" clip-rule="evenodd"/>
                   </svg>

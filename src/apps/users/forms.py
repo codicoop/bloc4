@@ -33,12 +33,11 @@ class AuthenticationForm(BaseAuthenticationForm):
             attrs={
                 "autofocus": True,
                 "autocomplete": "email",
-                "placeholder": _("Email address"),
             }
         ),
     )
     password = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(attrs={"placeholder": _("Password")}),
+        widget=forms.PasswordInput(),
         label=_("Password"),
     )
     remember_me = flowbite.FormBooleanField(
@@ -77,11 +76,11 @@ class UserChangeForm(forms.ModelForm):
 class ProfileDetailsForm(forms.ModelForm):
     name = flowbite.FormCharField(
         label=_("Name"),
-        widget=forms.TextInput(attrs={"placeholder": _("Name")}),
+        widget=forms.TextInput(),
     )
     surnames = flowbite.FormCharField(
         label=_("Surnames"),
-        widget=forms.TextInput(attrs={"placeholder": _("Surnames")}),
+        widget=forms.TextInput(),
     )
     email = flowbite.FormEmailField(
         label=_("Email"),
@@ -89,7 +88,6 @@ class ProfileDetailsForm(forms.ModelForm):
         widget=forms.EmailInput(
             attrs={
                 "autocomplete": "email",
-                "placeholder": _("Email address"),
             }
         ),
     )
@@ -111,7 +109,6 @@ class PasswordResetForm(BasePasswordResetForm):
             attrs={
                 "autofocus": True,
                 "autocomplete": "email",
-                "placeholder": _("Email address"),
             }
         ),
     )
@@ -160,15 +157,11 @@ class PasswordResetForm(BasePasswordResetForm):
 
 class PasswordResetConfirmForm(BaseSetPasswordForm):
     new_password1 = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(
-            attrs={"autofocus": True, "placeholder": _("New password")}
-        ),
+        widget=forms.PasswordInput(attrs={"autofocus": True}),
         label=_("New password"),
     )
     new_password2 = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(
-            attrs={"placeholder": _("New password confirmation")}
-        ),
+        widget=forms.PasswordInput(),
         label=_("New password confirmation"),
     )
 
@@ -178,19 +171,16 @@ class PasswordChangeForm(BasePasswordChangeForm):
         widget=forms.PasswordInput(
             attrs={
                 "autofocus": True,
-                "placeholder": _("Old password"),
             }
         ),
         label=_("Old password"),
     )
     new_password1 = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(attrs={"placeholder": _("New password")}),
+        widget=forms.PasswordInput(),
         label=_("New password"),
     )
     new_password2 = flowbite.FormPasswordField(
-        widget=forms.PasswordInput(
-            attrs={"placeholder": _("New password confirmation")}
-        ),
+        widget=forms.PasswordInput(),
         label=_("New password confirmation"),
     )
 

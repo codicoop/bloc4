@@ -27,4 +27,7 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path("", home_view, name="home"),
     path(_("registration/"), include("apps.users.urls", namespace="registration")),
+    path(
+        _("reservations/"), include("apps.reservations.urls", namespace="reservations")
+    ),
 )

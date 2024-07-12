@@ -8,7 +8,6 @@ let cookiesOfDocument = document.cookie;
 if (document.getElementById("cookies-banner")) {
   // cookies message
   let cookiesMessage = document.getElementById("cookies-banner");
-  console.log(cookiesMessage);
 
   function acceptCookies() {
     // Cokkie message dissappears

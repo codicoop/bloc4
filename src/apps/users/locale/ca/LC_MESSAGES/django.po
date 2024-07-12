@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-31 15:54+0200\n"
-"PO-Revision-Date: 2024-05-29 11:49+0200\n"
+"POT-Creation-Date: 2024-07-10 10:47+0200\n"
+"PO-Revision-Date: 2024-07-10 10:13+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -19,27 +19,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.4\n"
 
-#: apps/users/forms.py:31 apps/users/forms.py:87 apps/users/forms.py:108
+#: apps/users/forms.py:31 apps/users/forms.py:86 apps/users/forms.py:106
 msgid "Email"
 msgstr "Correu electrònic"
 
-#: apps/users/forms.py:36 apps/users/forms.py:92 apps/users/forms.py:114
-msgid "Email address"
-msgstr "Adreça electrònica"
-
-#: apps/users/forms.py:41 apps/users/forms.py:42
+#: apps/users/forms.py:41
 msgid "Password"
 msgstr "Contrasenya"
 
-#: apps/users/forms.py:45
+#: apps/users/forms.py:44
 msgid "Remember me"
 msgstr "Recorda'm"
 
-#: apps/users/forms.py:55
+#: apps/users/forms.py:54
 msgid "Change password"
 msgstr "Canviar la contrasenya"
 
-#: apps/users/forms.py:57
+#: apps/users/forms.py:56
 msgid ""
 "The current password is not displayed for security reasons. Use this field "
 "and save the changes to set a new password. While writing the new password "
@@ -50,41 +46,39 @@ msgstr ""
 "contrasenya serà visible, per facilitar que puguis copiar-la i enviar-li a "
 "l'usuari."
 
-#: apps/users/forms.py:79 apps/users/forms.py:80
+#: apps/users/forms.py:78
 msgid "Name"
 msgstr "Nom"
 
-#: apps/users/forms.py:83 apps/users/forms.py:84
+#: apps/users/forms.py:82
 msgid "Surnames"
 msgstr "Cognoms"
 
-#: apps/users/forms.py:164 apps/users/forms.py:166 apps/users/forms.py:187
-#: apps/users/forms.py:188
+#: apps/users/forms.py:163 apps/users/forms.py:182
 msgid "New password"
 msgstr "Contrasenya nova"
 
-#: apps/users/forms.py:170 apps/users/forms.py:172 apps/users/forms.py:192
-#: apps/users/forms.py:194
+#: apps/users/forms.py:167 apps/users/forms.py:186
 msgid "New password confirmation"
 msgstr "Confirmació de la nova contrasenya"
 
-#: apps/users/forms.py:181 apps/users/forms.py:184
+#: apps/users/forms.py:178
 msgid "Old password"
 msgstr "Contrasenya antiga"
 
-#: apps/users/forms.py:201 apps/users/forms.py:203
+#: apps/users/forms.py:193 apps/users/forms.py:195
 msgid "Verification code"
 msgstr "Codi de verificació"
 
-#: apps/users/models.py:21
+#: apps/users/models.py:21 apps/users/tests/test_models.py:65
 msgid "Users must have an email address"
 msgstr "Els usuaris han de tenir una adreça electrònica"
 
-#: apps/users/models.py:35
+#: apps/users/models.py:35 apps/users/tests/test_models.py:88
 msgid "Superusers must have a password"
 msgstr "Els superusuaris han de tenir una contrasenya"
 
-#: apps/users/models.py:45 apps/users/models.py:85
+#: apps/users/models.py:45 apps/users/models.py:99
 msgid "name"
 msgstr "nom"
 
@@ -97,14 +91,32 @@ msgid "email address"
 msgstr "adreça electrònica"
 
 #: apps/users/models.py:60
+msgid ""
+"Specifies whether the user has verified their email. You can only access the "
+"different sections of the application when you have verified it."
+msgstr ""
+"Informa si l'usuari ha verificat el seu correu electrònic. Només pots "
+"accedir als altres apartats de l'aplicació un cop hagis fet la verificació."
+
+#: apps/users/models.py:67
 msgid "Entity"
 msgstr "Entitat"
 
-#: apps/users/models.py:94
+#: apps/users/models.py:81
+msgid ""
+"If the box is unchecked, the user will not be able to authenticate to access "
+"the application. It is usually only disabled when you want to unsubscribe a "
+"user but retaining their data."
+msgstr ""
+"Si la casella no està seleccionada, l'usuari no podrá accedir a l'aplicatiu. "
+"Normalment només es fa servir quan vols deshabilitar un usuari però guardant "
+"totes les seves dades."
+
+#: apps/users/models.py:108
 msgid "user"
 msgstr "usuari"
 
-#: apps/users/models.py:95
+#: apps/users/models.py:109
 msgid "users"
 msgstr "usuaris"
 
@@ -228,6 +240,9 @@ msgstr "Modificar la contrasenya"
 #: apps/users/views.py:195
 msgid "Password change successful."
 msgstr "Contrasenya modificada correctament."
+
+#~ msgid "Email address"
+#~ msgstr "Adreça electrònica"
 
 #~ msgid "Email adress"
 #~ msgstr "Adreça electrònica"

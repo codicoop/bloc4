@@ -55,6 +55,18 @@ class ModelIntegerField(models.IntegerField):
         return super().formfield(**defaults)
 
 
+class FormFloatField(forms.FloatField):
+    def get_bound_field(self, form, field_name):
+        return FlowBiteBoundCharField(form, self, field_name)
+
+
+class ModelFloatField(models.FloatField):
+    def formfield(self, **kwargs):
+        defaults = {"form_class": FormFloatField}
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+
+
 class FormRadioField(forms.ChoiceField):
     def get_bound_field(self, form, field_name):
         return FlowBiteBoundCharField(form, self, field_name)
@@ -128,5 +140,41 @@ class FormBooleanField(forms.BooleanField):
 class ModelBooleanField(models.BooleanField):
     def formfield(self, **kwargs):
         defaults = {"form_class": FormBooleanField}
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+
+
+class FormImageField(forms.ImageField):
+    def get_bound_field(self, form, field_name):
+        return FlowBiteBoundBooleanField(form, self, field_name)
+
+
+class ModelImageField(models.ImageField):
+    def formfield(self, **kwargs):
+        defaults = {"form_class": FormImageField}
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+
+
+class FormDateField(forms.DateField):
+    def get_bound_field(self, form, field_name):
+        return FlowBiteBoundCharField(form, self, field_name)
+
+
+class ModelDateField(models.DateField):
+    def formfield(self, **kwargs):
+        defaults = {"form_class": FormDateField}
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+
+
+class FormTimeField(forms.TimeField):
+    def get_bound_field(self, form, field_name):
+        return FlowBiteBoundCharField(form, self, field_name)
+
+
+class ModelTimeField(models.TimeField):
+    def formfield(self, **kwargs):
+        defaults = {"form_class": FormTimeField}
         defaults.update(kwargs)
         return super().formfield(**defaults)

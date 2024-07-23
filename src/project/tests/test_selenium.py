@@ -13,6 +13,8 @@ from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+from apps.entities.tests.factories import EntityFactory
+from apps.reservations.models import Reservation
 from apps.rooms.models import Room
 from apps.users.models import User
 
@@ -248,9 +250,8 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self._reservations_list()
         logging.info("Test Reservations List finished.")
 
-        # TODO Resolve how to set start_time and end_time fields
-        # self._reservations_create()
-        # logging.info("Test Create Reservation finished.")
+        self._reservations_create()
+        logging.info("Test Create Reservation finished.")
 
         self._reservations_calendar()
         logging.info("Test Reservations Calendar finished.")
@@ -467,21 +468,26 @@ class MySeleniumTests(StaticLiveServerTestCase):
             equipment="Equipment Test",
             room_type=Room.RoomTypeChoices.EVENT_ROOM,
         )
+
+        # Assignment of an Entity to the user
+        user = User.objects.get(name="Andrews")
+        user.entity = EntityFactory()
+        user.save()
+
         # Create a new reservation.
-        button_create = self.selenium.find_element(By.ID, "create_reservation")
+        button_create = self.selenium.find_element(By.ID, "id_create_reservation")
         button_create.click()
 
         self.logging_url_title_and_assert_title(Strings.CREATE_RESERVATION_TITLE.value)
-
         room = self.selenium.find_element(By.ID, "id_room")
-        date = self.selenium.find_element(By.ID, "id_date")
+        reserve_date = self.selenium.find_element(By.ID, "id_date")
         start_time = self.selenium.find_element(By.ID, "id_start_time")
         end_time = self.selenium.find_element(By.ID, "id_end_time")
         motivation = self.selenium.find_element(By.ID, "id_motivation")
         assistants = self.selenium.find_element(By.ID, "id_assistants")
-        button_create = self.selenium.find_element(By.ID, "id_create_reservation")
+        button_create = self.selenium.find_element(By.ID, "create_reservation")
         room.send_keys(self.room_test.name)
-        date.send_keys("08.08.2024")
+        reserve_date.send_keys("8.8.2024")
         start_time.send_keys("1000AM")
         end_time.send_keys("1100AM")
         motivation.send_keys("Test Motivation")
@@ -495,13 +501,19 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self.logging_url_title_and_assert_title(Strings.RESERVATION_LIST_TITLE.value)
 
         # CANCEL RESERVATION
+        test_reservation = Reservation.objects.get(date="2024-08-08")
 
         reservation_row = self.selenium.find_element(
-            By.ID, f"id_reservation_{self.test_reservation.id}"
+            By.ID, f"id_reservation_{test_reservation.id}"
         )
         reservation_row.click()
 
-        button_cancel = self.selenium.find_element(By.ID, "cancel_reservation")
+        button_pre_cancel = self.selenium.find_element(By.ID, "pre_cancel_reservation")
+        button_pre_cancel.click()
+
+        button_cancel = self.selenium.find_element(
+            By.ID, f"id_cancel_reservation_{test_reservation.id}"
+        )
         button_cancel.click()
 
         self.logging_url_title_and_assert_title(Strings.RESERVATION_LIST_TITLE.value)

@@ -137,7 +137,7 @@ class Reservation(BaseModel):
         if self.date:
             # Validation reservation is made within maximum day in advance configured.
             future_date = date.today() + timedelta(
-                days=config.MAXIMUN_ADVANCE_RESERVATION_DAYS
+                days=config.MAXIMUM_ADVANCE_RESERVATION_DAYS
             )
             if self.date > future_date:
                 errors.update(
@@ -145,7 +145,7 @@ class Reservation(BaseModel):
                         "date": ValidationError(
                             _(
                                 "The maximum advance reservation period"
-                                f" is {config.MAXIMUN_ADVANCE_RESERVATION_DAYS} days."
+                                f" is {config.MAXIMUM_ADVANCE_RESERVATION_DAYS} days."
                             )
                         )
                     },

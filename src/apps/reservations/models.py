@@ -144,9 +144,9 @@ class Reservation(BaseModel):
                     {
                         "date": ValidationError(
                             _(
-                                "The maximum advance reservation period"
-                                f" is {config.MAXIMUM_ADVANCE_RESERVATION_DAYS} days."
-                            )
+                                "The maximum advance reservation period is %(days)s "
+                                "days."
+                              ) % {"days": config.MAXIMUM_ADVANCE_RESERVATION_DAYS}
                         )
                     },
                 )

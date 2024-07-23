@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-23 14:54+0200\n"
-"PO-Revision-Date: 2024-07-23 14:52+0200\n"
+"POT-Creation-Date: 2024-07-23 15:27+0200\n"
+"PO-Revision-Date: 2024-07-23 15:30+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.4.3\n"
 
 #: apps/provinces_towns/models.py:6
 msgid "Andalucia"
@@ -245,19 +245,19 @@ msgstr "Preu total de la reserva"
 
 #: apps/reservations/models.py:81
 msgid "entity"
-msgstr "Entitat"
+msgstr "entitat"
 
 #: apps/reservations/models.py:89
 msgid "reserved by"
-msgstr "Reservat per"
+msgstr "reservat per"
 
 #: apps/reservations/models.py:97
 msgid "canceled by"
-msgstr "Cancel·lat per"
+msgstr "cancel·lat per"
 
 #: apps/reservations/models.py:104
 msgid "canceled_at"
-msgstr "Cancel·lat a"
+msgstr "cancel·lat a"
 
 #: apps/reservations/models.py:113
 #: templates/reservations/reservations_list.html:168
@@ -266,19 +266,20 @@ msgstr "Estat de la reserva"
 
 #: apps/reservations/models.py:114
 msgid "status"
-msgstr "Estat"
+msgstr "estat"
 
 #: apps/reservations/models.py:120
 msgid "reservation"
-msgstr "Reserva"
+msgstr "reserva"
 
 #: apps/reservations/models.py:121
 msgid "reservations"
-msgstr "Reserves"
+msgstr "reserves"
 
 #: apps/reservations/models.py:147
-msgid "The maximum advance reservation period"
-msgstr "Període màxim de reserva anticipada"
+#, python-format
+msgid "The maximum advance reservation period is %(days)s days."
+msgstr "El període màxim de reserva anticipada és de %(days)s dies."
 
 #: apps/reservations/models.py:160
 msgid "The date must be greater than the current date."
@@ -382,7 +383,7 @@ msgstr "Tipus de sala"
 
 #: apps/rooms/models.py:76
 msgid "rooms"
-msgstr "Sales"
+msgstr "sales"
 
 #: templates/404.html:13 templates/500.html:13 templates/503.html:13
 msgid "Go back"

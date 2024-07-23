@@ -371,22 +371,14 @@ DJANGO_SUPERUSER_PASSWORD = env("DJANGO_SUPERUSER_PASSWORD", default=None)
 # Constance
 # https://django-constance.readthedocs.io/en/latest/#configuration
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
-DEFAULT_PROJECT_NAME = env.str("DEFAULT_PROJECT_NAME", default="")
-DEFAULT_CONTACT_EMAIL = env.str("DEFAULT_CONTACT_EMAIL", default="")
-DEFAULT_RESERVATIONS_EMAIL = env.str("DEFAULT_RESERVATIONS_EMAIL", default="")
-DEFAULT_MAXIMUM_ADVANCE_RESERVATION_DAYS = env.int(
-    "DEFAULT_MAXIMUM_ADVANCE_RESERVATION_DAYS", default=30
-)
 CONSTANCE_CONFIG = {
-    "PROJECT_NAME": (DEFAULT_PROJECT_NAME, _("Name of the website.")),
-    "CONTACT_EMAIL": (DEFAULT_CONTACT_EMAIL, _("Contact email address.")),
-    "RESERVATIONS_EMAIL": (
-        DEFAULT_RESERVATIONS_EMAIL,
-        _("Reservations email address."),
-    ),
+    "PROJECT_NAME": ("Bloc4BCN", _("Name of the website."), str),
+    "CONTACT_EMAIL": ("", _("Contact email address."), str),
+    "RESERVATIONS_EMAIL": ("", _("Reservations email address."), str),
     "MAXIMUM_ADVANCE_RESERVATION_DAYS": (
-        DEFAULT_MAXIMUM_ADVANCE_RESERVATION_DAYS,
+        30,
         _("Maximum advance reservation days."),
+        int,
     ),
 }
 

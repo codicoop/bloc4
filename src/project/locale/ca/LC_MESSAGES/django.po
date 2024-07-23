@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-09 16:22+0200\n"
+"POT-Creation-Date: 2024-07-23 14:50+0200\n"
 "PO-Revision-Date: 2024-07-09 16:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,27 +39,27 @@ msgstr "Anglès"
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:381
+#: project/settings.py:375
 msgid "Name of the website."
 msgstr "Nom de la página web."
 
-#: project/settings.py:382
+#: project/settings.py:376
 msgid "Contact email address."
 msgstr "Correu electrònic de contacte."
 
-#: project/settings.py:385
+#: project/settings.py:377
 msgid "Reservations email address."
 msgstr "Correu electrònic per reserves."
 
-#: project/settings.py:389
+#: project/settings.py:380
 msgid "Maximum advance reservation days."
 msgstr "Període màxim d'antelació per reserves."
 
-#: project/tests/test_selenium.py:57
+#: project/tests/test_selenium.py:58
 msgid "Site administration | Django site admin"
 msgstr "Administració del lloc | Lloc administratiu de Django"
 
-#: project/tests/test_selenium.py:58
+#: project/tests/test_selenium.py:59
 msgid "Log out"
 msgstr "Tancar sessió"
 

@@ -3,14 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: apps/reservations/urls.py:17
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-10 16:38+0200\n"
-"PO-Revision-Date: 2024-07-10 10:54+0200\n"
+"POT-Creation-Date: 2024-07-23 14:54+0200\n"
+"PO-Revision-Date: 2024-07-23 14:52+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -145,30 +144,44 @@ msgstr ""
 "Un correu electrònic ha sigut enviat a l'entitat per informar de la "
 "denegació de la reserva de la sala."
 
-#: apps/reservations/forms.py:21 apps/reservations/models.py:25
+#: apps/reservations/forms.py:11 apps/reservations/forms.py:22
+#: apps/reservations/models.py:25
 #: templates/reservations/reservations_list.html:97
 msgid "Date"
 msgstr "Data"
 
-#: apps/reservations/forms.py:36 apps/reservations/models.py:30
+#: apps/reservations/forms.py:27
+msgid "Start Time"
+msgstr "Hora d’inici"
+
+#: apps/reservations/forms.py:38 apps/reservations/models.py:30
 msgid "Start time"
 msgstr "Hora inici"
 
-#: apps/reservations/forms.py:51 apps/reservations/models.py:36
+#: apps/reservations/forms.py:43
+msgid "End Time"
+msgstr "Hora finalització"
+
+#: apps/reservations/forms.py:54 apps/reservations/models.py:36
 msgid "End time"
 msgstr "Hora final"
 
-#: apps/reservations/forms.py:61 apps/reservations/models.py:42
+#: apps/reservations/forms.py:59 apps/reservations/forms.py:65
+#: apps/reservations/models.py:42
 #: templates/reservations/reservations_list.html:117
 msgid "Motivation"
 msgstr "Motiu"
 
-#: apps/reservations/forms.py:71 apps/reservations/models.py:50
+#: apps/reservations/forms.py:70
+msgid "Assitants"
+msgstr "Assistents"
+
+#: apps/reservations/forms.py:76 apps/reservations/models.py:50
 #: templates/reservations/reservations_list.html:127
 msgid "Assistants"
 msgstr "Assistents"
 
-#: apps/reservations/forms.py:87
+#: apps/reservations/forms.py:81 apps/reservations/forms.py:93
 #: templates/reservations/reservations_list.html:87
 msgid "Room"
 msgstr "Sala"
@@ -211,7 +224,7 @@ msgstr "Assistents de la reserva"
 
 #: apps/reservations/models.py:59 apps/rooms/models.py:75
 msgid "room"
-msgstr "Sala"
+msgstr "sala"
 
 #: apps/reservations/models.py:66
 msgid "Is paid?"
@@ -263,27 +276,27 @@ msgstr "Reserva"
 msgid "reservations"
 msgstr "Reserves"
 
-#: apps/reservations/models.py:146
+#: apps/reservations/models.py:147
 msgid "The maximum advance reservation period"
 msgstr "Període màxim de reserva anticipada"
 
-#: apps/reservations/models.py:159
+#: apps/reservations/models.py:160
 msgid "The date must be greater than the current date."
 msgstr "La data ha de ser posterior a l'actual."
 
-#: apps/reservations/models.py:170
+#: apps/reservations/models.py:171
 msgid "The end time must be greater than the start time."
 msgstr "L'hora de finalització ja de ser posterior a l'hora d'inici."
 
-#: apps/reservations/models.py:184
+#: apps/reservations/models.py:185
 msgid "The reservation must have a minimum duration of one hour."
 msgstr "La durada mínima d'una reserva és d'una hora."
 
-#: apps/reservations/models.py:197
+#: apps/reservations/models.py:198
 msgid "The maximum standby time is 20 hours."
 msgstr "La durada máxima d'una reserva és de 20 hores."
 
-#: apps/reservations/models.py:211
+#: apps/reservations/models.py:213
 msgid "The reservation duration must be a whole number of hours."
 msgstr "La reserva ha de tenir una durada d'hores senceres."
 
@@ -303,15 +316,15 @@ msgstr "complet"
 msgid "Reservation not found."
 msgstr "Reserva no trobada."
 
-#: apps/reservations/views.py:70
+#: apps/reservations/views.py:81
 msgid "The room is not available for this time period."
 msgstr "La sala no està disponible a aquest període."
 
-#: apps/reservations/views.py:107
+#: apps/reservations/views.py:118
 msgid "Successful reservation"
 msgstr "Reserva exitosa"
 
-#: apps/reservations/views.py:108
+#: apps/reservations/views.py:119
 msgid "Successful reservation."
 msgstr "Reserva exitosa."
 
@@ -419,7 +432,7 @@ msgstr "Logotip de l'empresa"
 msgid "Unverified email"
 msgstr "E-mail pendent de verificar"
 
-#: templates/base.html:82 templates/base.html:130 templates/home.html:5
+#: templates/base.html:82 templates/base.html:125 templates/home.html:5
 #: templates/home.html:19 templates/profile/details.html:22
 #: templates/registration/password_change_form.html:23
 #: templates/registration/send_verification_code.html:23
@@ -429,30 +442,29 @@ msgstr "E-mail pendent de verificar"
 msgid "Home"
 msgstr "Inici"
 
-#: templates/base.html:87 templates/base.html:155
-#: templates/registration/password_change_form.html:32
-#: templates/registration/send_verification_code.html:32
-msgid "Profile"
-msgstr "Perfil"
-
-#: templates/base.html:93 templates/base.html:176
+#: templates/base.html:88 templates/base.html:171
 msgid "Administration panel"
 msgstr "Panell d'administració"
 
-#: templates/base.html:100
+#: templates/base.html:95
 msgid "Log out"
 msgstr "Tancar sessió"
 
-#: templates/base.html:143 templates/registration/login.html:5
+#: templates/base.html:138 templates/registration/login.html:5
 #: templates/registration/login_old.html:5
 msgid "Log in"
 msgstr "Iniciar sessió"
 
-#: templates/base.html:165 templates/reservations/create_reserves.html:30
+#: templates/base.html:150 templates/registration/password_change_form.html:32
+#: templates/registration/send_verification_code.html:32
+msgid "Profile"
+msgstr "Perfil"
+
+#: templates/base.html:160 templates/reservations/create_reserves.html:30
 msgid "Reservations"
 msgstr "Reserves"
 
-#: templates/base.html:261
+#: templates/base.html:256
 msgid ""
 "We use cookies to optimize your experience and to analyze the web traffic. "
 "We don't sell data to third parties. If you continue navigating, we'll "
@@ -462,11 +474,11 @@ msgstr ""
 "trànsit web. No venem dades a tercers. Si continues navegant, entendrem que "
 "hi estàs d'acord."
 
-#: templates/base.html:273
+#: templates/base.html:268
 msgid "Accept"
 msgstr "Acceptar"
 
-#: templates/base.html:283
+#: templates/base.html:278
 msgid "Deny"
 msgstr "Denega"
 
@@ -631,63 +643,59 @@ msgstr "Modificar la contrasenya"
 msgid "Your entity"
 msgstr "La teva entitat"
 
-#: templates/profile/details.html:134
+#: templates/profile/details.html:137
 msgid "Here you can view your entity's data."
 msgstr "Aquí pots veure les dades de la teva entitat."
 
-#: templates/profile/details.html:140
+#: templates/profile/details.html:143
 msgid "Email"
 msgstr "Correu electrònic"
 
-#: templates/profile/details.html:148
+#: templates/profile/details.html:151
 msgid "Fiscal name"
 msgstr "Nom fiscal"
 
-#: templates/profile/details.html:156
+#: templates/profile/details.html:159
 msgid "VAT"
 msgstr "NIF"
 
-#: templates/profile/details.html:164
+#: templates/profile/details.html:167
 msgid "Town"
 msgstr "Municipi"
 
-#: templates/profile/details.html:172
+#: templates/profile/details.html:175
 msgid "Postal code"
 msgstr "Codi postal"
 
-#: templates/profile/details.html:180
+#: templates/profile/details.html:183
 msgid "Address"
 msgstr "Adreça"
 
-#: templates/profile/details.html:188
+#: templates/profile/details.html:191
 msgid "Country"
 msgstr "País"
 
-#: templates/profile/details.html:196
+#: templates/profile/details.html:199
 msgid "Responsible person"
 msgstr "Persona responsable"
 
-#: templates/profile/details.html:202
+#: templates/profile/details.html:205
 msgid "None assigned"
 msgstr "Cap assignat"
 
-#: templates/profile/details.html:208
+#: templates/profile/details.html:211
 msgid "Is it resident?"
 msgstr "És resident?"
 
-#: templates/profile/details.html:212
+#: templates/profile/details.html:215
 #: templates/reservations/reservations_list.html:141
 msgid "Yes"
 msgstr "Sí"
 
-#: templates/profile/details.html:214
+#: templates/profile/details.html:217
 #: templates/reservations/reservations_list.html:143
 msgid "No"
 msgstr "No"
-
-#: templates/profile/details.html:220
-msgid "Logo"
-msgstr ""
 
 #: templates/registration/login.html:17
 msgid "Sign in to your account"

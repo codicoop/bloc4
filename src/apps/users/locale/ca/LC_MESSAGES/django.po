@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-10 10:47+0200\n"
+"POT-Creation-Date: 2024-07-23 14:50+0200\n"
 "PO-Revision-Date: 2024-07-10 10:13+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -54,19 +54,19 @@ msgstr "Nom"
 msgid "Surnames"
 msgstr "Cognoms"
 
-#: apps/users/forms.py:163 apps/users/forms.py:182
+#: apps/users/forms.py:161 apps/users/forms.py:180
 msgid "New password"
 msgstr "Contrasenya nova"
 
-#: apps/users/forms.py:167 apps/users/forms.py:186
+#: apps/users/forms.py:165 apps/users/forms.py:184
 msgid "New password confirmation"
 msgstr "Confirmació de la nova contrasenya"
 
-#: apps/users/forms.py:178
+#: apps/users/forms.py:176
 msgid "Old password"
 msgstr "Contrasenya antiga"
 
-#: apps/users/forms.py:193 apps/users/forms.py:195
+#: apps/users/forms.py:191 apps/users/forms.py:193
 msgid "Verification code"
 msgstr "Codi de verificació"
 

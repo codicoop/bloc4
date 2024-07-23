@@ -14,7 +14,7 @@ app_name = "reservations"
 urlpatterns = [
     # Reservations
     path(
-        _(""), login_required(ReservationsListView.as_view()), name="reservations_list"
+        "", login_required(ReservationsListView.as_view()), name="reservations_list"
     ),
     path(
         _("calendar/"),

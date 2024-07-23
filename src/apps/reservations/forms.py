@@ -8,6 +8,7 @@ from project.fields import flowbite
 
 class ReservationForm(forms.ModelForm):
     date = flowbite.FormDateField(
+        label=_("Date"),
         widget=forms.DateInput(
             attrs={
                 "type": "date",
@@ -23,6 +24,7 @@ class ReservationForm(forms.ModelForm):
         )
     )
     start_time = flowbite.FormTimeField(
+        label=_("Start Time"),
         widget=forms.TimeInput(
             attrs={
                 "type": "time",
@@ -38,6 +40,7 @@ class ReservationForm(forms.ModelForm):
         )
     )
     end_time = flowbite.FormTimeField(
+        label=_("End Time"),
         widget=forms.TimeInput(
             attrs={
                 "type": "time",
@@ -53,6 +56,7 @@ class ReservationForm(forms.ModelForm):
         )
     )
     motivation = flowbite.FormCharField(
+        label=_("Motivation"),
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
@@ -63,6 +67,7 @@ class ReservationForm(forms.ModelForm):
         )
     )
     assistants = flowbite.FormCharField(
+        label=_("Assitants"),
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
@@ -73,6 +78,7 @@ class ReservationForm(forms.ModelForm):
         )
     )
     room = forms.ModelChoiceField(
+        label=_("Room"),
         queryset=Room.objects.all(),
         widget=forms.Select(
             attrs={

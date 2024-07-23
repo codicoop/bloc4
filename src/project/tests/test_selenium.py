@@ -2,7 +2,6 @@ import logging
 from dataclasses import dataclass
 from enum import Enum
 
-from constance import config
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core import mail
@@ -58,15 +57,15 @@ class Strings(Enum):
 
     ADMIN_TITLE = _("Site administration | Django site admin")
     LOGOUT = _("Log out")
-    HOME_TITLE = f"{config.PROJECT_NAME} | Inici"
-    PROFILE_TITLE = f"{config.PROJECT_NAME} | Detalls del perfil"
-    REGISTRY_UPDATE_TITLE = f"{config.PROJECT_NAME} | Registre actualitzat"
-    PASSWORD_CHANGE_TITLE = f"{config.PROJECT_NAME} | Modificar la contrasenya"
-    EMAIL_VALIDATION_TITLE = f"{config.PROJECT_NAME} | Validació de correu"
-    RESERVATION_LIST_TITLE = f"{config.PROJECT_NAME} | Llistat de reserves"
-    CREATE_RESERVATION_TITLE = f"{config.PROJECT_NAME} | Crear reserva"
+    HOME_TITLE = "Bloc4BCN | Inici"
+    PROFILE_TITLE = "Bloc4BCN | Detalls del perfil"
+    REGISTRY_UPDATE_TITLE = "Bloc4BCN | Registre actualitzat"
+    PASSWORD_CHANGE_TITLE = "Bloc4BCN | Modificar la contrasenya"
+    EMAIL_VALIDATION_TITLE = "Bloc4BCN | Validació de correu"
+    RESERVATION_LIST_TITLE = "Bloc4BCN | Llistat de reserves"
+    CREATE_RESERVATION_TITLE = "Bloc4BCN | Crear reserva"
     CHECK_CALENDAR_TITLE = ""
-    SUCCESSFUL_RESERVATION = f"{config.PROJECT_NAME} | Successful reservation"
+    SUCCESSFUL_RESERVATION = "Bloc4BCN | Successful reservation"
 
 
 @override_settings(

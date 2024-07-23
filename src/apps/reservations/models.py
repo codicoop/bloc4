@@ -209,9 +209,10 @@ class Reservation(BaseModel):
                 errors.update(
                     {
                         "end_time": ValidationError(
-                        _(
-                            "The reservation duration must be a whole number of hours."
-                        )
+                            _(
+                                "The reservation duration"
+                                " must be a whole number of hours."
+                            )
                         )
                     },
                 )

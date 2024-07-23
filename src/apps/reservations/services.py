@@ -30,8 +30,8 @@ def send_mail_reservation(reservation, action):
         "entity": reservation.entity.fiscal_name,
         "total_price": reservation.total_price,
         "status": reservation.status,
-        "reservation_url_admin":
-            f"{settings.ABSOLUTE_URL}/admin/reservations/reservation/{reservation.id}",
+        "reservation_url_admin": f"{settings.ABSOLUTE_URL}/"
+        f"admin/reservations/reservation/{reservation.id}",
     }
     if config.RESERVATIONS_EMAIL:
         send(

@@ -46,12 +46,11 @@ class Reservation(BaseModel):
         default="",
         help_text=_("Motivation for the reservation"),
     )
-    assistants = flowbite.ModelCharField(
+    assistants = flowbite.ModelIntegerField(
         _("Assistants"),
-        max_length=500,
         blank=True,
         null=True,
-        default="",
+        default=1,
         help_text=_("Assistants for the reservation"),
     )
     room = models.ForeignKey(

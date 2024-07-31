@@ -48,7 +48,7 @@ class FormIntegerField(forms.IntegerField):
         return FlowBiteBoundCharField(form, self, field_name)
 
 
-class ModelIntegerField(models.IntegerField):
+class ModelIntegerField(models.PositiveIntegerField):
     def formfield(self, **kwargs):
         defaults = {"form_class": FormIntegerField}
         defaults.update(kwargs)

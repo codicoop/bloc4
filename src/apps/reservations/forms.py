@@ -66,9 +66,9 @@ class ReservationForm(forms.ModelForm):
             }
         )
     )
-    assistants = flowbite.FormCharField(
+    assistants = flowbite.FormIntegerField(
         label=_("Assitants"),
-        widget=forms.Textarea(
+        widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
                 "autofocus": True,

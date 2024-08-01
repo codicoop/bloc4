@@ -35,7 +35,6 @@ def send_mail_reservation(reservation, action):
     }
     if config.RESERVATIONS_EMAIL:
         send(
-            sender=settings.DEFAULT_FROM_EMAIL,
             recipients=recipients,
             template=action,
             context=context,

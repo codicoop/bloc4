@@ -30,4 +30,5 @@ urlpatterns += i18n_patterns(
     path(
         _("reservations/"), include("apps.reservations.urls", namespace="reservations")
     ),
+    path(_("rooms/"), include("apps.rooms.urls", namespace="rooms")),
 )

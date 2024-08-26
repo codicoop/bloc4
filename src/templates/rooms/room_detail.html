@@ -1,0 +1,181 @@
+{% extends "../base.html" %}
+{% load i18n static %}
+
+{# Blocks de base.html #}
+{% block page_title %}{% translate "Reservations List" %}{% endblock %}
+{% block bodyclasses %}{% endblock %}
+{% block mainclasses %} reservations {% endblock %}
+{% block extra_js %}{% endblock %}
+
+{% block extra_head %}
+<link href="{% static 'fullcalendar/main.min.css' %}" rel="stylesheet" />
+<link href="{% static 'styles/calendar.css' %}" type="text/css" rel="stylesheet" />
+<script src="{% static 'fullcalendar/index.global.min.js' %}"></script>
+<script src="{% static 'fullcalendar/locales/ca.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  // var newActivityURL = "/admin/cc_courses/activity/add/"
+  // var newReservationURL = "/ca/reservations/create/"
+  // var newActivityParameters = ""
+  // var newReservationParameters = ""
+  // let dialog = document.getElementById("confirmation-dialog");
+
+  // document.getElementById("confirm-reservation").addEventListener("click", function() {
+  //   params = "?" + newReservationParameters.join("&")
+  //   url = newReservationURL + params
+  //   console.log(url)
+  //   window.open(url);
+  // });
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'ca',
+    firstDay: '1',
+    headerToolbar: {
+      left: 'dayGridMonth,customTimeGridWeek',
+      center: 'title',
+      right: 'prev,next'
+    },
+    views: {
+      customTimeGridWeek: {
+        type: 'timeGrid',
+        buttonText: 'Setmana',
+        duration: { days: 7 },
+
+        // Date Clicking & Selecting:
+        selectable: true, // De moment eliminem la funcionalitat de seleccionar
+        selectMirror: false,
+
+        // select: function(info) {
+        //   console.log(info);
+        //   var date_start = info.start.toLocaleString(
+        //     "ca", {year: 'numeric', month: '2-digit', day: '2-digit'}
+        //   )
+        //   var date_end = info.end.toLocaleString(
+        //     "ca", {year: 'numeric', month: '2-digit', day: '2-digit'}
+        //   )
+        //   var starting_time = info.start.toLocaleString(
+        //     "ca", {hour: 'numeric', minute: 'numeric'}
+        //   )
+        //   var ending_time = info.end.toLocaleString(
+        //     "ca", {hour: 'numeric', minute: 'numeric'}
+        //   )
+        //   newReservationParameters = [
+        //     "start=" + date_start + " " + starting_time,
+        //     "end=" + date_end + " " + ending_time,
+        //   ]
+        //   dialog.showModal();
+        // },
+
+        // Time Grid:
+        allDaySlot: false,
+        slotMaxTime: "18:00:00",
+        slotMinTime: "08:00:00",
+        expandRows: true,
+      },
+    },
+
+    // Date & Time Display:
+    weekends: true,
+
+    events: {
+      url: '/reserves/ajax/calendar/',
+      error: function() {
+          alert("No s'han pogut carregar les reserves. Recarrega la pàgina i si d'aquí uns minuts segueix fallant, si us plau avisa'ns.");
+      }
+    },
+
+    eventDidMount: function(info) {
+      let pill = document.createElement("span");
+      let room = info.event._def.extendedProps['room'];
+      let color = info.event._def.extendedProps['color'];
+      let eventText = info.el.querySelector('.fc-event-time');
+
+      pill.classList.add("text-xs")
+      pill.innerText = room;
+      eventText.append(pill)
+      eventText.classList.add("flex", "flex-wrap", "gap-1", "items-center")
+    },
+    eventClick: function(info) {
+      var eventObj = info.event;
+      if (eventObj.url) {
+        window.open(eventObj.url);
+        info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+      }
+    },
+
+  });
+
+  calendar.render();
+});
+</script>
+{% endblock %}
+
+{% block main %}
+<nav class="flex mb-4" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <li class="inline-flex items-center">
+      <a href="{% url 'home' %}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-400 dark:hover:text-white">
+        <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 20 20">
+          <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+        </svg>
+        {% translate 'Home' %}
+      </a>
+    </li>
+  </ol>
+</nav>
+<h1 class="mt-4 mb-4 text-2xl font-bold leading-tight tracking-tight text-primary-900 md:text-3xl dark:text-white">
+    {{ room.name }}
+</h1>
+<p> {{ room.equipment }}</p>
+<img src="{{ room.picture.url }}" alt="">
+<h1 class="mt-4 mb-4 text-2xl font-bold leading-tight tracking-tight text-primary-900 md:text-3xl dark:text-white">
+  {% translate "Availability" %}
+</h1>
+<div class="mb-6 flex justify-end">
+  <a href="{% url 'reservations:create_reservation' %}" class="text-white bg-primary-800 hover:bg-primary-900 focus:outline-none focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+    {% translate "New reservation" %}
+  </a>
+</div>
+<div id="calendar-container">
+  <div id="calendar" class="my-calendar"></div>
+</div>
+<!-- <dialog id="confirmation-dialog" data-modal-target="confirmation-dialog">
+  <div tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            {% translate 'New reservation' %}
+          </h3>
+          <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          data-modal-hide="confirmation-dialog">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <div class="p-4 md:p-5 space-y-4">
+          <p class="text-base leading-relaxed text-primary-900 dark:text-primary-100">
+            {% translate "Do you want to create a new reservation in this time?" %}
+          </p>
+        </div>
+        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+          <form method="post" action="" class="w-full">
+            {% csrf_token %}
+            <a href="{% url 'reservations:create_reservation' %}" data-modal-hide="confirmation-dialog"
+              class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
+              hover:bg-primary-300" name="cancel_reservation" value="{{ reservation.id }}" id="id_cancel_reservation_{{ reservation.id }}">
+              {% translate 'New reservation' %}
+              <div id="confirm-reservation">Reserva</div>
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog> -->
+
+{% endblock %}

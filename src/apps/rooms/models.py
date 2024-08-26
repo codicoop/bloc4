@@ -5,6 +5,7 @@ from project.fields import flowbite
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
 from apps.rooms.choices import RoomTypeChoices
+from django.core.validators import MinValueValidator
 
 class Room(BaseModel):
     name = flowbite.ModelCharField(
@@ -25,14 +26,27 @@ class Room(BaseModel):
     )
     price = flowbite.ModelFloatField(
         _("Hourly price"),
-        blank=False,
         default=0,
         null=False,
+        validators=[MinValueValidator(0.0)],
         help_text=_("Price per hour of the room"),
+    )
+    price_half_day = flowbite.ModelFloatField(
+        _("Half day price"),
+        default=0,
+        null=False,
+        validators=[MinValueValidator(0.0)],
+        help_text=_("Price per half day of the room"),
+    )
+    price_all_day = flowbite.ModelFloatField(
+        _("All day price"),
+        default=0,
+        null=False,
+        validators=[MinValueValidator(0.0)],
+        help_text=_("Price per all day of the room"),
     )
     capacity = flowbite.ModelIntegerField(
         _("Capacity"),
-        blank=False,
         default=0,
         null=False,
         help_text=_("Maximum seating capacity of the room"),

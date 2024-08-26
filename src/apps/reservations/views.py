@@ -1,5 +1,6 @@
-from datetime import datetime
 import uuid
+from datetime import datetime
+
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -173,7 +174,7 @@ class AjaxRoomCalendarFeed(View):
     def get(self, request, *args, **kwargs):
         data = []
         room_id = uuid.UUID(kwargs.get('id'))
-        
+
         reservations = Reservation.objects.filter(room__id=room_id).exclude(
             status__in=[
                 Reservation.StatusChoices.CANCELED,

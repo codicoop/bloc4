@@ -13,6 +13,7 @@ from django.views.generic.list import ListView
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import send_mail_reservation
+from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 from project.views import StandardSuccess
 
@@ -133,13 +134,21 @@ class ReservationsCalendarView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
+        room_types = Room.objects.values_list('room_type', flat=True).distinct()
+        unique_room_types = {
+            room_type: RoomTypeChoices(room_type).label
+            for room_type in room_types
+        }
+        unique_room_types = {'all': _("All")} | unique_room_types
         reservations = Reservation.objects.all().exclude(
             status__in=[
                 Reservation.StatusChoices.CANCELED,
                 Reservation.StatusChoices.REFUSED,
             ]
         )
+        context["room_types"] = unique_room_types
         context["reservations"] = reservations
+        context["rooms"] = Room.objects.all()
         return context
 
 

@@ -1,6 +1,7 @@
 from factory.django import DjangoModelFactory
 
 from apps.rooms.models import Room
+from apps.rooms.choices import RoomTypeChoices
 
 
 class RoomFactory(DjangoModelFactory):
@@ -9,7 +10,7 @@ class RoomFactory(DjangoModelFactory):
     price = 10.0
     capacity = 10
     equipment = "Equipment test"
-    room_type = Room.RoomTypeChoices.EVENT_ROOM
+    room_type = RoomTypeChoices.EVENT_ROOM
 
     class Meta:
         model = Room

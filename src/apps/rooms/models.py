@@ -1,20 +1,12 @@
 from django.core.validators import validate_image_file_extension
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from project.fields import flowbite
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
-
+from apps.rooms.choices import RoomTypeChoices
 
 class Room(BaseModel):
-    class RoomTypeChoices(models.TextChoices):
-        """
-        List of room types
-        """
-
-        EVENT_ROOM = "event_room", _("Event Room")
-
     name = flowbite.ModelCharField(
         _("Name"),
         max_length=50,

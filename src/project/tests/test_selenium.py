@@ -16,6 +16,7 @@ from apps.entities.tests.factories import EntityFactory
 from apps.reservations.models import Reservation
 from apps.rooms.models import Room
 from apps.users.models import User
+from apps.rooms.choices import RoomTypeChoices
 
 logging.basicConfig(level=logging.INFO)
 
@@ -465,7 +466,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
             price=50,
             capacity=10,
             equipment="Equipment Test",
-            room_type=Room.RoomTypeChoices.EVENT_ROOM,
+            room_type=RoomTypeChoices.EVENT_ROOM,
         )
 
         # Assignment of an Entity to the user

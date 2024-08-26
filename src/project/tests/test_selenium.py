@@ -14,9 +14,9 @@ from selenium.webdriver.common.by import By
 
 from apps.entities.tests.factories import EntityFactory
 from apps.reservations.models import Reservation
+from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 from apps.users.models import User
-from apps.rooms.choices import RoomTypeChoices
 
 logging.basicConfig(level=logging.INFO)
 

@@ -1,7 +1,7 @@
 from factory.django import DjangoModelFactory
 
-from apps.rooms.models import Room
 from apps.rooms.choices import RoomTypeChoices
+from apps.rooms.models import Room
 
 
 class RoomFactory(DjangoModelFactory):

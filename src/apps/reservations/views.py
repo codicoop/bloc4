@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import uuid
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -151,6 +151,36 @@ class AjaxCalendarFeed(View):
                 Reservation.StatusChoices.REFUSED,
             ]
         )
+        for reservation in reservations:
+            reservation_data = {
+                "room": reservation.room.name,
+                "start": date_to_full_calendar_format(
+                    timezone.make_aware(
+                        datetime.combine(reservation.date, reservation.start_time)
+                    )
+                ),
+                "end": date_to_full_calendar_format(
+                    timezone.make_aware(
+                        datetime.combine(reservation.date, reservation.end_time)
+                    )
+                ),
+            }
+            data.append(reservation_data)
+        return JsonResponse(data, safe=False)
+
+
+class AjaxRoomCalendarFeed(View):
+    def get(self, request, *args, **kwargs):
+        data = []
+        room_id = uuid.UUID(kwargs.get('id'))
+        
+        reservations = Reservation.objects.filter(room__id=room_id).exclude(
+            status__in=[
+                Reservation.StatusChoices.CANCELED,
+                Reservation.StatusChoices.REFUSED,
+            ]
+        )
+        print(reservations,type(room_id))
         for reservation in reservations:
             reservation_data = {
                 "room": reservation.room.name,

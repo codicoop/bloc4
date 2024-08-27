@@ -31,20 +31,18 @@
   var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'customTimeGridWeek',
     locale: 'ca',
-    firstDay: '1',
+    firstDay: 1,
     headerToolbar: {
-      left: 'customTimeGridWeek',
+      left: '',
       center: 'title',
       right: 'prev,next'
     },
     views: {
       customTimeGridWeek: {
-        type: 'timeGrid',
-        buttonText: 'Setmana',
+        type: 'timeGridWeek',
         duration: { days: 7 },
-
-        // Date Clicking & Selecting:
-        selectable: false, // De moment eliminem la funcionalitat de seleccionar
+        firstDay: 1,
+        selectable: true,
         selectMirror: false,
 
         // select: function(info) {
@@ -75,10 +73,13 @@
         expandRows: true,
       },
     },
-
-    // Date & Time Display:
     weekends: true,
-
+    initialDate: function() {
+      let currentDate = new Date();
+      let day = currentDate.getDay();
+      let diff = currentDate.getDate() - day + (day === 0 ? -6 : 1);
+      return new Date(currentDate.setDate(diff));
+    }(),
     events: {
       url: '/reserves/ajax/calendar/',
       error: function() {
@@ -106,7 +107,6 @@
     },
 
   });
-
   calendar.render();
 });
 </script>

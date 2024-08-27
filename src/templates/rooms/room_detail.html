@@ -22,20 +22,17 @@
     locale: 'ca',
     firstDay: '1',
     headerToolbar: {
-      left: 'customTimeGridWeek',
+      left: '',
       center: 'title',
       right: 'prev,next'
     },
     views: {
       customTimeGridWeek: {
         type: 'timeGrid',
-        buttonText: 'Setmana',
         duration: { days: 7 },
-
         // Date Clicking & Selecting:
-        selectable: true, // De moment eliminem la funcionalitat de seleccionar
+        selectable: true, 
         selectMirror: false,
-
         // Time Grid:
         allDaySlot: false,
         slotMaxTime: "18:00:00",
@@ -43,10 +40,14 @@
         expandRows: true,
       },
     },
-
     // Date & Time Display:
     weekends: true,
-
+    initialDate: function() {
+      let currentDate = new Date();
+      let day = currentDate.getDay();
+      let diff = currentDate.getDate() - day + (day === 0 ? -6 : 1);
+      return new Date(currentDate.setDate(diff));
+    }(),
     events: {
       url: `/reserves/ajax/calendar/${roomId}/`,
       error: function() {

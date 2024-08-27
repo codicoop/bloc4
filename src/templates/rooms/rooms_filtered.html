@@ -1,0 +1,19 @@
+{% load i18n static %}
+
+<h1 class="mt-4 mb-4 text-lg leading-tight tracking-tight text-primary-900 md:text-lg dark:text-white">
+    {% translate "Choose a room" %}
+  </h1>
+{% for room in rooms %}
+    <div class="rounded-lg border border-gray-300 p-4">
+    <h3>{{ room.name }}</h3>
+    <p>{% translate "Capacity" %}: {{ room.capacity }}</p>
+    <p>{% translate "Price" %}: {{ room.price }}€/h, {{ room.price_half_day }}€/{% translate "half day" %}, {{ room.price_all_day }}€/{% translate "all day" %}</p>
+    <a href="{% url 'rooms:room_detail' id=room.id %}">+ info</a>
+    </div>
+{% endfor %}
+<h1 class="mt-4 mb-4 text-lg leading-tight tracking-tight text-primary-900 md:text-lg dark:text-white">
+    {% translate "To book, you must choose a day and time on the calendar" %}
+</h1>
+<div id="calendar-container">
+ {% include 'reservations/calendar_filtered.html' %}
+</div>

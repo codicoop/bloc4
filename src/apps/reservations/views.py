@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import TemplateView, View
+from django.views.generic import View
 from django.views.generic.list import ListView
 
 from apps.reservations.forms import ReservationForm
@@ -129,27 +129,30 @@ class ReservationSuccessView(StandardSuccess):
         return reversed_url
 
 
-class ReservationsCalendarView(TemplateView):
-    template_name = "reservations/full_calendar.html"
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        room_types = Room.objects.values_list('room_type', flat=True).distinct()
-        unique_room_types = {
-            room_type: RoomTypeChoices(room_type).label
-            for room_type in room_types
-        }
-        unique_room_types = {'all': _("All")} | unique_room_types
-        reservations = Reservation.objects.all().exclude(
-            status__in=[
-                Reservation.StatusChoices.CANCELED,
-                Reservation.StatusChoices.REFUSED,
-            ]
-        )
-        context["room_types"] = unique_room_types
-        context["reservations"] = reservations
-        context["rooms"] = Room.objects.all()
-        return context
+def reservations_view(request):
+    context = {}
+    room_types = Room.objects.values_list('room_type', flat=True).distinct()
+    unique_room_types = {
+        room_type: RoomTypeChoices(room_type).label
+        for room_type in room_types
+    }
+    unique_room_types = {'all': _("All")} | unique_room_types
+    context["room_types"] = unique_room_types
+    context["rooms"] = Room.objects.all()
+    reservations = Reservation.objects.all().exclude(
+        status__in=[
+            Reservation.StatusChoices.CANCELED,
+            Reservation.StatusChoices.REFUSED,
+        ]
+    )
+    context["reservations"] = reservations
+    if request.headers.get('HX-Request'):
+        room_type = request.POST.get('room_type')
+        if room_type != "all":
+            context["rooms"] = Room.objects.filter(room_type=room_type)
+            context["reservations"] = reservations.filter(room__room_type=room_type)
+        return render(request, "rooms/rooms_filtered.html", context)
+    return render(request, "reservations/full_calendar.html", context)
 
 
 class AjaxCalendarFeed(View):

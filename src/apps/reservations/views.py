@@ -4,7 +4,7 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -57,27 +57,27 @@ class ReservationsListView(ListView):
 @login_required
 def create_reservation_view(request):
     if request.method == "GET":
-        start = request.GET.get('start') 
-        end = request.GET.get('end') 
-        # id = request.GET.get('id') 
-        id = "de7f22d7-57ef-44ca-bdf0-aca719328f4a"
-        if not start or not end or not id:
+        start = request.GET.get('start')
+        end = request.GET.get('end')
+        if not start or not end:
             return redirect("reservations:reservations_calendar")
+        try:
+            id = uuid.UUID(request.GET.get('id'))
+        except ValueError:
+            return redirect("reservations:reservations_calendar")
+        room = get_object_or_404(Room, id=id)
         if start and end:
             start_datetime = datetime.fromisoformat(start)
             end_datetime = datetime.fromisoformat(end)
             date = start_datetime.date().strftime('%Y-%m-%d')
             start_time = start_datetime.time()
-            end_time = end_datetime.time() 
-            room = Room.objects.get(id=id)
+            end_time = end_datetime.time()
             form = ReservationForm({
                 "date": date,
-                "start_time": start_time,
-                "end_time": end_time,
-                "room": room
+                "start_time": start_time.strftime('%H:%M'),
+                "end_time": end_time.strftime('%H:%M'),
+                "room": room.id,
             })
-        else: 
-            form = ReservationForm()
     if request.method == "POST":
         form = ReservationForm(request.POST)
         # Validation of the date format
@@ -174,7 +174,6 @@ class AjaxCalendarFeed(View):
     def get(self, request, *args, **kwargs):
         data = []
         id = kwargs.get('id')
-        print(id)
         reservations = Reservation.objects.exclude(
             status__in=[
                 Reservation.StatusChoices.CANCELED,

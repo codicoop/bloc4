@@ -7,6 +7,10 @@ from project.fields import flowbite
 
 
 class ReservationForm(forms.ModelForm):
+    room = forms.ModelChoiceField(
+        queryset=Room.objects.all(),
+        widget=forms.HiddenInput()
+    )
     date = flowbite.FormDateField(
         label=_("Date"),
         widget=forms.DateInput(format="%Y-%m-%d",
@@ -89,6 +93,7 @@ class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = [
+            "room",
             "date",
             "start_time",
             "end_time",

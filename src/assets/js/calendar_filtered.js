@@ -18,14 +18,15 @@ const loadCalendar = () => {
                 type: "timeGridWeek",
                 duration: { days: 7 },
                 firstDay: 1,
-                selectable: true,
+                selectable: false,
                 select: function (info) {
                     const start = info.startStr;
                     const end = info.endStr;
-                    console.log(roomId);
                     window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
                         start
-                    )}&end=${encodeURIComponent(end)}&id=${encodeURIComponent(roomId)}`;
+                    )}&end=${encodeURIComponent(end)}&id=${encodeURIComponent(
+                        roomId
+                    )}`;
                 },
                 selectMirror: false,
                 // Time Grid:
@@ -79,7 +80,9 @@ const loadCalendar = () => {
 document.addEventListener("DOMContentLoaded", loadCalendar);
 
 const addEventSource = (element) => {
-    const roomId = element.getAttribute("id");
+    roomId = element.getAttribute("id");
+    calendar.setOption("selectable", false);
+    if (roomId.length == 36) calendar.setOption("selectable", true);
     calendar.removeAllEventSources();
     calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
 };

@@ -9,9 +9,10 @@ from project.fields import flowbite
 class ReservationForm(forms.ModelForm):
     date = flowbite.FormDateField(
         label=_("Date"),
-        widget=forms.DateInput(
+        widget=forms.DateInput(format="%Y-%m-%d",
             attrs={
                 "type": "date",
+                "step": 900,
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
                 "focus:border-primary-60 dark:bg-gray-700 "
@@ -21,13 +22,16 @@ class ReservationForm(forms.ModelForm):
                 "required": True,
                 "help_text": _("Date"),
             }
-        )
+        ),
+        input_formats=["%Y-%m-%d"]
+
     )
     start_time = flowbite.FormTimeField(
         label=_("Start Time"),
         widget=forms.TimeInput(
             attrs={
                 "type": "time",
+                "step": 900,
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
                 "focus:border-primary-60 dark:bg-gray-700 "
@@ -44,6 +48,7 @@ class ReservationForm(forms.ModelForm):
         widget=forms.TimeInput(
             attrs={
                 "type": "time",
+                "step": 900,
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
                 "focus:border-primary-60 dark:bg-gray-700 "

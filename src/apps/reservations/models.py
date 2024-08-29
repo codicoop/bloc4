@@ -216,3 +216,9 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
+            
+            valid_minutes = [0, 15, 30, 45]
+            if self.start_time.minute not in valid_minutes:
+                raise ValidationError(_("Start time must be in 00, 15, 30 or 45 minutes."))
+            if self.end_time.minute not in valid_minutes:
+                raise ValidationError(_("End time must be in 00, 15, 30 or 45 minutes."))

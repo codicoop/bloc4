@@ -142,18 +142,11 @@ def reservations_calendar_view(request):
     unique_room_types = {'all': _("All")} | unique_room_types
     context["room_types"] = unique_room_types
     context["rooms"] = Room.objects.all()
-    reservations = Reservation.objects.all().exclude(
-        status__in=[
-            Reservation.StatusChoices.CANCELED,
-            Reservation.StatusChoices.REFUSED,
-        ]
-    )
-    context["reservations"] = reservations
     if request.htmx:
         room_type = request.POST.get('room_type')
         if room_type != "all":
             context["rooms"] = Room.objects.filter(room_type=room_type)
-            context["reservations"] = reservations.filter(room__room_type=room_type)
+            # context["reservations"] = reservations.filter(room__room_type=room_type)
         return render(request, "rooms/rooms_filtered.html", context)
     return render(request, "reservations/full_calendar.html", context)
 
@@ -161,41 +154,19 @@ def reservations_calendar_view(request):
 class AjaxCalendarFeed(View):
     def get(self, request, *args, **kwargs):
         data = []
-        reservations = Reservation.objects.all().exclude(
+        id = kwargs.get('id')
+        reservations = Reservation.objects.exclude(
             status__in=[
                 Reservation.StatusChoices.CANCELED,
                 Reservation.StatusChoices.REFUSED,
             ]
         )
-        for reservation in reservations:
-            reservation_data = {
-                "room": reservation.room.name,
-                "start": date_to_full_calendar_format(
-                    timezone.make_aware(
-                        datetime.combine(reservation.date, reservation.start_time)
-                    )
-                ),
-                "end": date_to_full_calendar_format(
-                    timezone.make_aware(
-                        datetime.combine(reservation.date, reservation.end_time)
-                    )
-                ),
-            }
-            data.append(reservation_data)
-        return JsonResponse(data, safe=False)
-
-
-class AjaxRoomCalendarFeed(View):
-    def get(self, request, *args, **kwargs):
-        data = []
-        room_id = uuid.UUID(kwargs.get('id'))
-
-        reservations = Reservation.objects.filter(room__id=room_id).exclude(
-            status__in=[
-                Reservation.StatusChoices.CANCELED,
-                Reservation.StatusChoices.REFUSED,
-            ]
-        )
+        try:
+            room_id = uuid.UUID(id)
+            reservations = reservations.filter(room__id=room_id)
+        except ValueError:
+            if id != "all":
+                reservations = reservations.filter(room__room_type=id)
         for reservation in reservations:
             reservation_data = {
                 "room": reservation.room.name,

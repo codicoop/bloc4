@@ -1,13 +1,18 @@
+let calendar;
 const loadCalendar = () => {
     const calendarEl = document.getElementById("calendar");
-    const calendar = new FullCalendar.Calendar(calendarEl, {
+    if (!roomId) {
+        roomId = "all";
+    }
+    console.log(roomId);
+    calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "customTimeGridWeek",
         locale: "ca",
         firstDay: 1,
         headerToolbar: {
-            left: "",
+            left: "prev",
             center: "title",
-            right: "prev,next",
+            right: "next",
         },
         views: {
             customTimeGridWeek: {
@@ -31,7 +36,7 @@ const loadCalendar = () => {
             return new Date(currentDate.setDate(diff));
         })(),
         events: {
-            url: "/reserves/ajax/calendar/",
+            url: `/reserves/ajax/calendar/${roomId}`,
             error: function () {
                 alert(
                     "No s'han pogut carregar les reserves. Recarrega la pàgina i si d'aquí uns minuts segueix fallant, si us plau avisa'ns."
@@ -66,5 +71,8 @@ const loadCalendar = () => {
 };
 document.addEventListener("DOMContentLoaded", loadCalendar);
 
-// if (document.readyState !== 'loading') loadCalendar()
-// else document.addEventListener('DOMContentLoaded', loadCalendar);
+const addEventSource = (element) => {
+    const roomId = element.getAttribute("id");
+    calendar.removeAllEventSources();
+    calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
+};

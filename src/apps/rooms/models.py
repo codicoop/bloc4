@@ -12,7 +12,7 @@ class Room(BaseModel):
         _("Name"),
         max_length=50,
         blank=False,
-        null=False,
+        default="",
         unique=True,
         help_text=_("Name of the room"),
     )
@@ -21,7 +21,6 @@ class Room(BaseModel):
         max_length=50,
         blank=True,
         default="",
-        null=False,
         help_text=_("Room location"),
     )
     price = flowbite.ModelFloatField(
@@ -53,8 +52,8 @@ class Room(BaseModel):
     )
     picture = flowbite.ModelImageField(
         _("Picture"),
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
         storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
         help_text=_("Photo of the room"),
@@ -64,15 +63,20 @@ class Room(BaseModel):
         max_length=500,
         blank=True,
         default="",
-        null=False,
         help_text=_("Available equipment in the room"),
+    )
+    description = flowbite.ModelCharField(
+        _("Description"),
+        max_length=500,
+        blank=False,
+        default="",
+        help_text=_("Description of the main aspects of the room."),
     )
     room_type = flowbite.ModelCharField(
         _("Room type"),
         max_length=50,
         choices=RoomTypeChoices,
         blank=False,
-        null=False,
         help_text=_("Room type"),
     )
 

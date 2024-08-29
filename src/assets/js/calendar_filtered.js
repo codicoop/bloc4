@@ -1,7 +1,10 @@
 let calendar;
 const loadCalendar = () => {
     const calendarEl = document.getElementById("calendar");
-    const roomId = "all";
+    if (!roomId) {
+        roomId = "all";
+    }
+    console.log(roomId);
     calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "customTimeGridWeek",
         locale: "ca",
@@ -70,7 +73,6 @@ document.addEventListener("DOMContentLoaded", loadCalendar);
 
 const addEventSource = (element) => {
     const roomId = element.getAttribute("id");
-    console.log(roomId);
     calendar.getEvents().forEach((event) => event.remove());
     calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
 };

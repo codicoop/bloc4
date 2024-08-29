@@ -12,72 +12,9 @@
 <link href="{% static 'styles/calendar.css' %}" type="text/css" rel="stylesheet" />
 <script src="{% static 'fullcalendar/index.global.min.js' %}"></script>
 <script src="{% static 'fullcalendar/locales/ca.js' %}"></script>
+<script src="{% static 'js/calendar_filtered.js' %}"></script>
 <script>
-  const roomId = "{{ room.id }}";
-  document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'customTimeGridWeek',
-    locale: 'ca',
-    firstDay: '1',
-    headerToolbar: {
-      left: 'prev',
-      center: 'title',
-      right: 'next'
-    },
-    views: {
-      customTimeGridWeek: {
-        type: 'timeGrid',
-        duration: { days: 7 },
-        // Date Clicking & Selecting:
-        selectable: true, 
-        selectMirror: false,
-        // Time Grid:
-        allDaySlot: false,
-        slotMaxTime: "18:00:00",
-        slotMinTime: "08:00:00",
-        expandRows: true,
-      },
-    },
-    // Date & Time Display:
-    weekends: true,
-    initialDate: function() {
-      let currentDate = new Date();
-      let day = currentDate.getDay();
-      let diff = currentDate.getDate() - day + (day === 0 ? -6 : 1);
-      return new Date(currentDate.setDate(diff));
-    }(),
-    events: {
-      url: `/reserves/ajax/calendar/${roomId}/`,
-      error: function() {
-          alert("No s'han pogut carregar les reserves. Recarrega la pàgina i si d'aquí uns minuts segueix fallant, si us plau avisa'ns.");
-      }
-    },
-
-    eventDidMount: function(info) {
-      let pill = document.createElement("span");
-      let room = info.event._def.extendedProps['room'];
-      let color = info.event._def.extendedProps['color'];
-      let eventText = info.el.querySelector('.fc-event-time');
-
-      pill.classList.add("text-xs")
-      pill.innerText = room;
-      eventText.append(pill)
-      eventText.classList.add("flex", "flex-wrap", "gap-1", "items-center")
-    },
-    eventClick: function(info) {
-      var eventObj = info.event;
-      if (eventObj.url) {
-        window.open(eventObj.url);
-        info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
-      }
-    },
-
-  });
-
-  calendar.render();
-});
+  let roomId = "{{ room.id }}";
 </script>
 {% endblock %}
 
@@ -124,43 +61,6 @@
   {% translate "Availability" %}
 </h1>
 <div class="mb-12" id="calendar-container">
-  <div id="calendar" class="my-calendar"></div>
+    {% include 'reservations/calendar_filtered.html' %}
 </div>
-<!-- <dialog id="confirmation-dialog" data-modal-target="confirmation-dialog">
-  <div tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
-        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-            {% translate 'New reservation' %}
-          </h3>
-          <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-          data-modal-hide="confirmation-dialog">
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-            </svg>
-            <span class="sr-only">Close modal</span>
-          </button>
-        </div>
-        <div class="p-4 md:p-5 space-y-4">
-          <p class="text-base leading-relaxed text-primary-900 dark:text-primary-100">
-            {% translate "Do you want to create a new reservation in this time?" %}
-          </p>
-        </div>
-        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-          <form method="post" action="" class="w-full">
-            {% csrf_token %}
-            <a href="{% url 'reservations:create_reservation' %}" data-modal-hide="confirmation-dialog"
-              class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
-              hover:bg-primary-300" name="cancel_reservation" value="{{ reservation.id }}" id="id_cancel_reservation_{{ reservation.id }}">
-              {% translate 'New reservation' %}
-              <div id="confirm-reservation">Reserva</div>
-            </a>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</dialog> -->
-
 {% endblock %}

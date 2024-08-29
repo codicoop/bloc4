@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.reservations.views import (
     AjaxCalendarFeed,
-    AjaxRoomCalendarFeed,
     ReservationsListView,
     ReservationSuccessView,
     create_reservation_view,
@@ -23,13 +22,8 @@ urlpatterns = [
         name="reservations_calendar",
     ),
     path(
-        "ajax/calendar/",
-        login_required(AjaxCalendarFeed.as_view()),
-        name="ajax_calendar_feed",
-    ),
-    path(
         "ajax/calendar/<str:id>/",
-        login_required(AjaxRoomCalendarFeed.as_view()),
+        login_required(AjaxCalendarFeed.as_view()),
         name="ajax_room_calendar_feed",
     ),
     path(

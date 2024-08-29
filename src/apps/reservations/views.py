@@ -142,13 +142,6 @@ def reservations_calendar_view(request):
     unique_room_types = {'all': _("All")} | unique_room_types
     context["room_types"] = unique_room_types
     context["rooms"] = Room.objects.all()
-    reservations = Reservation.objects.all().exclude(
-        status__in=[
-            Reservation.StatusChoices.CANCELED,
-            Reservation.StatusChoices.REFUSED,
-        ]
-    )
-    # context["reservations"] = reservations
     if request.htmx:
         room_type = request.POST.get('room_type')
         if room_type != "all":
@@ -159,33 +152,6 @@ def reservations_calendar_view(request):
 
 
 class AjaxCalendarFeed(View):
-    def get(self, request, *args, **kwargs):
-        data = []
-        reservations = Reservation.objects.all().exclude(
-            status__in=[
-                Reservation.StatusChoices.CANCELED,
-                Reservation.StatusChoices.REFUSED,
-            ]
-        )
-        for reservation in reservations:
-            reservation_data = {
-                "room": reservation.room.name,
-                "start": date_to_full_calendar_format(
-                    timezone.make_aware(
-                        datetime.combine(reservation.date, reservation.start_time)
-                    )
-                ),
-                "end": date_to_full_calendar_format(
-                    timezone.make_aware(
-                        datetime.combine(reservation.date, reservation.end_time)
-                    )
-                ),
-            }
-            data.append(reservation_data)
-        return JsonResponse(data, safe=False)
-
-
-class AjaxRoomCalendarFeed(View):
     def get(self, request, *args, **kwargs):
         data = []
         id = kwargs.get('id')
@@ -201,7 +167,6 @@ class AjaxRoomCalendarFeed(View):
         except ValueError:
             if id != "all":
                 reservations = reservations.filter(room__room_type=id)
-        print(reservations)
         for reservation in reservations:
             reservation_data = {
                 "room": reservation.room.name,

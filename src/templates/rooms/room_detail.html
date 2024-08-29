@@ -107,15 +107,17 @@
     {{ room.name }}
   </h1>
   <!-- Descripció -->
-  <p class="col-start-1">Purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet.</p>
+  <p class="col-start-1">
+    {{ room.description }}
+  </p>
   <div>
     <h2 class="text-2xl mb-4 font-bold text-primary-900 md:text-3xl dark:text-white">{% translate 'Equipment' %}</h2>
     <p class="col-start-1 text-primary-900 dark:text-white"> {{ room.equipment }}</p>
   </div>
   {% if room.picture %}
   <div class="col-start-2 row-start-2 row-span-2">
-    <div class="rounded-lg overflow-hidden max-h-96">
-      <img class="object-cover" src="{{ room.picture.url }}" alt="">
+    <div class="rounded-lg overflow-hidden max-h-96 border border-gray-400">
+      <img class="object-cover w-full object-right-top" src="{{ room.picture.url }}" alt="">
     </div>
   </div>
   {% endif %}

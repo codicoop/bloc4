@@ -73,6 +73,6 @@ document.addEventListener("DOMContentLoaded", loadCalendar);
 
 const addEventSource = (element) => {
     const roomId = element.getAttribute("id");
-    calendar.getEvents().forEach((event) => event.remove());
+    calendar.removeAllEventSources();
     calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
 };

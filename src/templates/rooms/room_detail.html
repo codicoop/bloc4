@@ -15,6 +15,7 @@
 <script src="{% static 'js/calendar_filtered.js' %}"></script>
 <script>
   let roomId = "{{ room.id }}";
+  const createReservationUrl = "{% url 'reservations:create_reservation' %}";
 </script>
 {% endblock %}
 

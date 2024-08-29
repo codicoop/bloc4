@@ -18,7 +18,7 @@ const loadCalendar = () => {
                 type: "timeGridWeek",
                 duration: { days: 7 },
                 firstDay: 1,
-                selectable: false,
+                selectable: roomId ? true : false,
                 select: function (info) {
                     const start = info.startStr;
                     const end = info.endStr;
@@ -81,8 +81,8 @@ document.addEventListener("DOMContentLoaded", loadCalendar);
 
 const addEventSource = (element) => {
     roomId = element.getAttribute("id");
-    calendar.setOption("selectable", false);
-    if (roomId.length == 36) calendar.setOption("selectable", true);
+    calendar.setOption("selectable", true);
+    if (roomId.length < 36) calendar.setOption("selectable", false);
     calendar.removeAllEventSources();
     calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
 };

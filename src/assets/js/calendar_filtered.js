@@ -4,7 +4,6 @@ const loadCalendar = () => {
     if (!roomId) {
         roomId = "all";
     }
-    console.log(roomId);
     calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "customTimeGridWeek",
         locale: "ca",
@@ -20,6 +19,14 @@ const loadCalendar = () => {
                 duration: { days: 7 },
                 firstDay: 1,
                 selectable: true,
+                select: function (info) {
+                    const start = info.startStr;
+                    const end = info.endStr;
+                    console.log(roomId);
+                    window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
+                        start
+                    )}&end=${encodeURIComponent(end)}&id=${encodeURIComponent(roomId)}`;
+                },
                 selectMirror: false,
                 // Time Grid:
                 allDaySlot: false,

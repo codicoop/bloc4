@@ -57,7 +57,27 @@ class ReservationsListView(ListView):
 @login_required
 def create_reservation_view(request):
     if request.method == "GET":
-        form = ReservationForm()
+        start = request.GET.get('start') 
+        end = request.GET.get('end') 
+        # id = request.GET.get('id') 
+        id = "de7f22d7-57ef-44ca-bdf0-aca719328f4a"
+        if not start or not end or not id:
+            return redirect("reservations:reservations_calendar")
+        if start and end:
+            start_datetime = datetime.fromisoformat(start)
+            end_datetime = datetime.fromisoformat(end)
+            date = start_datetime.date().strftime('%Y-%m-%d')
+            start_time = start_datetime.time()
+            end_time = end_datetime.time() 
+            room = Room.objects.get(id=id)
+            form = ReservationForm({
+                "date": date,
+                "start_time": start_time,
+                "end_time": end_time,
+                "room": room
+            })
+        else: 
+            form = ReservationForm()
     if request.method == "POST":
         form = ReservationForm(request.POST)
         # Validation of the date format
@@ -115,7 +135,7 @@ def create_reservation_view(request):
     return render(
         request,
         "reservations/create_reserves.html",
-        {"form": form},
+        {"form": form, "room_name": room.name},
     )
 
 
@@ -146,7 +166,6 @@ def reservations_calendar_view(request):
         room_type = request.POST.get('room_type')
         if room_type != "all":
             context["rooms"] = Room.objects.filter(room_type=room_type)
-            # context["reservations"] = reservations.filter(room__room_type=room_type)
         return render(request, "rooms/rooms_filtered.html", context)
     return render(request, "reservations/full_calendar.html", context)
 
@@ -155,6 +174,7 @@ class AjaxCalendarFeed(View):
     def get(self, request, *args, **kwargs):
         data = []
         id = kwargs.get('id')
+        print(id)
         reservations = Reservation.objects.exclude(
             status__in=[
                 Reservation.StatusChoices.CANCELED,

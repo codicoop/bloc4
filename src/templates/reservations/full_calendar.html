@@ -16,6 +16,7 @@
 <script src="{% static 'js/alpine.min.js' %}" defer></script>
 <script>
   let roomId = null;
+  const createReservationUrl = "{% url 'reservations:create_reservation' %}";
 </script>
 {% endblock %}
 

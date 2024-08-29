@@ -27,10 +27,10 @@ urlpatterns = [
         name="ajax_room_calendar_feed",
     ),
     path(
-        _("create"), login_required(create_reservation_view), name="create_reservation"
+        _("create/"), login_required(create_reservation_view), name="create_reservation"
     ),
     path(
-        _("success"),
+        _("success/"),
         login_required(ReservationSuccessView.as_view()),
         name="reservations_success",
     ),

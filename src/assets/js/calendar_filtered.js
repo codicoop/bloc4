@@ -7,9 +7,9 @@ const loadCalendar = () => {
         locale: "ca",
         firstDay: 1,
         headerToolbar: {
-            left: "",
+            left: "prev",
             center: "title",
-            right: "prev,next",
+            right: "next",
         },
         views: {
             customTimeGridWeek: {

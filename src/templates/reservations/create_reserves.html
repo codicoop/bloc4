@@ -70,8 +70,8 @@
   </div>
   {% endif %}
 {% endblock %}
-
 {% block form_fields %}
+  <p>{% translate 'Selected room'%}: {{ room_name }}</p>
   {{ form }}
 {% endblock %}
 

@@ -77,29 +77,10 @@ class ReservationForm(forms.ModelForm):
             }
         )
     )
-    room = forms.ModelChoiceField(
-        label=_("Room"),
-        queryset=Room.objects.all(),
-        widget=forms.Select(
-            attrs={
-                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                "border-gray-300 text-gray-900 focus:ring-primary-500 "
-                "focus:border-primary-500 dark:bg-gray-700 "
-                "dark:border-gray-600 dark:placeholder-gray-400 "
-                "dark:text-white dark:focus:ring-primary-500 "
-                "dark:focus:border-primary-500",
-                "autofocus": True,
-                "autocomplete": True,
-                "help_text": _("Room"),
-                "required": True,
-            }
-        ),
-    )
 
     class Meta:
         model = Reservation
         fields = [
-            "room",
             "date",
             "start_time",
             "end_time",

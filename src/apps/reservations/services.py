@@ -39,3 +39,9 @@ def send_mail_reservation(reservation, action):
             template=action,
             context=context,
         )
+
+
+
+def date_to_full_calendar_format(date_obj):
+    aware_date = timezone.localtime(date_obj)
+    return aware_date.strftime("%Y-%m-%dT%H:%M:%S")

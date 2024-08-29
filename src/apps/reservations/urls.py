@@ -8,7 +8,7 @@ from apps.reservations.views import (
     ReservationsListView,
     ReservationSuccessView,
     create_reservation_view,
-    reservations_view,
+    reservations_calendar_view,
 )
 
 app_name = "reservations"
@@ -19,7 +19,7 @@ urlpatterns = [
     ),
     path(
         _("calendar/"),
-        reservations_view,
+        reservations_calendar_view,
         name="reservations_calendar",
     ),
     path(

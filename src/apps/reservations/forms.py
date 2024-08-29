@@ -12,7 +12,6 @@ class ReservationForm(forms.ModelForm):
         widget=forms.DateInput(format="%Y-%m-%d",
             attrs={
                 "type": "date",
-                "step": 900,
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
                 "focus:border-primary-60 dark:bg-gray-700 "
@@ -32,6 +31,8 @@ class ReservationForm(forms.ModelForm):
             attrs={
                 "type": "time",
                 "step": 900,
+                "min": "08:00",
+                "max": "17:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
                 "focus:border-primary-60 dark:bg-gray-700 "
@@ -49,6 +50,8 @@ class ReservationForm(forms.ModelForm):
             attrs={
                 "type": "time",
                 "step": 900,
+                "min": "09:00",
+                "max": "18:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
                 "focus:border-primary-60 dark:bg-gray-700 "

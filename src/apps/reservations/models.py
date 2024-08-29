@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 
 from constance import config
 from django.core.validators import ValidationError
@@ -216,9 +216,41 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
-            
+            if not (time(8, 0) <= self.start_time <= time(17, 0)):
+                errors.update(
+                    {
+                        "end_time": ValidationError(
+                            _("The start time must be between 8:00 and 17:00.")
+                        )
+                    },
+                )
+                raise ValidationError(errors)
+            if not (time(8, 0) <= self.end_time <= time(18, 0)):
+                errors.update(
+                    {
+                        "end_time": ValidationError(
+                            _("The end time must be between 9:00 and 18:00.")
+                        )
+                    },
+                )
+                raise ValidationError(errors)
             valid_minutes = [0, 15, 30, 45]
             if self.start_time.minute not in valid_minutes:
-                raise ValidationError(_("Start time must be in 00, 15, 30 or 45 minutes."))
+                errors.update(
+                    {
+                        "end_time": ValidationError(
+                            _("The start time must be in 00, 15, 30 or 45 minutes.")
+                        )
+                    },
+                )
+                raise ValidationError(errors)
             if self.end_time.minute not in valid_minutes:
-                raise ValidationError(_("End time must be in 00, 15, 30 or 45 minutes."))
+                errors.update(
+                    {
+                        "end_time": ValidationError(
+                            _("The end time must be in 00, 15, 30 or 45 minutes.")
+                        )
+                    },
+                )
+                raise ValidationError(errors)
+

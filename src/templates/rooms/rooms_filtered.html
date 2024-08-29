@@ -1,14 +1,5 @@
 {% load i18n static %}
 
-{% block extra_head %}
-<script>
-  const refetchCalendar = (id) => {
-    console.log('Room ID:', id);
-    eventSource.remove()
-  }
-</script>
-{% endblock %}
-
 <h1 class="mt-4 mb-4 text-lg leading-tight tracking-tight text-primary-900 md:text-lg dark:text-white">
     {% translate "Choose a room" %}
   </h1>
@@ -18,6 +9,6 @@
     <p>{% translate "Capacity" %}: {{ room.capacity }}</p>
     <p>{% translate "Price" %}: {{ room.price }}€/h, {{ room.price_half_day }}€/{% translate "half day" %}, {{ room.price_all_day }}€/{% translate "all day" %}</p>
     <a href="{% url 'rooms:room_detail' id=room.id %}">+ info</a>
-    <button onclick="refetchCalendar('{{ room.id }}')">+ select</button>
+    <button id="{{room.id}}" onclick="addEventSource(this)">+ select</button>
     </div>
 {% endfor %}

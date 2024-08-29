@@ -148,12 +148,12 @@ def reservations_calendar_view(request):
             Reservation.StatusChoices.REFUSED,
         ]
     )
-    context["reservations"] = reservations
+    # context["reservations"] = reservations
     if request.htmx:
         room_type = request.POST.get('room_type')
         if room_type != "all":
             context["rooms"] = Room.objects.filter(room_type=room_type)
-            context["reservations"] = reservations.filter(room__room_type=room_type)
+            # context["reservations"] = reservations.filter(room__room_type=room_type)
         return render(request, "rooms/rooms_filtered.html", context)
     return render(request, "reservations/full_calendar.html", context)
 
@@ -188,14 +188,20 @@ class AjaxCalendarFeed(View):
 class AjaxRoomCalendarFeed(View):
     def get(self, request, *args, **kwargs):
         data = []
-        room_id = uuid.UUID(kwargs.get('id'))
-
-        reservations = Reservation.objects.filter(room__id=room_id).exclude(
+        id = kwargs.get('id')
+        reservations = Reservation.objects.exclude(
             status__in=[
                 Reservation.StatusChoices.CANCELED,
                 Reservation.StatusChoices.REFUSED,
             ]
         )
+        try:
+            room_id = uuid.UUID(id)
+            reservations = reservations.filter(room__id=room_id)
+        except ValueError:
+            if id != "all":
+                reservations = reservations.filter(room__room_type=id)
+        print(reservations)
         for reservation in reservations:
             reservation_data = {
                 "room": reservation.room.name,

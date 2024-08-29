@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -12,7 +13,10 @@ from django.views.generic.list import ListView
 
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
-from apps.reservations.services import send_mail_reservation
+from apps.reservations.services import (
+    date_to_full_calendar_format,
+    send_mail_reservation,
+)
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 from project.views import StandardSuccess
@@ -50,12 +54,12 @@ class ReservationsListView(ListView):
             return redirect("reservations:reservations_list")
 
 
+@login_required
 def create_reservation_view(request):
     if request.method == "GET":
         form = ReservationForm()
     if request.method == "POST":
         form = ReservationForm(request.POST)
-
         # Validation of the date format
         try:
             datetime.strptime(form.data["date"], "%Y-%m-%d")
@@ -66,7 +70,6 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
-
         # Validation of room availability
         room = Reservation.objects.filter(
             (
@@ -128,8 +131,8 @@ class ReservationSuccessView(StandardSuccess):
             return self.url
         return reversed_url
 
-
-def reservations_view(request):
+@login_required
+def reservations_calendar_view(request):
     context = {}
     room_types = Room.objects.values_list('room_type', flat=True).distinct()
     unique_room_types = {
@@ -146,7 +149,7 @@ def reservations_view(request):
         ]
     )
     context["reservations"] = reservations
-    if request.headers.get('HX-Request'):
+    if request.htmx:
         room_type = request.POST.get('room_type')
         if room_type != "all":
             context["rooms"] = Room.objects.filter(room_type=room_type)
@@ -193,7 +196,6 @@ class AjaxRoomCalendarFeed(View):
                 Reservation.StatusChoices.REFUSED,
             ]
         )
-        print(reservations,type(room_id))
         for reservation in reservations:
             reservation_data = {
                 "room": reservation.room.name,
@@ -211,7 +213,3 @@ class AjaxRoomCalendarFeed(View):
             data.append(reservation_data)
         return JsonResponse(data, safe=False)
 
-
-def date_to_full_calendar_format(date_obj):
-    aware_date = timezone.localtime(date_obj)
-    return aware_date.strftime("%Y-%m-%dT%H:%M:%S")

@@ -7,6 +7,14 @@
 {% block mainclasses %} reservations {% endblock %}
 {% block extra_js %}{% endblock %}
 
+{% block extra_head %}
+<link href="{% static 'fullcalendar/main.min.css' %}" rel="stylesheet" />
+<link href="{% static 'styles/calendar.css' %}" type="text/css" rel="stylesheet" />
+<script src="{% static 'fullcalendar/index.global.min.js' %}"></script>
+<script src="{% static 'fullcalendar/locales/ca.js' %}"></script>
+<script src="{% static 'js/calendar_filtered.js' %}"></script>
+{% endblock %}
+
 {% block main %}
 <nav class="flex mb-4" aria-label="Breadcrumb">
   <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
@@ -50,7 +58,7 @@
   <form method="POST">
   {% csrf_token %}
   {% for room_type, label in room_types.items %}
-    <button id="{{ room_type }}" type="button" hx-target="#htmx-rooms" hx-post="{% url 'reservations:reservations_calendar' %}" hx-vals='{"room_type": "{{ room_type }}"}'  class="text-white bg-primary-800 hover:bg-primary-900 focus:outline-none focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"> 
+    <button id="{{ room_type }}" onclick="" hx-target="#htmx-rooms" hx-post="{% url 'reservations:reservations_calendar' %}" hx-vals='{"room_type": "{{ room_type }}"}'  class="text-white bg-primary-800 hover:bg-primary-900 focus:outline-none focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"> 
       {{ label }}
     </button>
   {% endfor %}
@@ -58,6 +66,12 @@
 </div>
 <div id="htmx-rooms">
   {% include 'rooms/rooms_filtered.html' %}
+</div>
+<h1 class="mt-4 mb-4 text-lg leading-tight tracking-tight text-primary-900 md:text-lg dark:text-white">
+  {% translate "To book, you must choose a day and time on the calendar" %}
+</h1>
+<div id="calendar-container">
+ {% include 'reservations/calendar_filtered.html' %}
 </div>
 {% else %}
   <div>

@@ -1157,6 +1157,14 @@ input:checked + .toggle-bg {
   grid-column-start: 2;
 }
 
+.row-span-2 {
+  grid-row: span 2 / span 2;
+}
+
+.row-start-2 {
+  grid-row-start: 2;
+}
+
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -1281,6 +1289,10 @@ input:checked + .toggle-bg {
   margin-top: auto;
 }
 
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
 .block {
   display: block;
 }
@@ -1379,6 +1391,10 @@ input:checked + .toggle-bg {
 
 .max-h-full {
   max-height: 100%;
+}
+
+.max-h-96 {
+  max-height: 24rem;
 }
 
 .min-h-screen {
@@ -1989,6 +2005,11 @@ input:checked + .toggle-bg {
   background-color: rgb(255 255 255 / 0.5);
 }
 
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 .p-1 {
   padding: 0.25rem;
 }
@@ -2162,6 +2183,11 @@ input:checked + .toggle-bg {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
 }
 
 .font-bold {
@@ -2959,11 +2985,6 @@ input:checked + .toggle-bg {
     inset: 0px;
   }
 
-  .md\:mx-0 {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
   .md\:mb-16 {
     margin-bottom: 4rem;
   }
@@ -2986,10 +3007,6 @@ input:checked + .toggle-bg {
 
   .md\:grid {
     display: grid;
-  }
-
-  .md\:max-w-screen-sm {
-    max-width: 640px;
   }
 
   .md\:grid-cols-2 {
@@ -3046,6 +3063,11 @@ input:checked + .toggle-bg {
   .md\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
+  }
+
+  .md\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
   }
 }
 

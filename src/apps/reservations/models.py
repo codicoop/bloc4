@@ -199,11 +199,6 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
-
-            # Validation of the exact duration of the reservation in full hours
-            total_time = datetime.strptime(
-                str(self.end_time), "%H:%M:%S"
-            ) - datetime.strptime(str(self.start_time), "%H:%M:%S")
             if not (time(8, 0) <= self.start_time <= time(17, 0)):
                 errors.update(
                     {

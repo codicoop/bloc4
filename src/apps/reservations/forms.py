@@ -2,7 +2,6 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from apps.reservations.models import Reservation
-from apps.rooms.models import Room
 from project.fields import flowbite
 
 

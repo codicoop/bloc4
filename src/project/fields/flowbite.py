@@ -178,3 +178,14 @@ class ModelTimeField(models.TimeField):
         defaults = {"form_class": FormTimeField}
         defaults.update(kwargs)
         return super().formfield(**defaults)
+    
+class FormUrlField(forms.URLField):
+    def get_bound_field(self, form, field_name):
+        return FlowBiteBoundCharField(form, self, field_name)
+
+
+class ModelUrlField(models.URLField):
+    def formfield(self, **kwargs):
+        defaults = {"form_class": FormUrlField}
+        defaults.update(kwargs)
+        return super().formfield(**defaults)

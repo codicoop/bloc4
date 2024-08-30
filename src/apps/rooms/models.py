@@ -53,7 +53,7 @@ class Room(BaseModel):
     picture = flowbite.ModelImageField(
         _("Picture"),
         blank=False,
-        null=False,
+        default="",
         storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
         help_text=_("Photo of the room"),

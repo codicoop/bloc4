@@ -1,15 +1,17 @@
 from datetime import date, datetime, time, timedelta
 
 from constance import config
-from django.core.validators import ValidationError
+from django.core.validators import ValidationError, validate_image_file_extension
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
+from django.core.validators import MinValueValidator
 from apps.reservations.services import adjust_time
 from project.fields import flowbite
 from project.models import BaseModel
+from project.storage_backends import PublicMediaStorage
+
 
 
 class Reservation(BaseModel):
@@ -23,6 +25,18 @@ class Reservation(BaseModel):
         CANCELED = "canceled", _("Canceled")
         REFUSED = "refused", _("Refused")
 
+
+    class PrivacyChoices(models.TextChoices):
+        PUBLIC = "public", _("Public training")
+        PRIVATE = "private", _("Private training")
+
+    title = flowbite.ModelCharField(
+        _("Title"),
+        max_length=100,
+        blank=True,
+        default="",
+        help_text=_("Title for the reservation"),
+    )
     date = models.DateField(
         _("Date"),
         null=False,
@@ -40,18 +54,9 @@ class Reservation(BaseModel):
         blank=False,
         help_text=_("End time of the reservation"),
     )
-    motivation = flowbite.ModelCharField(
-        _("Motivation"),
-        max_length=500,
-        blank=True,
-        null=True,
-        default="",
-        help_text=_("Motivation for the reservation"),
-    )
     assistants = flowbite.ModelIntegerField(
         _("Assistants"),
-        blank=True,
-        null=True,
+        blank=False,
         default=1,
         help_text=_("Assistants for the reservation"),
     )
@@ -66,15 +71,63 @@ class Reservation(BaseModel):
     is_paid = flowbite.ModelBooleanField(
         _("Is paid?"),
         null=False,
-        blank=False,
         default=False,
         help_text=_("Is the reservation paid?"),
+    )
+    catering = flowbite.ModelBooleanField(
+        _("Do I need catering service?"),
+        null=False,
+        blank=False,
+        default=False,
+    )
+    notes = flowbite.ModelCharField(
+        _("Notes"),
+        max_length=500,
+        blank=False,
+        default="",
+        help_text=_("Notes for the reservation"),
+    )
+    bloc4_reservation = flowbite.ModelBooleanField(
+        _("Reservation for Bloc4 services"),
+        null=False,
+        blank=False,
+        default=False,
+    )
+    privacy = flowbite.ModelSelectDropdownField(
+        choices=PrivacyChoices,
+        null=False,
+        blank=False,
+        default=PrivacyChoices.PUBLIC,
+        help_text=_("If the training is public, it will appear in the bloc4 agenda"),
+        verbose_name=_("privacy"),
+        max_length=20,
+    )
+    # Only for public training
+    description = flowbite.ModelCharField(
+        _("Description"),
+        max_length=500,
+        blank=True,
+        null=True,
+        default="",
+        help_text=_("Description for the reservation"),
+    )
+    poster = flowbite.ModelImageField(
+        _("Poster"),
+        blank=True,
+        null=True,
+        storage=PublicMediaStorage(),
+        validators=[validate_image_file_extension],
+    )
+    url = flowbite.ModelUrlField(
+        _("URL of the activity"),
+        max_length=200,
+        default=""
     )
     total_price = flowbite.ModelFloatField(
         _("Total price"),
         null=True,
-        blank=True,
         default=0,
+        validators=[MinValueValidator(0.0)],
         help_text=_("Total price of the reservation"),
     )
     entity = models.ForeignKey(
@@ -239,10 +292,8 @@ class Reservation(BaseModel):
                 )
                 raise ValidationError(errors)
             # Validation of room availability
-            print(self, "self")
             start_time = adjust_time(self.start_time, 1, "add")
             end_time = adjust_time(self.end_time, 1, "subtract")
-            print(self.room, "selfroom")
             room_reservation = Reservation.objects.filter(
             (
                 Q(start_time__gte=start_time)

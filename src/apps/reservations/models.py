@@ -97,7 +97,7 @@ class Reservation(BaseModel):
         choices=PrivacyChoices,
         null=False,
         blank=False,
-        default=PrivacyChoices.PUBLIC,
+        default=PrivacyChoices.PRIVATE,
         help_text=_("If the training is public, it will appear in the bloc4 agenda"),
         verbose_name=_("privacy"),
         max_length=20,
@@ -121,6 +121,8 @@ class Reservation(BaseModel):
     url = flowbite.ModelUrlField(
         _("URL of the activity"),
         max_length=200,
+        blank=True,
+        null=True,
         default=""
     )
     total_price = flowbite.ModelFloatField(
@@ -187,7 +189,21 @@ class Reservation(BaseModel):
     def clean(self, *args, **kwargs):
         super().clean()
         errors = {}
-
+        if not self.privacy:
+            self.url = ""
+            self.description = ""
+            self.poster = ""
+        if self.privacy != Reservation.PrivacyChoices.PUBLIC and not self.description:
+            errors.update(
+                    {
+                        "description": ValidationError(
+                            _(
+                                "If training is public, this field is required."
+                              )
+                        )
+                    },
+                )
+            raise ValidationError(errors)
         if self.date:
             # Validation reservation is made within maximum day in advance configured.
             future_date = date.today() + timedelta(

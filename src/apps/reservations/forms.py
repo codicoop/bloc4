@@ -121,6 +121,7 @@ class ReservationForm(forms.ModelForm):
     )
     description = flowbite.FormCharField(
         label=_("Description"),
+        required=False,
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",

@@ -49,13 +49,14 @@ def date_to_full_calendar_format(date_obj):
     return aware_date.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-def adjust_time(time_str, minutes, operation):
-    time_format = "%H:%M"
-    time_obj = datetime.strptime(time_str, time_format)
+def adjust_time(time, minutes, operation):
+    today = datetime.today().date()
+    time_obj = datetime.combine(today, time)
     delta = timedelta(minutes=minutes)
+
     if operation == 'add':
         new_time_obj = time_obj + delta
     elif operation == 'subtract':
         new_time_obj = time_obj - delta
 
-    return new_time_obj.strftime(time_format)
+    return new_time_obj.time()

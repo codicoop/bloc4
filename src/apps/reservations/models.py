@@ -3,9 +3,11 @@ from datetime import date, datetime, time, timedelta
 from constance import config
 from django.core.validators import ValidationError
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from apps.reservations.services import adjust_time
 from project.fields import flowbite
 from project.models import BaseModel
 
@@ -236,4 +238,45 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
+            # Validation of room availability
+            print(self, "self")
+            start_time = adjust_time(self.start_time, 1, "add")
+            end_time = adjust_time(self.end_time, 1, "subtract")
+            print(self.room, "selfroom")
+            room_reservation = Reservation.objects.filter(
+            (
+                Q(start_time__gte=start_time)
+                & (Q(start_time__lte=end_time))
+                | Q(end_time__lte=end_time)
+                & (Q(end_time__gte=start_time))
+            ),
+            room__id=self.room.id,
+            date=self.date,
+            ).exclude(id=self.id
+                      ).exclude(
+            status__in=[
+                Reservation.StatusChoices.CANCELED,
+                Reservation.StatusChoices.REFUSED
+            ]
+            ).exists()
+            print(self.room.id)
+            print(Reservation.objects.filter(
+            (
+                Q(start_time__gte=start_time)
+                & (Q(start_time__lte=end_time))
+                | Q(end_time__lte=end_time)
+                & (Q(end_time__gte=start_time))
+            ),
+            room__id=self.room.id,
+            date=self.date,
+            ))
+        if room_reservation:
+            errors.update(
+                    {
+                        "end_time": ValidationError(
+                            _("The room is not available for this time period.")
+                        )
+                    },
+                )
+            raise ValidationError(errors)
 

@@ -75,6 +75,7 @@ def create_reservation_view(request):
             "date": date,
             "start_time": start_time.strftime('%H:%M'),
             "end_time": end_time.strftime('%H:%M'),
+            "room": room,
         })
     if request.method == "POST":
         form = ReservationForm(request.POST)
@@ -88,29 +89,6 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
-        # Validation of room availability
-        # start_time = adjust_time(form.data["start_time"], 1, "add")
-        # end_time = adjust_time(form.data["end_time"], 1, "subtract")
-        # room_reservation = Reservation.objects.filter(
-        #     (
-        #         Q(start_time__gte=start_time)
-        #         & (Q(start_time__lte=end_time))
-        #         | Q(end_time__lte=end_time)
-        #         & (Q(end_time__gte=start_time))
-        #     ),
-        #     room__id=room.id,
-        #     date=form.data["date"],
-        # ).exists()
-        # if room_reservation:
-        #     form.add_error(
-        #         "end_time", _("The room is not available for this time period.")
-        #     )
-        #     return render(
-        #         request,
-        #         "reservations/create_reserves.html",
-        #         {"form": form},
-        #     )
-
         if form.is_valid():
             reservation = form.save(commit=False)
             # User is assigned to the reservation
@@ -125,7 +103,6 @@ def create_reservation_view(request):
             ) - datetime.strptime(form.data["start_time"], "%H:%M")
             room_time_hours = room_time.total_seconds() // 3600
             reservation.total_price = room_time_hours * float(room.price)
-            ic(room)
             reservation.room = room
             reservation.save()
             form.save()

@@ -2,10 +2,16 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from apps.reservations.models import Reservation
+from apps.rooms.models import Room
 from project.fields import flowbite
 
 
 class ReservationForm(forms.ModelForm):
+    room = forms.ModelChoiceField(
+        label=_("Room"),
+        queryset=Room.objects.all(),
+        widget=forms.HiddenInput(),
+    )
     date = flowbite.FormDateField(
         label=_("Date"),
         widget=forms.DateInput(format="%Y-%m-%d",
@@ -88,6 +94,7 @@ class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = [
+            "room",
             "date",
             "start_time",
             "end_time",

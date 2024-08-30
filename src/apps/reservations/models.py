@@ -259,17 +259,6 @@ class Reservation(BaseModel):
                 Reservation.StatusChoices.REFUSED
             ]
             ).exists()
-            print(self.room.id)
-            print(Reservation.objects.filter(
-            (
-                Q(start_time__gte=start_time)
-                & (Q(start_time__lte=end_time))
-                | Q(end_time__lte=end_time)
-                & (Q(end_time__gte=start_time))
-            ),
-            room__id=self.room.id,
-            date=self.date,
-            ))
         if room_reservation:
             errors.update(
                     {

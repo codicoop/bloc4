@@ -12,6 +12,7 @@ from project.admin import ModelAdmin
 @admin.register(Reservation)
 class ReservationAdmin(ModelAdmin):
     list_display = (
+        "title",
         "date",
         "start_time",
         "end_time",
@@ -22,6 +23,7 @@ class ReservationAdmin(ModelAdmin):
         "status",
     )
     list_filter = (
+        "title",
         "date",
         "room",
         "is_paid",
@@ -32,6 +34,7 @@ class ReservationAdmin(ModelAdmin):
         "status",
     )
     search_fields = (
+        "title",
         "date",
         "room",
         "is_paid",
@@ -42,12 +45,18 @@ class ReservationAdmin(ModelAdmin):
         "status",
     )
     fields = (
+        "room",
+        "title",
         "date",
         "start_time",
         "end_time",
-        "motivation",
         "assistants",
-        "room",
+        "catering",
+        "notes",
+        "privacy",
+        "description",
+        "poster",
+        "url",
         "is_paid",
         "total_price",
         "entity",

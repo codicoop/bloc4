@@ -56,28 +56,26 @@ class ReservationsListView(ListView):
 
 @login_required
 def create_reservation_view(request):
-    if request.method == "GET":
-        start = request.GET.get('start')
-        end = request.GET.get('end')
-        if not start or not end:
-            return redirect("reservations:reservations_calendar")
-        try:
-            id = uuid.UUID(request.GET.get('id'))
-        except ValueError:
-            return redirect("reservations:reservations_calendar")
-        room = get_object_or_404(Room, id=id)
-        if start and end:
-            start_datetime = datetime.fromisoformat(start)
-            end_datetime = datetime.fromisoformat(end)
-            date = start_datetime.date().strftime('%Y-%m-%d')
-            start_time = start_datetime.time()
-            end_time = end_datetime.time()
-            form = ReservationForm({
-                "date": date,
-                "start_time": start_time.strftime('%H:%M'),
-                "end_time": end_time.strftime('%H:%M'),
-                "room": room.id,
-            })
+    start = request.GET.get('start')
+    end = request.GET.get('end')
+    if not start or not end:
+        return redirect("reservations:reservations_calendar")
+    try:
+        id = uuid.UUID(request.GET.get('id'))
+    except ValueError:
+        return redirect("reservations:reservations_calendar")
+    room = get_object_or_404(Room, id=id)
+    if start and end:
+        start_datetime = datetime.fromisoformat(start)
+        end_datetime = datetime.fromisoformat(end)
+        date = start_datetime.date().strftime('%Y-%m-%d')
+        start_time = start_datetime.time()
+        end_time = end_datetime.time()
+        form = ReservationForm(initial={
+            "date": date,
+            "start_time": start_time.strftime('%H:%M'),
+            "end_time": end_time.strftime('%H:%M'),
+        })
     if request.method == "POST":
         form = ReservationForm(request.POST)
         # Validation of the date format
@@ -91,17 +89,17 @@ def create_reservation_view(request):
                 {"form": form},
             )
         # Validation of room availability
-        room = Reservation.objects.filter(
+        room_reservation = Reservation.objects.filter(
             (
                 Q(start_time__gte=form.data["start_time"])
                 & (Q(start_time__lte=form.data["end_time"]))
                 | Q(end_time__lte=form.data["end_time"])
                 & (Q(end_time__gte=form.data["start_time"]))
             ),
-            room__id=form.data["room"],
+            room__id=room.id,
             date=form.data["date"],
         ).exists()
-        if room:
+        if room_reservation:
             form.add_error(
                 "end_time", _("The room is not available for this time period.")
             )
@@ -120,13 +118,12 @@ def create_reservation_view(request):
             reservation.entity = request.user.entity
 
             # Reserve price is assigned
-            room = Room.objects.get(id=form.data["room"])
             room_time = datetime.strptime(
                 form.data["end_time"], "%H:%M"
             ) - datetime.strptime(form.data["start_time"], "%H:%M")
             room_time_hours = room_time.total_seconds() // 3600
             reservation.total_price = room_time_hours * float(room.price)
-
+            reservation.room = room
             reservation.save()
             form.save()
             send_mail_reservation(reservation, "reservation_request_user")

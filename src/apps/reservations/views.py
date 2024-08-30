@@ -10,10 +10,12 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
 from django.views.generic.list import ListView
+from icecream import ic
 
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
+    adjust_time,
     date_to_full_calendar_format,
     send_mail_reservation,
 )
@@ -89,12 +91,14 @@ def create_reservation_view(request):
                 {"form": form},
             )
         # Validation of room availability
+        start_time = adjust_time(form.data["start_time"], 1, "add")
+        end_time = adjust_time(form.data["end_time"], 1, "subtract")
         room_reservation = Reservation.objects.filter(
             (
-                Q(start_time__gte=form.data["start_time"])
-                & (Q(start_time__lte=form.data["end_time"]))
-                | Q(end_time__lte=form.data["end_time"])
-                & (Q(end_time__gte=form.data["start_time"]))
+                Q(start_time__gte=start_time)
+                & (Q(start_time__lte=end_time))
+                | Q(end_time__lte=end_time)
+                & (Q(end_time__gte=start_time))
             ),
             room__id=room.id,
             date=form.data["date"],

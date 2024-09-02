@@ -12,7 +12,6 @@ class ReservationForm(forms.ModelForm):
         queryset=Room.objects.all(),
         widget=forms.HiddenInput(),
     )
-    total_price = forms.FloatField(widget=forms.HiddenInput(), required=False)
     title = flowbite.FormCharField(
         label=_("Title"),
         widget=forms.TextInput(
@@ -151,5 +150,4 @@ class ReservationForm(forms.ModelForm):
             "description",
             "poster",
             "url",
-            "total_price",
         ]

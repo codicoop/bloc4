@@ -11,7 +11,6 @@ from project.admin import ModelAdmin
 
 @admin.register(Reservation)
 class ReservationAdmin(ModelAdmin):
-    readonly_fields = ('total_price',)
     list_display = (
         "title",
         "date",
@@ -75,7 +74,8 @@ class ReservationAdmin(ModelAdmin):
                 "url",),
         }),
     )
-    readonly_fields = ("actions_field",)
+    readonly_fields = ("actions_field", "total_price")
+
 
     def get_urls(self):
         urls = super().get_urls()

@@ -21,11 +21,12 @@ class ReservationForm(forms.ModelForm):
                 "autocomplete": True,
                 "help_text": _("Title"),
             }
-        )
+        ),
     )
     date = flowbite.FormDateField(
         label=_("Date"),
-        widget=forms.DateInput(format="%Y-%m-%d",
+        widget=forms.DateInput(
+            format="%Y-%m-%d",
             attrs={
                 "type": "date",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
@@ -36,10 +37,9 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("Date"),
-            }
+            },
         ),
-        input_formats=["%Y-%m-%d"]
-
+        input_formats=["%Y-%m-%d"],
     )
     start_time = flowbite.FormTimeField(
         label=_("Start Time"),
@@ -58,7 +58,7 @@ class ReservationForm(forms.ModelForm):
                 "required": True,
                 "help_text": _("Start time"),
             }
-        )
+        ),
     )
     end_time = flowbite.FormTimeField(
         label=_("End Time"),
@@ -77,7 +77,7 @@ class ReservationForm(forms.ModelForm):
                 "required": True,
                 "help_text": _("End time"),
             }
-        )
+        ),
     )
     notes = flowbite.FormCharField(
         label=_("Notes"),
@@ -88,7 +88,7 @@ class ReservationForm(forms.ModelForm):
                 "autocomplete": True,
                 "help_text": _("Notes"),
             }
-        )
+        ),
     )
     assistants = flowbite.FormIntegerField(
         label=_("Assitants"),
@@ -99,7 +99,7 @@ class ReservationForm(forms.ModelForm):
                 "autocomplete": True,
                 "help_text": _("Assistants"),
             }
-        )
+        ),
     )
     privacy = forms.ChoiceField(
         label=_("Privacy"),
@@ -114,7 +114,9 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "autofocus": True,
                 "autocomplete": True,
-                "help_text": _("If the training is public, it will appear in the bloc4 agenda"),
+                "help_text": _(
+                    "If the training is public, it will appear in the bloc4 agenda"
+                ),
                 "required": True,
             }
         ),
@@ -129,7 +131,7 @@ class ReservationForm(forms.ModelForm):
                 "autocomplete": True,
                 "help_text": _("Description"),
             }
-        )
+        ),
     )
 
     class Meta:
@@ -147,5 +149,5 @@ class ReservationForm(forms.ModelForm):
             "privacy",
             "description",
             "poster",
-            "url"
+            "url",
         ]

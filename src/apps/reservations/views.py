@@ -9,11 +9,11 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
 from django.views.generic.list import ListView
-from icecream import ic
 
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
+    calculate_reservation_price,
     date_to_full_calendar_format,
     send_mail_reservation,
 )
@@ -54,29 +54,32 @@ class ReservationsListView(ListView):
             return redirect("reservations:reservations_list")
 
 
-@login_required
 def create_reservation_view(request):
-    start = request.GET.get('start')
-    end = request.GET.get('end')
+    start = request.GET.get("start")
+    end = request.GET.get("end")
     if not start or not end:
         return redirect("reservations:reservations_calendar")
     try:
-        id = uuid.UUID(request.GET.get('id'))
+        id = uuid.UUID(request.GET.get("id"))
     except ValueError:
         return redirect("reservations:reservations_calendar")
     room = get_object_or_404(Room, id=id)
     if start and end:
         start_datetime = datetime.fromisoformat(start)
         end_datetime = datetime.fromisoformat(end)
-        date = start_datetime.date().strftime('%Y-%m-%d')
+        date = start_datetime.date().strftime("%Y-%m-%d")
         start_time = start_datetime.time()
         end_time = end_datetime.time()
-        form = ReservationForm(initial={
-            "date": date,
-            "start_time": start_time.strftime('%H:%M'),
-            "end_time": end_time.strftime('%H:%M'),
-            "room": room,
-        })
+        total_price = calculate_reservation_price(
+            start_datetime, end_datetime, room.price
+        )
+        form = ReservationForm(
+            initial={
+                "date": date,
+                "start_time": start_time.strftime("%H:%M"),
+                "end_time": end_time.strftime("%H:%M"),
+            }
+        )
     if request.method == "POST":
         form = ReservationForm(request.POST)
         # Validation of the date format
@@ -112,8 +115,38 @@ def create_reservation_view(request):
     return render(
         request,
         "reservations/create_reserves.html",
-        {"form": form, "room_name": room.name},
+        {
+            "form": form,
+            "room": room,
+            "total_price": total_price,
+        },
     )
+
+
+def calculate_total_price(request):
+    if request.htmx:
+        selected_price = request.POST.get("selected_price")
+        element_id = request.POST.get("id")
+        print("selected_price", element_id, selected_price)
+        if element_id == "hourly-day":
+            start_time_str = request.POST.get("start_time")
+            end_time_str = request.POST.get("end_time")
+            start_time = datetime.strptime(start_time_str, "%H:%M").time()
+            end_time = datetime.strptime(end_time_str, "%H:%M").time()
+            today = datetime.today().date()
+            start_datetime = datetime.combine(today, start_time)
+            end_datetime = datetime.combine(today, end_time)
+            selected_price = calculate_reservation_price(
+                start_datetime, end_datetime, float(selected_price.replace(",", "."))
+            )
+        return render(
+            request,
+            "reservations/total_price.html",
+            {
+                "total_price": selected_price,
+            },
+        )
+    return JsonResponse({"error": ""}, status=405)
 
 
 class ReservationSuccessView(StandardSuccess):
@@ -128,19 +161,19 @@ class ReservationSuccessView(StandardSuccess):
             return self.url
         return reversed_url
 
+
 @login_required
 def reservations_calendar_view(request):
     context = {}
-    room_types = Room.objects.values_list('room_type', flat=True).distinct()
+    room_types = Room.objects.values_list("room_type", flat=True).distinct()
     unique_room_types = {
-        room_type: RoomTypeChoices(room_type).label
-        for room_type in room_types
+        room_type: RoomTypeChoices(room_type).label for room_type in room_types
     }
-    unique_room_types = {'all': _("All")} | unique_room_types
+    unique_room_types = {"all": _("All")} | unique_room_types
     context["room_types"] = unique_room_types
     context["rooms"] = Room.objects.all()
     if request.htmx:
-        room_type = request.POST.get('room_type')
+        room_type = request.POST.get("room_type")
         if room_type != "all":
             context["rooms"] = Room.objects.filter(room_type=room_type)
         return render(request, "rooms/rooms_filtered.html", context)
@@ -150,7 +183,7 @@ def reservations_calendar_view(request):
 class AjaxCalendarFeed(View):
     def get(self, request, *args, **kwargs):
         data = []
-        id = kwargs.get('id')
+        id = kwargs.get("id")
         reservations = Reservation.objects.exclude(
             status__in=[
                 Reservation.StatusChoices.CANCELED,
@@ -179,4 +212,3 @@ class AjaxCalendarFeed(View):
             }
             data.append(reservation_data)
         return JsonResponse(data, safe=False)
-

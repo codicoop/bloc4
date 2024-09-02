@@ -43,7 +43,6 @@ def send_mail_reservation(reservation, action):
         )
 
 
-
 def date_to_full_calendar_format(date_obj):
     aware_date = timezone.localtime(date_obj)
     return aware_date.strftime("%Y-%m-%dT%H:%M:%S")
@@ -54,9 +53,17 @@ def adjust_time(time, minutes, operation):
     time_obj = datetime.combine(today, time)
     delta = timedelta(minutes=minutes)
 
-    if operation == 'add':
+    if operation == "add":
         new_time_obj = time_obj + delta
-    elif operation == 'subtract':
+    elif operation == "subtract":
         new_time_obj = time_obj - delta
 
     return new_time_obj.time()
+
+
+def calculate_reservation_price(start_time, end_time, price):
+    if end_time <= start_time:
+        return 0
+    total_price = price * (end_time - start_time).total_seconds() / 3600
+    formatted_price = int(total_price) if total_price.is_integer() else total_price
+    return formatted_price

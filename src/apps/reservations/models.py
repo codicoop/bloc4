@@ -1,17 +1,20 @@
 from datetime import date, datetime, time, timedelta
 
 from constance import config
-from django.core.validators import ValidationError, validate_image_file_extension
+from django.core.validators import (
+    MinValueValidator,
+    ValidationError,
+    validate_image_file_extension,
+)
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinValueValidator
+
 from apps.reservations.services import adjust_time
 from project.fields import flowbite
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
-
 
 
 class Reservation(BaseModel):

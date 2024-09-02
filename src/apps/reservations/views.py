@@ -1,7 +1,6 @@
 import uuid
 from datetime import datetime
 
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
@@ -30,7 +29,7 @@ class ReservationsListView(ListView):
         context = super().get_context_data(**kwargs)
         context["reservations"] = Reservation.objects.filter(
             entity=self.request.user.entity
-        )
+        ).order_by('-date')
         return context
 
     def post(self, request, *args, **kwargs):
@@ -78,6 +77,7 @@ def create_reservation_view(request):
                 "date": date,
                 "start_time": start_time.strftime("%H:%M"),
                 "end_time": end_time.strftime("%H:%M"),
+                "room": room.id,
             }
         )
     if request.method == "POST":
@@ -92,6 +92,7 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
+        print(form.errors)
         if form.is_valid():
             reservation = form.save(commit=False)
             # User is assigned to the reservation
@@ -99,7 +100,6 @@ def create_reservation_view(request):
 
             # Entity is assigned to the reservation
             reservation.entity = request.user.entity
-
             # Reserve price is assigned
             room_time = datetime.strptime(
                 form.data["end_time"], "%H:%M"
@@ -124,27 +124,32 @@ def create_reservation_view(request):
 
 
 def calculate_total_price(request):
+    total_price = 0
     if request.htmx:
         selected_price = request.POST.get("selected_price")
         element_id = request.POST.get("id")
-        print("selected_price", element_id, selected_price)
         if element_id == "hourly-day":
             start_time_str = request.POST.get("start_time")
+            end_time_str = request.POST.get("end_time")
             end_time_str = request.POST.get("end_time")
             start_time = datetime.strptime(start_time_str, "%H:%M").time()
             end_time = datetime.strptime(end_time_str, "%H:%M").time()
             today = datetime.today().date()
             start_datetime = datetime.combine(today, start_time)
             end_datetime = datetime.combine(today, end_time)
-            selected_price = calculate_reservation_price(
+            total_price = calculate_reservation_price(
                 start_datetime, end_datetime, float(selected_price.replace(",", "."))
+            )
+        else:
+            selected_price_str = selected_price.replace(",", ".")
+            selected_price = float(selected_price_str)
+            total_price = (
+                int(selected_price) if selected_price.is_integer() else selected_price
             )
         return render(
             request,
             "reservations/total_price.html",
-            {
-                "total_price": selected_price,
-            },
+            {"total_price": total_price},
         )
     return JsonResponse({"error": ""}, status=405)
 
@@ -162,7 +167,6 @@ class ReservationSuccessView(StandardSuccess):
         return reversed_url
 
 
-@login_required
 def reservations_calendar_view(request):
     context = {}
     room_types = Room.objects.values_list("room_type", flat=True).distinct()

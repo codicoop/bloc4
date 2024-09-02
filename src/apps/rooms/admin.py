@@ -8,7 +8,7 @@ from project.admin import ModelAdmin
 class RoomAdmin(ModelAdmin):
     list_display = (
         "name",
-        "location",
+        "code",
         "price",
         "capacity",
         "room_type",

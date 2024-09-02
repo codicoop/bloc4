@@ -92,20 +92,10 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
-        print(form.errors)
         if form.is_valid():
             reservation = form.save(commit=False)
-            # User is assigned to the reservation
             reservation.reserved_by = request.user
-
-            # Entity is assigned to the reservation
             reservation.entity = request.user.entity
-            # Reserve price is assigned
-            room_time = datetime.strptime(
-                form.data["end_time"], "%H:%M"
-            ) - datetime.strptime(form.data["start_time"], "%H:%M")
-            room_time_hours = room_time.total_seconds() // 3600
-            reservation.total_price = room_time_hours * float(room.price)
             reservation.room = room
             reservation.save()
             form.save()

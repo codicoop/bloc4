@@ -11,6 +11,7 @@ from project.admin import ModelAdmin
 
 @admin.register(Reservation)
 class ReservationAdmin(ModelAdmin):
+    readonly_fields = ('total_price',)
     list_display = (
         "title",
         "date",
@@ -47,8 +48,8 @@ class ReservationAdmin(ModelAdmin):
         "status",
     )
     fieldsets = (
-        (None, {  
-            'fields': (        
+        (None, {
+            'fields': (
                 "room",
                 "title",
                 "date",
@@ -67,8 +68,8 @@ class ReservationAdmin(ModelAdmin):
                 "actions_field",
                 "privacy",)
         }),
-        (_("Only for public training"), {  
-            'fields': (        
+        (_("Only for public training"), {
+            'fields': (
                 "description",
                 "poster",
                 "url",),

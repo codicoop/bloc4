@@ -64,23 +64,39 @@
     </h1>
     <span _="init put $roomType into me" class="py-4">Tipus</span>
     <span id="prova" class="py-4"></span>
+
+    <ul class="grid w-full gap-6 md:grid-cols-4">
+        <li>
+            <input type="radio" id="hosting-small" name="hosting" value="hosting-small" class="hidden peer" required />
+            <label for="hosting-small" class="inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                <div class="block">
+                    <div class="w-full">Sala d'esdeveniments</div>
+                </div>
+            </label>
+        </li>
+        <li>
+            <input type="radio" id="hosting-big" name="hosting" value="hosting-big" class="hidden peer">
+            <label for="hosting-big" class="inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                <div class="block">
+                    <div class="w-full">500-1000 MB</div>
+                </div>
+            </label>
+        </li>
+    </ul>
+
     <div class="mb-12 flex justify-start">
       <form method="POST">
         {% csrf_token %}
         {% for room_type, label in room_types.items %}
-        <button id="{{ room_type }}" 
-          onclick="addEventSource(this)" 
+        <button id="{{ room_type }}"
+          onclick="addEventSource(this)"
           hx-target="#htmx-rooms"
           hx-post="{% url 'reservations:reservations_calendar' %}"
-          hx-vals='{"room_type": "{{ room_type }}"}' 
+          hx-vals='{"room_type": "{{ room_type }}"}'
           class="text-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-primary-300
             hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-200
             dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-            _="on click set $roomType to '{{ room_type }}' then put $roomType into #prova
-            if $roomType is '{{ room_type }}' then add .bg-primary-600 to me
-            else remove .bg-primary-600
-            "
-            >
+          >
             <!-- x-on:click="type = '{{ room_type }}'"
           x-bind:class="{'bg-primary-600': type == '{{ room_type }}' }" -->
           {{ label }}

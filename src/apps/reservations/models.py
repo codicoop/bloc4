@@ -193,7 +193,7 @@ class Reservation(BaseModel):
             self.url = ""
             self.description = ""
             self.poster = ""
-        if self.privacy != Reservation.PrivacyChoices.PUBLIC and not self.description:
+        if self.privacy == Reservation.PrivacyChoices.PUBLIC and not self.description:
             errors.update(
                     {
                         "description": ValidationError(

@@ -46,28 +46,6 @@ class ReservationAdmin(ModelAdmin):
         "canceled_at",
         "status",
     )
-    fields = (
-        "room",
-        "title",
-        "date",
-        "start_time",
-        "end_time",
-        "assistants",
-        "catering",
-        "notes",
-        "privacy",
-        "description",
-        "poster",
-        "url",
-        "is_paid",
-        "total_price",
-        "entity",
-        "reserved_by",
-        "canceled_by",
-        "canceled_at",
-        "status",
-        "actions_field",
-    )
     fieldsets = (
         (None, {  
             'fields': (        

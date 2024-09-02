@@ -36,7 +36,7 @@ class Reservation(BaseModel):
     title = flowbite.ModelCharField(
         _("Title"),
         max_length=100,
-        blank=True,
+        blank=False,
         default="",
         help_text=_("Title for the reservation"),
     )
@@ -68,7 +68,6 @@ class Reservation(BaseModel):
         "rooms.Room",
         verbose_name=_("room"),
         null=False,
-        blank=False,
         on_delete=models.CASCADE,
         related_name="reservation_room",
     )
@@ -192,6 +191,7 @@ class Reservation(BaseModel):
 
     def clean(self, *args, **kwargs):
         super().clean()
+        print("clean")
         errors = {}
         if not self.privacy:
             self.url = ""
@@ -330,15 +330,15 @@ class Reservation(BaseModel):
                 Reservation.StatusChoices.REFUSED
             ]
             ).exists()
-        if room_reservation:
-            errors.update(
-                    {
-                        "end_time": ValidationError(
-                            _("The room is not available for this time period.")
-                        )
-                    },
-                )
-            raise ValidationError(errors)
+            if room_reservation:
+                errors.update(
+                        {
+                            "end_time": ValidationError(
+                                _("The room is not available for this time period.")
+                            )
+                        },
+                    )
+                raise ValidationError(errors)
         if self.assistants > self.room.capacity:
             errors.update(
                     {

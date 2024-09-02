@@ -62,7 +62,10 @@ def create_reservation_view(request):
         if not start or not end:
             return redirect("reservations:reservations_calendar")
         try:
-            id = uuid.UUID(request.GET.get('id'))
+            # ID comes prefixed with 'id_' to prevent invalid IDs that start
+            # with a number. Extracting the actual UUID:
+            id = request.GET.get('id')[3:]
+            id = uuid.UUID(id)
         except ValueError:
             return redirect("reservations:reservations_calendar")
         room = get_object_or_404(Room, id=id)

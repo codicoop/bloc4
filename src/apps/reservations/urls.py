@@ -17,7 +17,7 @@ urlpatterns = [
     path("", login_required(ReservationsListView.as_view()), name="reservations_list"),
     path(
         _("calendar/"),
-        reservations_calendar_view,
+        login_required(reservations_calendar_view),
         name="reservations_calendar",
     ),
     path(

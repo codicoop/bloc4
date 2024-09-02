@@ -30,8 +30,8 @@ class Reservation(BaseModel):
 
 
     class PrivacyChoices(models.TextChoices):
-        PUBLIC = "public", _("Public training")
         PRIVATE = "private", _("Private training")
+        PUBLIC = "public", _("Public training")
 
     title = flowbite.ModelCharField(
         _("Title"),
@@ -60,7 +60,8 @@ class Reservation(BaseModel):
     assistants = flowbite.ModelIntegerField(
         _("Assistants"),
         blank=False,
-        default=1,
+        default=2,
+        validators=[MinValueValidator(2)],
         help_text=_("Assistants for the reservation"),
     )
     room = models.ForeignKey(
@@ -338,4 +339,12 @@ class Reservation(BaseModel):
                     },
                 )
             raise ValidationError(errors)
-
+        if self.assistants > self.room.capacity:
+            errors.update(
+                    {
+                        "assistants": ValidationError(
+                            _(f"The maximum capacity for this room is {self.room.capacity}")
+                        )
+                    },
+                )
+            raise ValidationError(errors)

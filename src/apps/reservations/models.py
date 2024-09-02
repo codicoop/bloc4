@@ -340,15 +340,8 @@ class Reservation(BaseModel):
             try:
                 room = self.room
                 # Validation of room availability
-                start_time = adjust_time(self.start_time, 1, "add")
-                end_time = adjust_time(self.end_time, 1, "subtract")
                 room_reservation = Reservation.objects.filter(
-                (
-                    Q(start_time__gte=start_time)
-                    & (Q(start_time__lte=end_time))
-                    | Q(end_time__lte=end_time)
-                    & (Q(end_time__gte=start_time))
-                ),
+                Q(start_time__lt=self.end_time) & Q(end_time__gt=self.start_time),
                 room__id=room.id,
                 date=self.date,
                 ).exclude(id=self.id
@@ -358,7 +351,6 @@ class Reservation(BaseModel):
                     Reservation.StatusChoices.REFUSED
                 ]
                 ).exists()
-                print("rooms", start_time)
                 if room_reservation:
                     errors.update(
                             {

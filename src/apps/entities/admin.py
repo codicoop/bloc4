@@ -10,7 +10,7 @@ class EntityAdmin(ModelAdmin):
         "email",
         "fiscal_name",
         "nif",
-        "is_resident",
+        "entity_type",
     )
-    list_filter = ("fiscal_name", "is_resident")
-    search_fields = ("email", "fiscal_name", "nif", "is_resident", "town")
+    list_filter = ("fiscal_name", "entity_type")
+    search_fields = ("email", "fiscal_name", "nif", "entity_type", "town")

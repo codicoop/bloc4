@@ -2,6 +2,7 @@ from django.core.validators import validate_image_file_extension
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.entities.choices import EntityTypesChoices
 from project.fields import flowbite
 from project.models import BaseModel
 from project.storage_backends import PrivateMediaStorage
@@ -65,11 +66,13 @@ class Entity(BaseModel):
         blank=True,
         related_name="person_responsible",
     )
-    is_resident = flowbite.ModelBooleanField(
-        blank=False,
+    entity_type = flowbite.ModelSelectDropdownField(
+        choices=EntityTypesChoices,
         null=False,
-        default=False,
-        help_text=_("The entity has permanent premises in Bloc4"),
+        blank=False,
+        default=EntityTypesChoices.GENERAL,
+        verbose_name=_("Entity type"),
+        max_length=20,
     )
     logo = flowbite.ModelImageField(
         _("Logo"),

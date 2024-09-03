@@ -131,7 +131,11 @@ def calculate_total_price(request):
     if request.htmx:
         selected_price = request.POST.get("selected_price")
         element_id = request.POST.get("id")
-        if element_id == "hourly-day":
+        if (
+            element_id == "hourly-day"
+            or element_id == "start-hourly-day"
+            or element_id == "end-hourly-day"
+        ):
             start_time_str = request.POST.get("start_time")
             end_time_str = request.POST.get("end_time")
             end_time_str = request.POST.get("end_time")

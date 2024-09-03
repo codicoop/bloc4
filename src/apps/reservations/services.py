@@ -68,7 +68,6 @@ def adjust_time(time, minutes, operation):
 def delete_zeros(value):
     if type(value) is str:
         value = float(value.replace(",", "."))
-    print(value, type(value))
     if type(value) is not int:
         if value.is_integer():
             value = int(value)

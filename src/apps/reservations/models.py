@@ -1,3 +1,4 @@
+import math
 from datetime import date, datetime, timedelta
 
 from constance import config
@@ -18,7 +19,10 @@ from apps.reservations.constants import (
     START_TIME,
     START_TIME_PLUS_ONE,
 )
-from apps.reservations.services import adjust_time, calculate_reservation_price
+from apps.reservations.services import (
+    calculate_discount_price,
+    calculate_reservation_price,
+)
 from project.fields import flowbite
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
@@ -34,7 +38,6 @@ class Reservation(BaseModel):
         CONFIRMED = "confirmed", _("Confirmed")
         CANCELED = "canceled", _("Canceled")
         REFUSED = "refused", _("Refused")
-
 
     class PrivacyChoices(models.TextChoices):
         PRIVATE = "private", _("Private training")
@@ -129,11 +132,7 @@ class Reservation(BaseModel):
         validators=[validate_image_file_extension],
     )
     url = flowbite.ModelUrlField(
-        _("URL of the activity"),
-        max_length=200,
-        blank=True,
-        null=True,
-        default=""
+        _("URL of the activity"), max_length=200, blank=True, null=True, default=""
     )
     total_price = flowbite.ModelFloatField(
         _("Total price"),
@@ -198,18 +197,23 @@ class Reservation(BaseModel):
         )
 
     def save(self, *args, **kwargs):
+        total_price = 0
         if self.start_time == START_TIME and self.end_time == END_TIME:
-                self.total_price = self.room.price_all_day
+            total_price = self.room.price_all_day
         elif self.start_time == START_TIME and self.end_time == HALF_TIME:
-            self.total_price = self.room.price_half_day
+            total_price = self.room.price_half_day
         elif self.start_time == HALF_TIME and self.end_time == END_TIME:
-            self.total_price = self.room.price_half_day
+            total_price = self.room.price_half_day
         else:
             start_time = datetime.combine(datetime.today(), self.start_time)
             end_time = datetime.combine(datetime.today(), self.end_time)
-            self.total_price = calculate_reservation_price(start_time, end_time, self.room.price)
-
-
+            total_price = calculate_reservation_price(
+                start_time, end_time, self.room.price
+            )
+        discounted_price = calculate_discount_price(
+            self.entity.entity_type, total_price
+        )
+        self.total_price = math.ceil(discounted_price * 100) / 100
         super(Reservation, self).save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):
@@ -221,14 +225,12 @@ class Reservation(BaseModel):
             self.poster = ""
         if self.privacy == Reservation.PrivacyChoices.PUBLIC and not self.description:
             errors.update(
-                    {
-                        "description": ValidationError(
-                            _(
-                                "If training is public, this field is required."
-                              )
-                        )
-                    },
-                )
+                {
+                    "description": ValidationError(
+                        _("If training is public, this field is required.")
+                    )
+                },
+            )
             raise ValidationError(errors)
         if self.date:
             # Validation reservation is made within maximum day in advance configured.
@@ -242,12 +244,12 @@ class Reservation(BaseModel):
                             _(
                                 "The maximum advance reservation period is %(days)s "
                                 "days."
-                              ) % {"days": config.MAXIMUM_ADVANCE_RESERVATION_DAYS}
+                            )
+                            % {"days": config.MAXIMUM_ADVANCE_RESERVATION_DAYS}
                         )
                     },
                 )
                 raise ValidationError(errors)
-
             # Validates that the reservation date is later than the current date.
             if self.date < date.today():
                 errors.update(
@@ -300,9 +302,11 @@ class Reservation(BaseModel):
                 errors.update(
                     {
                         "start_time": ValidationError(
-                            _('The start time must be between '
-                              '{START_TIME.strftime("%H:%M")} and '
-                              '{END_TIME_MINUS_ONE.strftime("%H:%M")}.')
+                            _(
+                                "The start time must be between "
+                                '{START_TIME.strftime("%H:%M")} and '
+                                '{END_TIME_MINUS_ONE.strftime("%H:%M")}.'
+                            )
                         )
                     },
                 )
@@ -311,9 +315,11 @@ class Reservation(BaseModel):
                 errors.update(
                     {
                         "end_time": ValidationError(
-                            _('The end time must be between '
-                              '{START_TIME_PLUS_ONE.strftime("%H:%M")} and '
-                              '{END_TIME.strftime("%H:%M")}.')
+                            _(
+                                "The end time must be between "
+                                '{START_TIME_PLUS_ONE.strftime("%H:%M")} and '
+                                '{END_TIME.strftime("%H:%M")}.'
+                            )
                         )
                     },
                 )
@@ -340,35 +346,42 @@ class Reservation(BaseModel):
             try:
                 room = self.room
                 # Validation of room availability
-                room_reservation = Reservation.objects.filter(
-                Q(start_time__lt=self.end_time) & Q(end_time__gt=self.start_time),
-                room__id=room.id,
-                date=self.date,
-                ).exclude(id=self.id
-                        ).exclude(
-                status__in=[
-                    Reservation.StatusChoices.CANCELED,
-                    Reservation.StatusChoices.REFUSED
-                ]
-                ).exists()
+                room_reservation = (
+                    Reservation.objects.filter(
+                        Q(start_time__lt=self.end_time)
+                        & Q(end_time__gt=self.start_time),
+                        room__id=room.id,
+                        date=self.date,
+                    )
+                    .exclude(id=self.id)
+                    .exclude(
+                        status__in=[
+                            Reservation.StatusChoices.CANCELED,
+                            Reservation.StatusChoices.REFUSED,
+                        ]
+                    )
+                    .exists()
+                )
                 if room_reservation:
                     errors.update(
-                            {
-                                "end_time": ValidationError(
-                                    _("The room is not available for this time period.")
-                                )
-                            },
-                        )
+                        {
+                            "end_time": ValidationError(
+                                _("The room is not available for this time period.")
+                            )
+                        },
+                    )
                     raise ValidationError(errors)
                 if self.assistants > self.room.capacity:
                     errors.update(
-                            {
-                                "assistants": ValidationError(
-                                    _(f"The maximum capacity for this room "
-                                      f"is {self.room.capacity}")
+                        {
+                            "assistants": ValidationError(
+                                _(
+                                    f"The maximum capacity for this room "
+                                    f"is {self.room.capacity}"
                                 )
-                            },
-                        )
+                            )
+                        },
+                    )
                     raise ValidationError(errors)
             except AttributeError:
                 pass

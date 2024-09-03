@@ -75,42 +75,42 @@
   <div
     hx-post="{% url 'reservations:calculate_total_price' %}" 
     hx-vals='{
-      "selected_price": "{{ room.price }}",
+      "selected_price": "{{ price }}",
       "id": "hourly-day"
     }'
     hx-target="#total_price"
     > 
     <b>{% translate 'Hourly reservation' %}</b>
     <p>{% translate 'The rooms are booked in half-hour slots, starting at a quarter.' %}</p>
-    <p>{% translate 'Price ' %}: {{ room.price }}{% translate '€/hour' %}</p>
+    <p>{% translate 'Price ' %}: {{ price }}{% translate '€/hour' %}</p>
   </div>
   <div
     hx-post="{% url 'reservations:calculate_total_price' %}" 
-    hx-vals='{"selected_price": "{{ room.price_half_day }}"}'
+    hx-vals='{"selected_price": "{{ price_half_day }}"}'
     hx-target="#total_price"
     > 
     <b>{% translate 'Morning reservation' %}</b>
     <p>{% translate 'Rooms are reserved for a whole morning, with space available from 8:00 to 14:00' %}</p>
-    <p>{% translate 'Price ' %}: {{ room.price_half_day }}{% translate '€/morning' %}</p>
+    <p>{% translate 'Price ' %}: {{ price_half_day }}{% translate '€/morning' %}</p>
   </div>
   <div
     hx-post="{% url 'reservations:calculate_total_price' %}" 
-    hx-vals='{"selected_price": "{{ room.price_half_day }}"}'
+    hx-vals='{"selected_price": "{{ price_half_day }}"}'
     hx-target="#total_price"
     > 
     <b>{% translate 'Afternoon reservation' %}</b>
     <p>{% translate 'Rooms are reserved for an entire afternoon, with the space available from 14:00 to 18:00.' %}</p>
-    <p>{% translate 'Price ' %}: {{ room.price_half_day }}{% translate '€/afternoon' %}</p>
+    <p>{% translate 'Price ' %}: {{ price_half_day }}{% translate '€/afternoon' %}</p>
   </div>
   <div 
     hx-post="{% url 'reservations:calculate_total_price' %}" 
     hx-vals='{
-      "selected_price": "{{ room.price_all_day }}"}'
+      "selected_price": "{{ price_all_day }}"}'
     hx-target="#total_price"
     >  
     <b>{% translate 'Afternoon reservation' %}</b>
     <p>{% translate 'Rooms are reserved for a whole day, with the space available from 8:00 to 18:00.' %}</p>
-    <p>{% translate 'Price ' %}: {{ room.price_all_day }}{% translate '€/day' %}</p>
+    <p>{% translate 'Price ' %}: {{ price_all_day }}{% translate '€/day' %}</p>
   </div>
   {{ form }}
   <div id="total_price">

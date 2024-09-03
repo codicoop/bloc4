@@ -1,9 +1,11 @@
+import math
 from datetime import datetime, timedelta
 
 from constance import config
 from django.conf import settings
 from django.utils import formats, timezone
 
+from apps.entities.choices import EntityTypesChoices
 from project.post_office import send
 
 
@@ -61,9 +63,29 @@ def adjust_time(time, minutes, operation):
     return new_time_obj.time()
 
 
+
+
+def delete_zeros(value):
+    if type(value) is str:
+        value = float(value.replace(",", "."))
+    print(value, type(value))
+    if type(value) is not int:
+        if value.is_integer():
+            value = int(value)
+        else:
+            value = math.ceil(value * 100) / 100
+    return value
+
+
 def calculate_reservation_price(start_time, end_time, price):
     if end_time <= start_time:
         return 0
+    if type(price) is str:
+        price = float(price.replace(",", "."))
     total_price = price * (end_time - start_time).total_seconds() / 3600
-    formatted_price = int(total_price) if total_price.is_integer() else total_price
-    return formatted_price
+    return delete_zeros(total_price)
+
+
+def calculate_discount_price(entity_type, price):
+    discount = EntityTypesChoices(entity_type).get_discount_percentage()
+    return delete_zeros(price + price * discount)

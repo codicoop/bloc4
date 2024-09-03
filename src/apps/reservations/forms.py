@@ -8,10 +8,14 @@ from project.fields import flowbite
 
 class ReservationForm(forms.ModelForm):
     room = forms.ModelChoiceField(
-        label=_("Room"),
         queryset=Room.objects.all(),
         widget=forms.HiddenInput(),
     )
+    total_price = flowbite.FormFloatField(
+        widget=forms.HiddenInput(),
+        required=False,
+    )
+
     title = flowbite.FormCharField(
         label=_("Title"),
         widget=forms.TextInput(
@@ -138,6 +142,7 @@ class ReservationForm(forms.ModelForm):
         model = Reservation
         fields = [
             "room",
+            "total_price",
             "title",
             "date",
             "start_time",

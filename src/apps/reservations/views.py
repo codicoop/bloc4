@@ -12,8 +12,10 @@ from django.views.generic.list import ListView
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
+    calculate_discount_price,
     calculate_reservation_price,
     date_to_full_calendar_format,
+    delete_zeros,
     send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
@@ -63,6 +65,7 @@ def create_reservation_view(request):
     except ValueError:
         return redirect("reservations:reservations_calendar")
     room = get_object_or_404(Room, id=id)
+    entity_type = request.user.entity.entity_type
     if start and end:
         start_datetime = datetime.fromisoformat(start)
         end_datetime = datetime.fromisoformat(end)
@@ -72,6 +75,7 @@ def create_reservation_view(request):
         total_price = calculate_reservation_price(
             start_datetime, end_datetime, room.price
         )
+        total_price = calculate_discount_price(entity_type, total_price)
         form = ReservationForm(
             initial={
                 "date": date,
@@ -108,6 +112,15 @@ def create_reservation_view(request):
         {
             "form": form,
             "room": room,
+            "price": calculate_discount_price(entity_type, room.price),
+            "price_half_day": calculate_discount_price(
+                entity_type,
+                room.price_half_day,
+            ),
+            "price_all_day": calculate_discount_price(
+                entity_type,
+                room.price_all_day,
+            ),
             "total_price": total_price,
         },
     )
@@ -128,14 +141,10 @@ def calculate_total_price(request):
             start_datetime = datetime.combine(today, start_time)
             end_datetime = datetime.combine(today, end_time)
             total_price = calculate_reservation_price(
-                start_datetime, end_datetime, float(selected_price.replace(",", "."))
+                start_datetime, end_datetime, selected_price
             )
         else:
-            selected_price_str = selected_price.replace(",", ".")
-            selected_price = float(selected_price_str)
-            total_price = (
-                int(selected_price) if selected_price.is_integer() else selected_price
-            )
+            total_price = delete_zeros(selected_price)
         return render(
             request,
             "reservations/total_price.html",

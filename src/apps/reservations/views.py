@@ -29,7 +29,7 @@ class ReservationsListView(ListView):
         context = super().get_context_data(**kwargs)
         context["reservations"] = Reservation.objects.filter(
             entity=self.request.user.entity
-        ).order_by('-date')
+        ).order_by("-date")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -193,6 +193,7 @@ class AjaxCalendarFeed(View):
         for reservation in reservations:
             reservation_data = {
                 "room": reservation.room.name,
+                "title": reservation.title,
                 "start": date_to_full_calendar_format(
                     timezone.make_aware(
                         datetime.combine(reservation.date, reservation.start_time)

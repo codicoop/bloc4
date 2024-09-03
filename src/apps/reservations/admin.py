@@ -18,8 +18,8 @@ class ReservationAdmin(ModelAdmin):
         "end_time",
         "room",
         "total_price",
+        "privacy",
         "entity",
-        "reserved_by",
         "status",
     )
     list_filter = (
@@ -28,6 +28,7 @@ class ReservationAdmin(ModelAdmin):
         "room",
         "is_paid",
         "entity",
+        "privacy",
         "reserved_by",
         "canceled_by",
         "canceled_at",
@@ -39,34 +40,42 @@ class ReservationAdmin(ModelAdmin):
         "room",
         "is_paid",
         "entity",
-        "reserved_by",
-        "canceled_by",
-        "canceled_at",
-        "status",
-    )
-    fields = (
-        "room",
-        "title",
-        "date",
-        "start_time",
-        "end_time",
-        "assistants",
-        "catering",
-        "notes",
         "privacy",
-        "description",
-        "poster",
-        "url",
-        "is_paid",
-        "total_price",
-        "entity",
         "reserved_by",
         "canceled_by",
         "canceled_at",
         "status",
-        "actions_field",
     )
-    readonly_fields = ("actions_field",)
+    fieldsets = (
+        (None, {
+            'fields': (
+                "room",
+                "title",
+                "date",
+                "start_time",
+                "end_time",
+                "assistants",
+                "catering",
+                "notes",
+                "is_paid",
+                "total_price",
+                "entity",
+                "reserved_by",
+                "canceled_by",
+                "canceled_at",
+                "status",
+                "actions_field",
+                "privacy",)
+        }),
+        (_("Only for public training"), {
+            'fields': (
+                "description",
+                "poster",
+                "url",),
+        }),
+    )
+    readonly_fields = ("actions_field", "total_price")
+
 
     def get_urls(self):
         urls = super().get_urls()

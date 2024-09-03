@@ -1,4 +1,4 @@
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, timedelta
 
 from constance import config
 from django.core.validators import (
@@ -11,7 +11,14 @@ from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from apps.reservations.services import adjust_time
+from apps.reservations.constants import (
+    END_TIME,
+    END_TIME_MINUS_ONE,
+    HALF_TIME,
+    START_TIME,
+    START_TIME_PLUS_ONE,
+)
+from apps.reservations.services import adjust_time, calculate_reservation_price
 from project.fields import flowbite
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
@@ -30,13 +37,13 @@ class Reservation(BaseModel):
 
 
     class PrivacyChoices(models.TextChoices):
-        PUBLIC = "public", _("Public training")
         PRIVATE = "private", _("Private training")
+        PUBLIC = "public", _("Public training")
 
     title = flowbite.ModelCharField(
         _("Title"),
         max_length=100,
-        blank=True,
+        blank=False,
         default="",
         help_text=_("Title for the reservation"),
     )
@@ -60,14 +67,14 @@ class Reservation(BaseModel):
     assistants = flowbite.ModelIntegerField(
         _("Assistants"),
         blank=False,
-        default=1,
+        default=2,
+        validators=[MinValueValidator(2)],
         help_text=_("Assistants for the reservation"),
     )
     room = models.ForeignKey(
         "rooms.Room",
         verbose_name=_("room"),
         null=False,
-        blank=False,
         on_delete=models.CASCADE,
         related_name="reservation_room",
     )
@@ -130,10 +137,11 @@ class Reservation(BaseModel):
     )
     total_price = flowbite.ModelFloatField(
         _("Total price"),
-        null=True,
+        null=False,
+        blank=False,
         default=0,
         validators=[MinValueValidator(0.0)],
-        help_text=_("Total price of the reservation"),
+        help_text=_("Total price will be calculated on save."),
     )
     entity = models.ForeignKey(
         "entities.Entity",
@@ -188,6 +196,21 @@ class Reservation(BaseModel):
             "admin:reservations_reservation_change",
             args=(self.pk,),
         )
+
+    def save(self, *args, **kwargs):
+        if self.start_time == START_TIME and self.end_time == END_TIME:
+                self.total_price = self.room.price_all_day
+        elif self.start_time == START_TIME and self.end_time == HALF_TIME:
+            self.total_price = self.room.price_half_day
+        elif self.start_time == HALF_TIME and self.end_time == END_TIME:
+            self.total_price = self.room.price_half_day
+        else:
+            start_time = datetime.combine(datetime.today(), self.start_time)
+            end_time = datetime.combine(datetime.today(), self.end_time)
+            self.total_price = calculate_reservation_price(start_time, end_time, self.room.price)
+
+
+        super(Reservation, self).save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):
         super().clean()
@@ -273,20 +296,24 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
-            if not (time(8, 0) <= self.start_time <= time(17, 0)):
+            if not (START_TIME <= self.start_time <= END_TIME_MINUS_ONE):
                 errors.update(
                     {
-                        "end_time": ValidationError(
-                            _("The start time must be between 8:00 and 17:00.")
+                        "start_time": ValidationError(
+                            _('The start time must be between '
+                              '{START_TIME.strftime("%H:%M")} and '
+                              '{END_TIME_MINUS_ONE.strftime("%H:%M")}.')
                         )
                     },
                 )
                 raise ValidationError(errors)
-            if not (time(8, 0) <= self.end_time <= time(18, 0)):
+            if not START_TIME_PLUS_ONE <= self.end_time <= END_TIME:
                 errors.update(
                     {
                         "end_time": ValidationError(
-                            _("The end time must be between 9:00 and 18:00.")
+                            _('The end time must be between '
+                              '{START_TIME_PLUS_ONE.strftime("%H:%M")} and '
+                              '{END_TIME.strftime("%H:%M")}.')
                         )
                     },
                 )
@@ -310,32 +337,52 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
-            # Validation of room availability
-            start_time = adjust_time(self.start_time, 1, "add")
-            end_time = adjust_time(self.end_time, 1, "subtract")
-            room_reservation = Reservation.objects.filter(
-            (
-                Q(start_time__gte=start_time)
-                & (Q(start_time__lte=end_time))
-                | Q(end_time__lte=end_time)
-                & (Q(end_time__gte=start_time))
-            ),
-            room__id=self.room.id,
-            date=self.date,
-            ).exclude(id=self.id
-                      ).exclude(
-            status__in=[
-                Reservation.StatusChoices.CANCELED,
-                Reservation.StatusChoices.REFUSED
-            ]
-            ).exists()
-        if room_reservation:
-            errors.update(
-                    {
-                        "end_time": ValidationError(
-                            _("The room is not available for this time period.")
+            try:
+                room = self.room
+                # Validation of room availability
+                room_reservation = Reservation.objects.filter(
+                Q(start_time__lt=self.end_time) & Q(end_time__gt=self.start_time),
+                room__id=room.id,
+                date=self.date,
+                ).exclude(id=self.id
+                        ).exclude(
+                status__in=[
+                    Reservation.StatusChoices.CANCELED,
+                    Reservation.StatusChoices.REFUSED
+                ]
+                ).exists()
+                if room_reservation:
+                    errors.update(
+                            {
+                                "end_time": ValidationError(
+                                    _("The room is not available for this time period.")
+                                )
+                            },
                         )
-                    },
-                )
-            raise ValidationError(errors)
-
+                    raise ValidationError(errors)
+                if self.assistants > self.room.capacity:
+                    errors.update(
+                            {
+                                "assistants": ValidationError(
+                                    _(f"The maximum capacity for this room "
+                                      f"is {self.room.capacity}")
+                                )
+                            },
+                        )
+                    raise ValidationError(errors)
+            except AttributeError:
+                pass
+        try:
+            user_entity = self.reserved_by.entity
+            if self.entity and user_entity:
+                if self.entity != user_entity:
+                    errors.update(
+                        {
+                            "reserved_by": ValidationError(
+                                _(f"This user belong to {user_entity} entity.")
+                            )
+                        },
+                    )
+                    raise ValidationError(errors)
+        except AttributeError:
+            pass

@@ -126,7 +126,8 @@ INSTALLED_APPS = [
     "apps.provinces_towns",
     "apps.rooms",
     "apps.reservations",
-    "django_htmx"
+    "django_htmx",
+    "sorl.thumbnail",
 ]
 
 

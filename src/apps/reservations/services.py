@@ -1,4 +1,3 @@
-import math
 from datetime import datetime, timedelta
 
 from constance import config
@@ -63,23 +62,21 @@ def adjust_time(time, minutes, operation):
     return new_time_obj.time()
 
 
-
-
 def delete_zeros(value):
-    if type(value) is str:
+    if isinstance(value, str):
         value = float(value.replace(",", "."))
-    if type(value) is not int:
+    if not isinstance(value, int):
         if value.is_integer():
             value = int(value)
         else:
-            value = math.ceil(value * 100) / 100
+            value = round(value, 2)
     return value
 
 
 def calculate_reservation_price(start_time, end_time, price):
     if end_time <= start_time:
         return 0
-    if type(price) is str:
+    if isinstance(price, str):
         price = float(price.replace(",", "."))
     total_price = price * (end_time - start_time).total_seconds() / 3600
     return delete_zeros(total_price)

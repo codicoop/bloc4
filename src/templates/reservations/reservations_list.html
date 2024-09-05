@@ -1,3 +1,4 @@
+
 {% extends "../base.html" %}
 {% load i18n %}
 
@@ -79,6 +80,12 @@
       <div id="accordion-color-body-{{ reservation.id }}" class="hidden" aria-labelledby="accordion-color-heading-{{ reservation.id }}">
         <div class="grid grid-cols-2 gap-2 p-5 border border-gray-200 rounded-b-xl dark:border-gray-700 dark:bg-gray-900">
           <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
+            {% translate 'Title' %}
+          </p>
+          <p class="text-gray-500 dark:text-gray-400 col-start-2">
+              {{ reservation.title }}
+          </p>
+          <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
             {% translate 'Room' %}
           </p>
           <p class="text-gray-500 dark:text-gray-400 col-start-2">
@@ -106,16 +113,6 @@
               {{ reservation.start_time }} - {{ reservation.end_time }}
             {% else %}
               {% translate 'No start or end time was selected.' %}
-            {% endif %}
-          </p>
-          <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-            {% translate 'Motivation' %}
-          </p>
-          <p class="text-gray-500 dark:text-gray-400 col-start-2">
-            {% if reservation.motivation %}
-              {{ reservation.motivation }}
-            {% else %}
-              {% translate 'No motivation was mentioned.' %}
             {% endif %}
           </p>
           <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">

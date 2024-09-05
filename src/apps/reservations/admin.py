@@ -12,52 +12,70 @@ from project.admin import ModelAdmin
 @admin.register(Reservation)
 class ReservationAdmin(ModelAdmin):
     list_display = (
+        "title",
         "date",
         "start_time",
         "end_time",
         "room",
         "total_price",
+        "privacy",
         "entity",
-        "reserved_by",
         "status",
     )
     list_filter = (
+        "title",
         "date",
         "room",
         "is_paid",
         "entity",
+        "privacy",
         "reserved_by",
         "canceled_by",
         "canceled_at",
         "status",
     )
     search_fields = (
+        "title",
         "date",
         "room",
         "is_paid",
         "entity",
+        "privacy",
         "reserved_by",
         "canceled_by",
         "canceled_at",
         "status",
     )
-    fields = (
-        "date",
-        "start_time",
-        "end_time",
-        "motivation",
-        "assistants",
-        "room",
-        "is_paid",
-        "total_price",
-        "entity",
-        "reserved_by",
-        "canceled_by",
-        "canceled_at",
-        "status",
-        "actions_field",
+    fieldsets = (
+        (None, {
+            'fields': (
+                "room",
+                "title",
+                "date",
+                "start_time",
+                "end_time",
+                "assistants",
+                "catering",
+                "notes",
+                "is_paid",
+                "total_price",
+                "entity",
+                "reserved_by",
+                "canceled_by",
+                "canceled_at",
+                "status",
+                "actions_field",
+                "privacy",)
+        }),
+        (_("Only for public training"), {
+            'fields': (
+                "description",
+                "poster",
+                "url",),
+        }),
     )
-    readonly_fields = ("actions_field",)
+    readonly_fields = ("actions_field", "total_price")
+
 
     def get_urls(self):
         urls = super().get_urls()

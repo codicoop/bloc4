@@ -1,8 +1,6 @@
 import uuid
 from datetime import datetime
 
-from django.contrib.auth.decorators import login_required
-from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
@@ -11,10 +9,14 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
 from django.views.generic.list import ListView
 
+from apps.entities.choices import EntityTypesChoices
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
+    calculate_discount_price,
+    calculate_reservation_price,
     date_to_full_calendar_format,
+    delete_zeros,
     send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
@@ -30,7 +32,7 @@ class ReservationsListView(ListView):
         context = super().get_context_data(**kwargs)
         context["reservations"] = Reservation.objects.filter(
             entity=self.request.user.entity
-        )
+        ).order_by("-date")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -54,7 +56,6 @@ class ReservationsListView(ListView):
             return redirect("reservations:reservations_list")
 
 
-@login_required
 def create_reservation_view(request):
     if request.method == "GET":
         start = request.GET.get('start')
@@ -69,18 +70,25 @@ def create_reservation_view(request):
         except ValueError:
             return redirect("reservations:reservations_calendar")
         room = get_object_or_404(Room, id=id)
+        entity_type = request.user.entity.entity_type
         if start and end:
             start_datetime = datetime.fromisoformat(start)
             end_datetime = datetime.fromisoformat(end)
             date = start_datetime.date().strftime('%Y-%m-%d')
             start_time = start_datetime.time()
             end_time = end_datetime.time()
-            form = ReservationForm({
+            total_price = calculate_reservation_price(
+                start_datetime, end_datetime, room.price
+            )
+            total_price = calculate_discount_price(entity_type, total_price)
+            form = ReservationForm(
+             initial={
                 "date": date,
-                "start_time": start_time.strftime('%H:%M'),
-                "end_time": end_time.strftime('%H:%M'),
+                "start_time": start_time.strftime("%H:%M"),
+                "end_time": end_time.strftime("%H:%M"),
                 "room": room.id,
-            })
+            }
+        )
     if request.method == "POST":
         form = ReservationForm(request.POST)
         # Validation of the date format
@@ -93,43 +101,11 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
-        # Validation of room availability
-        room = Reservation.objects.filter(
-            (
-                Q(start_time__gte=form.data["start_time"])
-                & (Q(start_time__lte=form.data["end_time"]))
-                | Q(end_time__lte=form.data["end_time"])
-                & (Q(end_time__gte=form.data["start_time"]))
-            ),
-            room__id=form.data["room"],
-            date=form.data["date"],
-        ).exists()
-        if room:
-            form.add_error(
-                "end_time", _("The room is not available for this time period.")
-            )
-            return render(
-                request,
-                "reservations/create_reserves.html",
-                {"form": form},
-            )
-
         if form.is_valid():
             reservation = form.save(commit=False)
-            # User is assigned to the reservation
             reservation.reserved_by = request.user
-
-            # Entity is assigned to the reservation
             reservation.entity = request.user.entity
-
-            # Reserve price is assigned
-            room = Room.objects.get(id=form.data["room"])
-            room_time = datetime.strptime(
-                form.data["end_time"], "%H:%M"
-            ) - datetime.strptime(form.data["start_time"], "%H:%M")
-            room_time_hours = room_time.total_seconds() // 3600
-            reservation.total_price = room_time_hours * float(room.price)
-
+            reservation.room = room
             reservation.save()
             form.save()
             send_mail_reservation(reservation, "reservation_request_user")
@@ -138,8 +114,52 @@ def create_reservation_view(request):
     return render(
         request,
         "reservations/create_reserves.html",
-        {"form": form, "room_name": room.name},
+        {
+            "form": form,
+            "room": room,
+            "price": calculate_discount_price(entity_type, room.price),
+            "price_half_day": calculate_discount_price(
+                entity_type,
+                room.price_half_day,
+            ),
+            "price_all_day": calculate_discount_price(
+                entity_type,
+                room.price_all_day,
+            ),
+            "total_price": total_price,
+        },
     )
+
+
+def calculate_total_price(request):
+    total_price = 0
+    if request.htmx:
+        selected_price = request.POST.get("selected_price")
+        element_id = request.POST.get("id")
+        if (
+            element_id == "hourly-day"
+            or element_id == "start-hourly-day"
+            or element_id == "end-hourly-day"
+        ):
+            start_time_str = request.POST.get("start_time")
+            end_time_str = request.POST.get("end_time")
+            end_time_str = request.POST.get("end_time")
+            start_time = datetime.strptime(start_time_str, "%H:%M").time()
+            end_time = datetime.strptime(end_time_str, "%H:%M").time()
+            today = datetime.today().date()
+            start_datetime = datetime.combine(today, start_time)
+            end_datetime = datetime.combine(today, end_time)
+            total_price = calculate_reservation_price(
+                start_datetime, end_datetime, selected_price
+            )
+        else:
+            total_price = delete_zeros(selected_price)
+        return render(
+            request,
+            "reservations/total_price.html",
+            {"total_price": total_price},
+        )
+    return JsonResponse({"error": ""}, status=405)
 
 
 class ReservationSuccessView(StandardSuccess):
@@ -154,19 +174,21 @@ class ReservationSuccessView(StandardSuccess):
             return self.url
         return reversed_url
 
-@login_required
+
 def reservations_calendar_view(request):
     context = {}
-    room_types = Room.objects.values_list('room_type', flat=True).distinct()
+    room_types = Room.objects.values_list("room_type", flat=True).distinct()
     unique_room_types = {
-        room_type: RoomTypeChoices(room_type).label
-        for room_type in room_types
+        room_type: RoomTypeChoices(room_type).label for room_type in room_types
     }
-    unique_room_types = {'all': _("All")} | unique_room_types
+    unique_room_types = {"all": _("All")} | unique_room_types
     context["room_types"] = unique_room_types
     context["rooms"] = Room.objects.all()
+    context["discount"] = EntityTypesChoices(
+        request.user.entity.entity_type
+    ).get_discount_percentage()
     if request.htmx:
-        room_type = request.POST.get('room_type')
+        room_type = request.POST.get("room_type")
         if room_type != "all":
             context["rooms"] = Room.objects.filter(room_type=room_type)
         return render(request, "rooms/rooms_filtered.html", context)
@@ -176,7 +198,7 @@ def reservations_calendar_view(request):
 class AjaxCalendarFeed(View):
     def get(self, request, *args, **kwargs):
         data = []
-        id = kwargs.get('id')
+        id = kwargs.get("id")
         reservations = Reservation.objects.exclude(
             status__in=[
                 Reservation.StatusChoices.CANCELED,
@@ -192,6 +214,7 @@ class AjaxCalendarFeed(View):
         for reservation in reservations:
             reservation_data = {
                 "room": reservation.room.name,
+                "title": reservation.title,
                 "start": date_to_full_calendar_format(
                     timezone.make_aware(
                         datetime.combine(reservation.date, reservation.start_time)
@@ -205,4 +228,3 @@ class AjaxCalendarFeed(View):
             }
             data.append(reservation_data)
         return JsonResponse(data, safe=False)
-

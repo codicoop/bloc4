@@ -8,6 +8,7 @@ const loadCalendar = () => {
         initialView: "customTimeGridWeek",
         locale: "ca",
         firstDay: 1,
+        slotEventOverlap: false,
         headerToolbar: {
             left: "prev",
             center: "title",
@@ -18,7 +19,7 @@ const loadCalendar = () => {
                 type: "timeGridWeek",
                 duration: { days: 7 },
                 firstDay: 1,
-                selectable: roomId ? true : false,
+                selectable: roomId !== "all",
                 select: function (info) {
                     const start = info.startStr;
                     const end = info.endStr;

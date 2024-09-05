@@ -16,12 +16,11 @@ class Room(BaseModel):
         unique=True,
         help_text=_("Name of the room"),
     )
-    location = flowbite.ModelCharField(
-        _("Location"),
+    code = flowbite.ModelCharField(
+        _("Room code"),
         max_length=50,
         blank=True,
         default="",
-        help_text=_("Room location"),
     )
     price = flowbite.ModelFloatField(
         _("Hourly price"),
@@ -53,7 +52,7 @@ class Room(BaseModel):
     picture = flowbite.ModelImageField(
         _("Picture"),
         blank=False,
-        null=False,
+        default="",
         storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
         help_text=_("Photo of the room"),

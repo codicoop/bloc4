@@ -54,13 +54,13 @@
 </ul>
 
 {% if rooms %}
-  <!-- <div x-data="{type: 'all'}" -->
-  <div _="init set $roomType to 'all'">
+  <div x-data="{type: 'all'}">
+    {% if room_types|length > 2 %}
     <h1 class="mt-4 mb-4 text-2xl font-bold leading-tight tracking-tight text-primary-900 md:text-3xl dark:text-white">
       {% translate "Room reservations" %}
     </h1>
     <h1 class="mt-4 mb-4 text-lg leading-tight tracking-tight text-primary-900 md:text-lg dark:text-white">
-      {% translate "Choose a room type:" %}
+    {% translate "Choose a room type:" %}
     </h1>
     <span _="init put $roomType into me" class="py-4">Tipus</span>
     <span id="prova" class="py-4"></span>
@@ -104,6 +104,7 @@
       {% endfor %}
       </form>
     </div>
+    {% endif %}
     <div id="htmx-rooms">
       {% include 'rooms/rooms_filtered.html' %}
     </div>

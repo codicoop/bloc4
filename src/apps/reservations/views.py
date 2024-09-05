@@ -82,6 +82,7 @@ def create_reservation_view(request):
                 "date": date,
                 "start_time": start_time.strftime("%H:%M"),
                 "end_time": end_time.strftime("%H:%M"),
+                "entity": request.user.entity,
                 "room": room.id,
             }
         )
@@ -97,10 +98,11 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
+        # print(form)
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
-            reservation.entity = request.user.entity
+            # reservation.entity = request.user.entity
             reservation.room = room
             reservation.save()
             form.save()
@@ -113,6 +115,7 @@ def create_reservation_view(request):
         {
             "form": form,
             "room": room,
+            "entity": request.user.entity,
             "price": calculate_discount_price(entity_type, room.price),
             "price_half_day": calculate_discount_price(
                 entity_type,

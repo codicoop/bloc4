@@ -237,7 +237,7 @@ class Reservation(BaseModel):
             future_date = date.today() + timedelta(
                 days=config.MAXIMUM_ADVANCE_RESERVATION_DAYS
             )
-            if self.date > future_date:
+            if not self.entity.reservation_privilege and self.date > future_date:
                 errors.update(
                     {
                         "date": ValidationError(

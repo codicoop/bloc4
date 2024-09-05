@@ -15,7 +15,6 @@ class ReservationForm(forms.ModelForm):
         widget=forms.HiddenInput(),
         required=False,
     )
-
     title = flowbite.FormCharField(
         label=_("Title"),
         widget=forms.TextInput(
@@ -83,6 +82,17 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
+    assistants = flowbite.FormIntegerField(
+        label=_("Assitants"),
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "autofocus": True,
+                "autocomplete": True,
+                "help_text": _("Assistants"),
+            }
+        ),
+    )
     notes = flowbite.FormCharField(
         label=_("Notes"),
         widget=forms.Textarea(
@@ -94,14 +104,14 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    assistants = flowbite.FormIntegerField(
-        label=_("Assitants"),
-        widget=forms.NumberInput(
+    notes = flowbite.FormCharField(
+        label=_("Notes"),
+        widget=forms.Textarea(
             attrs={
                 "class": "form-control",
                 "autofocus": True,
                 "autocomplete": True,
-                "help_text": _("Assistants"),
+                "help_text": _("Description"),
             }
         ),
     )
@@ -121,7 +131,6 @@ class ReservationForm(forms.ModelForm):
                 "help_text": _(
                     "If the training is public, it will appear in the bloc4 agenda"
                 ),
-                "required": True,
             }
         ),
     )
@@ -129,6 +138,17 @@ class ReservationForm(forms.ModelForm):
         label=_("Description"),
         required=False,
         widget=forms.Textarea(
+            attrs={
+                "class": "form-control",
+                "autofocus": True,
+                "autocomplete": True,
+                "help_text": _("Description"),
+            }
+        ),
+    )
+    poster = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(
             attrs={
                 "class": "form-control",
                 "autofocus": True,

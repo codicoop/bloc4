@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
 from django.views.generic.list import ListView
 
+from apps.entities.choices import EntityTypesChoices
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
@@ -179,6 +180,9 @@ def reservations_calendar_view(request):
     unique_room_types = {"all": _("All")} | unique_room_types
     context["room_types"] = unique_room_types
     context["rooms"] = Room.objects.all()
+    context["discount"] = EntityTypesChoices(
+        request.user.entity.entity_type
+    ).get_discount_percentage()
     if request.htmx:
         room_type = request.POST.get("room_type")
         if room_type != "all":

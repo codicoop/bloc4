@@ -86,10 +86,16 @@ class ReservationForm(forms.ModelForm):
         label=_("Assitants"),
         widget=forms.NumberInput(
             attrs={
-                "class": "form-control",
-                "autofocus": True,
+                "data-input-counter": "",
+                "aria-describedby": "helper-text-explanation",
+                "class": "form-control bg-gray-50 border-x-0 border-gray-300 "
+                "h-11 text-center text-gray-900 text-sm block w-full "
+                "py-2.5 focus:ring-primary-500 focus:border-primary-500 "
+                "dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
                 "autocomplete": True,
-                "help_text": _("Assistants"),
             }
         ),
     )
@@ -98,7 +104,6 @@ class ReservationForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
-                "autofocus": True,
                 "autocomplete": True,
                 "help_text": _("Notes"),
             }
@@ -115,7 +120,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "
                 "dark:focus:border-primary-500",
-                "autofocus": True,
                 "autocomplete": True,
                 "help_text": _(
                     "If the training is public, it will appear in the bloc4 agenda"

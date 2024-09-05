@@ -162,10 +162,10 @@ class ReservationForm(forms.ModelForm):
             "end_time",
             "assistants",
             "catering",
-            "notes",
             "bloc4_reservation",
+            "notes",
             "privacy",
             "description",
-            "poster",
             "url",
+            "poster",
         ]

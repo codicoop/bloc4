@@ -77,8 +77,6 @@ def create_reservation_view(request):
         total_price = calculate_reservation_price(
             start_datetime, end_datetime, price_discount
         )
-        print("total", total_price, room.price)
-        print("discounted_price", total_price)
         form = ReservationForm(
             initial={
                 "date": date,
@@ -225,6 +223,7 @@ class AjaxCalendarFeed(View):
                         datetime.combine(reservation.date, reservation.end_time)
                     )
                 ),
+                "is_staff": request.user.is_staff
             }
             data.append(reservation_data)
         return JsonResponse(data, safe=False)

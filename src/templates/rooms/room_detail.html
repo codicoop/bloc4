@@ -16,6 +16,7 @@
 <script>
   let roomId = "{{ room.id }}";
   const createReservationUrl = "{% url 'reservations:create_reservation' %}";
+  const reservationViewUrl = "{% url 'reservations:reservations_list' %}"
 </script>
 {% endblock %}
 

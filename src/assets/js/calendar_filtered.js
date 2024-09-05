@@ -92,7 +92,6 @@ const loadCalendar = () => {
             let room = info.event._def.extendedProps["room"];
             let color = info.event._def.extendedProps["color"];
             let eventText = info.el.querySelector(".fc-event-time");
-
             pill.classList.add("text-xs");
             pill.innerText = room;
             eventText.append(pill);
@@ -104,10 +103,8 @@ const loadCalendar = () => {
             );
         },
         eventClick: function (info) {
-            const eventObj = info.event;
-            if (eventObj.url) {
-                window.open(eventObj.url);
-                info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+            if (info.event.extendedProps.is_staff) {
+                window.location.href = reservationViewUrl;
             }
         },
     });
@@ -118,7 +115,6 @@ document.addEventListener("DOMContentLoaded", loadCalendar);
 const addEventSource = (element) => {
     roomId = element.getAttribute("id");
     calendar.setOption("selectable", true);
-    // if (roomId.length < 36) calendar.setOption("selectable", false);
     calendar.removeAllEventSources();
     calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
 };

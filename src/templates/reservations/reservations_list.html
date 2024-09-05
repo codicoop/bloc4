@@ -140,7 +140,7 @@
           </p>
           <p class="text-gray-500 dark:text-gray-400 col-start-2">
             {% if reservation.total_price %}
-              {{ reservation.total_price|floatformat:2 }} €
+              {{ reservation.total_price|floatformat:2}} €
             {% else %}
               {% translate 'The price could not be estimated.' %}
             {% endif %}

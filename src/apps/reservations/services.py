@@ -79,7 +79,7 @@ def calculate_reservation_price(start_time, end_time, price):
     if isinstance(price, str):
         price = float(price.replace(",", "."))
     total_price = price * (end_time - start_time).total_seconds() / 3600
-    return delete_zeros(total_price)
+    return total_price
 
 
 def calculate_discount_price(entity_type, price):

@@ -73,10 +73,12 @@ def create_reservation_view(request):
         date = start_datetime.date().strftime("%Y-%m-%d")
         start_time = start_datetime.time()
         end_time = end_datetime.time()
+        price_discount = calculate_discount_price(entity_type, room.price)
         total_price = calculate_reservation_price(
-            start_datetime, end_datetime, room.price
+            start_datetime, end_datetime, price_discount
         )
-        total_price = calculate_discount_price(entity_type, total_price)
+        print("total", total_price, room.price)
+        print("discounted_price", total_price)
         form = ReservationForm(
             initial={
                 "date": date,
@@ -98,11 +100,9 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
-        # print(form)
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
-            # reservation.entity = request.user.entity
             reservation.room = room
             reservation.save()
             form.save()
@@ -134,6 +134,7 @@ def calculate_total_price(request):
     total_price = 0
     if request.htmx:
         selected_price = request.POST.get("selected_price")
+        print(selected_price)
         element_id = request.POST.get("id")
         if (
             element_id == "hourly-day"
@@ -141,7 +142,6 @@ def calculate_total_price(request):
             or element_id == "end-hourly-day"
         ):
             start_time_str = request.POST.get("start_time")
-            end_time_str = request.POST.get("end_time")
             end_time_str = request.POST.get("end_time")
             start_time = datetime.strptime(start_time_str, "%H:%M").time()
             end_time = datetime.strptime(end_time_str, "%H:%M").time()

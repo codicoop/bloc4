@@ -125,7 +125,7 @@ def create_reservation_view(request):
                 entity_type,
                 room.price_all_day,
             ),
-            "total_price": total_price,
+            "total_price": delete_zeros(total_price),
         },
     )
 
@@ -134,7 +134,6 @@ def calculate_total_price(request):
     total_price = 0
     if request.htmx:
         selected_price = request.POST.get("selected_price")
-        print(selected_price)
         element_id = request.POST.get("id")
         if (
             element_id == "hourly-day"
@@ -156,7 +155,9 @@ def calculate_total_price(request):
         return render(
             request,
             "reservations/total_price.html",
-            {"total_price": total_price},
+            {
+                "total_price": delete_zeros(total_price),
+            },
         )
     return JsonResponse({"error": ""}, status=405)
 

@@ -199,22 +199,23 @@ class Reservation(BaseModel):
         total_price = 0
         if self.start_time == START_TIME and self.end_time == END_TIME:
             total_price = calculate_discount_price(
-                self.room.price_all_day, self.room.price
+                self.entity.entity_type, self.room.price_all_day
             )
         elif self.start_time == START_TIME and self.end_time == HALF_TIME:
             total_price = calculate_discount_price(
-                self.room.price_half_day, self.room.price
+                self.entity.entity_type, self.room.price_half_day
             )
         elif self.start_time == HALF_TIME and self.end_time == END_TIME:
             total_price = calculate_discount_price(
-                self.room.price_half_day, self.room.price
+                self.entity.entity_type,
+                self.room.price_half_day,
             )
         else:
             start_time = datetime.combine(datetime.today(), self.start_time)
             end_time = datetime.combine(datetime.today(), self.end_time)
             price = calculate_discount_price(self.entity.entity_type, self.room.price)
             total_price = calculate_reservation_price(start_time, end_time, price)
-        self.total_price = 2.001
+        self.total_price = total_price
         super(Reservation, self).save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):

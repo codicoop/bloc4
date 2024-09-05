@@ -104,17 +104,6 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    notes = flowbite.FormCharField(
-        label=_("Notes"),
-        widget=forms.Textarea(
-            attrs={
-                "class": "form-control",
-                "autofocus": True,
-                "autocomplete": True,
-                "help_text": _("Description"),
-            }
-        ),
-    )
     privacy = forms.ChoiceField(
         label=_("Privacy"),
         choices=Reservation.PrivacyChoices,

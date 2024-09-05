@@ -34,7 +34,8 @@ module.exports = {
           "900":"#4A4A45",
           "950":"#1b1b1b"
         },
-        accent: "#f4e846"
+        accent: "#f4e846",
+        accent2: "FFA384"
       }
     },
     fontFamily: {

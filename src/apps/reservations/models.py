@@ -70,7 +70,7 @@ class Reservation(BaseModel):
     assistants = flowbite.ModelIntegerField(
         _("Assistants"),
         blank=False,
-        default=2,
+        default="",
         validators=[MinValueValidator(2)],
         help_text=_("Assistants for the reservation"),
     )

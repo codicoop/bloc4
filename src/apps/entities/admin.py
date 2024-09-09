@@ -20,8 +20,8 @@ class EntityAdmin(ModelAdmin):
         "logo",
     ]
     list_display = (
-        "email",
         "fiscal_name",
+        "email",
         "nif",
         "entity_type",
         "reservation_privilege"

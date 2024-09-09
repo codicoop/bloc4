@@ -26,7 +26,7 @@
     </h1>
     {% if is_staff %}
       <p>{{ reservation.entity }}</p>
-      <a href="{% url 'admin:reservations_reservation_change' object_id=reservation.id %}">{% translate "Admin URL" %}</a>
+      <a href="{{ reservation.get_admin_url }}">{% translate "Admin URL" %}</a>
     {% endif %}
     <p>{{ reservation.title }}</p>
     <p>{{ reservation.room.name }}</p>

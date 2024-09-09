@@ -129,9 +129,10 @@ def create_reservation_view(request):
 
 
 def reservation_detail_view(request, id):
+    is_staff = request.user.is_staff
     try:
         reservation_id = uuid.UUID(id)
-        if request.user.is_staff:
+        if is_staff:
             reservation = get_object_or_404(Reservation, id=reservation_id)
         else:
             entity = request.user.entity
@@ -140,7 +141,11 @@ def reservation_detail_view(request, id):
             )
     except ValueError:
         return redirect("reservations:reservations_list")
-    return render(request, "reservations/details.html", {"reservation": reservation})
+    return render(
+        request,
+        "reservations/details.html",
+        {"reservation": reservation, "is_staff": is_staff},
+    )
 
 
 def calculate_total_price(request):

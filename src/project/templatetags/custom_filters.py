@@ -9,3 +9,10 @@ def calculate_discount(price, discount):
     if total.is_integer():
         return int(total)
     return round(total, 2)
+
+
+@register.filter
+def round_two(value):
+    if value.is_integer():
+        return int(value)
+    return round(value, 2)

@@ -104,7 +104,9 @@ const loadCalendar = () => {
         },
         eventClick: function (info) {
             if (info.event.extendedProps.is_staff) {
-                window.location.href = reservationViewUrl;
+                window.location.href =
+                    reservationViewUrl +
+                    info.event.extendedProps.reservation_id;
             }
         },
     });

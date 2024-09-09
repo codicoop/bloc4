@@ -128,6 +128,21 @@ def create_reservation_view(request):
     )
 
 
+def reservation_detail_view(request, id):
+    try:
+        reservation_id = uuid.UUID(id)
+        if request.user.is_staff:
+            reservation = get_object_or_404(Reservation, id=reservation_id)
+        else:
+            entity = request.user.entity
+            reservation = get_object_or_404(
+                Reservation, id=reservation_id, entity=entity
+            )
+    except ValueError:
+        return redirect("reservations:reservations_list")
+    return render(request, "reservations/details.html", {"reservation": reservation})
+
+
 def calculate_total_price(request):
     total_price = 0
     if request.htmx:
@@ -223,7 +238,8 @@ class AjaxCalendarFeed(View):
                         datetime.combine(reservation.date, reservation.end_time)
                     )
                 ),
-                "is_staff": request.user.is_staff
+                "is_staff": request.user.is_staff,
+                "reservation_id": reservation.id,
             }
             data.append(reservation_data)
         return JsonResponse(data, safe=False)

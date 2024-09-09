@@ -8,6 +8,7 @@ from apps.reservations.views import (
     ReservationSuccessView,
     calculate_total_price,
     create_reservation_view,
+    reservation_detail_view,
     reservations_calendar_view,
 )
 
@@ -29,11 +30,17 @@ urlpatterns = [
         _("create/"), login_required(create_reservation_view), name="create_reservation"
     ),
     path(
-        _("price/"), login_required(calculate_total_price), name="calculate_total_price"
+        _("details/<str:id>/"),
+        login_required(reservation_detail_view),
+        name="reservations_details",
     ),
     path(
         _("success/"),
         login_required(ReservationSuccessView.as_view()),
         name="reservations_success",
+    ),
+    # HTMX
+    path(
+        _("price/"), login_required(calculate_total_price), name="calculate_total_price"
     ),
 ]

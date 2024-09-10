@@ -32,6 +32,7 @@ const loadCalendar = () => {
                             "La data triada ha de ser posterior al dia d'avui."
                         );
                     } else if (roomId.length == 36) {
+                        const dialog = document.getElementById("confirmation-dialog")
                         const day = startDate.toLocaleDateString();
                         const startHours = startDate
                             .getHours()
@@ -49,19 +50,20 @@ const loadCalendar = () => {
                             .getMinutes()
                             .toString()
                             .padStart(2, "0");
-                        if (
-                            confirm(
-                                `Segur que vols fer un reserva pel ${day} de ${startHours}:${startMinutes} a ${endHours}:${endMinutes}?`
-                            )
-                        ) {
-                            window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
-                                start
-                            )}&end=${encodeURIComponent(
-                                end
-                            )}&id=${encodeURIComponent(roomId)}`;
-                        }
+                        
+                        // Volem mostrar el dialog
+                        showConfirmDialog()
+                        dialog.addEventListener("close", (e) => {
+                            if (dialog.returnValue === "true") {
+                                window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
+                                    start
+                                )}&end=${encodeURIComponent(
+                                    end
+                                )}&id=${encodeURIComponent(roomId)}`;
+                            }
+                        })
                     } else {
-                        alert("Abans de fer una reserva, has de triar quina sala vols.");
+                        showAlertNoRoom()
                     }
                 },
                 selectMirror: false,
@@ -88,20 +90,12 @@ const loadCalendar = () => {
             },
         },
         eventDidMount: function (info) {
-            console.log(info);
             let pill = document.createElement("span");
-            let author = document.createElement("div");
             let room = info.event._def.extendedProps["room"];
             // let color = info.event._def.extendedProps["color"];
-            // let reservation_author = info.event._def.extendedProps["author"];
             let eventText = info.el.querySelector(".fc-event-time");
-            let eventTitleContainer = info.el.querySelector(".fc-event-title-container")
-            let eventTitle = info.el.querySelector(".fc-event-title")
-            eventTitle.classList.add("font-bold", "mt-2")
             pill.classList.add("text-xs");
             pill.innerText = room;
-            author.innerText = "Autor de la reserva"
-            // author.innerText = reservation_author
             eventText.append(pill);
             eventText.classList.add(
                 "flex",
@@ -109,7 +103,6 @@ const loadCalendar = () => {
                 "gap-1",
                 "items-center"
             );
-            eventTitleContainer.append(author)
         },
         eventClick: function (info) {
             if (info.event.extendedProps.is_staff) {
@@ -129,3 +122,12 @@ const addEventSource = (element) => {
     calendar.removeAllEventSources();
     calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
 };
+
+const showAlertNoRoom = () => {
+    const dialog = document.getElementById("alert-no-room")
+    dialog.show()
+}
+const showConfirmDialog = () => {
+    const dialog = document.getElementById("confirmation-dialog")
+    dialog.show()
+}

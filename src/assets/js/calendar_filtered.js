@@ -8,31 +8,67 @@ const loadCalendar = () => {
         initialView: "customTimeGridWeek",
         locale: "ca",
         firstDay: 1,
+        slotEventOverlap: false,
         headerToolbar: {
-            left: "prev",
+            left: "today",
             center: "title",
-            right: "next",
+            right: "prev,next",
         },
         views: {
             customTimeGridWeek: {
                 type: "timeGridWeek",
                 duration: { days: 7 },
                 firstDay: 1,
-                selectable: roomId ? true : false,
+                // selectable: roomId !== "all",
+                selectable: true,
                 select: function (info) {
                     const start = info.startStr;
                     const end = info.endStr;
-                    window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
-                        start
-                    )}&end=${encodeURIComponent(end)}&id=${encodeURIComponent(
-                        roomId
-                    )}`;
+                    const today = new Date();
+                    const startDate = new Date(info.startStr);
+                    const endDate = new Date(info.endStr);
+                    if (startDate < today) {
+                        alert(
+                            "La data triada ha de ser posterior al dia d'avui."
+                        );
+                    } else if (roomId.length == 36) {
+                        const day = startDate.toLocaleDateString();
+                        const startHours = startDate
+                            .getHours()
+                            .toString()
+                            .padStart(2, "0");
+                        const startMinutes = startDate
+                            .getMinutes()
+                            .toString()
+                            .padStart(2, "0");
+                        const endHours = endDate
+                            .getHours()
+                            .toString()
+                            .padStart(2, "0");
+                        const endMinutes = endDate
+                            .getMinutes()
+                            .toString()
+                            .padStart(2, "0");
+                        if (
+                            confirm(
+                                `Segur que vols fer un reserva pel ${day} de ${startHours}:${startMinutes} a ${endHours}:${endMinutes}?`
+                            )
+                        ) {
+                            window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
+                                start
+                            )}&end=${encodeURIComponent(
+                                end
+                            )}&id=${encodeURIComponent(roomId)}`;
+                        }
+                    } else {
+                        alert("Has de triar la sala.");
+                    }
                 },
                 selectMirror: false,
                 // Time Grid:
                 allDaySlot: false,
-                slotMaxTime: "18:00:00",
                 slotMinTime: "08:00:00",
+                slotMaxTime: "18:00:00",
                 expandRows: true,
             },
         },
@@ -56,7 +92,6 @@ const loadCalendar = () => {
             let room = info.event._def.extendedProps["room"];
             let color = info.event._def.extendedProps["color"];
             let eventText = info.el.querySelector(".fc-event-time");
-
             pill.classList.add("text-xs");
             pill.innerText = room;
             eventText.append(pill);
@@ -68,10 +103,10 @@ const loadCalendar = () => {
             );
         },
         eventClick: function (info) {
-            const eventObj = info.event;
-            if (eventObj.url) {
-                window.open(eventObj.url);
-                info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+            if (info.event.extendedProps.is_staff) {
+                window.location.href =
+                    reservationViewUrl +
+                    info.event.extendedProps.reservation_id;
             }
         },
     });
@@ -80,9 +115,8 @@ const loadCalendar = () => {
 document.addEventListener("DOMContentLoaded", loadCalendar);
 
 const addEventSource = (element) => {
-    roomId = element.getAttribute("id");
+    roomId = element.getAttribute("data-id");
     calendar.setOption("selectable", true);
-    if (roomId.length < 36) calendar.setOption("selectable", false);
     calendar.removeAllEventSources();
     calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
 };

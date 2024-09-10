@@ -1,7 +1,10 @@
+from datetime import datetime, timedelta
+
 from constance import config
 from django.conf import settings
 from django.utils import formats, timezone
 
+from apps.entities.choices import EntityTypesChoices
 from project.post_office import send
 
 
@@ -41,7 +44,44 @@ def send_mail_reservation(reservation, action):
         )
 
 
-
 def date_to_full_calendar_format(date_obj):
     aware_date = timezone.localtime(date_obj)
     return aware_date.strftime("%Y-%m-%dT%H:%M:%S")
+
+
+def adjust_time(time, minutes, operation):
+    today = datetime.today().date()
+    time_obj = datetime.combine(today, time)
+    delta = timedelta(minutes=minutes)
+
+    if operation == "add":
+        new_time_obj = time_obj + delta
+    elif operation == "subtract":
+        new_time_obj = time_obj - delta
+
+    return new_time_obj.time()
+
+
+def delete_zeros(value):
+    if isinstance(value, str):
+        value = float(value.replace(",", "."))
+    if not isinstance(value, int):
+        if value.is_integer():
+            value = int(value)
+        else:
+            value = round(value, 2)
+    return value
+
+
+def calculate_reservation_price(start_time, end_time, price):
+    if end_time <= start_time:
+        return 0
+    if isinstance(price, str):
+        price = float(price.replace(",", "."))
+    total_price = price * (end_time - start_time).total_seconds() / 3600
+    return total_price
+
+
+def calculate_discount_price(entity_type, price):
+    discount = EntityTypesChoices(entity_type).get_discount_percentage()
+    return delete_zeros(price + price * discount)

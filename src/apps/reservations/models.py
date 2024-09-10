@@ -1,13 +1,30 @@
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, timedelta
 
 from constance import config
-from django.core.validators import ValidationError
+from django.core.validators import (
+    MinValueValidator,
+    ValidationError,
+    validate_image_file_extension,
+)
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from apps.reservations.constants import (
+    END_TIME,
+    END_TIME_MINUS_ONE,
+    HALF_TIME,
+    START_TIME,
+    START_TIME_PLUS_ONE,
+)
+from apps.reservations.services import (
+    calculate_discount_price,
+    calculate_reservation_price,
+)
 from project.fields import flowbite
 from project.models import BaseModel
+from project.storage_backends import PublicMediaStorage
 
 
 class Reservation(BaseModel):
@@ -21,6 +38,17 @@ class Reservation(BaseModel):
         CANCELED = "canceled", _("Canceled")
         REFUSED = "refused", _("Refused")
 
+    class PrivacyChoices(models.TextChoices):
+        PRIVATE = "private", _("Private training")
+        PUBLIC = "public", _("Public training")
+
+    title = flowbite.ModelCharField(
+        _("Title"),
+        max_length=100,
+        blank=False,
+        default="",
+        help_text=_("Title for the reservation"),
+    )
     date = models.DateField(
         _("Date"),
         null=False,
@@ -38,42 +66,80 @@ class Reservation(BaseModel):
         blank=False,
         help_text=_("End time of the reservation"),
     )
-    motivation = flowbite.ModelCharField(
-        _("Motivation"),
-        max_length=500,
-        blank=True,
-        null=True,
-        default="",
-        help_text=_("Motivation for the reservation"),
-    )
     assistants = flowbite.ModelIntegerField(
         _("Assistants"),
-        blank=True,
-        null=True,
-        default=1,
+        blank=False,
+        default="",
+        validators=[MinValueValidator(2)],
         help_text=_("Assistants for the reservation"),
     )
     room = models.ForeignKey(
         "rooms.Room",
         verbose_name=_("room"),
         null=False,
-        blank=False,
         on_delete=models.CASCADE,
         related_name="reservation_room",
     )
     is_paid = flowbite.ModelBooleanField(
         _("Is paid?"),
         null=False,
-        blank=False,
         default=False,
         help_text=_("Is the reservation paid?"),
     )
+    catering = flowbite.ModelBooleanField(
+        _("Do I need catering service?"),
+        null=False,
+        blank=False,
+        default=False,
+    )
+    notes = flowbite.ModelCharField(
+        _("Notes"),
+        max_length=500,
+        blank=False,
+        default="",
+        help_text=_("Notes for the reservation"),
+    )
+    bloc4_reservation = flowbite.ModelBooleanField(
+        _("Reservation for Bloc4 services"),
+        null=False,
+        blank=False,
+        default=False,
+    )
+    privacy = flowbite.ModelSelectDropdownField(
+        choices=PrivacyChoices,
+        null=False,
+        blank=False,
+        default=PrivacyChoices.PRIVATE,
+        help_text=_("If the training is public, it will appear in the bloc4 agenda"),
+        verbose_name=_("privacy"),
+        max_length=20,
+    )
+    # Only for public training
+    description = flowbite.ModelCharField(
+        _("Description"),
+        max_length=500,
+        blank=True,
+        null=True,
+        default="",
+        help_text=_("Description for the reservation"),
+    )
+    poster = flowbite.ModelImageField(
+        _("Poster"),
+        blank=True,
+        null=True,
+        storage=PublicMediaStorage(),
+        validators=[validate_image_file_extension],
+    )
+    url = flowbite.ModelUrlField(
+        _("URL of the activity"), max_length=200, blank=True, null=True, default=""
+    )
     total_price = flowbite.ModelFloatField(
         _("Total price"),
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         default=0,
-        help_text=_("Total price of the reservation"),
+        validators=[MinValueValidator(0.0)],
+        help_text=_("Total price will be calculated on save."),
     )
     entity = models.ForeignKey(
         "entities.Entity",
@@ -129,28 +195,63 @@ class Reservation(BaseModel):
             args=(self.pk,),
         )
 
+    def save(self, *args, **kwargs):
+        total_price = 0
+        if self.start_time == START_TIME and self.end_time == END_TIME:
+            total_price = calculate_discount_price(
+                self.entity.entity_type, self.room.price_all_day
+            )
+        elif self.start_time == START_TIME and self.end_time == HALF_TIME:
+            total_price = calculate_discount_price(
+                self.entity.entity_type, self.room.price_half_day
+            )
+        elif self.start_time == HALF_TIME and self.end_time == END_TIME:
+            total_price = calculate_discount_price(
+                self.entity.entity_type,
+                self.room.price_half_day,
+            )
+        else:
+            start_time = datetime.combine(datetime.today(), self.start_time)
+            end_time = datetime.combine(datetime.today(), self.end_time)
+            price = calculate_discount_price(self.entity.entity_type, self.room.price)
+            total_price = calculate_reservation_price(start_time, end_time, price)
+        self.total_price = total_price
+        super(Reservation, self).save(*args, **kwargs)
+
     def clean(self, *args, **kwargs):
         super().clean()
         errors = {}
-
+        if not self.privacy:
+            self.url = ""
+            self.description = ""
+            self.poster = ""
+        if self.privacy == Reservation.PrivacyChoices.PUBLIC and not self.description:
+            errors.update(
+                {
+                    "description": ValidationError(
+                        _("If training is public, this field is required.")
+                    )
+                },
+            )
+            raise ValidationError(errors)
         if self.date:
             # Validation reservation is made within maximum day in advance configured.
             future_date = date.today() + timedelta(
                 days=config.MAXIMUM_ADVANCE_RESERVATION_DAYS
             )
-            if self.date > future_date:
+            if not self.entity.reservation_privilege and self.date > future_date:
                 errors.update(
                     {
                         "date": ValidationError(
                             _(
                                 "The maximum advance reservation period is %(days)s "
                                 "days."
-                              ) % {"days": config.MAXIMUM_ADVANCE_RESERVATION_DAYS}
+                            )
+                            % {"days": config.MAXIMUM_ADVANCE_RESERVATION_DAYS}
                         )
                     },
                 )
                 raise ValidationError(errors)
-
             # Validates that the reservation date is later than the current date.
             if self.date < date.today():
                 errors.update(
@@ -199,25 +300,28 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
-
-            # Validation of the exact duration of the reservation in full hours
-            total_time = datetime.strptime(
-                str(self.end_time), "%H:%M:%S"
-            ) - datetime.strptime(str(self.start_time), "%H:%M:%S")
-            if not (time(8, 0) <= self.start_time <= time(17, 0)):
+            if not (START_TIME <= self.start_time <= END_TIME_MINUS_ONE):
                 errors.update(
                     {
-                        "end_time": ValidationError(
-                            _("The start time must be between 8:00 and 17:00.")
+                        "start_time": ValidationError(
+                            _(
+                                "The start time must be between "
+                                '{START_TIME.strftime("%H:%M")} and '
+                                '{END_TIME_MINUS_ONE.strftime("%H:%M")}.'
+                            )
                         )
                     },
                 )
                 raise ValidationError(errors)
-            if not (time(8, 0) <= self.end_time <= time(18, 0)):
+            if not START_TIME_PLUS_ONE <= self.end_time <= END_TIME:
                 errors.update(
                     {
                         "end_time": ValidationError(
-                            _("The end time must be between 9:00 and 18:00.")
+                            _(
+                                "The end time must be between "
+                                '{START_TIME_PLUS_ONE.strftime("%H:%M")} and '
+                                '{END_TIME.strftime("%H:%M")}.'
+                            )
                         )
                     },
                 )
@@ -241,4 +345,59 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
-
+            try:
+                room = self.room
+                # Validation of room availability
+                room_reservation = (
+                    Reservation.objects.filter(
+                        Q(start_time__lt=self.end_time)
+                        & Q(end_time__gt=self.start_time),
+                        room__id=room.id,
+                        date=self.date,
+                    )
+                    .exclude(id=self.id)
+                    .exclude(
+                        status__in=[
+                            Reservation.StatusChoices.CANCELED,
+                            Reservation.StatusChoices.REFUSED,
+                        ]
+                    )
+                    .exists()
+                )
+                if room_reservation:
+                    errors.update(
+                        {
+                            "end_time": ValidationError(
+                                _("The room is not available for this time period.")
+                            )
+                        },
+                    )
+                    raise ValidationError(errors)
+                if self.assistants > self.room.capacity:
+                    errors.update(
+                        {
+                            "assistants": ValidationError(
+                                _(
+                                    f"The maximum capacity for this room "
+                                    f"is {self.room.capacity}"
+                                )
+                            )
+                        },
+                    )
+                    raise ValidationError(errors)
+            except AttributeError:
+                pass
+        try:
+            user_entity = self.reserved_by.entity
+            if self.entity and user_entity:
+                if self.entity != user_entity:
+                    errors.update(
+                        {
+                            "reserved_by": ValidationError(
+                                _(f"This user belong to {user_entity} entity.")
+                            )
+                        },
+                    )
+                    raise ValidationError(errors)
+        except AttributeError:
+            pass

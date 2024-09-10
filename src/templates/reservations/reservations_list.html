@@ -1,5 +1,6 @@
+
 {% extends "../base.html" %}
-{% load i18n %}
+{% load i18n custom_filters %}
 
 {# Blocks de base.html #}
 {% block page_title %}{% translate "Reservations List" %}{% endblock %}
@@ -78,6 +79,15 @@
       </h2>
       <div id="accordion-color-body-{{ reservation.id }}" class="hidden" aria-labelledby="accordion-color-heading-{{ reservation.id }}">
         <div class="grid grid-cols-2 gap-2 p-5 border border-gray-200 rounded-b-xl dark:border-gray-700 dark:bg-gray-900">
+          <a href="{% url 'reservations:reservations_details' id=reservation.id %}" class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
+            {% translate '+ info' %}
+          </a>
+          <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
+            {% translate 'Title' %}
+          </p>
+          <p class="text-gray-500 dark:text-gray-400 col-start-2">
+              {{ reservation.title }}
+          </p>
           <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
             {% translate 'Room' %}
           </p>
@@ -109,16 +119,6 @@
             {% endif %}
           </p>
           <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-            {% translate 'Motivation' %}
-          </p>
-          <p class="text-gray-500 dark:text-gray-400 col-start-2">
-            {% if reservation.motivation %}
-              {{ reservation.motivation }}
-            {% else %}
-              {% translate 'No motivation was mentioned.' %}
-            {% endif %}
-          </p>
-          <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
             {% translate 'Assistants' %}
           </p>
           <p class="text-gray-500 dark:text-gray-400 col-start-2">
@@ -143,7 +143,7 @@
           </p>
           <p class="text-gray-500 dark:text-gray-400 col-start-2">
             {% if reservation.total_price %}
-              {{ reservation.total_price }} €
+              {{ reservation.total_price|round_two}} €
             {% else %}
               {% translate 'The price could not be estimated.' %}
             {% endif %}

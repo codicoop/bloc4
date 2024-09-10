@@ -206,18 +206,6 @@
                     {% endif %}
                   </td>
                 </tr>
-                <tr class="">
-                  <th scope="row" class="px-2 py-2 font-medium text-gray-900 bg-primary-50 dark:text-white dark:bg-gray-800">
-                    {% translate "Is it resident?" %}
-                  </th>
-                  <td class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
-                    {% if request.user.entity.is_resident == True %}
-                      {% translate "Yes" %}
-                    {% else %}
-                      {% translate "No" %}
-                    {% endif %}
-                  </td>
-                  </tr>
               </tbody>
             </table>
           </div>

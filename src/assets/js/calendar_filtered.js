@@ -115,7 +115,7 @@ const loadCalendar = () => {
 document.addEventListener("DOMContentLoaded", loadCalendar);
 
 const addEventSource = (element) => {
-    roomId = element.getAttribute("id");
+    roomId = element.getAttribute("data-id");
     calendar.setOption("selectable", true);
     calendar.removeAllEventSources();
     calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);

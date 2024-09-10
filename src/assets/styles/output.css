@@ -2157,11 +2157,6 @@ input:checked + .toggle-bg {
   padding-bottom: 0.75rem;
 }
 
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -2766,19 +2761,9 @@ input:checked + .toggle-bg {
   background-color: rgb(173 173 173 / var(--tw-bg-opacity));
 }
 
-.peer:checked ~ .peer-checked\:border-blue-600 {
-  --tw-border-opacity: 1;
-  border-color: rgb(28 100 242 / var(--tw-border-opacity));
-}
-
 .peer:checked ~ .peer-checked\:border-primary-600 {
   --tw-border-opacity: 1;
   border-color: rgb(129 105 201 / var(--tw-border-opacity));
-}
-
-.peer:checked ~ .peer-checked\:border-primary-700 {
-  --tw-border-opacity: 1;
-  border-color: rgb(116 90 196 / var(--tw-border-opacity));
 }
 
 .peer:checked ~ .peer-checked\:bg-primary-600 {
@@ -2791,32 +2776,9 @@ input:checked + .toggle-bg {
   background-color: rgb(116 90 196 / var(--tw-bg-opacity));
 }
 
-.peer:checked ~ .peer-checked\:font-bold {
-  font-weight: 700;
-}
-
-.peer:checked ~ .peer-checked\:font-semibold {
-  font-weight: 600;
-}
-
-.peer:checked ~ .peer-checked\:text-blue-600 {
-  --tw-text-opacity: 1;
-  color: rgb(28 100 242 / var(--tw-text-opacity));
-}
-
 .peer:checked ~ .peer-checked\:text-primary-600 {
   --tw-text-opacity: 1;
   color: rgb(129 105 201 / var(--tw-text-opacity));
-}
-
-.peer:checked ~ .peer-checked\:text-primary-400 {
-  --tw-text-opacity: 1;
-  color: rgb(167 150 217 / var(--tw-text-opacity));
-}
-
-.peer:checked ~ .peer-checked\:text-primary-200 {
-  --tw-text-opacity: 1;
-  color: rgb(220 215 234 / var(--tw-text-opacity));
 }
 
 .peer:checked ~ .peer-checked\:after\:translate-x-full::after {
@@ -3137,11 +3099,6 @@ input:checked + .toggle-bg {
   --tw-ring-color: rgb(47 32 90 / var(--tw-ring-opacity));
 }
 
-:is(.dark .peer:checked ~ .dark\:peer-checked\:text-blue-500) {
-  --tw-text-opacity: 1;
-  color: rgb(63 131 248 / var(--tw-text-opacity));
-}
-
 :is(.dark .peer:checked ~ .dark\:peer-checked\:text-primary-500) {
   --tw-text-opacity: 1;
   color: rgb(146 126 208 / var(--tw-text-opacity));
@@ -3235,10 +3192,6 @@ input:checked + .toggle-bg {
 
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .md\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .md\:items-center {

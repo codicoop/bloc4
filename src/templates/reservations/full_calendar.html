@@ -71,6 +71,7 @@
           <li class="inline-flex">
             <input type="radio" id="{{ room_type }}" name="room_type"
               value="{{ room_type }}" class="hidden peer" required
+              data-id="{{ room_type }}"
               onclick="addEventSource(this)"
               hx-target="#htmx-rooms"
               hx-post="{% url 'reservations:reservations_calendar' %}"

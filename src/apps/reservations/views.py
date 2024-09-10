@@ -20,6 +20,7 @@ from apps.reservations.services import (
     send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
+from apps.rooms.constanst import CALENDAR_TEXT_COLOR
 from apps.rooms.models import Room
 from project.views import StandardSuccess
 
@@ -230,6 +231,7 @@ class AjaxCalendarFeed(View):
             if id != "all":
                 reservations = reservations.filter(room__room_type=id)
         for reservation in reservations:
+            color = RoomTypeChoices(reservation.room.room_type).get_room_color()
             reservation_data = {
                 "room": reservation.room.name,
                 "title": reservation.title,
@@ -243,6 +245,9 @@ class AjaxCalendarFeed(View):
                         datetime.combine(reservation.date, reservation.end_time)
                     )
                 ),
+                "backgroundColor": color,
+                "borderColor": color,
+                "textColor": CALENDAR_TEXT_COLOR,
                 "is_staff": request.user.is_staff,
                 "reservation_id": reservation.id,
             }

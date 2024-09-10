@@ -20,6 +20,7 @@ from apps.reservations.services import (
     send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
+from apps.rooms.constanst import CALENDAR_TEXT_COLOR
 from apps.rooms.models import Room
 from project.views import StandardSuccess
 
@@ -83,14 +84,17 @@ def create_reservation_view(request):
             )
             total_price = calculate_discount_price(entity_type, total_price)
             form = ReservationForm(
-             initial={
-                "date": date,
-                "start_time": start_time.strftime("%H:%M"),
-                "end_time": end_time.strftime("%H:%M"),
-                "entity": request.user.entity,
-                "room": room.id,
-            }
-        )
+                initial={
+                    "date": date,
+                    "start_time": start_time.strftime("%H:%M"),
+                    "end_time": end_time.strftime("%H:%M"),
+                    "entity": request.user.entity,
+                    "start_time": start_time.strftime("%H:%M"),
+                    "end_time": end_time.strftime("%H:%M"),
+                    "entity": request.user.entity,
+                    "room": room.id,
+                }
+            )
     if request.method == "POST":
         form = ReservationForm(request.POST)
         # Validation of the date format
@@ -235,6 +239,7 @@ class AjaxCalendarFeed(View):
             if id != "all":
                 reservations = reservations.filter(room__room_type=id)
         for reservation in reservations:
+            color = RoomTypeChoices(reservation.room.room_type).get_room_color()
             reservation_data = {
                 "room": reservation.room.name,
                 "title": reservation.title,
@@ -248,6 +253,9 @@ class AjaxCalendarFeed(View):
                         datetime.combine(reservation.date, reservation.end_time)
                     )
                 ),
+                "backgroundColor": color,
+                "borderColor": color,
+                "textColor": CALENDAR_TEXT_COLOR,
                 "is_staff": request.user.is_staff,
                 "reservation_id": reservation.id,
             }

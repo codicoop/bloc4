@@ -1,6 +1,13 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.reservations.constants import (
+    BLOC4_DISCOUNT,
+    GENERAL_DISCOUNT,
+    HOSTED_DISCOUNT,
+    OUTSIDE_DISCOUNT,
+)
+
 
 class EntityTypesChoices(models.TextChoices):
     GENERAL = "general", _("General entity")
@@ -10,9 +17,9 @@ class EntityTypesChoices(models.TextChoices):
 
     def get_discount_percentage(self):
         discounts = {
-            self.GENERAL: 0,
-            self.HOSTED: -0.4,
-            self.BLOC4: -0.5,
-            self.OUTSIDE: 0.15,
+            self.GENERAL: GENERAL_DISCOUNT,
+            self.HOSTED: HOSTED_DISCOUNT,
+            self.BLOC4: BLOC4_DISCOUNT,
+            self.OUTSIDE: OUTSIDE_DISCOUNT,
         }
         return discounts.get(self, 0)

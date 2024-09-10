@@ -62,6 +62,7 @@
     </h1>
     <h1 class="mt-4 mb-4 text-lg leading-tight tracking-tight text-primary-900 md:text-lg dark:text-white">
     {% translate "Choose a room type:" %}
+    {% translate "Choose a room type:" %}
     </h1>
     <div class="mb-12 flex justify-start">
       <form method="POST">
@@ -90,6 +91,7 @@
         </ul>
       </form>
     </div>
+    {% endif %}
     {% endif %}
     <div id="htmx-rooms">
       {% include 'rooms/rooms_filtered.html' %}

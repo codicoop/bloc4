@@ -3,6 +3,7 @@
 
 {# Blocks de base.html #}
 {% block page_title %}{% translate "New Reservation" %}{% endblock %}
+{% block page_title %}{% translate "New Reservation" %}{% endblock %}
 {% block bodyclasses %}{% endblock %}
 {% block mainclasses %} reservations {% endblock %}
 {% block extra_js %}
@@ -90,6 +91,7 @@
 </div>
 {% endif %}
 {% endblock %}
+
 
 {% block form_fields %}
 <div class="flex justify-between items-center">
@@ -212,6 +214,7 @@
     class="w-full px-5 py-2.5 rounded-lg bg-primary-600 text-white font-bold text-sm text-center cursor-pointer
       hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300
       dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+    value="{% translate 'Create reservation'%}" />
     value="{% translate 'Create reservation'%}" />
 
 {% endblock %}

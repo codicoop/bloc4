@@ -163,17 +163,7 @@
             {% translate 'Status of the reservation' %}
           </p>
           <p class="text-gray-500 dark:text-gray-400 col-start-2">
-            {% if reservation.status == 'canceled' %}
-              {% translate 'Canceled' %}
-            {% elif reservation.status == 'confirmed' %}
-              {% translate 'Confirmed' %}
-            {% elif reservation.status == 'refused' %}
-              {% translate 'Refused' %}
-            {% elif reservation.status == 'pending' %}
-              {% translate 'Pending' %}
-            {% else %}
-              {% translate 'Status unknown' %}
-            {% endif %}
+            {{ reservation.get_status_display }}
           </p>
           {% if reservation.status == reservation.StatusChoices.CANCELED %}
             <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">

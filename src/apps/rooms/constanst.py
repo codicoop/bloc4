@@ -1,0 +1,5 @@
+# Room colors on button and calendar
+EVENT_ROOM_COLOR = "#F4E846"
+CLASSROOM_COLOR = "#FFA384"
+MEETING_ROOM_COLOR = "#A479EC"
+CALENDAR_TEXT_COLOR = "#1c0d02"

@@ -60,6 +60,8 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("Start time"),
+                "hx-target": '#total_price',
+                "hx-trigger": "change",
             }
         ),
     )
@@ -79,7 +81,8 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("End time"),
-            }
+                "hx-target": '#total_price',
+                "hx-trigger": "change",            }
         ),
     )
     assistants = flowbite.FormIntegerField(

@@ -28,9 +28,7 @@ const loadCalendar = () => {
                     const startDate = new Date(info.startStr);
                     const endDate = new Date(info.endStr);
                     if (startDate < today) {
-                        alert(
-                            "La data triada ha de ser posterior al dia d'avui."
-                        );
+                        showAlertDayError()
                     } else if (roomId.length == 36) {
                         const dialog = document.getElementById("confirmation-dialog")
                         const day = startDate.toLocaleDateString();
@@ -125,6 +123,10 @@ const addEventSource = (element) => {
 
 const showAlertNoRoom = () => {
     const dialog = document.getElementById("alert-no-room")
+    dialog.show()
+}
+const showAlertDayError = () => {
+    const dialog = document.getElementById("alert-day-error")
     dialog.show()
 }
 const showConfirmDialog = () => {

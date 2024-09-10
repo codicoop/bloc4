@@ -61,7 +61,7 @@ const loadCalendar = () => {
                             )}&id=${encodeURIComponent(roomId)}`;
                         }
                     } else {
-                        alert("Has de triar la sala.");
+                        alert("Abans de fer una reserva, has de triar quina sala vols.");
                     }
                 },
                 selectMirror: false,
@@ -88,12 +88,20 @@ const loadCalendar = () => {
             },
         },
         eventDidMount: function (info) {
+            console.log(info);
             let pill = document.createElement("span");
+            let author = document.createElement("div");
             let room = info.event._def.extendedProps["room"];
-            let color = info.event._def.extendedProps["color"];
+            // let color = info.event._def.extendedProps["color"];
+            // let reservation_author = info.event._def.extendedProps["author"];
             let eventText = info.el.querySelector(".fc-event-time");
+            let eventTitleContainer = info.el.querySelector(".fc-event-title-container")
+            let eventTitle = info.el.querySelector(".fc-event-title")
+            eventTitle.classList.add("font-bold", "mt-2")
             pill.classList.add("text-xs");
             pill.innerText = room;
+            author.innerText = "Autor de la reserva"
+            // author.innerText = reservation_author
             eventText.append(pill);
             eventText.classList.add(
                 "flex",
@@ -101,6 +109,7 @@ const loadCalendar = () => {
                 "gap-1",
                 "items-center"
             );
+            eventTitleContainer.append(author)
         },
         eventClick: function (info) {
             if (info.event.extendedProps.is_staff) {

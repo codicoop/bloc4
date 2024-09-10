@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from apps.entities.models import Entity
 from apps.reservations.models import Reservation
 from apps.rooms.models import Room
 from project.fields import flowbite
@@ -11,9 +12,8 @@ class ReservationForm(forms.ModelForm):
         queryset=Room.objects.all(),
         widget=forms.HiddenInput(),
     )
-    total_price = flowbite.FormFloatField(
-        widget=forms.HiddenInput(),
-        required=False,
+    entity = forms.ModelChoiceField(
+        queryset=Entity.objects.all(), widget=forms.HiddenInput(), required=False
     )
     title = flowbite.FormCharField(
         label=_("Title"),
@@ -155,7 +155,7 @@ class ReservationForm(forms.ModelForm):
         model = Reservation
         fields = [
             "room",
-            "total_price",
+            "entity",
             "title",
             "date",
             "start_time",

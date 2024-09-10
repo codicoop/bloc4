@@ -77,8 +77,9 @@ def create_reservation_view(request):
             date = start_datetime.date().strftime('%Y-%m-%d')
             start_time = start_datetime.time()
             end_time = end_datetime.time()
+            price_discount = calculate_discount_price(entity_type, room.price)
             total_price = calculate_reservation_price(
-                start_datetime, end_datetime, room.price
+                start_datetime, end_datetime, price_discount
             )
             total_price = calculate_discount_price(entity_type, total_price)
             form = ReservationForm(
@@ -86,6 +87,7 @@ def create_reservation_view(request):
                 "date": date,
                 "start_time": start_time.strftime("%H:%M"),
                 "end_time": end_time.strftime("%H:%M"),
+                "entity": request.user.entity,
                 "room": room.id,
             }
         )
@@ -104,7 +106,6 @@ def create_reservation_view(request):
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
-            reservation.entity = request.user.entity
             reservation.room = room
             reservation.save()
             form.save()
@@ -117,6 +118,7 @@ def create_reservation_view(request):
         {
             "form": form,
             "room": room,
+            "entity": request.user.entity,
             "price": calculate_discount_price(entity_type, room.price),
             "price_half_day": calculate_discount_price(
                 entity_type,
@@ -126,8 +128,28 @@ def create_reservation_view(request):
                 entity_type,
                 room.price_all_day,
             ),
-            "total_price": total_price,
+            "total_price": delete_zeros(total_price),
         },
+    )
+
+
+def reservation_detail_view(request, id):
+    is_staff = request.user.is_staff
+    try:
+        reservation_id = uuid.UUID(id)
+        if is_staff:
+            reservation = get_object_or_404(Reservation, id=reservation_id)
+        else:
+            entity = request.user.entity
+            reservation = get_object_or_404(
+                Reservation, id=reservation_id, entity=entity
+            )
+    except ValueError:
+        return redirect("reservations:reservations_list")
+    return render(
+        request,
+        "reservations/details.html",
+        {"reservation": reservation, "is_staff": is_staff},
     )
 
 
@@ -143,7 +165,6 @@ def calculate_total_price(request):
         ):
             start_time_str = request.POST.get("start_time")
             end_time_str = request.POST.get("end_time")
-            end_time_str = request.POST.get("end_time")
             start_time = datetime.strptime(start_time_str, "%H:%M").time()
             end_time = datetime.strptime(end_time_str, "%H:%M").time()
             today = datetime.today().date()
@@ -157,7 +178,9 @@ def calculate_total_price(request):
         return render(
             request,
             "reservations/total_price.html",
-            {"total_price": total_price},
+            {
+                "total_price": delete_zeros(total_price),
+            },
         )
     return JsonResponse({"error": ""}, status=405)
 
@@ -225,6 +248,8 @@ class AjaxCalendarFeed(View):
                         datetime.combine(reservation.date, reservation.end_time)
                     )
                 ),
+                "is_staff": request.user.is_staff,
+                "reservation_id": reservation.id,
             }
             data.append(reservation_data)
         return JsonResponse(data, safe=False)

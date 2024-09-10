@@ -1,4 +1,3 @@
-import math
 from datetime import date, datetime, timedelta
 
 from constance import config
@@ -199,21 +198,24 @@ class Reservation(BaseModel):
     def save(self, *args, **kwargs):
         total_price = 0
         if self.start_time == START_TIME and self.end_time == END_TIME:
-            total_price = self.room.price_all_day
+            total_price = calculate_discount_price(
+                self.entity.entity_type, self.room.price_all_day
+            )
         elif self.start_time == START_TIME and self.end_time == HALF_TIME:
-            total_price = self.room.price_half_day
+            total_price = calculate_discount_price(
+                self.entity.entity_type, self.room.price_half_day
+            )
         elif self.start_time == HALF_TIME and self.end_time == END_TIME:
-            total_price = self.room.price_half_day
+            total_price = calculate_discount_price(
+                self.entity.entity_type,
+                self.room.price_half_day,
+            )
         else:
             start_time = datetime.combine(datetime.today(), self.start_time)
             end_time = datetime.combine(datetime.today(), self.end_time)
-            total_price = calculate_reservation_price(
-                start_time, end_time, self.room.price
-            )
-        discounted_price = calculate_discount_price(
-            self.entity.entity_type, total_price
-        )
-        self.total_price = math.ceil(discounted_price * 100) / 100
+            price = calculate_discount_price(self.entity.entity_type, self.room.price)
+            total_price = calculate_reservation_price(start_time, end_time, price)
+        self.total_price = total_price
         super(Reservation, self).save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):
@@ -237,7 +239,7 @@ class Reservation(BaseModel):
             future_date = date.today() + timedelta(
                 days=config.MAXIMUM_ADVANCE_RESERVATION_DAYS
             )
-            if self.date > future_date:
+            if not self.entity.reservation_privilege and self.date > future_date:
                 errors.update(
                     {
                         "date": ValidationError(

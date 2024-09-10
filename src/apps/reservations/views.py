@@ -198,9 +198,13 @@ def reservations_calendar_view(request):
     context = {}
     room_types = Room.objects.values_list("room_type", flat=True).distinct()
     unique_room_types = {
-        room_type: RoomTypeChoices(room_type).label for room_type in room_types
+        room_type: {
+            'label': RoomTypeChoices(room_type).label,
+            'color': RoomTypeChoices(room_type).get_room_color()
     }
-    unique_room_types = {"all": _("All")} | unique_room_types
+    for room_type in room_types
+    }
+    unique_room_types = {"all": {'label': _("All")}} | unique_room_types
     context["room_types"] = unique_room_types
     context["rooms"] = Room.objects.all()
     context["discount"] = EntityTypesChoices(

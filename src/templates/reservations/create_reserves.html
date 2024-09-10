@@ -10,14 +10,9 @@
   const startTimeInput = document.getElementById('id_start_time');
   startTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
   startTimeInput.setAttribute('hx-vals', '{"selected_price": "{{ price }}", "id": "start-hourly-day"}');
-  startTimeInput.setAttribute('hx-trigger', 'change');
-  startTimeInput.setAttribute('hx-target', '#total_price');
   const endTimeInput = document.getElementById('id_end_time');
   endTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
   endTimeInput.setAttribute('hx-vals', '{"selected_price": "{{ price }}", "id": "end-hourly-day"}');
-  endTimeInput.setAttribute('hx-trigger', 'change');
-  endTimeInput.setAttribute('hx-target', '#total_price');
-
 </script>
 {% endblock %}
 {% block extra_head %}{% endblock %}
@@ -59,8 +54,7 @@
 </h1>
 {% if room.room_type == 'event_room' %}
 <div class="pb-4">
-  <p>{% translate "If you want to book the Event Hall, fill up the form below and send it to the administration. Until
-    they confirm or reject it, the reservation will appear as pending." %}</p>
+  <p>{% translate "If you want to book the Event Hall, fill up the form below and send it to the administration. Until they confirm or reject it, the reservation will appear as pending." %}</p>
 </div>
 {% endif %}
 {% if messages %}

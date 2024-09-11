@@ -76,13 +76,13 @@
               hx-target="#htmx-rooms"
               hx-post="{% url 'reservations:reservations_calendar' %}"
               hx-vals='{"room_type": "{{ key }}"}'
-              style="background-color: {{ value.color }}"
               />
+              <!-- style="background-color: {{ value.color }}" -->
             <label for="{{ key }}"
-              class="inline-flex items-center text-white font-medium rounded-lg text-sm
-              px-5 py-2.5 me-2 mb-2 bg-primary-300 cursor-pointer
-              peer-checked:bg-primary-700
-              hover:bg-primary-800
+              class="inline-flex items-center text-gray-900 font-medium rounded-lg text-sm
+              px-5 py-2.5 me-2 mb-2 border-2 border-[{{ value.color }}] cursor-pointer
+              peer-checked:bg-[{{ value.color }}]
+              hover:filter hover:brightness-90
               focus:outline-none focus:ring-4 focus:ring-primary-200">
               {{ value.label }}
             </label>

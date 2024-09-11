@@ -28,10 +28,9 @@ const loadCalendar = () => {
                     const startDate = new Date(info.startStr);
                     const endDate = new Date(info.endStr);
                     if (startDate < today) {
-                        alert(
-                            "La data triada ha de ser posterior al dia d'avui."
-                        );
+                        showAlertDayError()
                     } else if (roomId.length == 36) {
+                        const dialog = document.getElementById("confirmation-dialog")
                         const day = startDate.toLocaleDateString();
                         const startHours = startDate
                             .getHours()
@@ -49,19 +48,20 @@ const loadCalendar = () => {
                             .getMinutes()
                             .toString()
                             .padStart(2, "0");
-                        if (
-                            confirm(
-                                `Segur que vols fer un reserva pel ${day} de ${startHours}:${startMinutes} a ${endHours}:${endMinutes}?`
-                            )
-                        ) {
-                            window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
-                                start
-                            )}&end=${encodeURIComponent(
-                                end
-                            )}&id=${encodeURIComponent(roomId)}`;
-                        }
+                        
+                        // Volem mostrar el dialog
+                        showConfirmDialog()
+                        dialog.addEventListener("close", (e) => {
+                            if (dialog.returnValue === "true") {
+                                window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
+                                    start
+                                )}&end=${encodeURIComponent(
+                                    end
+                                )}&id=${encodeURIComponent(roomId)}`;
+                            }
+                        })
                     } else {
-                        alert("Has de triar la sala.");
+                        showAlertNoRoom()
                     }
                 },
                 selectMirror: false,
@@ -90,7 +90,7 @@ const loadCalendar = () => {
         eventDidMount: function (info) {
             let pill = document.createElement("span");
             let room = info.event._def.extendedProps["room"];
-            let color = info.event._def.extendedProps["color"];
+            // let color = info.event._def.extendedProps["color"];
             let eventText = info.el.querySelector(".fc-event-time");
             pill.classList.add("text-xs");
             pill.innerText = room;
@@ -115,8 +115,21 @@ const loadCalendar = () => {
 document.addEventListener("DOMContentLoaded", loadCalendar);
 
 const addEventSource = (element) => {
-    roomId = element.getAttribute("id");
+    roomId = element.getAttribute("data-id");
     calendar.setOption("selectable", true);
     calendar.removeAllEventSources();
     calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
 };
+
+const showAlertNoRoom = () => {
+    const dialog = document.getElementById("alert-no-room")
+    dialog.show()
+}
+const showAlertDayError = () => {
+    const dialog = document.getElementById("alert-day-error")
+    dialog.show()
+}
+const showConfirmDialog = () => {
+    const dialog = document.getElementById("confirmation-dialog")
+    dialog.show()
+}

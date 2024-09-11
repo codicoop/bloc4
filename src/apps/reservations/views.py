@@ -58,35 +58,43 @@ class ReservationsListView(ListView):
 
 
 def create_reservation_view(request):
-    start = request.GET.get("start")
-    end = request.GET.get("end")
-    if not start or not end:
-        return redirect("reservations:reservations_calendar")
-    try:
-        id = uuid.UUID(request.GET.get("id"))
-    except ValueError:
-        return redirect("reservations:reservations_calendar")
-    room = get_object_or_404(Room, id=id)
-    entity_type = request.user.entity.entity_type
-    if start and end:
-        start_datetime = datetime.fromisoformat(start)
-        end_datetime = datetime.fromisoformat(end)
-        date = start_datetime.date().strftime("%Y-%m-%d")
-        start_time = start_datetime.time()
-        end_time = end_datetime.time()
-        price_discount = calculate_discount_price(entity_type, room.price)
-        total_price = calculate_reservation_price(
-            start_datetime, end_datetime, price_discount
-        )
-        form = ReservationForm(
-            initial={
-                "date": date,
-                "start_time": start_time.strftime("%H:%M"),
-                "end_time": end_time.strftime("%H:%M"),
-                "entity": request.user.entity,
-                "room": room.id,
-            }
-        )
+    if request.method == "GET":
+        start = request.GET.get('start')
+        end = request.GET.get('end')
+        if not start or not end:
+            return redirect("reservations:reservations_calendar")
+        try:
+            # ID comes prefixed with 'id_' to prevent invalid IDs that start
+            # with a number. Extracting the actual UUID:
+            id = request.GET.get('id')[3:]
+            id = uuid.UUID(id)
+        except ValueError:
+            return redirect("reservations:reservations_calendar")
+        room = get_object_or_404(Room, id=id)
+        entity_type = request.user.entity.entity_type
+        if start and end:
+            start_datetime = datetime.fromisoformat(start)
+            end_datetime = datetime.fromisoformat(end)
+            date = start_datetime.date().strftime('%Y-%m-%d')
+            start_time = start_datetime.time()
+            end_time = end_datetime.time()
+            price_discount = calculate_discount_price(entity_type, room.price)
+            total_price = calculate_reservation_price(
+                start_datetime, end_datetime, price_discount
+            )
+            total_price = calculate_discount_price(entity_type, total_price)
+            form = ReservationForm(
+                initial={
+                    "date": date,
+                    "start_time": start_time.strftime("%H:%M"),
+                    "end_time": end_time.strftime("%H:%M"),
+                    "entity": request.user.entity,
+                    "start_time": start_time.strftime("%H:%M"),
+                    "end_time": end_time.strftime("%H:%M"),
+                    "entity": request.user.entity,
+                    "room": room.id,
+                }
+            )
     if request.method == "POST":
         form = ReservationForm(request.POST)
         # Validation of the date format

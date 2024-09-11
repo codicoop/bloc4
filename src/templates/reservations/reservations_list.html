@@ -46,7 +46,7 @@
 <h1 class="mt-4 mb-8 md:mb-16 text-2xl font-bold leading-tight tracking-tight text-primary-900 md:text-3xl dark:text-white">
   {% translate "Your reservations" %}
 </h1>
-<div class="flex flex-col gap-4 mb-8 md:grid md: grid-cols-2">
+<div class="flex flex-col gap-4 mb-8 md:grid md:grid-cols-2">
   {% for reservation in reservations %}
     <div id="accordion-color{{ reservation.id }}" data-accordion="collapse{{ reservation.id }}"
       data-active-classes="rounded-t-xl rounded-b-none dark:bg-gray-800 dark:text-white">

@@ -67,23 +67,24 @@
       <form method="POST">
         {% csrf_token %}
         <ul>
-        {% for room_type, label in room_types.items %}
+        {% for key, value in room_types.items %}
           <li class="inline-flex">
-            <input type="radio" id="{{ room_type }}" name="room_type"
-              value="{{ room_type }}" class="hidden peer" required
-              data-id="{{ room_type }}"
+            <input type="radio" id="{{ key }}" name="room_type"
+              value="{{ key }}" class="hidden peer" required
+              data-id="{{ key }}"
               onclick="addEventSource(this)"
               hx-target="#htmx-rooms"
               hx-post="{% url 'reservations:reservations_calendar' %}"
-              hx-vals='{"room_type": "{{ room_type }}"}'
+              hx-vals='{"room_type": "{{ key }}"}'
+              style="background-color: {{ value.color }}"
               />
-            <label for="{{ room_type }}"
+            <label for="{{ key }}"
               class="inline-flex items-center text-white font-medium rounded-lg text-sm
               px-5 py-2.5 me-2 mb-2 bg-primary-300 cursor-pointer
               peer-checked:bg-primary-700
               hover:bg-primary-800
               focus:outline-none focus:ring-4 focus:ring-primary-200">
-              {{ label }}
+              {{ value.label }}
             </label>
           </li>
         {% endfor %}

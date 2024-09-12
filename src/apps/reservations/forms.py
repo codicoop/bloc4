@@ -19,9 +19,15 @@ class ReservationForm(forms.ModelForm):
         label=_("Title"),
         widget=forms.TextInput(
             attrs={
-                "class": "form-control",
+                "class": "text-sm border rounded-lg "
+                "block w-full p-2.5 bg-gray-50 border-gray-300 "
+                "text-gray-900 focus:ring-primary-600 "
+                "focus:border-primary-600 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500"
+                "dark:focus:border-primary-500",
                 "autofocus": True,
-                "autocomplete": True,
+                "autocomplete": "on",
                 "help_text": _("Title"),
             }
         ),
@@ -32,7 +38,8 @@ class ReservationForm(forms.ModelForm):
             format="%Y-%m-%d",
             attrs={
                 "type": "date",
-                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
+                "class": "text-sm border rounded-lg block w-full "
+                "p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
@@ -60,7 +67,7 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("Start time"),
-                "hx-target": '#total_price',
+                "hx-target": "#total_price",
                 "hx-trigger": "change",
             }
         ),
@@ -81,16 +88,15 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "required": True,
                 "help_text": _("End time"),
-                "hx-target": '#total_price',
-                "hx-trigger": "change",            }
+                "hx-target": "#total_price",
+                "hx-trigger": "change",
+            }
         ),
     )
     assistants = flowbite.FormIntegerField(
         label=_("Assitants"),
         widget=forms.NumberInput(
             attrs={
-                "data-input-counter": "",
-                "aria-describedby": "helper-text-explanation",
                 "class": "form-control bg-gray-50 border-x-0 border-gray-300 "
                 "h-11 text-center text-gray-900 text-sm block w-full "
                 "py-2.5 focus:ring-primary-500 focus:border-primary-500 "
@@ -102,13 +108,44 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
+    catering = flowbite.FormBooleanField(
+        label=_("Do I need catering service?"),
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "ms-2 text-sm font-medium text-gray-900 "
+                "dark:text-gray-300 w-4 h-4 border rounded text-primary-500 "
+                "border-gray-300 bg-gray-50 focus:ring-3 "
+                "focus:ring-primary-300 "
+                "dark:bg-gray-700 dark:border-gray-600 ",
+                "help_text": _("Bloc4 reservation"),
+            }
+        ),
+    )
     notes = flowbite.FormCharField(
         label=_("Notes"),
         widget=forms.Textarea(
             attrs={
-                "class": "form-control",
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
+                "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "focus:border-primary-60 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
                 "autocomplete": True,
                 "help_text": _("Notes"),
+            }
+        ),
+    )
+    bloc4_reservation = flowbite.FormBooleanField(
+        label=_("Reservation for Bloc4 services"),
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "ms-2 text-sm font-medium text-gray-900 "
+                "dark:text-gray-300 w-4 h-4 border rounded text-primary-500 "
+                "border-gray-300 bg-gray-50 focus:ring-3 "
+                "focus:ring-primary-300 "
+                "dark:bg-gray-700 dark:border-gray-600 ",
+                "help_text": _("Bloc4 reservation"),
             }
         ),
     )
@@ -135,10 +172,28 @@ class ReservationForm(forms.ModelForm):
         required=False,
         widget=forms.Textarea(
             attrs={
-                "class": "form-control",
-                "autofocus": True,
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
+                "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "focus:border-primary-60 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
                 "autocomplete": True,
                 "help_text": _("Description"),
+            }
+        ),
+    )
+    url = flowbite.FormUrlField(
+        label=_("URL of the activity"),
+        required=False,
+        widget=forms.URLInput(
+            attrs={
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
+                "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "focus:border-primary-60 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
             }
         ),
     )
@@ -149,7 +204,6 @@ class ReservationForm(forms.ModelForm):
                 "class": "form-control",
                 "autofocus": True,
                 "autocomplete": True,
-                "help_text": _("Description"),
             }
         ),
     )
@@ -172,3 +226,53 @@ class ReservationForm(forms.ModelForm):
             "url",
             "poster",
         ]
+
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": (
+                    "room",
+                    "entity",
+                    "title",
+                    "date",
+                    "start_time",
+                    "end_time",
+                    "assistants",
+                    "catering",
+                    "notes",
+                    "bloc4_reservation",
+                    "privacy",
+                )
+            },
+        ),
+        (
+            None,
+            {
+                "fields": (
+                    "description",
+                    "url",
+                    "poster",
+                )
+            },
+        ),
+    ]
+
+    def as_fieldsets(self):
+        output = []
+        for name, fieldset in self.fieldsets:
+            output.append("<fieldset>")
+            if name:
+                output.append(f"<legend>{name}</legend>")
+            for field_name in fieldset["fields"]:
+                field = self[field_name]
+                if isinstance(field.field.widget, forms.HiddenInput):
+                    continue
+                output.append(f"<p>{field.label_tag()}{field}</p>")
+                if field.errors:
+                    for error in field.errors:
+                        output.append(f'<p class="error">{error}</p>')
+                if field.help_text:
+                    output.append(f'<p class="help">{field.help_text}</p>')
+                output.append("</fieldset>")
+        return "".join(output)

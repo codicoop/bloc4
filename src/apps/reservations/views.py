@@ -20,7 +20,7 @@ from apps.reservations.services import (
     send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
-from apps.rooms.constanst import CALENDAR_TEXT_COLOR
+from apps.rooms.constanst import ALL_COLOR, CALENDAR_TEXT_COLOR
 from apps.rooms.models import Room
 from project.views import StandardSuccess
 
@@ -59,14 +59,14 @@ class ReservationsListView(ListView):
 
 def create_reservation_view(request):
     if request.method == "GET":
-        start = request.GET.get('start')
-        end = request.GET.get('end')
+        start = request.GET.get("start")
+        end = request.GET.get("end")
         if not start or not end:
             return redirect("reservations:reservations_calendar")
         try:
             # ID comes prefixed with 'id_' to prevent invalid IDs that start
             # with a number. Extracting the actual UUID:
-            id = request.GET.get('id')[3:]
+            id = request.GET.get("id")
             id = uuid.UUID(id)
         except ValueError:
             return redirect("reservations:reservations_calendar")
@@ -75,7 +75,7 @@ def create_reservation_view(request):
         if start and end:
             start_datetime = datetime.fromisoformat(start)
             end_datetime = datetime.fromisoformat(end)
-            date = start_datetime.date().strftime('%Y-%m-%d')
+            date = start_datetime.date().strftime("%Y-%m-%d")
             start_time = start_datetime.time()
             end_time = end_datetime.time()
             price_discount = calculate_discount_price(entity_type, room.price)
@@ -86,9 +86,6 @@ def create_reservation_view(request):
             form = ReservationForm(
                 initial={
                     "date": date,
-                    "start_time": start_time.strftime("%H:%M"),
-                    "end_time": end_time.strftime("%H:%M"),
-                    "entity": request.user.entity,
                     "start_time": start_time.strftime("%H:%M"),
                     "end_time": end_time.strftime("%H:%M"),
                     "entity": request.user.entity,
@@ -110,7 +107,6 @@ def create_reservation_view(request):
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
-            reservation.room = room
             reservation.save()
             form.save()
             send_mail_reservation(reservation, "reservation_request_user")
@@ -207,12 +203,15 @@ def reservations_calendar_view(request):
     room_types = Room.objects.values_list("room_type", flat=True).distinct()
     unique_room_types = {
         room_type: {
-            'label': RoomTypeChoices(room_type).label,
-            'color': RoomTypeChoices(room_type).get_room_color()
+            "label": RoomTypeChoices(room_type).label,
+            "color": RoomTypeChoices(room_type).get_room_color(),
+        }
+        for room_type in room_types
     }
-    for room_type in room_types
-    }
-    unique_room_types = {"all": {'label': _("All")}} | unique_room_types
+    unique_room_types = {
+        "all": {"label": _("All"), "color": ALL_COLOR}
+    } | unique_room_types
+    print(unique_room_types)
     context["room_types"] = unique_room_types
     context["rooms"] = Room.objects.all()
     context["discount"] = EntityTypesChoices(

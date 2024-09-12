@@ -10,9 +10,9 @@ const loadCalendar = () => {
         firstDay: 1,
         slotEventOverlap: false,
         headerToolbar: {
-            left: "today",
+            left: "prev",
             center: "title",
-            right: "prev,next",
+            right: "next",
         },
         views: {
             customTimeGridWeek: {

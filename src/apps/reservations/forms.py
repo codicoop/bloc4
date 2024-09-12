@@ -103,7 +103,7 @@ class ReservationForm(forms.ModelForm):
                 "aria-describedby": "helper-text-explanation",
                 "class": "bg-gray-50 border-x-0 border-gray-300 rounded-none"
                 "h-11 text-center text-gray-900 text-sm block w-full py-2.5 "
-                "focus:ring-primary-500 focus:border-primary-500 " 
+                "focus:ring-primary-500 focus:border-primary-500 "
                 "dark:bg-gray-700 dark:border-gray-600 "
                 "dark:placeholder-gray-400 dark:text-white "
                 "dark:focus:ring-primary-500 dark:focus:border-primary-500",
@@ -127,6 +127,7 @@ class ReservationForm(forms.ModelForm):
     )
     catering = flowbite.FormBooleanField(
         label=_("Do I need catering service?"),
+        required=False,
         widget=forms.CheckboxInput(
             attrs={
                 "class": "ms-2 text-sm font-medium text-gray-900 "
@@ -155,6 +156,7 @@ class ReservationForm(forms.ModelForm):
     )
     bloc4_reservation = flowbite.FormBooleanField(
         label=_("Reservation for Bloc4 services"),
+        required=False,
         widget=forms.CheckboxInput(
             attrs={
                 "class": "ms-2 text-sm font-medium text-gray-900 "
@@ -289,12 +291,14 @@ class ReservationForm(forms.ModelForm):
             for field_name in fieldset["fields"]:
                 field = self[field_name]
                 if isinstance(field.field.widget, forms.HiddenInput):
-                    continue
-                output.append(f"<p>{field.label_tag()}{field}</p>")
+                    output.append(f"{field}")
+                else:
+                    output.append(f"<p>{field.label_tag()}{field}</p>")
                 if field.errors:
                     for error in field.errors:
                         output.append(f'<p class="error">{error}</p>')
                 if field.help_text:
                     output.append(f'<p class="help">{field.help_text}</p>')
-                output.append("</fieldset>")
+            output.append("</fieldset>")
         return "".join(output)
+

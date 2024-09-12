@@ -9,7 +9,7 @@
       <a href="{% url 'rooms:room_detail' id=room.id %}">
         <div class="rounded-t-lg min-h-[53%] max-h-48 overflow-hidden min-h">
           {% thumbnail room.picture "300" as im %}
-            <img class="object-cover object-center" src="{{ room.im.url }}" alt="" />
+            <img class="object-cover object-center" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="" />
           {% endthumbnail %}
         </div>
       </a>

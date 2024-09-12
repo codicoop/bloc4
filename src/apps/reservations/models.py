@@ -69,8 +69,9 @@ class Reservation(BaseModel):
     assistants = flowbite.ModelIntegerField(
         _("Assistants"),
         blank=False,
-        default="",
-        validators=[MinValueValidator(2)],
+        null=True,
+        default=1,
+        validators=[MinValueValidator(1)],
         help_text=_("Assistants for the reservation"),
     )
     room = models.ForeignKey(

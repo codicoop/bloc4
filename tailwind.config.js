@@ -10,7 +10,8 @@ module.exports = {
     'border-[#F4E846]',
     'peer-checked:bg-[#FFA384]',
     'peer-checked:bg-[#A796D9]',
-    'peer-checked:bg-[#F4E846]'
+    'peer-checked:bg-[#F4E846]',
+    'disabled:bg-gray-200'
   ],
   darkMode: 'class',
   theme: {

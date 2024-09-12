@@ -107,9 +107,8 @@
       hx-post="{% url 'reservations:calculate_total_price' %}"
       hx-vals='{"selected_price": "{{ price }}", "id": "hourly-day"}'
       hx-target="#total_price"
-      _="on click 
-        remove #id_start_time.disabled
-        then remove #id_end_time.disabled
+      _="on click remove @disabled from #id_start_time 
+        then remove @disabled from #id_end_time
       ">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Hourly reservation' %}</b>

@@ -195,7 +195,8 @@ class Reservation(BaseModel):
             args=(self.pk,),
         )
 
-    def save(self, *args, **kwargs):
+    @property
+    def calculated_total_price(self):
         total_price = 0
         if self.start_time == START_TIME and self.end_time == END_TIME:
             total_price = calculate_discount_price(
@@ -215,7 +216,10 @@ class Reservation(BaseModel):
             end_time = datetime.combine(datetime.today(), self.end_time)
             price = calculate_discount_price(self.entity.entity_type, self.room.price)
             total_price = calculate_reservation_price(start_time, end_time, price)
-        self.total_price = total_price
+        return total_price
+
+    def save(self, *args, **kwargs):
+        self.total_price = self.calculated_total_price
         super(Reservation, self).save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):

@@ -8,9 +8,11 @@ module.exports = {
     'border-[#FFA384]',
     'border-[#A796D9]',
     'border-[#F4E846]',
+    'border-[#d6d6d6]',
     'peer-checked:bg-[#FFA384]',
     'peer-checked:bg-[#A796D9]',
     'peer-checked:bg-[#F4E846]',
+    'peer-checked:bg-[#d6d6d6]',
     'disabled:bg-gray-200'
   ],
   darkMode: 'class',

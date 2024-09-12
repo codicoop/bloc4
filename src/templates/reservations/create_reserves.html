@@ -188,8 +188,8 @@
 {{ form.as_fieldsets|safe }}
   
 <!-- Mostra de maquetació del fieldset -->
-<div id="public_fields" class="fieldset
-  flex hidden flex-col items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg shadow
+<fieldset id="public_fields" class="flex hidden flex-col items-stretch justify-between w-full h-full p-5
+  text-gray-900 bg-white border border-gray-200 rounded-lg shadow
   peer-checked:border-primary-600 peer-checked:text-primary-600
   dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500"
 >
@@ -208,7 +208,7 @@
       autocomplete="" help_text="Description" id="id_description">
     </textarea>
   </div>
-</div>
+</fieldset>
 
 {% endblock %}
 

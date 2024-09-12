@@ -80,7 +80,6 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
-        print("*****", form["entity"])
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user

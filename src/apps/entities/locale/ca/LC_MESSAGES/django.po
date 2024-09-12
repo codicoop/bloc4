@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-10 16:38+0200\n"
-"PO-Revision-Date: 2024-07-10 16:41+0200\n"
+"POT-Creation-Date: 2024-09-12 15:50+0200\n"
+"PO-Revision-Date: 2024-09-12 15:55+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -17,67 +17,99 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 
-#: apps/entities/models.py:16
+#: apps/entities/choices.py:13
+msgid "General entity"
+msgstr "Entitat general"
+
+#: apps/entities/choices.py:14
+msgid "Hosted entity"
+msgstr "Entitat allotjada"
+
+#: apps/entities/choices.py:15
+msgid "Bloc4 entity"
+msgstr "Entitat de Bloc4"
+
+#: apps/entities/choices.py:16
+msgid "Entity outside the ESS and public sector"
+msgstr "Entitat de fora de l'ESS i sector públic"
+
+#: apps/entities/models.py:18
 msgid "Email address"
 msgstr "Adreça electrònica"
 
-#: apps/entities/models.py:22
+#: apps/entities/models.py:24
 msgid "Fiscal name"
 msgstr "Nom fiscal"
 
-#: apps/entities/models.py:29
+#: apps/entities/models.py:31
 msgid "NIF"
 msgstr "NIF"
 
-#: apps/entities/models.py:30
+#: apps/entities/models.py:32
 msgid "Tax identification number"
 msgstr "Número d'identificació fiscal"
 
-#: apps/entities/models.py:34
+#: apps/entities/models.py:36
 msgid "Town"
 msgstr "Població"
 
-#: apps/entities/models.py:44 apps/entities/models.py:45
+#: apps/entities/models.py:46 apps/entities/models.py:47
 msgid "Postal Code"
 msgstr "Codi postal"
 
-#: apps/entities/models.py:51
+#: apps/entities/models.py:53
 msgid "Address"
 msgstr "Adreça"
 
-#: apps/entities/models.py:57
+#: apps/entities/models.py:59
 msgid "Spain"
 msgstr "Espanya"
 
-#: apps/entities/models.py:58
+#: apps/entities/models.py:60
 msgid "Country"
 msgstr "País"
 
-#: apps/entities/models.py:62
+#: apps/entities/models.py:64
 msgid "person responsible"
 msgstr "persona responsable"
 
-#: apps/entities/models.py:72
-msgid "The entity has permanent premises in Bloc4"
-msgstr "L'entitat disposa de locals permanents a Bloc4"
-
 #: apps/entities/models.py:75
+msgid "Entity type"
+msgstr "Tipus d'entitat"
+
+#: apps/entities/models.py:79
+msgid "Reservation privilege"
+msgstr "Privilegis de reserva"
+
+#: apps/entities/models.py:83
+#, python-brace-format
+msgid ""
+"Allows reservations more than {config.MAXIMUM_ADVANCE_RESERVATION_DAYS} days "
+"in advance"
+msgstr ""
+"Permet fer reserves amb més de {config.MAXIMUM_ADVANCE_RESERVATION_DAYS} "
+"dies d'antelació."
+
+#: apps/entities/models.py:88
 msgid "Logo"
 msgstr "Logo"
 
-#: apps/entities/models.py:80
+#: apps/entities/models.py:93
 msgid "Logo of the entity"
 msgstr "Logotip de l’entitat"
 
-#: apps/entities/models.py:89
+#: apps/entities/models.py:102
 msgid "entity"
 msgstr "entitat"
 
-#: apps/entities/models.py:90
+#: apps/entities/models.py:103
 msgid "entities"
 msgstr "entitats"
+
+#~ msgid "The entity has permanent premises in Bloc4"
+#~ msgstr "L'entitat disposa de locals permanents a Bloc4"
 
 #~ msgid "Towm"
 #~ msgstr "Població"

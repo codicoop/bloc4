@@ -54,6 +54,7 @@ class ReservationForm(forms.ModelForm):
                 "max": "17:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "disabled:bg-gray-200 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "
@@ -75,6 +76,7 @@ class ReservationForm(forms.ModelForm):
                 "max": "18:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "disabled:bg-gray-200 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "
@@ -127,6 +129,9 @@ class ReservationForm(forms.ModelForm):
                 "help_text": _(
                     "If the training is public, it will appear in the bloc4 agenda"
                 ),
+                "_": "on change "
+                "if my.value is 'public' remove .hidden from #public_fields "
+                "else add .hidden to #public_fields",
             }
         ),
     )
@@ -135,9 +140,15 @@ class ReservationForm(forms.ModelForm):
         required=False,
         widget=forms.Textarea(
             attrs={
-                "class": "form-control",
+                "class": "form-control text-sm border rounded-lg block w-full p-2.5 "
+                "bg-gray-50 border-gray-300 text-gray-900 "
+                "focus:ring-primary-600 focus:border-primary-600 "
+                "dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
+                "dark:focus:ring-primary-500 dark:focus:border-primary-500",
                 "autofocus": True,
                 "autocomplete": True,
+                "cols": "40",
+                "rows": "10",
                 "help_text": _("Description"),
             }
         ),

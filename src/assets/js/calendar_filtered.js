@@ -31,23 +31,6 @@ const loadCalendar = () => {
                         showAlertDayError()
                     } else if (roomId.length == 36) {
                         const dialog = document.getElementById("confirmation-dialog")
-                        const day = startDate.toLocaleDateString();
-                        const startHours = startDate
-                            .getHours()
-                            .toString()
-                            .padStart(2, "0");
-                        const startMinutes = startDate
-                            .getMinutes()
-                            .toString()
-                            .padStart(2, "0");
-                        const endHours = endDate
-                            .getHours()
-                            .toString()
-                            .padStart(2, "0");
-                        const endMinutes = endDate
-                            .getMinutes()
-                            .toString()
-                            .padStart(2, "0");
                         
                         // Volem mostrar el dialog
                         showConfirmDialog()

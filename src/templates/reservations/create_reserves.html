@@ -60,10 +60,9 @@
   {% translate "New reservation" %}
 </h1>
 {% if room.room_type == 'event_room' %}
-<div class="pb-4">
-  <p>{% translate "If you want to book the Event Hall, fill up the form below and send it to the administration. Until
-    they confirm or reject it, the reservation will appear as pending." %}</p>
-</div>
+  <div class="pb-4">
+    <p>{% translate 'To book the Event Hall, fill up the form below and send it to the administration. Until they confirm or reject it, the reservation will appear as pending.' %}</p>
+  </div>
 {% endif %}
 {% if messages %}
 <div class="modal">
@@ -107,7 +106,11 @@
         dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
       hx-post="{% url 'reservations:calculate_total_price' %}"
       hx-vals='{"selected_price": "{{ price }}", "id": "hourly-day"}'
-      hx-target="#total_price">
+      hx-target="#total_price"
+      _="on click 
+        remove #id_start_time.disabled
+        then remove #id_end_time.disabled
+      ">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Hourly reservation' %}</b>
         <p class="mb-2">{% translate 'The rooms are booked in half-hour slots, starting at a quarter.' %}</p>
@@ -122,10 +125,16 @@
     />
     <label for="reservation_type_2"
       class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
-        dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+        dark:hover:text-gray-300 pointer dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
       hx-post="{% url 'reservations:calculate_total_price' %}"
       hx-vals='{"selected_price": "{{ price_half_day }}"}'
-      hx-target="#total_price">
+      hx-target="#total_price"
+      _="on click set #id_start_time.value to '08:00'
+        then set #id_end_time.value to '14:00'
+        then set #id_start_time.disabled to 'true'
+        then set #id_end_time.disabled to 'true'
+      "
+      >
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Morning reservation' %}</b>
         <p class="mb-2">{% translate 'Rooms are reserved for a whole morning, with space available from 8:00 to 14:00' %}</p>
@@ -141,7 +150,12 @@
         dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
       hx-post="{% url 'reservations:calculate_total_price' %}"
       hx-vals='{"selected_price": "{{ price_half_day }}"}'
-      hx-target="#total_price">
+      hx-target="#total_price"
+      _="on click set #id_start_time.value to '14:00'        
+        then set #id_end_time.value to '18:00'
+        then set #id_start_time.disabled to 'true'
+        then set #id_end_time.disabled to 'true'
+      ">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Afternoon reservation' %}</b>
         <p class="mb-2">{% translate 'Rooms are reserved for an entire afternoon, with the space available from 14:00 to 18:00.' %}</p>
@@ -157,7 +171,12 @@
         dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
       hx-post="{% url 'reservations:calculate_total_price' %}"
       hx-vals='{"selected_price": "{{ price_all_day }}"}'
-      hx-target="#total_price">
+      hx-target="#total_price"
+      _="on click set #id_start_time.value to '08:00'        
+        then set #id_end_time.value to '18:00'
+        then set #id_start_time.disabled to 'true'
+        then set #id_end_time.disabled to 'true'
+      ">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Whole day reservation' %}</b>
         <p class="mb-2">{% translate 'Rooms are reserved for a whole day, with the space available from 8:00 to 18:00.' %}</p>
@@ -168,23 +187,10 @@
 </ul>
 
 {{ form }}
-
-<!-- Exemple de com amagar i mostrar cmaps -->
-<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white ">
-  <legend for="id_privacy2">Privacy:</legend>
-</label>
-<select name="privacy2" class="text-sm border rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-  autocomplete="" help_text="If the training is public, it will appear in the bloc4 agenda"
-  id="id_privacy2"
-  _="on change toggle .hidden on #public_fields"
->
-  <option value="private">Private training</option>
-  <option value="public">Public training</option>
-</select>
   
 <!-- Mostra de maquetació del fieldset -->
 <div id="public_fields" class="fieldset
-  flex flex-col items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg shadow
+  flex hidden flex-col items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg shadow
   peer-checked:border-primary-600 peer-checked:text-primary-600
   dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500"
 >

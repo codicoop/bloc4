@@ -36,26 +36,6 @@ class ReservationsListView(ListView):
         ).order_by("-date")
         return context
 
-    def post(self, request, *args, **kwargs):
-        if "create" in request.POST:
-            return redirect("reservations:create_reservation")
-        if "calendar" in request.POST:
-            return redirect("reservations:reservations_calendar")
-        if "cancel_reservation" in request.POST:
-            try:
-                reservation = Reservation.objects.get(
-                    id=request.POST.get("cancel_reservation")
-                )
-            except Reservation.DoesNotExist:
-                return JsonResponse({"error": _("Reservation not found.")}, status=404)
-            reservation.status = Reservation.StatusChoices.CANCELED
-            reservation.canceled_by = request.user
-            reservation.canceled_at = timezone.now()
-            reservation.save()
-            send_mail_reservation(reservation, "reservation_canceled_user")
-            send_mail_reservation(reservation, "reservation_canceled_bloc4")
-            return redirect("reservations:reservations_list")
-
 
 def create_reservation_view(request):
     if request.method == "GET":
@@ -64,10 +44,7 @@ def create_reservation_view(request):
         if not start or not end:
             return redirect("reservations:reservations_calendar")
         try:
-            # ID comes prefixed with 'id_' to prevent invalid IDs that start
-            # with a number. Extracting the actual UUID:
-            id = request.GET.get("id")
-            id = uuid.UUID(id)
+            id = uuid.UUID(request.GET.get("id"))
         except ValueError:
             return redirect("reservations:reservations_calendar")
         room = get_object_or_404(Room, id=id)
@@ -146,6 +123,16 @@ def reservation_detail_view(request, id):
             )
     except ValueError:
         return redirect("reservations:reservations_list")
+    if "cancel_reservation" in request.POST:
+        id = request.POST.get("cancel_reservation")
+        reservation = get_object_or_404(Reservation, id=id)
+        reservation.status = Reservation.StatusChoices.CANCELED
+        reservation.canceled_by = request.user
+        reservation.canceled_at = timezone.now()
+        reservation.save()
+        send_mail_reservation(reservation, "reservation_canceled_user")
+        send_mail_reservation(reservation, "reservation_canceled_bloc4")
+        return redirect("reservations:reservations_cancelled")
     return render(
         request,
         "reservations/details.html",
@@ -153,6 +140,7 @@ def reservation_detail_view(request, id):
     )
 
 
+# htmx
 def calculate_total_price(request):
     total_price = 0
     if request.htmx:
@@ -198,6 +186,19 @@ class ReservationSuccessView(StandardSuccess):
         return reversed_url
 
 
+class ReservationCancelledView(StandardSuccess):
+    page_title = _("Reservation cancelled")
+    description = _("Reservation cancelled.")
+    url = reverse_lazy("reservations:reservations_list")
+
+    def get_url(self):
+        try:
+            reversed_url = reverse(self.url)
+        except NoReverseMatch:
+            return self.url
+        return reversed_url
+
+
 def reservations_calendar_view(request):
     context = {}
     room_types = Room.objects.values_list("room_type", flat=True).distinct()
@@ -211,7 +212,6 @@ def reservations_calendar_view(request):
     unique_room_types = {
         "all": {"label": _("All"), "color": ALL_COLOR}
     } | unique_room_types
-    print(unique_room_types)
     context["room_types"] = unique_room_types
     context["rooms"] = Room.objects.all()
     context["discount"] = EntityTypesChoices(

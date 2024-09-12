@@ -183,13 +183,13 @@ class ReservationForm(forms.ModelForm):
                 ),
                 "_": "on change "
                 "if my.value is 'public' "
-                    "remove .hidden from #id_description "
-                    "then remone .hidden from #id_url "
-                    "then remone .hidden from #id_poster "
+                "remove .hidden from #id_description "
+                "then remone .hidden from #id_url "
+                "then remone .hidden from #id_poster "
                 "else "
-                    "add .hidden to #id_description "
-                    "then add .hidden to #id_url "
-                    "then add .hidden to #id_poster ",
+                "add .hidden to #id_description "
+                "then add .hidden to #id_url "
+                "then add .hidden to #id_poster ",
             }
         ),
     )
@@ -198,7 +198,8 @@ class ReservationForm(forms.ModelForm):
         required=False,
         widget=forms.Textarea(
             attrs={
-                "class": "form-control text-sm border rounded-lg block hidden w-full p-2.5 "
+                "class": "form-control text-sm border rounded-lg block hidden "
+                "w-full p-2.5 "
                 "bg-gray-50 border-gray-300 text-gray-900 "
                 "focus:ring-primary-600 focus:border-primary-600 "
                 "dark:bg-gray-700 dark:border-gray-600 "
@@ -208,7 +209,9 @@ class ReservationForm(forms.ModelForm):
                 "autocomplete": True,
                 "cols": "40",
                 "rows": "10",
-                "help_text": _("This field will be used for the public add of the event."),
+                "help_text": _(
+                    "This field will be used for the public add of the event."
+                ),
             }
         ),
     )
@@ -223,7 +226,9 @@ class ReservationForm(forms.ModelForm):
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "
                 "dark:focus:border-primary-500",
-                "help_text": _("This field will be used for the public add of the event."),
+                "help_text": _(
+                    "This field will be used for the public add of the event."
+                ),
             }
         ),
     )
@@ -234,7 +239,9 @@ class ReservationForm(forms.ModelForm):
                 "class": "form-control hidden",
                 "autofocus": True,
                 "autocomplete": True,
-                "help_text": _("This field will be used for the public add of the event."),
+                "help_text": _(
+                    "This field will be used for the public add of the event."
+                ),
             }
         ),
     )

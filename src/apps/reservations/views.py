@@ -10,6 +10,7 @@ from django.views.generic import View
 from django.views.generic.list import ListView
 
 from apps.entities.choices import EntityTypesChoices
+from apps.reservations.constants import END_TIME, HALF_TIME, START_TIME
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
@@ -144,7 +145,9 @@ def calculate_total_price(request):
     total_price = 0
     if request.htmx:
         selected_price = request.POST.get("selected_price")
+        total_price = selected_price
         element_id = request.POST.get("id")
+        room = get_object_or_404(Room, id=request.POST.get("room"))
         if (
             element_id == "hourly-day"
             or element_id == "start-hourly-day"
@@ -152,16 +155,24 @@ def calculate_total_price(request):
         ):
             start_time_str = request.POST.get("start_time")
             end_time_str = request.POST.get("end_time")
-            start_time = datetime.strptime(start_time_str, "%H:%M").time()
-            end_time = datetime.strptime(end_time_str, "%H:%M").time()
-            today = datetime.today().date()
-            start_datetime = datetime.combine(today, start_time)
-            end_datetime = datetime.combine(today, end_time)
-            total_price = calculate_reservation_price(
-                start_datetime, end_datetime, selected_price
-            )
-        else:
-            total_price = delete_zeros(selected_price)
+            try:
+                start_time = datetime.strptime(start_time_str, "%H:%M").time()
+                end_time = datetime.strptime(end_time_str, "%H:%M").time()
+                today = datetime.today().date()
+                start_datetime = datetime.combine(today, start_time)
+                end_datetime = datetime.combine(today, end_time)
+                if start_time == START_TIME and end_time == END_TIME:
+                    total_price = room.price_all_day
+                elif start_time == START_TIME and end_time == HALF_TIME:
+                    total_price = room.price_half_day
+                elif start_time == HALF_TIME and end_time == END_TIME:
+                    total_price = room.price_half_day
+                else:
+                    total_price = calculate_reservation_price(
+                        start_datetime, end_datetime, selected_price
+                    )
+            except ValueError:
+                total_price = 0
         return render(
             request,
             "reservations/total_price.html",

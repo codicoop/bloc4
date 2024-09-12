@@ -106,13 +106,16 @@ const addEventSource = (element) => {
 
 const showAlertNoRoom = () => {
     const dialog = document.getElementById("alert-no-room")
+    dialog.classList.remove("hidden")
     dialog.show()
 }
 const showAlertDayError = () => {
     const dialog = document.getElementById("alert-day-error")
+    dialog.classList.remove("hidden")
     dialog.show()
 }
 const showConfirmDialog = () => {
     const dialog = document.getElementById("confirmation-dialog")
+    dialog.classList.remove("hidden")
     dialog.show()
 }

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-23 14:50+0200\n"
-"PO-Revision-Date: 2024-07-09 16:51+0200\n"
+"POT-Creation-Date: 2024-09-12 15:50+0200\n"
+"PO-Revision-Date: 2024-09-12 16:15+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 
 #: project/models.py:24
 msgid "created_at"
@@ -39,27 +39,27 @@ msgstr "Anglès"
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:375
+#: project/settings.py:377
 msgid "Name of the website."
 msgstr "Nom de la página web."
 
-#: project/settings.py:376
+#: project/settings.py:378
 msgid "Contact email address."
 msgstr "Correu electrònic de contacte."
 
-#: project/settings.py:377
+#: project/settings.py:379
 msgid "Reservations email address."
 msgstr "Correu electrònic per reserves."
 
-#: project/settings.py:380
+#: project/settings.py:382
 msgid "Maximum advance reservation days."
 msgstr "Període màxim d'antelació per reserves."
 
-#: project/tests/test_selenium.py:58
+#: project/tests/test_selenium.py:59
 msgid "Site administration | Django site admin"
 msgstr "Administració del lloc | Lloc administratiu de Django"
 
-#: project/tests/test_selenium.py:59
+#: project/tests/test_selenium.py:60
 msgid "Log out"
 msgstr "Tancar sessió"
 
@@ -70,6 +70,10 @@ msgstr "registre/"
 #: project/urls.py:31
 msgid "reservations/"
 msgstr "reserves/"
+
+#: project/urls.py:33
+msgid "rooms/"
+msgstr "sales/"
 
 #: project/views.py:37
 msgid "Back"

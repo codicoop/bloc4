@@ -43,7 +43,7 @@
     </li>
     <li class="flex items-center">
       <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-        fill="none" viewBox="0 0 6 10">
+        fill="none" viewbox="0 0 6 10">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
       </svg>
       <a href="{% url 'reservations:reservations_list' %}"
@@ -106,10 +106,7 @@
       class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
         dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
       hx-post="{% url 'reservations:calculate_total_price' %}"
-      hx-vals='{
-        "selected_price": "{{ price }}",
-        "id": "hourly-day"
-      }'
+      hx-vals='{"selected_price": "{{ price }}", "id": "hourly-day"}'
       hx-target="#total_price">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Hourly reservation' %}</b>
@@ -142,7 +139,8 @@
     <label for="reservation_type_3"
       class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
         dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-      hx-post="{% url 'reservations:calculate_total_price' %}" hx-vals='{"selected_price": "{{ price_half_day }}"}'
+      hx-post="{% url 'reservations:calculate_total_price' %}"
+      hx-vals='{"selected_price": "{{ price_half_day }}"}'
       hx-target="#total_price">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Afternoon reservation' %}</b>
@@ -157,8 +155,9 @@
     <label for="reservation_type_4"
       class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
         dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-      hx-post="{% url 'reservations:calculate_total_price' %}" hx-vals='{
-          "selected_price": "{{ price_all_day }}"}' hx-target="#total_price">
+      hx-post="{% url 'reservations:calculate_total_price' %}"
+      hx-vals='{"selected_price": "{{ price_all_day }}"}'
+      hx-target="#total_price">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Whole day reservation' %}</b>
         <p class="mb-2">{% translate 'Rooms are reserved for a whole day, with the space available from 8:00 to 18:00.' %}</p>
@@ -214,4 +213,5 @@
       hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300
       dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
     value="{% translate 'Create reservation'%}" />
+
 {% endblock %}

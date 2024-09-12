@@ -1,4 +1,4 @@
-{% load i18n static custom_filters %}
+{% load i18n static custom_filters thumbnail %}
 
 <h1 class="mt-4 mb-4 text-lg leading-tight tracking-tight text-primary-900 md:text-lg dark:text-white">
   {% translate "Choose one room:" %}
@@ -8,7 +8,9 @@
     <div class="room_card flex-1 max-w-80 bg-white border border-gray-200 p-4 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" id="card_{{ room.id }}">
       <a href="{% url 'rooms:room_detail' id=room.id %}">
         <div class="rounded-t-lg min-h-[53%] max-h-48 overflow-hidden min-h">
-          <img class="object-cover object-center" src="{{ room.picture.url }}" alt="" />
+          {% thumbnail room.picture "300" as im %}
+            <img class="object-cover object-center" src="{{ room.im.url }}" alt="" />
+          {% endthumbnail %}
         </div>
       </a>
       <div class="p-2 flex flex-col">

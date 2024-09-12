@@ -106,7 +106,7 @@ class ReservationForm(forms.ModelForm):
                 "dark:placeholder-gray-400 dark:text-white "
                 "dark:focus:ring-primary-500 dark:focus:border-primary-500",
                 "autocomplete": True,
-                "required": ""
+                "required": "",
             }
         ),
     )
@@ -201,7 +201,8 @@ class ReservationForm(forms.ModelForm):
                 "class": "form-control text-sm border rounded-lg block hidden w-full p-2.5 "
                 "bg-gray-50 border-gray-300 text-gray-900 "
                 "focus:ring-primary-600 focus:border-primary-600 "
-                "dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
+                "dark:bg-gray-700 dark:border-gray-600 "
+                "dark:placeholder-gray-400 dark:text-white"
                 "dark:focus:ring-primary-500 dark:focus:border-primary-500",
                 "autofocus": True,
                 "autocomplete": True,
@@ -257,54 +258,53 @@ class ReservationForm(forms.ModelForm):
             "poster",
         ]
 
-    fieldsets = [
-        (
-            None,
-            {
-                "fields": (
-                    "room",
-                    "entity",
-                    "title",
-                    "date",
-                    "start_time",
-                    "end_time",
-                    "assistants",
-                    "catering",
-                    "notes",
-                    "bloc4_reservation",
-                    "privacy",
-                )
-            },
-        ),
-        (
-            None,
-            {
-                "fields": (
-                    "description",
-                    "url",
-                    "poster",
-                )
-            },
-        ),
-    ]
+    # fieldsets = [
+    #     (
+    #         None,
+    #         {
+    #             "fields": (
+    #                 "room",
+    #                 "entity",
+    #                 "title",
+    #                 "date",
+    #                 "start_time",
+    #                 "end_time",
+    #                 "assistants",
+    #                 "catering",
+    #                 "notes",
+    #                 "bloc4_reservation",
+    #                 "privacy",
+    #             )
+    #         },
+    #     ),
+    #     (
+    #         None,
+    #         {
+    #             "fields": (
+    #                 "description",
+    #                 "url",
+    #                 "poster",
+    #             )
+    #         },
+    #     ),
+    # ]
 
-    def as_fieldsets(self):
-        output = []
-        for name, fieldset in self.fieldsets:
-            output.append("<fieldset>")
-            if name:
-                output.append(f"<legend>{name}</legend>")
-            for field_name in fieldset["fields"]:
-                field = self[field_name]
-                if isinstance(field.field.widget, forms.HiddenInput):
-                    output.append(f"{field}")
-                else:
-                    output.append(f"<p>{field.label_tag()}{field}</p>")
-                if field.errors:
-                    for error in field.errors:
-                        output.append(f'<p class="error">{error}</p>')
-                if field.help_text:
-                    output.append(f'<p class="help">{field.help_text}</p>')
-            output.append("</fieldset>")
-        return "".join(output)
-
+    # def as_fieldsets(self):
+    #     output = []
+    #     for name, fieldset in self.fieldsets:
+    #         output.append("<fieldset>")
+    #         if name:
+    #             output.append(f"<legend>{name}</legend>")
+    #         for field_name in fieldset["fields"]:
+    #             field = self[field_name]
+    #             if isinstance(field.field.widget, forms.HiddenInput):
+    #                 output.append(f"{field}")
+    #             else:
+    #                 output.append(f"<p>{field.label_tag()}{field}</p>")
+    #             if field.errors:
+    #                 for error in field.errors:
+    #                     output.append(f'<p class="error">{error}</p>')
+    #             if field.help_text:
+    #                 output.append(f'<p class="help">{field.help_text}</p>')
+    #         output.append("</fieldset>")
+    #     return "".join(output)

@@ -120,7 +120,6 @@ class Reservation(BaseModel):
         max_length=500,
         blank=True,
         null=True,
-        default="",
         help_text=_("Description for the reservation"),
     )
     poster = flowbite.ModelImageField(
@@ -221,7 +220,7 @@ class Reservation(BaseModel):
     def clean(self, *args, **kwargs):
         super().clean()
         errors = {}
-        if not self.privacy:
+        if self.privacy == Reservation.PrivacyChoices.PRIVATE:
             self.url = ""
             self.description = ""
             self.poster = ""

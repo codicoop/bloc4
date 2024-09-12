@@ -3,6 +3,7 @@
 static
 __pycache__
 src/conf/maintenance_mode_state.txt
+src/media/cache/
 
 # Ignore configuration file
 .env
@@ -20,3 +21,4 @@ node_modules
 
 # Ignore the sass compiler file
 *.map
+

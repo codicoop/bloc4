@@ -61,6 +61,7 @@ class ReservationForm(forms.ModelForm):
                 "max": "17:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "disabled:bg-gray-200 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "
@@ -82,6 +83,7 @@ class ReservationForm(forms.ModelForm):
                 "max": "18:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                "disabled:bg-gray-200 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "
@@ -97,14 +99,29 @@ class ReservationForm(forms.ModelForm):
         label=_("Assitants"),
         widget=forms.NumberInput(
             attrs={
-                "class": "form-control bg-gray-50 border-x-0 border-gray-300 "
-                "h-11 text-center text-gray-900 text-sm block w-full "
-                "py-2.5 focus:ring-primary-500 focus:border-primary-500 "
-                "dark:bg-gray-700 "
-                "dark:border-gray-600 dark:placeholder-gray-400 "
-                "dark:text-white dark:focus:ring-primary-500 "
-                "dark:focus:border-primary-500",
+                "data-input-counter": "",
+                "aria-describedby": "helper-text-explanation",
+                "class": "bg-gray-50 border-x-0 border-gray-300 rounded-none"
+                "h-11 text-center text-gray-900 text-sm block w-full py-2.5 "
+                "focus:ring-primary-500 focus:border-primary-500 " 
+                "dark:bg-gray-700 dark:border-gray-600 "
+                "dark:placeholder-gray-400 dark:text-white "
+                "dark:focus:ring-primary-500 dark:focus:border-primary-500",
                 "autocomplete": True,
+                "required": ""
+            }
+        ),
+    )
+    catering = flowbite.FormBooleanField(
+        label=_("Do I need catering service?"),
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "ms-2 text-sm font-medium text-gray-900 "
+                "dark:text-gray-300 w-4 h-4 border rounded text-primary-500 "
+                "border-gray-300 bg-gray-50 focus:ring-3 "
+                "focus:ring-primary-300 "
+                "dark:bg-gray-700 dark:border-gray-600 ",
+                "help_text": _("Bloc4 reservation"),
             }
         ),
     )
@@ -164,6 +181,9 @@ class ReservationForm(forms.ModelForm):
                 "help_text": _(
                     "If the training is public, it will appear in the bloc4 agenda"
                 ),
+                "_": "on change "
+                "if my.value is 'public' remove .hidden from #public_fields "
+                "else add .hidden to #public_fields",
             }
         ),
     )
@@ -172,13 +192,15 @@ class ReservationForm(forms.ModelForm):
         required=False,
         widget=forms.Textarea(
             attrs={
-                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                "focus:border-primary-60 dark:bg-gray-700 "
-                "dark:border-gray-600 dark:placeholder-gray-400 "
-                "dark:text-white dark:focus:ring-primary-500 "
-                "dark:focus:border-primary-500",
+                "class": "form-control text-sm border rounded-lg block w-full p-2.5 "
+                "bg-gray-50 border-gray-300 text-gray-900 "
+                "focus:ring-primary-600 focus:border-primary-600 "
+                "dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
+                "dark:focus:ring-primary-500 dark:focus:border-primary-500",
+                "autofocus": True,
                 "autocomplete": True,
+                "cols": "40",
+                "rows": "10",
                 "help_text": _("Description"),
             }
         ),

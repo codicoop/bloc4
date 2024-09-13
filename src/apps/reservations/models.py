@@ -241,11 +241,11 @@ class Reservation(BaseModel):
                 },
             )
             raise ValidationError(errors)
+        if self.privacy == Reservation.PrivacyChoices.PRIVATE:
+            self.url = ""
+            self.description = ""
+            self.poster = ""
         if self.room.room_type != RoomTypeChoices.MEETING_ROOM:
-            if self.privacy == Reservation.PrivacyChoices.PRIVATE:
-                self.url = ""
-                self.description = ""
-                self.poster = ""
             if (
                 self.privacy == Reservation.PrivacyChoices.PUBLIC
                 and not self.description

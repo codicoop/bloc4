@@ -6,20 +6,21 @@
 {% block bodyclasses %}{% endblock %}
 {% block mainclasses %} reservations {% endblock %}
 {% block extra_js %}
-<script>
-  const startTimeInput = document.getElementById('id_start_time');
-  startTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
-  startTimeInput.setAttribute('hx-vals', '{"selected_price": "{{ price }}", "id": "start-hourly-day"}');
-  startTimeInput.setAttribute('hx-trigger', 'change');
-  startTimeInput.setAttribute('hx-target', '#total_price');
-  const endTimeInput = document.getElementById('id_end_time');
-  endTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
-  endTimeInput.setAttribute('hx-vals', '{"selected_price": "{{ price }}", "id": "end-hourly-day"}');
-  endTimeInput.setAttribute('hx-trigger', 'change');
-  endTimeInput.setAttribute('hx-target', '#total_price');
+  <script>
+    const startTimeInput = document.getElementById('id_start_time');
+    startTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
+    startTimeInput.setAttribute('hx-vals', '{"selected_price": "{{ price }}", "id": "start-hourly-day"}');
+    startTimeInput.setAttribute('hx-trigger', 'change');
+    startTimeInput.setAttribute('hx-target', '#total_price');
+    const endTimeInput = document.getElementById('id_end_time');
+    endTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
+    endTimeInput.setAttribute('hx-vals', '{"selected_price": "{{ price }}", "id": "end-hourly-day"}');
+    endTimeInput.setAttribute('hx-trigger', 'change');
+    endTimeInput.setAttribute('hx-target', '#total_price');
 
-</script>
+  </script>
 {% endblock %}
+
 {% block extra_head %}
 <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
 {% endblock %}
@@ -28,6 +29,7 @@
 {% block form_outro %}{% endblock %}
 {% block after_form_content %}{% endblock %}
 {% block before_form_content %}
+
 <nav class="flex mb-4" aria-label="Breadcrumb">
   <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
     <li class="inline-flex items-center">
@@ -191,29 +193,6 @@
 </ul>
 
 {{ form }}
-  
-<!-- Mostra de maquetació del fieldset -->
-<fieldset id="public_fields" class="flex hidden flex-col items-stretch justify-between w-full h-full p-5
-  text-gray-900 bg-white border border-gray-200 rounded-lg shadow
-  peer-checked:border-primary-600 peer-checked:text-primary-600
-  dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500"
->
-  <h3 class="mb-3">{% translate 'Extra information to show at the public agenda' %}</h3>
-  <div>
-    <label for="id_description" class="inline-flex items-center mb-2 text-sm font-medium
-      text-gray-900 dark:text-white">
-      Description
-    </label>
-    <textarea name="description" cols="40" rows="10"
-      class="form-control text-sm border rounded-lg block w-full p-2.5 
-        bg-gray-50 border-gray-300 text-gray-900
-        focus:ring-primary-600 focus:border-primary-600
-        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-        dark:focus:ring-primary-500 dark:focus:border-primary-500"
-      autocomplete="" help_text="Description" id="id_description">
-    </textarea>
-  </div>
-</fieldset>
 
 {% endblock %}
 
@@ -225,3 +204,5 @@
     value="{% translate 'Create reservation'%}" />
 
 {% endblock %}
+
+{% block enctype %}multipart/form-data{% endblock %}

@@ -10,15 +10,16 @@ const loadCalendar = () => {
         firstDay: 1,
         slotEventOverlap: false,
         headerToolbar: {
-            left: "prev",
+            left: "today",
             center: "title",
-            right: "next",
+            right: "prev,next",
         },
         views: {
             customTimeGridWeek: {
                 type: "timeGridWeek",
                 duration: { days: 7 },
                 firstDay: 1,
+                dateAlignment: "week",
                 // selectable: roomId !== "all",
                 selectable: true,
                 select: function (info) {
@@ -28,12 +29,14 @@ const loadCalendar = () => {
                     const startDate = new Date(info.startStr);
                     const endDate = new Date(info.endStr);
                     if (startDate < today) {
-                        showAlertDayError()
+                        showAlertDayError();
                     } else if (roomId.length == 36) {
-                        const dialog = document.getElementById("confirmation-dialog")
-                        
+                        const dialog = document.getElementById(
+                            "confirmation-dialog"
+                        );
+
                         // Volem mostrar el dialog
-                        showConfirmDialog()
+                        showConfirmDialog();
                         dialog.addEventListener("close", (e) => {
                             if (dialog.returnValue === "true") {
                                 window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
@@ -42,9 +45,9 @@ const loadCalendar = () => {
                                     end
                                 )}&id=${encodeURIComponent(roomId)}`;
                             }
-                        })
+                        });
                     } else {
-                        showAlertNoRoom()
+                        showAlertNoRoom();
                     }
                 },
                 selectMirror: false,
@@ -56,12 +59,6 @@ const loadCalendar = () => {
             },
         },
         weekends: true,
-        initialDate: (function () {
-            let currentDate = new Date();
-            let day = currentDate.getDay();
-            let diff = currentDate.getDate() - day + (day === 0 ? -6 : 1);
-            return new Date(currentDate.setDate(diff));
-        })(),
         events: {
             url: `/reserves/ajax/calendar/${roomId}`,
             error: function () {
@@ -96,7 +93,6 @@ const loadCalendar = () => {
     calendar.render();
 };
 document.addEventListener("DOMContentLoaded", loadCalendar);
-
 const addEventSource = (element) => {
     roomId = element.getAttribute("data-id");
     calendar.setOption("selectable", true);
@@ -105,17 +101,17 @@ const addEventSource = (element) => {
 };
 
 const showAlertNoRoom = () => {
-    const dialog = document.getElementById("alert-no-room")
-    dialog.classList.remove("hidden")
-    dialog.show()
-}
+    const dialog = document.getElementById("alert-no-room");
+    dialog.classList.remove("hidden");
+    dialog.show();
+};
 const showAlertDayError = () => {
-    const dialog = document.getElementById("alert-day-error")
-    dialog.classList.remove("hidden")
-    dialog.show()
-}
+    const dialog = document.getElementById("alert-day-error");
+    dialog.classList.remove("hidden");
+    dialog.show();
+};
 const showConfirmDialog = () => {
-    const dialog = document.getElementById("confirmation-dialog")
-    dialog.classList.remove("hidden")
-    dialog.show()
-}
+    const dialog = document.getElementById("confirmation-dialog");
+    dialog.classList.remove("hidden");
+    dialog.show();
+};

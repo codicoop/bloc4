@@ -310,11 +310,18 @@ AWS_PRIVATE_MEDIA_LOCATION = env.str(
     default="media/private",
 )
 AWS_S3_BASE_DOMAIN = env.str("AWS_S3_BASE_DOMAIN", default="")
+AWS_S3_REGION_NAME = env.str("AWS_S3_REGION_NAME", default="")
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_S3_BASE_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}"
 AWS_S3_OBJECT_PARAMETERS = {
     "CacheControl": "max-age=86400",
 }
 AWS_LOCATION = "static"
+AWS_QUERYSTRING_AUTH = False
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+THUMBNAIL_DEFAULT_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.wasabisys.com/"
 
 
 ################################################################################

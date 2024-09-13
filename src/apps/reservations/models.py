@@ -22,6 +22,7 @@ from apps.reservations.services import (
     calculate_discount_price,
     calculate_reservation_price,
 )
+from apps.rooms.choices import RoomTypeChoices
 from project.fields import flowbite
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
@@ -225,19 +226,23 @@ class Reservation(BaseModel):
     def clean(self, *args, **kwargs):
         super().clean()
         errors = {}
-        if self.privacy == Reservation.PrivacyChoices.PRIVATE:
-            self.url = ""
-            self.description = ""
-            self.poster = ""
-        if self.privacy == Reservation.PrivacyChoices.PUBLIC and not self.description:
-            errors.update(
-                {
-                    "description": ValidationError(
-                        _("If training is public, this field is required.")
-                    )
-                },
-            )
-            raise ValidationError(errors)
+        if self.room.room_type != RoomTypeChoices.MEETING_ROOM:
+            if self.privacy == Reservation.PrivacyChoices.PRIVATE:
+                self.url = ""
+                self.description = ""
+                self.poster = ""
+            if (
+                self.privacy == Reservation.PrivacyChoices.PUBLIC
+                and not self.description
+            ):
+                errors.update(
+                    {
+                        "description": ValidationError(
+                            _("If training is public, this field is required.")
+                        )
+                    },
+                )
+                raise ValidationError(errors)
         if self.date:
             # Validation reservation is made within maximum day in advance configured.
             future_date = date.today() + timedelta(

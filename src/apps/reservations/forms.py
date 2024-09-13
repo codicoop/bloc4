@@ -170,6 +170,7 @@ class ReservationForm(forms.ModelForm):
     privacy = forms.ChoiceField(
         label=_("Privacy"),
         choices=Reservation.PrivacyChoices,
+        required=False,
         widget=forms.Select(
             attrs={
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
@@ -269,61 +270,14 @@ class ReservationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
         super(ReservationForm, self).__init__(*args, **kwargs)
-        id = request.GET.get("id")
-        room = Room.objects.get(id=id)
-        if room.room_type == RoomTypeChoices.MEETING_ROOM:
-            self.fields.pop("privacy", None)
-            self.fields.pop("description", None)
-            self.fields.pop("url", None)
-            self.fields.pop("poster", None)
-
-    # fieldsets = [
-    #     (
-    #         None,
-    #         {
-    #             "fields": (
-    #                 "room",
-    #                 "entity",
-    #                 "title",
-    #                 "date",
-    #                 "start_time",
-    #                 "end_time",
-    #                 "assistants",
-    #                 "catering",
-    #                 "notes",
-    #                 "bloc4_reservation",
-    #                 "privacy",
-    #             )
-    #         },
-    #     ),
-    #     (
-    #         None,
-    #         {
-    #             "fields": (
-    #                 "description",
-    #                 "url",
-    #                 "poster",
-    #             )
-    #         },
-    #     ),
-    # ]
-
-    # def as_fieldsets(self):
-    #     output = []
-    #     for name, fieldset in self.fieldsets:
-    #         output.append("<fieldset>")
-    #         if name:
-    #             output.append(f"<legend>{name}</legend>")
-    #         for field_name in fieldset["fields"]:
-    #             field = self[field_name]
-    #             if isinstance(field.field.widget, forms.HiddenInput):
-    #                 output.append(f"{field}")
-    #             else:
-    #                 output.append(f"<p>{field.label_tag()}{field}</p>")
-    #             if field.errors:
-    #                 for error in field.errors:
-    #                     output.append(f'<p class="error">{error}</p>')
-    #             if field.help_text:
-    #                 output.append(f'<p class="help">{field.help_text}</p>')
-    #         output.append("</fieldset>")
-    #     return "".join(output)
+        if request:
+            id = request.GET.get("id")
+            room = Room.objects.get(id=id)
+            if room.room_type == RoomTypeChoices.MEETING_ROOM:
+                self.fields.pop("privacy", None)
+                self.fields.pop("description", None)
+                self.fields.pop("url", None)
+                self.fields.pop("poster", None)
+            self.fields["assistants"].widget.attrs.update(
+                {"min": "1", "max": str(room.capacity)}
+            )

@@ -1,4 +1,3 @@
-from constance import config
 from django.core.validators import validate_image_file_extension
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -79,10 +78,7 @@ class Entity(BaseModel):
         _("Reservation privilege"),
         null=False,
         default=False,
-        help_text=_(
-            f"Allows reservations more than {config.MAXIMUM_ADVANCE_RESERVATION_DAYS} "
-            "days in advance"
-        ),
+        help_text=_("Allows reservations more than 30 days in advance"),
     )
     logo = flowbite.ModelImageField(
         _("Logo"),

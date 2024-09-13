@@ -58,7 +58,7 @@
   {% if room.picture %}
   <div class="col-start-2 row-start-2 row-span-2">
     <img class="rounded-t-lg object-cover object-center" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="" />
-    {% thumbnail room.picture "500" as im %}
+    {% thumbnail room.picture "600" as im %}
       <div class="rounded-lg overflow-hidden max-h-96 border border-gray-400">
         <img class="object-cover w-full object-right-top" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="">
       </div>

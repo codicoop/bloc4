@@ -5,7 +5,7 @@
 </h1>
 <div class="flex flex-wrap gap-4 mb-12">
   {% for room in rooms %}
-    <div class="room_card flex-1 max-w-80 bg-white border border-gray-200 p-4 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" id="card_{{ room.id }}">
+    <div class="room_card flex-1 grid grid-rows-2 max-w-80 bg-white border border-gray-200 p-4 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" id="card_{{ room.id }}">
       <a href="{% url 'rooms:room_detail' id=room.id %}">
         <div class="rounded-t-lg min-h-[53%] max-h-48 overflow-hidden min-h">
           {% thumbnail room.picture "300" as im %}

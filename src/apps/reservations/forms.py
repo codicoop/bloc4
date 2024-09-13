@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.entities.models import Entity
 from apps.reservations.models import Reservation
+from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 from project.fields import flowbite
 
@@ -264,6 +265,17 @@ class ReservationForm(forms.ModelForm):
             "url",
             "poster",
         ]
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop("request", None)
+        super(ReservationForm, self).__init__(*args, **kwargs)
+        id = request.GET.get("id")
+        room = Room.objects.get(id=id)
+        if room.room_type == RoomTypeChoices.MEETING_ROOM:
+            self.fields.pop("privacy", None)
+            self.fields.pop("description", None)
+            self.fields.pop("url", None)
+            self.fields.pop("poster", None)
 
     # fieldsets = [
     #     (

@@ -67,7 +67,8 @@ def create_reservation_view(request):
                 "end_time": end_time.strftime("%H:%M"),
                 "entity": request.user.entity,
                 "room": room.id,
-            }
+            },
+            request=request,
         )
     if request.method == "POST":
         form = ReservationForm(request.POST, request.FILES)

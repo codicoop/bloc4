@@ -58,8 +58,7 @@
 {% block form_intro %}
 <h1 class="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
   {% translate "New reservation" %}
-</h1>
-{% if room.room_type == 'event_room' %}
+</h1>{% if room.room_type == 'event_room' %}
   <div class="pb-4">
     <p>{% translate 'To book the Event Hall, fill up the form below and send it to the administration. Until they confirm or reject it, the reservation will appear as pending.' %}</p>
   </div>
@@ -107,8 +106,10 @@
       hx-post="{% url 'reservations:calculate_total_price' %}"
       hx-vals='{"selected_price": "{{ price }}", "id": "hourly-day"}'
       hx-target="#total_price"
-      _="on click remove @disabled from #id_start_time 
-        then remove @disabled from #id_end_time
+      _="on click add .bg-gray-50 to #id_start_time
+          then add .bg-gray-50 to #id_end_time
+          then remove .bg-gray-200 .pointer-events-none from #id_start_time
+          then remove .bg-gray-200 .pointer-events-none from #id_end_time
       ">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Hourly reservation' %}</b>
@@ -119,9 +120,7 @@
   </li>
   <li>
     <input type="radio" id="reservation_type_2" name="reservation_type" value="morning"
-      class="hidden peer" required 
-      _="on change add .disabled to #id_start_time"
-    />
+      class="hidden peer" required />
     <label for="reservation_type_2"
       class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
         dark:hover:text-gray-300 pointer dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -130,8 +129,10 @@
       hx-target="#total_price"
       _="on click set #id_start_time.value to '08:00'
         then set #id_end_time.value to '14:00'
-        then set #id_start_time.disabled to 'true'
-        then set #id_end_time.disabled to 'true'
+        then add .bg-gray-200 .pointer-events-none to #id_start_time
+        then add .bg-gray-200 .pointer-events-none to #id_end_time
+        then remove .bg-gray-50 from #id_start_time
+        then remove .bg-gray-50 from #id_end_time
       "
       >
       <div class="flex flex-col">
@@ -152,8 +153,10 @@
       hx-target="#total_price"
       _="on click set #id_start_time.value to '14:00'        
         then set #id_end_time.value to '18:00'
-        then set #id_start_time.disabled to 'true'
-        then set #id_end_time.disabled to 'true'
+        then add .bg-gray-200 .pointer-events-none to #id_start_time
+        then add .bg-gray-200 .pointer-events-none to #id_end_time
+        then remove .bg-gray-50 from #id_start_time
+        then remove .bg-gray-50 from #id_end_time
       ">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Afternoon reservation' %}</b>
@@ -173,8 +176,10 @@
       hx-target="#total_price"
       _="on click set #id_start_time.value to '08:00'        
         then set #id_end_time.value to '18:00'
-        then set #id_start_time.disabled to 'true'
-        then set #id_end_time.disabled to 'true'
+        then add .bg-gray-200 .pointer-events-none to #id_start_time
+        then add .bg-gray-200 .pointer-events-none to #id_end_time
+        then remove .bg-gray-50 from #id_start_time
+        then remove .bg-gray-50 from #id_end_time
       ">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Whole day reservation' %}</b>

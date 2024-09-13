@@ -61,7 +61,6 @@ class ReservationForm(forms.ModelForm):
                 "max": "17:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                "disabled:bg-gray-200 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "
@@ -83,7 +82,6 @@ class ReservationForm(forms.ModelForm):
                 "max": "18:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                "disabled:bg-gray-200 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "

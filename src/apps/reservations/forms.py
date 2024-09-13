@@ -181,9 +181,15 @@ class ReservationForm(forms.ModelForm):
                 "help_text": _(
                     "If the training is public, it will appear in the bloc4 agenda"
                 ),
-                "_": "init add .hidden to #id_description.parentElement "
+                "_": "init if my.value is 'public' "
+                        "remove .hidden from #id_description.parentElement "
+                        "then remove .hidden from #id_url.parentElement "
+                        "then remove .hidden from #id_poster.parentElement "
+                    "else "
+                        "add .hidden to #id_description.parentElement "
                         "then add .hidden to #id_url.parentElement "
-                        "then add .hidden to #id_poster.parentElement " 
+                        "then add .hidden to #id_poster.parentElement "
+                    "end "
                 "on change "
                     "if my.value is 'public' "
                         "remove .hidden from #id_description.parentElement "
@@ -223,12 +229,6 @@ class ReservationForm(forms.ModelForm):
         required=False,
         widget=forms.URLInput(
             attrs={
-                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                "focus:border-primary-60 dark:bg-gray-700 "
-                "dark:border-gray-600 dark:placeholder-gray-400 "
-                "dark:text-white dark:focus:ring-primary-500 "
-                "dark:focus:border-primary-500",
                 "help_text": _(
                     "This field will be used for the public add of the event."
                 ),
@@ -239,7 +239,13 @@ class ReservationForm(forms.ModelForm):
         required=False,
         widget=forms.FileInput(
             attrs={
-                "class": "form-control ",
+                "class": "text-sm border rounded-lg "
+                "block w-full px-2.5 bg-gray-50 border-gray-300 "
+                "text-gray-900 focus:ring-primary-600 "
+                "focus:border-primary-600 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500"
+                "dark:focus:border-primary-500",
                 "autofocus": True,
                 "autocomplete": True,
                 "help_text": _(

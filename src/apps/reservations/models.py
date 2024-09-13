@@ -226,6 +226,21 @@ class Reservation(BaseModel):
     def clean(self, *args, **kwargs):
         super().clean()
         errors = {}
+        if (
+            self.room.room_type == RoomTypeChoices.MEETING_ROOM
+            and self.privacy == Reservation.PrivacyChoices.PUBLIC
+        ):
+            errors.update(
+                {
+                    "privacy": ValidationError(
+                        _(
+                            f"{RoomTypeChoices.MEETING_ROOM.label} cannot "
+                            "be used in public trainings."
+                        )
+                    )
+                },
+            )
+            raise ValidationError(errors)
         if self.room.room_type != RoomTypeChoices.MEETING_ROOM:
             if self.privacy == Reservation.PrivacyChoices.PRIVATE:
                 self.url = ""
@@ -243,6 +258,7 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
+
         if self.date:
             # Validation reservation is made within maximum day in advance configured.
             future_date = date.today() + timedelta(

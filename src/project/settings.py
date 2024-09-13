@@ -291,9 +291,6 @@ FORM_RENDERER = "project.form_renderer.CustomFormRenderer"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#media-root
 MEDIA_ROOT = env.str("MEDIA_ROOT", default="")
 
-# https://docs.djangoproject.com/en/4.2/ref/settings/#media-url
-MEDIA_URL = env.str("MEDIA_URL", default="")
-
 # Wasabi cloud storage configuration
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="")

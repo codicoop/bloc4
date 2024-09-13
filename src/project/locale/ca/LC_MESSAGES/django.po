@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-12 15:50+0200\n"
-"PO-Revision-Date: 2024-09-12 16:15+0200\n"
+"POT-Creation-Date: 2024-09-13 13:23+0200\n"
+"PO-Revision-Date: 2024-09-13 13:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -39,19 +39,19 @@ msgstr "Anglès"
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:377
+#: project/settings.py:378
 msgid "Name of the website."
 msgstr "Nom de la página web."
 
-#: project/settings.py:378
+#: project/settings.py:379
 msgid "Contact email address."
 msgstr "Correu electrònic de contacte."
 
-#: project/settings.py:379
+#: project/settings.py:380
 msgid "Reservations email address."
 msgstr "Correu electrònic per reserves."
 
-#: project/settings.py:382
+#: project/settings.py:383
 msgid "Maximum advance reservation days."
 msgstr "Període màxim d'antelació per reserves."
 
@@ -63,15 +63,15 @@ msgstr "Administració del lloc | Lloc administratiu de Django"
 msgid "Log out"
 msgstr "Tancar sessió"
 
-#: project/urls.py:29
+#: project/urls.py:31
 msgid "registration/"
 msgstr "registre/"
 
-#: project/urls.py:31
+#: project/urls.py:33
 msgid "reservations/"
 msgstr "reserves/"
 
-#: project/urls.py:33
+#: project/urls.py:35
 msgid "rooms/"
 msgstr "sales/"
 

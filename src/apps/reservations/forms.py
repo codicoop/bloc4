@@ -61,7 +61,6 @@ class ReservationForm(forms.ModelForm):
                 "max": "17:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                "disabled:bg-gray-200 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "
@@ -83,7 +82,6 @@ class ReservationForm(forms.ModelForm):
                 "max": "18:00",
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                "disabled:bg-gray-200 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500 "
@@ -183,15 +181,18 @@ class ReservationForm(forms.ModelForm):
                 "help_text": _(
                     "If the training is public, it will appear in the bloc4 agenda"
                 ),
-                "_": "on change "
-                "if my.value is 'public' "
-                "remove .hidden from #id_description "
-                "then remone .hidden from #id_url "
-                "then remone .hidden from #id_poster "
-                "else "
-                "add .hidden to #id_description "
-                "then add .hidden to #id_url "
-                "then add .hidden to #id_poster ",
+                "_": "init add .hidden to #id_description.parentElement "
+                        "then add .hidden to #id_url.parentElement "
+                        "then add .hidden to #id_poster.parentElement " 
+                "on change "
+                    "if my.value is 'public' "
+                        "remove .hidden from #id_description.parentElement "
+                        "then remove .hidden from #id_url.parentElement "
+                        "then remove .hidden from #id_poster.parentElement "
+                    "else "
+                        "add .hidden to #id_description.parentElement "
+                        "then add .hidden to #id_url.parentElement "
+                        "then add .hidden to #id_poster.parentElement ",
             }
         ),
     )
@@ -200,7 +201,7 @@ class ReservationForm(forms.ModelForm):
         required=False,
         widget=forms.Textarea(
             attrs={
-                "class": "form-control text-sm border rounded-lg block hidden "
+                "class": "form-control text-sm border rounded-lg block "
                 "w-full p-2.5 "
                 "bg-gray-50 border-gray-300 text-gray-900 "
                 "focus:ring-primary-600 focus:border-primary-600 "
@@ -222,7 +223,7 @@ class ReservationForm(forms.ModelForm):
         required=False,
         widget=forms.URLInput(
             attrs={
-                "class": "text-sm border rounded-lg block hidden w-full p-2.5 bg-gray-50 "
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
                 "border-gray-300 text-gray-900 focus:ring-primary-600 "
                 "focus:border-primary-60 dark:bg-gray-700 "
                 "dark:border-gray-600 dark:placeholder-gray-400 "
@@ -238,7 +239,7 @@ class ReservationForm(forms.ModelForm):
         required=False,
         widget=forms.FileInput(
             attrs={
-                "class": "form-control hidden",
+                "class": "form-control ",
                 "autofocus": True,
                 "autocomplete": True,
                 "help_text": _(

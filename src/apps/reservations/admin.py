@@ -13,14 +13,15 @@ from project.admin import ModelAdmin
 class ReservationAdmin(ModelAdmin):
     list_display = (
         "title",
+        "entity",
         "date",
         "start_time",
         "end_time",
         "room",
         "total_price",
-        "privacy",
-        "entity",
+        "is_paid",
         "status",
+        "privacy",
     )
     list_filter = (
         "title",
@@ -47,35 +48,43 @@ class ReservationAdmin(ModelAdmin):
         "status",
     )
     fieldsets = (
-        (None, {
-            'fields': (
-                "room",
-                "title",
-                "date",
-                "start_time",
-                "end_time",
-                "assistants",
-                "catering",
-                "notes",
-                "is_paid",
-                "total_price",
-                "entity",
-                "reserved_by",
-                "canceled_by",
-                "canceled_at",
-                "status",
-                "actions_field",
-                "privacy",)
-        }),
-        (_("Only for public training"), {
-            'fields': (
-                "description",
-                "poster",
-                "url",),
-        }),
+        (
+            None,
+            {
+                "fields": (
+                    "room",
+                    "title",
+                    "date",
+                    "start_time",
+                    "end_time",
+                    "assistants",
+                    "catering",
+                    "notes",
+                    "bloc4_reservation",
+                    "is_paid",
+                    "total_price",
+                    "entity",
+                    "reserved_by",
+                    "canceled_by",
+                    "canceled_at",
+                    "status",
+                    "actions_field",
+                    "privacy",
+                )
+            },
+        ),
+        (
+            _("Only for public training"),
+            {
+                "fields": (
+                    "description",
+                    "poster",
+                    "url",
+                ),
+            },
+        ),
     )
     readonly_fields = ("actions_field", "total_price")
-
 
     def get_urls(self):
         urls = super().get_urls()

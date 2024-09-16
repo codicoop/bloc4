@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-12 15:50+0200\n"
-"PO-Revision-Date: 2024-09-12 15:57+0200\n"
+"POT-Creation-Date: 2024-09-16 16:07+0200\n"
+"PO-Revision-Date: 2024-09-16 16:12+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -78,7 +78,7 @@ msgstr "Els usuaris han de tenir una adreça electrònica"
 msgid "Superusers must have a password"
 msgstr "Els superusuaris han de tenir una contrasenya"
 
-#: apps/users/models.py:45 apps/users/models.py:99
+#: apps/users/models.py:45 apps/users/models.py:102
 msgid "name"
 msgstr "nom"
 
@@ -90,7 +90,13 @@ msgstr "cognoms"
 msgid "email address"
 msgstr "adreça electrònica"
 
-#: apps/users/models.py:60
+#: apps/users/models.py:58
+#, fuzzy
+#| msgid "Account verified"
+msgid "email verified"
+msgstr "Compte verificat"
+
+#: apps/users/models.py:61
 msgid ""
 "Specifies whether the user has verified their email. You can only access the "
 "different sections of the application when you have verified it."
@@ -98,11 +104,19 @@ msgstr ""
 "Informa si l'usuari ha verificat el seu correu electrònic. Només pots "
 "accedir als altres apartats de l'aplicació un cop hagis fet la verificació."
 
-#: apps/users/models.py:67
+#: apps/users/models.py:68
 msgid "Entity"
 msgstr "Entitat"
 
+#: apps/users/models.py:75
+msgid "is janitor"
+msgstr "És conserge"
+
 #: apps/users/models.py:81
+msgid "is active"
+msgstr "Està actiu"
+
+#: apps/users/models.py:84
 msgid ""
 "If the box is unchecked, the user will not be able to authenticate to access "
 "the application. It is usually only disabled when you want to unsubscribe a "
@@ -112,11 +126,15 @@ msgstr ""
 "Normalment només es fa servir quan vols deshabilitar un usuari però guardant "
 "totes les seves dades."
 
-#: apps/users/models.py:108
+#: apps/users/models.py:89
+msgid "is staff"
+msgstr "És personal"
+
+#: apps/users/models.py:111
 msgid "user"
 msgstr "usuari"
 
-#: apps/users/models.py:109
+#: apps/users/models.py:112
 msgid "users"
 msgstr "usuaris"
 

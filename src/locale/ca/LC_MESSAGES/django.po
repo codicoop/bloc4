@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-16 11:25+0200\n"
+"POT-Creation-Date: 2024-09-16 16:07+0200\n"
 "PO-Revision-Date: 2024-09-16 11:42+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -799,43 +799,43 @@ msgstr "Modificar la contrasenya"
 msgid "Your entity"
 msgstr "La teva entitat"
 
-#: templates/profile/details.html:137
+#: templates/profile/details.html:139
 msgid "Here you can view your entity's data."
 msgstr "Aquí pots veure les dades de la teva entitat."
 
-#: templates/profile/details.html:143
+#: templates/profile/details.html:145
 msgid "Email"
 msgstr "Correu electrònic"
 
-#: templates/profile/details.html:151
+#: templates/profile/details.html:153
 msgid "Fiscal name"
 msgstr "Nom fiscal"
 
-#: templates/profile/details.html:159
+#: templates/profile/details.html:161
 msgid "VAT"
 msgstr "NIF"
 
-#: templates/profile/details.html:167
+#: templates/profile/details.html:169
 msgid "Town"
 msgstr "Municipi"
 
-#: templates/profile/details.html:175
+#: templates/profile/details.html:177
 msgid "Postal code"
 msgstr "Codi postal"
 
-#: templates/profile/details.html:183
+#: templates/profile/details.html:185
 msgid "Address"
 msgstr "Adreça"
 
-#: templates/profile/details.html:191
+#: templates/profile/details.html:193
 msgid "Country"
 msgstr "País"
 
-#: templates/profile/details.html:199
+#: templates/profile/details.html:201
 msgid "Responsible person"
 msgstr "Persona responsable"
 
-#: templates/profile/details.html:205
+#: templates/profile/details.html:207
 msgid "None assigned"
 msgstr "Cap assignat"
 

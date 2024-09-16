@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.rooms.choices import RoomTypeChoices
 from project.fields import flowbite
 from project.models import BaseModel
-from project.storage_backends import PublicMediaStorage
+from project.storage_backends import PrivateMediaStorage
 
 
 class Room(BaseModel):
@@ -53,7 +53,7 @@ class Room(BaseModel):
         _("Picture"),
         blank=False,
         default="",
-        storage=PublicMediaStorage(),
+        storage=PrivateMediaStorage(),
         validators=[validate_image_file_extension],
         help_text=_("Photo of the room"),
     )

@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.entities.choices import EntityTypesChoices
 from project.fields import flowbite
 from project.models import BaseModel
-from project.storage_backends import PublicMediaStorage
+from project.storage_backends import PrivateMediaStorage
 
 
 class Entity(BaseModel):
@@ -84,7 +84,7 @@ class Entity(BaseModel):
         _("Logo"),
         blank=True,
         null=True,
-        storage=PublicMediaStorage(),
+        storage=PrivateMediaStorage(),
         validators=[validate_image_file_extension],
         help_text=_("Logo of the entity"),
     )

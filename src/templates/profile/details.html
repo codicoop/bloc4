@@ -1,5 +1,5 @@
 {% extends "../base_form.html" %}
-{% load i18n %}
+{% load i18n thumbnail %}
 
 {# Blocks de base.html #}
 {% block page_title %}{% translate "Profile details" %}{% endblock %}
@@ -132,7 +132,9 @@
             {% translate "Your entity" %}
           </h2>
           {% if request.user.entity.logo %}
-            <img class="absolute top-0 right-6 w-14 h-14 rounded-full" src="{{ request.user.entity.logo.url }}" alt="Rounded avatar">
+            {% thumbnail request.user.entity.logo "300" as im %}
+              <img class="absolute top-0 right-6 w-14 h-14 rounded-full" src="{{ im.url }}" alt="Rounded avatar">
+            {% endthumbnail %}
           {% endif %}
           <p>{% translate "Here you can view your entity's data." %}</p>
           <div class="relative overflow-x-auto shadow-sm rounded-lg">

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-13 13:23+0200\n"
-"PO-Revision-Date: 2024-09-13 13:24+0200\n"
+"POT-Creation-Date: 2024-09-16 11:25+0200\n"
+"PO-Revision-Date: 2024-09-16 11:42+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -336,7 +336,7 @@ msgstr "reserves"
 msgid ""
 "{RoomTypeChoices.MEETING_ROOM.label} cannot be used in public trainings."
 msgstr ""
-"{RoomTypeChoices.MEETING_ROOM.label}  no es pot fer servir per esdeveniments "
+"{RoomTypeChoices.MEETING_ROOM.label} no es pot fer servir per esdeveniments "
 "públics."
 
 #: apps/reservations/models.py:256
@@ -450,7 +450,7 @@ msgstr "Tots"
 
 #: apps/rooms/choices.py:16
 msgid "Event Room"
-msgstr "Sales d’esdeveniments"
+msgstr "Sales d’actes"
 
 #: apps/rooms/choices.py:17
 msgid "Classroom"
@@ -618,7 +618,7 @@ msgstr "Perfil"
 msgid "Reservations"
 msgstr "Reserves"
 
-#: templates/base.html:257
+#: templates/base.html:241
 msgid ""
 "We use cookies to optimize your experience and to analyze the web traffic. "
 "We don't sell data to third parties. If you continue navigating, we'll "
@@ -628,11 +628,11 @@ msgstr ""
 "trànsit web. No venem dades a tercers. Si continues navegant, entendrem que "
 "hi estàs d'acord."
 
-#: templates/base.html:269
+#: templates/base.html:253
 msgid "Accept"
 msgstr "Acceptar"
 
-#: templates/base.html:279
+#: templates/base.html:263
 msgid "Deny"
 msgstr "Denega"
 
@@ -1165,7 +1165,7 @@ msgstr "Escull un tipus de sala:"
 
 #: templates/reservations/full_calendar.html:99
 msgid "To book a room, before you must choose a day and time on the calendar:"
-msgstr "Per reservar una sala, primer escull un dia i hora al calendari;"
+msgstr "Per reservar una sala, primer escull un dia i hora al calendari:"
 
 #: templates/reservations/full_calendar.html:109
 msgid "There is no rooms available."

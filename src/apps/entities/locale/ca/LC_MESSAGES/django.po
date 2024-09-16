@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-12 15:50+0200\n"
-"PO-Revision-Date: 2024-09-12 15:55+0200\n"
+"POT-Creation-Date: 2024-09-16 11:25+0200\n"
+"PO-Revision-Date: 2024-09-16 11:39+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -35,78 +35,77 @@ msgstr "Entitat de Bloc4"
 msgid "Entity outside the ESS and public sector"
 msgstr "Entitat de fora de l'ESS i sector públic"
 
-#: apps/entities/models.py:18
+#: apps/entities/models.py:17
 msgid "Email address"
 msgstr "Adreça electrònica"
 
-#: apps/entities/models.py:24
+#: apps/entities/models.py:23
 msgid "Fiscal name"
 msgstr "Nom fiscal"
 
-#: apps/entities/models.py:31
+#: apps/entities/models.py:30
 msgid "NIF"
 msgstr "NIF"
 
-#: apps/entities/models.py:32
+#: apps/entities/models.py:31
 msgid "Tax identification number"
 msgstr "Número d'identificació fiscal"
 
-#: apps/entities/models.py:36
+#: apps/entities/models.py:35
 msgid "Town"
 msgstr "Població"
 
-#: apps/entities/models.py:46 apps/entities/models.py:47
+#: apps/entities/models.py:45 apps/entities/models.py:46
 msgid "Postal Code"
 msgstr "Codi postal"
 
-#: apps/entities/models.py:53
+#: apps/entities/models.py:52
 msgid "Address"
 msgstr "Adreça"
 
-#: apps/entities/models.py:59
+#: apps/entities/models.py:58
 msgid "Spain"
 msgstr "Espanya"
 
-#: apps/entities/models.py:60
+#: apps/entities/models.py:59
 msgid "Country"
 msgstr "País"
 
-#: apps/entities/models.py:64
+#: apps/entities/models.py:63
 msgid "person responsible"
 msgstr "persona responsable"
 
-#: apps/entities/models.py:75
+#: apps/entities/models.py:74
 msgid "Entity type"
 msgstr "Tipus d'entitat"
 
-#: apps/entities/models.py:79
+#: apps/entities/models.py:78
 msgid "Reservation privilege"
 msgstr "Privilegis de reserva"
 
-#: apps/entities/models.py:83
-#, python-brace-format
-msgid ""
-"Allows reservations more than {config.MAXIMUM_ADVANCE_RESERVATION_DAYS} days "
-"in advance"
-msgstr ""
-"Permet fer reserves amb més de {config.MAXIMUM_ADVANCE_RESERVATION_DAYS} "
-"dies d'antelació."
+#: apps/entities/models.py:81
+msgid "Allows reservations without date restrictions"
+msgstr "Permet fer reserves sense restriccions de data"
 
-#: apps/entities/models.py:88
+#: apps/entities/models.py:84
 msgid "Logo"
 msgstr "Logo"
 
-#: apps/entities/models.py:93
+#: apps/entities/models.py:89
 msgid "Logo of the entity"
 msgstr "Logotip de l’entitat"
 
-#: apps/entities/models.py:102
+#: apps/entities/models.py:98
 msgid "entity"
 msgstr "entitat"
 
-#: apps/entities/models.py:103
+#: apps/entities/models.py:99
 msgid "entities"
 msgstr "entitats"
+
+#, python-brace-format
+#~ msgid "Allows reservations more than {config.MAXIMUM_ADVANCE_RESERVATION_DAYS} days in advance"
+#~ msgstr "Permet fer reserves amb més de {config.MAXIMUM_ADVANCE_RESERVATION_DAYS} dies d'antelació."
 
 #~ msgid "The entity has permanent premises in Bloc4"
 #~ msgstr "L'entitat disposa de locals permanents a Bloc4"

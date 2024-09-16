@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-13 13:23+0200\n"
+"POT-Creation-Date: 2024-09-16 11:25+0200\n"
 "PO-Revision-Date: 2024-09-13 13:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,19 +39,19 @@ msgstr "Anglès"
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:378
+#: project/settings.py:382
 msgid "Name of the website."
 msgstr "Nom de la página web."
 
-#: project/settings.py:379
+#: project/settings.py:383
 msgid "Contact email address."
 msgstr "Correu electrònic de contacte."
 
-#: project/settings.py:380
+#: project/settings.py:384
 msgid "Reservations email address."
 msgstr "Correu electrònic per reserves."
 
-#: project/settings.py:383
+#: project/settings.py:387
 msgid "Maximum advance reservation days."
 msgstr "Període màxim d'antelació per reserves."
 

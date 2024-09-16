@@ -78,7 +78,7 @@ class Entity(BaseModel):
         _("Reservation privilege"),
         null=False,
         default=False,
-        help_text=_("Allows reservations more than 30 days in advance"),
+        help_text=_("Allows reservations without date restrictions"),
     )
     logo = flowbite.ModelImageField(
         _("Logo"),

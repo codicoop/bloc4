@@ -55,6 +55,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     )
     email_verification_code = models.CharField(default="0000")
     email_verified = models.BooleanField(
+        _("email verified"),
         default=False,
         help_text=_(
             "Specifies whether the user has verified their email. "
@@ -71,11 +72,13 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
         related_name="entities",
     )
     is_janitor = models.BooleanField(
+        _("is janitor"),
         null=True,
         blank=True,
         default=False,
     )
     is_active = models.BooleanField(
+        _("is active"),
         default=True,
         help_text=_(
             "If the box is unchecked, the user will not be able to authenticate"
@@ -83,7 +86,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
             " you want to unsubscribe a user but retaining their data."
         ),
     )
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(_("is staff"), default=False)
 
     objects = UserManager()
 

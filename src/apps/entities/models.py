@@ -10,68 +10,68 @@ from project.storage_backends import PrivateMediaStorage
 
 class Entity(BaseModel):
     email = flowbite.ModelEmailField(
+        _("Email address"),
         max_length=100,
         blank=False,
         null=False,
         unique=True,
-        help_text=_("Email address"),
     )
     fiscal_name = flowbite.ModelCharField(
+        _("Fiscal name"),
         max_length=50,
         blank=False,
         null=False,
         help_text=_("Fiscal name"),
     )
     nif = flowbite.ModelCharField(
+        _("NIF"),
         unique=True,
         max_length=9,
         blank=False,
         null=False,
-        verbose_name=_("NIF"),
         help_text=_("Tax identification number"),
     )
     town = models.ForeignKey(
         "provinces_towns.Town",
-        verbose_name=_("Town"),
+        _("Town"),
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name="entities",
     )
     postal_code = flowbite.ModelCharField(
+        _("Postal Code"),
         max_length=5,
         blank=False,
         null=False,
-        verbose_name=_("Postal Code"),
-        help_text=_("Postal Code"),
     )
     address = flowbite.ModelCharField(
+        _("Adress"),
         max_length=150,
         blank=False,
         null=False,
-        help_text=_("Address"),
     )
     country = flowbite.ModelCharField(
+        _("Country"),
         max_length=50,
         blank=False,
         null=False,
         default=_("Spain"),
-        help_text=_("Country"),
     )
     person_responsible = models.ForeignKey(
         "users.User",
-        verbose_name=_("person responsible"),
+        _("person responsible"),
         on_delete=models.PROTECT,
         null=True,
         blank=True,
         related_name="person_responsible",
     )
     entity_type = flowbite.ModelSelectDropdownField(
+        _("Entity type"),
         choices=EntityTypesChoices,
         null=False,
         blank=False,
         default=EntityTypesChoices.GENERAL,
-        verbose_name=_("Entity type"),
         max_length=20,
     )
     reservation_privilege = flowbite.ModelBooleanField(

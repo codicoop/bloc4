@@ -7,7 +7,6 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from project.fields import flowbite
 from project.models import BaseModel
 
 
@@ -42,13 +41,13 @@ class UserManager(BaseUserManager):
 
 
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
-    name = flowbite.ModelCharField(_("name"), max_length=50)
-    surnames = flowbite.ModelCharField(
+    name = models.CharField(_("name"), max_length=50)
+    surnames = models.CharField(
         _("surnames"),
         max_length=50,
         default="",
     )
-    email = flowbite.ModelEmailField(
+    email = models.EmailField(
         verbose_name=_("email address"),
         max_length=255,
         unique=True,

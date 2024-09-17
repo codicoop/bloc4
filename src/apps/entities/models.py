@@ -3,26 +3,25 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.choices import EntityTypesChoices
-from project.fields import flowbite
 from project.models import BaseModel
 from project.storage_backends import PrivateMediaStorage
 
 
 class Entity(BaseModel):
-    email = flowbite.ModelEmailField(
+    email = models.EmailField(
         _("Email address"),
         max_length=100,
         blank=False,
         null=False,
         unique=True,
     )
-    fiscal_name = flowbite.ModelCharField(
+    fiscal_name = models.CharField(
         _("Fiscal name"),
         max_length=50,
         blank=False,
         null=False,
     )
-    nif = flowbite.ModelCharField(
+    nif = models.CharField(
         verbose_name=_("NIF"),
         unique=True,
         max_length=9,
@@ -38,19 +37,19 @@ class Entity(BaseModel):
         on_delete=models.SET_NULL,
         related_name="entities",
     )
-    postal_code = flowbite.ModelCharField(
+    postal_code = models.CharField(
         _("Postal Code"),
         max_length=5,
         blank=False,
         null=False,
     )
-    address = flowbite.ModelCharField(
+    address = models.CharField(
         _("Address"),
         max_length=150,
         blank=False,
         null=False,
     )
-    country = flowbite.ModelCharField(
+    country = models.CharField(
         _("Country"),
         max_length=50,
         blank=False,
@@ -65,7 +64,7 @@ class Entity(BaseModel):
         blank=True,
         related_name="person_responsible",
     )
-    entity_type = flowbite.ModelSelectDropdownField(
+    entity_type = models.CharField(
         choices=EntityTypesChoices,
         null=False,
         blank=False,
@@ -73,13 +72,13 @@ class Entity(BaseModel):
         verbose_name=_("Entity type"),
         max_length=20,
     )
-    reservation_privilege = flowbite.ModelBooleanField(
+    reservation_privilege = models.BooleanField(
         _("Reservation privilege"),
         null=False,
         default=False,
         help_text=_("Allows reservations without date restrictions"),
     )
-    logo = flowbite.ModelImageField(
+    logo = models.ImageField(
         _("Logo"),
         blank=True,
         null=True,

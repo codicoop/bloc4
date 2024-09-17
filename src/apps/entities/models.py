@@ -21,10 +21,9 @@ class Entity(BaseModel):
         max_length=50,
         blank=False,
         null=False,
-        help_text=_("Fiscal name"),
     )
     nif = flowbite.ModelCharField(
-        _("NIF"),
+        verbose_name=_("NIF"),
         unique=True,
         max_length=9,
         blank=False,
@@ -33,7 +32,7 @@ class Entity(BaseModel):
     )
     town = models.ForeignKey(
         "provinces_towns.Town",
-        _("Town"),
+        verbose_name=_("Town"),
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -46,7 +45,7 @@ class Entity(BaseModel):
         null=False,
     )
     address = flowbite.ModelCharField(
-        _("Adress"),
+        _("Address"),
         max_length=150,
         blank=False,
         null=False,
@@ -60,18 +59,18 @@ class Entity(BaseModel):
     )
     person_responsible = models.ForeignKey(
         "users.User",
-        _("person responsible"),
+        verbose_name=_("person responsible"),
         on_delete=models.PROTECT,
         null=True,
         blank=True,
         related_name="person_responsible",
     )
     entity_type = flowbite.ModelSelectDropdownField(
-        _("Entity type"),
         choices=EntityTypesChoices,
         null=False,
         blank=False,
         default=EntityTypesChoices.GENERAL,
+        verbose_name=_("Entity type"),
         max_length=20,
     )
     reservation_privilege = flowbite.ModelBooleanField(

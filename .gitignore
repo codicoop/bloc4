@@ -22,3 +22,5 @@ node_modules
 # Ignore the sass compiler file
 *.map
 
+# Local environment folders
+dumps/

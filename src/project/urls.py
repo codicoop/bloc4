@@ -24,7 +24,7 @@ from project.views import RootRedirectView, home_view
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", RootRedirectView.as_view()),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
 urlpatterns += i18n_patterns(
     path("", home_view, name="home"),

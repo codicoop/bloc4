@@ -27,4 +27,4 @@ class EntityAdmin(ModelAdmin):
         "reservation_privilege"
     )
     list_filter = ("fiscal_name", "entity_type")
-    search_fields = ("email", "fiscal_name", "nif", "entity_type", "town")
+    search_fields = ("email", "fiscal_name", "nif", "entity_type")

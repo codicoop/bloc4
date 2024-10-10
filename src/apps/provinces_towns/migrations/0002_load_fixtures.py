@@ -19,5 +19,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(load_fixtures)
+        migrations.RunPython(load_fixtures),
+        migrations.RunSQL(
+            sql="CREATE EXTENSION IF NOT EXISTS unaccent;",
+            reverse_sql="DROP EXTENSION IF EXISTS unaccent;",
+        ),
     ]

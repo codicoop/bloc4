@@ -411,7 +411,8 @@ class Reservation(BaseModel):
         try:
             entity = self.entity
             if self.date:
-                # Validation reservation is made within maximum day in advance configured.
+                # Validation reservation is made within maximum day
+                # in advance configured.
                 future_date = date.today() + timedelta(
                     days=config.MAXIMUM_ADVANCE_RESERVATION_DAYS
                 )
@@ -420,8 +421,8 @@ class Reservation(BaseModel):
                         {
                             "date": ValidationError(
                                 _(
-                                    "The maximum advance reservation period is %(days)s "
-                                    "days."
+                                    "The maximum advance reservation "
+                                    "period is %(days)s days."
                                 )
                                 % {"days": config.MAXIMUM_ADVANCE_RESERVATION_DAYS}
                             )

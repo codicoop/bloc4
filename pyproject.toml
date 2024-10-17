@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "boilerplate_django"
+name = "bloc4"
 version = "0.1.0"
-description = "Plantilla per a nous projectes web amb Django."
+description = "Aplicació de reserves de sales"
 authors = ["Codi Cooperatiu <hola@codi.coop>"]
 license = "gpl-3.0"
 packages = [{ include = "src" }]

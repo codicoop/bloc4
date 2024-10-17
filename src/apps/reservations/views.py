@@ -211,6 +211,8 @@ class ReservationCancelledView(StandardSuccess):
 
 
 def reservations_calendar_view(request):
+    if not request.user.entity:
+        return redirect("home")
     context = {}
     room_types = Room.objects.values_list("room_type", flat=True).distinct()
     unique_room_types = {

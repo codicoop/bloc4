@@ -12,9 +12,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.utils.translation import gettext_lazy as _
@@ -24,7 +22,7 @@ from project.views import RootRedirectView, home_view
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", RootRedirectView.as_view()),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
 urlpatterns += i18n_patterns(
     path("", home_view, name="home"),

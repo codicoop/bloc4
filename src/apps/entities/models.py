@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.entities.choices import EntityTypesChoices
 from project.models import BaseModel
-from project.storage_backends import PrivateMediaStorage
+from project.storage_backends import PublicMediaStorage
 
 
 class Entity(BaseModel):
@@ -29,13 +29,10 @@ class Entity(BaseModel):
         null=False,
         help_text=_("Tax identification number"),
     )
-    town = models.ForeignKey(
-        "provinces_towns.Town",
-        verbose_name=_("Town"),
+    town = flowbite.ModelCharField(
+        _("Town"),
         null=True,
         blank=True,
-        on_delete=models.SET_NULL,
-        related_name="entities",
     )
     postal_code = models.CharField(
         _("Postal Code"),
@@ -82,7 +79,7 @@ class Entity(BaseModel):
         _("Logo"),
         blank=True,
         null=True,
-        storage=PrivateMediaStorage(),
+        storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
         help_text=_("Logo of the entity"),
     )

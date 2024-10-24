@@ -36,7 +36,5 @@ services:
   bloc4-selenium:
     container_name: bloc4-selenium
     image: selenium/standalone-chrome:4.16.0
-    ports:
-      - "4444:4444"
     networks:
       - bloc4-network

@@ -20,6 +20,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
 
+from apps.entities.forms import EntitySignUpForm
 from apps.users.forms import (
     AuthenticationForm,
     EmailVerificationCodeForm,
@@ -28,10 +29,37 @@ from apps.users.forms import (
     PasswordResetForm,
     ProfileDetailsForm,
     SendVerificationCodeForm,
+    UserSignUpForm,
 )
 from apps.users.services import send_confirmation_mail
+from project.decorators import anonymous_required
 from project.mixins import AnonymousRequiredMixin
 from project.views import StandardSuccess
+
+
+@anonymous_required
+def signup_view(request):
+    if request.method == "POST":
+        user_form = UserSignUpForm(request.POST, None)
+        entity_form = EntitySignUpForm(request.POST, None)
+        if user_form.is_valid() and entity_form.is_valid():
+            entity_instance = entity_form.save(commit=False)
+            entity_instance.save()
+            user_instance = user_form.save(commit=False)
+            user_instance.entity = entity_instance
+            user_instance.is_active = False
+            user_instance.save()
+            entity_instance.person_responsible = user_instance
+            entity_instance.save()
+            return redirect("registration:profile_details")
+    else:
+        user_form = UserSignUpForm()
+        entity_form = EntitySignUpForm()
+    return render(
+        request,
+        "registration/signup.html",
+        {"user_form": user_form, "entity_form": entity_form},
+    )
 
 
 class LoginView(AnonymousRequiredMixin, BaseLoginView):

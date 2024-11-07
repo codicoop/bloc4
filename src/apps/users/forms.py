@@ -3,9 +3,17 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import (
     AuthenticationForm as BaseAuthenticationForm,
+)
+from django.contrib.auth.forms import (
     PasswordChangeForm as BasePasswordChangeForm,
+)
+from django.contrib.auth.forms import (
     PasswordResetForm as BasePasswordResetForm,
+)
+from django.contrib.auth.forms import (
     SetPasswordForm as BaseSetPasswordForm,
+)
+from django.contrib.auth.forms import (
     UserCreationForm,
 )
 from django.urls import reverse
@@ -34,6 +42,18 @@ class AuthenticationForm(BaseAuthenticationForm):
     remember_me = forms.BooleanField(
         required=False, widget=forms.CheckboxInput(), label=_("Remember me")
     )
+
+
+class UserSignUpForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = (
+            "name",
+            "surnames",
+            "email",
+            "password1",
+            "password2",
+        )
 
 
 class UserChangeForm(forms.ModelForm):

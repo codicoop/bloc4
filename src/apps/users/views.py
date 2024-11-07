@@ -41,7 +41,7 @@ from project.views import StandardSuccess
 def signup_view(request):
     if request.method == "POST":
         user_form = UserSignUpForm(request.POST, None)
-        entity_form = EntitySignUpForm(request.POST, None)
+        entity_form = EntitySignUpForm(request.POST, request.FILES)
         if user_form.is_valid() and entity_form.is_valid():
             entity_instance = entity_form.save(commit=False)
             entity_instance.save()

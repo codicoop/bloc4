@@ -31,7 +31,7 @@ from apps.users.forms import (
     SendVerificationCodeForm,
     UserSignUpForm,
 )
-from apps.users.services import send_confirmation_mail
+from apps.users.services import send_confirmation_mail, send_registration_pending_mail
 from project.decorators import anonymous_required
 from project.mixins import AnonymousRequiredMixin
 from project.views import StandardSuccess
@@ -52,6 +52,7 @@ def signup_view(request):
             user_instance.save()
             entity_instance.person_responsible = user_instance
             entity_instance.save()
+            send_registration_pending_mail(user_instance) # To user
             return redirect("registration:signup_success")
     else:
         user_form = UserSignUpForm()

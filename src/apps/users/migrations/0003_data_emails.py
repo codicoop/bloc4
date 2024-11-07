@@ -13,7 +13,7 @@ def populate_mail_templates(apps, schema_editor):
                 "en": {
                     "subject": "Password reset for your account at " "{{project_name}}",
                     "body": """
-<p>Hello {{user_name}}!</p>
+<p>Hello, {{user_name}},</p>
 <p>We're sending you this e-mail because today {{date}} at {{time}}
 someone requested the reset of the {{user_email}}'s account password
 for {{absolute_url}}.</p>
@@ -35,7 +35,7 @@ We will appreciate it if you could also warn us about the situation.
                     "subject": "Reinicialització de contrasenya del teu compte a "
                     "{{project_name}}",
                     "body": """
-<p>Hola, {{user_name}}!</p>
+<p>Hola, {{user_name}},</p>
 <p>T'enviem aquest correu perquè avui {{date}} a les {{time}}
 algú ha sol·licitat el reinici de la contrasenya del compte {{user_email}}
 de l'aplicació {{absolute_url}}.</p>
@@ -60,7 +60,7 @@ ben llarga i t'agrairem que ens informis de la situació.
                 "en": {
                     "subject": "Email verification code for your account at {{project_name}}",
                     "body": """
-    <p>Hello {{user_name}}!</p>
+    <p>Hello, {{user_name}},</p>
     <p>We're sending you this e-mail because today {{date}} at {{time}}
     you have asked to verify your email {{user_email}}
     for {{absolute_url}}.</p>
@@ -76,13 +76,42 @@ ben llarga i t'agrairem que ens informis de la situació.
                 "ca": {
                     "subject": "Verificació del correu electrònic del teu compte a {{project_name}}",
                     "body": """
-    <p>Hola, {{user_name}}!</p>
+    <p>Hola, {{user_name}},</p>
     <p>T'enviem aquest correu electrònic perquè avui {{date}} a les {{time}}
         heu sol·licitat verificar el vostre correu electrònic {{user_email}}
         per a {{absolute_url}}.</p>
     <p>Per a completar aquesta acció, introduïu el codi {{user_code}} fent clic
         al següent enllaç: <a href="{{email_verification_url}}">{{email_verification_url}}</a>
     </p>
+    <p>Si no has estat tu qui ho ha demanat, ignora aquest missatge.</p>
+                        """,
+                },
+            },
+        ),
+        dict(
+            id="email_registration_pending",
+            translated_templates={
+                "en": {
+                    "subject": "Pending account on {{project_name}}",
+                    "body": """
+    <p>Hello, {{user_name}},</p>
+    <p>We're sending you this e-mail because today {{date}} at {{time}}
+    you have registered an account
+    for {{absolute_url}} succesfully.</p>
+
+    <p>The request is pending to be validated.</p>
+
+    <p> If it weren't you who requested it,
+    ignore this message.</p>
+                        """,
+                },
+                "ca": {
+                    "subject": "Compte pendent d'activació a {{project_name}}",
+                    "body": """
+    <p>Hola, {{user_name}},</p>
+    <p>T'enviem aquest correu electrònic perquè avui {{date}} a les {{time}}
+        has fer el registre d'un compte per a {{absolute_url}}.</p>
+    <p>La sol·licitud està pendent de validar.</p>
     <p>Si no has estat tu qui ho ha demanat, ignora aquest missatge.</p>
                         """,
                 },

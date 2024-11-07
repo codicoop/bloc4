@@ -5,7 +5,6 @@ from apps.entities.models import Entity
 from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
-from project.fields import flowbite
 
 
 class ReservationForm(forms.ModelForm):
@@ -16,7 +15,7 @@ class ReservationForm(forms.ModelForm):
     entity = forms.ModelChoiceField(
         queryset=Entity.objects.all(), widget=forms.HiddenInput(), required=False
     )
-    title = flowbite.FormCharField(
+    title = forms.CharField(
         label=_("Title"),
         widget=forms.TextInput(
             attrs={
@@ -32,7 +31,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    date = flowbite.FormDateField(
+    date = forms.DateField(
         label=_("Date"),
         widget=forms.DateInput(
             format="%Y-%m-%d",
@@ -51,7 +50,7 @@ class ReservationForm(forms.ModelForm):
         ),
         input_formats=["%Y-%m-%d"],
     )
-    start_time = flowbite.FormTimeField(
+    start_time = forms.TimeField(
         label=_("Start Time"),
         widget=forms.TimeInput(
             attrs={
@@ -72,7 +71,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    end_time = flowbite.FormTimeField(
+    end_time = forms.TimeField(
         label=_("End Time"),
         widget=forms.TimeInput(
             attrs={
@@ -92,7 +91,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    assistants = flowbite.FormIntegerField(
+    assistants = forms.IntegerField(
         label=_("Assitants"),
         widget=forms.NumberInput(
             attrs={
@@ -109,7 +108,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    catering = flowbite.FormBooleanField(
+    catering = forms.BooleanField(
         label=_("Do I need catering service?"),
         widget=forms.CheckboxInput(
             attrs={
@@ -122,7 +121,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    catering = flowbite.FormBooleanField(
+    catering = forms.BooleanField(
         label=_("Do I need catering service?"),
         required=False,
         widget=forms.CheckboxInput(
@@ -136,7 +135,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    notes = flowbite.FormCharField(
+    notes = forms.CharField(
         label=_("Notes"),
         widget=forms.Textarea(
             attrs={
@@ -151,7 +150,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    bloc4_reservation = flowbite.FormBooleanField(
+    bloc4_reservation = forms.BooleanField(
         label=_("Reservation for Bloc4 services"),
         required=False,
         widget=forms.CheckboxInput(
@@ -182,27 +181,27 @@ class ReservationForm(forms.ModelForm):
                     "If the training is public, it will appear in the bloc4 agenda"
                 ),
                 "_": "init if my.value is 'public' "
-                        "remove .hidden from #id_description.parentElement "
-                        "then remove .hidden from #id_url.parentElement "
-                        "then remove .hidden from #id_poster.parentElement "
-                    "else "
-                        "add .hidden to #id_description.parentElement "
-                        "then add .hidden to #id_url.parentElement "
-                        "then add .hidden to #id_poster.parentElement "
-                    "end "
+                "remove .hidden from #id_description.parentElement "
+                "then remove .hidden from #id_url.parentElement "
+                "then remove .hidden from #id_poster.parentElement "
+                "else "
+                "add .hidden to #id_description.parentElement "
+                "then add .hidden to #id_url.parentElement "
+                "then add .hidden to #id_poster.parentElement "
+                "end "
                 "on change "
-                    "if my.value is 'public' "
-                        "remove .hidden from #id_description.parentElement "
-                        "then remove .hidden from #id_url.parentElement "
-                        "then remove .hidden from #id_poster.parentElement "
-                    "else "
-                        "add .hidden to #id_description.parentElement "
-                        "then add .hidden to #id_url.parentElement "
-                        "then add .hidden to #id_poster.parentElement ",
+                "if my.value is 'public' "
+                "remove .hidden from #id_description.parentElement "
+                "then remove .hidden from #id_url.parentElement "
+                "then remove .hidden from #id_poster.parentElement "
+                "else "
+                "add .hidden to #id_description.parentElement "
+                "then add .hidden to #id_url.parentElement "
+                "then add .hidden to #id_poster.parentElement ",
             }
         ),
     )
-    description = flowbite.FormCharField(
+    description = forms.CharField(
         label=_("Description"),
         required=False,
         widget=forms.Textarea(
@@ -224,7 +223,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    url = flowbite.FormUrlField(
+    url = forms.URLField(
         label=_("URL of the activity"),
         required=False,
         widget=forms.URLInput(

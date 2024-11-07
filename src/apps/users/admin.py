@@ -47,8 +47,6 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         "entity",
         "is_janitor",
         "is_staff",
-        "is_superuser",
-        "email_verified",
     )
     list_filter = (
         "entity",
@@ -56,7 +54,14 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         "is_janitor",
         "is_staff",
     )
-    search_fields = ("email", "name", "surnames", "entity", "is_janitor")
+    search_fields = (
+        "email",
+        "name",
+        "surnames",
+        "entity__fiscal_name",
+        "entity__nif",
+        "is_janitor",
+    )
     ordering = ("email",)
     fieldsets = (("Autenticació", {"fields": ("email", "password")}),)
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin

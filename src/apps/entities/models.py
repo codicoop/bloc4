@@ -29,10 +29,10 @@ class Entity(BaseModel):
         null=False,
         help_text=_("Tax identification number"),
     )
-    town = flowbite.ModelCharField(
+    town = models.CharField(
         _("Town"),
-        null=True,
         blank=True,
+        default="",
     )
     postal_code = models.CharField(
         _("Postal Code"),
@@ -78,7 +78,6 @@ class Entity(BaseModel):
     logo = models.ImageField(
         _("Logo"),
         blank=True,
-        null=True,
         storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
         help_text=_("Logo of the entity"),

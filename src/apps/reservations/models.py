@@ -125,7 +125,6 @@ class Reservation(BaseModel):
     poster = models.ImageField(
         _("Poster"),
         blank=True,
-        null=True,
         storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
     )

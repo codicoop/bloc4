@@ -1198,6 +1198,11 @@ input:checked + .toggle-bg {
   margin-bottom: 1.5rem;
 }
 
+.my-8 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 .-mb-px {
   margin-bottom: -1px;
 }
@@ -3345,6 +3350,11 @@ input:checked + .toggle-bg {
 }
 
 @media (min-width: 1024px) {
+  .lg\:my-16 {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
   .lg\:-mt-9 {
     margin-top: -2.25rem;
   }

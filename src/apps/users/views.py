@@ -51,7 +51,7 @@ def signup_view(request):
             user_instance.save()
             entity_instance.person_responsible = user_instance
             entity_instance.save()
-            return redirect("registration:profile_details")
+            return redirect("registration:signup_success")
     else:
         user_form = UserSignUpForm()
         entity_form = EntitySignUpForm()
@@ -227,3 +227,16 @@ class PasswordChangeDoneView(StandardSuccess):
 
 def privacy_policy_view(request):
     return render(request, "registration/privacy_policy.html")
+
+
+class SignUpSuccessView(StandardSuccess):
+    template_name = "standard_success.html"
+    title = _("Done!")
+    page_title = _("Sign Up Success")
+    description = _(
+        "Your account has been successfully created and its "
+        "validation it's pending by Bloc4. "
+        "You'll receive an email when your account is available."
+    )
+    url = reverse_lazy("home")
+    link_text = _("Continue")

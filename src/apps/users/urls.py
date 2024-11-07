@@ -14,6 +14,7 @@ from apps.users.views import (
     PasswordResetInvalidLinkView,
     PasswordResetView,
     SendVerificationCodeView,
+    SignUpSuccessView,
     details_view,
     privacy_policy_view,
     signup_view,
@@ -99,5 +100,10 @@ urlpatterns = [
         _("privacy-policy/"),
         privacy_policy_view,
         name="privacy_policy",
+    ),
+    path(
+        _("sign-up/success/"),
+        SignUpSuccessView.as_view(),
+        name="signup_success",
     ),
 ]

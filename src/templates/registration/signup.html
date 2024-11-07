@@ -13,15 +13,23 @@
 {% block after_form_content %}{% endblock %}
 
 {% block form_intro %}
-<h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-  {% translate "Create an account" %}
-</h1>
+  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+    {% translate "Create a new account" %}
+  </h1>
 {% endblock %}
 
 {% block form_fields %}
-{{ user_form }}
-<h2>{% translate "Entity data" %}</h2>
-{{ entity_form }}
+  <h2 class="mb-4 pb-1 text-lg border-b-2 border-primary-400 font-bold text-primary-500 leading-tight tracking-tight md:text-xl">
+    {% translate "User data" %}
+  </h2>
+  {{ user_form }}
+
+  <span class="h-6 opacity-0">hidden span</span>
+  <h2 class="mb-4 pb-1 text-lg border-b-2 border-primary-400 font-bold text-primary-500 leading-tight tracking-tight md:text-xl">
+    {% translate "Entity data" %}
+  </h2>
+  {{ entity_form }}
+  <span class="h-6 opacity-0">hidden span</span>
 {% endblock %}
 
 {% block submit_text %}{% translate "Create Account" %}{% endblock %}

@@ -85,6 +85,14 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
             " you want to unsubscribe a user but retaining their data."
         ),
     )
+    is_verified = models.BooleanField(
+        _("is verified"),
+        default=True,
+        help_text=_(
+            "If the box is unchecked, its means that the user is from an"
+            " external entity and its validation is pending."
+        ),
+    )
     is_staff = models.BooleanField(_("is staff"), default=False)
 
     objects = UserManager()

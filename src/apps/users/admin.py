@@ -47,13 +47,9 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         "entity",
         "is_janitor",
         "is_staff",
+        "is_verified",
     )
-    list_filter = (
-        "entity",
-        "is_superuser",
-        "is_janitor",
-        "is_staff",
-    )
+    list_filter = ("entity", "is_superuser", "is_janitor", "is_staff", "is_verified")
     search_fields = (
         "email",
         "name",
@@ -61,6 +57,7 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         "entity__fiscal_name",
         "entity__nif",
         "is_janitor",
+        "is_verified",
     )
     ordering = ("email",)
     fieldsets = (("Autenticació", {"fields": ("email", "password")}),)
@@ -93,6 +90,7 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
                     "is_staff",
                     "is_active",
                     "is_superuser",
+                    "is_verified",
                     "email_verified",
                     # Hiding these fields until we have permission groups and
                     # we actually need to add the explanation:
@@ -113,7 +111,7 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         ),
     )
     superuser_fields = ("is_superuser",)
-    readonly_fields = ("roles_explanation_field", "email_verified")
+    readonly_fields = ("roles_explanation_field", "email_verified", "is_verified")
 
     def get_fieldsets(self, request, obj=None):
         return super().get_fieldsets(request, obj) + self.common_fieldsets

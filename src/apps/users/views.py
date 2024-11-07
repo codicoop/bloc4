@@ -48,6 +48,7 @@ def signup_view(request):
             user_instance = user_form.save(commit=False)
             user_instance.entity = entity_instance
             user_instance.is_active = False
+            user_instance.is_verified = False
             user_instance.save()
             entity_instance.person_responsible = user_instance
             entity_instance.save()

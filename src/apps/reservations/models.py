@@ -23,7 +23,6 @@ from apps.reservations.services import (
     calculate_reservation_price,
 )
 from apps.rooms.choices import RoomTypeChoices
-from project.fields import flowbite
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
 
@@ -43,7 +42,7 @@ class Reservation(BaseModel):
         PRIVATE = "private", _("Private training")
         PUBLIC = "public", _("Public training")
 
-    title = flowbite.ModelCharField(
+    title = models.CharField(
         _("Title"),
         max_length=100,
         blank=False,
@@ -67,7 +66,7 @@ class Reservation(BaseModel):
         blank=False,
         help_text=_("End time of the reservation"),
     )
-    assistants = flowbite.ModelIntegerField(
+    assistants = models.IntegerField(
         _("Assistants"),
         blank=False,
         null=True,
@@ -82,32 +81,32 @@ class Reservation(BaseModel):
         on_delete=models.CASCADE,
         related_name="reservation_room",
     )
-    is_paid = flowbite.ModelBooleanField(
+    is_paid = models.BooleanField(
         _("Is paid?"),
         null=False,
         default=False,
         help_text=_("Is the reservation paid?"),
     )
-    catering = flowbite.ModelBooleanField(
+    catering = models.BooleanField(
         _("Do I need catering service?"),
         null=False,
         blank=False,
         default=False,
     )
-    notes = flowbite.ModelCharField(
+    notes = models.CharField(
         _("Notes"),
         max_length=500,
         blank=False,
         default="",
         help_text=_("Notes for the reservation"),
     )
-    bloc4_reservation = flowbite.ModelBooleanField(
+    bloc4_reservation = models.BooleanField(
         _("Reservation for Bloc4 services"),
         null=False,
         blank=False,
         default=False,
     )
-    privacy = flowbite.ModelSelectDropdownField(
+    privacy = models.CharField(
         choices=PrivacyChoices,
         null=False,
         blank=False,
@@ -117,24 +116,22 @@ class Reservation(BaseModel):
         max_length=20,
     )
     # Only for public training
-    description = flowbite.ModelCharField(
+    description = models.CharField(
         _("Description"),
         max_length=500,
         blank=True,
-        null=True,
         help_text=_("Description for the reservation"),
     )
-    poster = flowbite.ModelImageField(
+    poster = models.ImageField(
         _("Poster"),
         blank=True,
-        null=True,
         storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
     )
-    url = flowbite.ModelUrlField(
-        _("URL of the activity"), max_length=200, blank=True, null=True, default=""
+    url = models.URLField(
+        _("URL of the activity"), max_length=200, blank=True, default=""
     )
-    total_price = flowbite.ModelFloatField(
+    total_price = models.FloatField(
         _("Total price"),
         null=False,
         blank=False,
@@ -171,7 +168,7 @@ class Reservation(BaseModel):
         null=True,
         blank=True,
     )
-    status = flowbite.ModelSelectDropdownField(
+    status = models.CharField(
         choices=StatusChoices,
         null=False,
         blank=False,
@@ -230,17 +227,6 @@ class Reservation(BaseModel):
             self.url = ""
             self.description = ""
             self.poster = ""
-        if self.date:
-            # Validates that the reservation date is later than the current date.
-            if self.date < date.today():
-                errors.update(
-                    {
-                        "date": ValidationError(
-                            _("The date must be greater than the current date.")
-                        )
-                    },
-                )
-                raise ValidationError(errors)
         if self.start_time and self.end_time:
             # Validates that the reservation end time is later than the start time.
             if self.end_time < self.start_time:

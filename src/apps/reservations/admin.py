@@ -104,7 +104,7 @@ class ReservationAdmin(ModelAdmin):
 
     @admin.display(description="Accions")
     def actions_field(self, obj):
-        if not obj.id:
+        if not obj:
             return "-"
         confirmed_reservation_msg = _(
             "Are you sure you want to confirm the reservation and notify the user?"

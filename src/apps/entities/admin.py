@@ -7,7 +7,7 @@ from project.admin import ModelAdmin
 @admin.register(Entity)
 class EntityAdmin(ModelAdmin):
     fields = [
-        "email",
+        "entity_email",
         "fiscal_name",
         "nif",
         "address",
@@ -21,10 +21,10 @@ class EntityAdmin(ModelAdmin):
     ]
     list_display = (
         "fiscal_name",
-        "email",
+        "entity_email",
         "nif",
         "entity_type",
-        "reservation_privilege"
+        "reservation_privilege",
     )
     list_filter = ("fiscal_name", "entity_type")
-    search_fields = ("email", "fiscal_name", "nif", "entity_type")
+    search_fields = ("entity_email", "fiscal_name", "nif", "entity_type")

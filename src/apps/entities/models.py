@@ -91,3 +91,29 @@ class Entity(BaseModel):
         unique_together = ("id", "person_responsible")
         verbose_name = _("entity")
         verbose_name_plural = _("entities")
+
+
+class EntityPrivilege(BaseModel):
+    entity = models.OneToOneField(
+        Entity, on_delete=models.CASCADE, related_name="entity_privilege"
+    )
+    monthly_hours_meeting = models.DecimalField(
+        _("Free monthly hours for meeting rooms"),
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+    )
+    anual_hours_class = models.DecimalField(
+        _("Free annual hours for classrooms"),
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+    )
+    class_reservation_privilege = models.BooleanField(
+        _("Classroom privilege"),
+        help_text=_("Classrooms can be reserved without prior authorization"),
+        default=False,
+    )
+
+    def __str__(self):
+        return _("Entity privilege for %(name)s") % {"name": self.entity.fiscal_name}

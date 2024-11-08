@@ -1,11 +1,11 @@
 from django import forms
-from django.core.validators import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.models import Entity
 from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
+from project.fields import flowbite
 
 
 class ReservationForm(forms.ModelForm):
@@ -16,7 +16,7 @@ class ReservationForm(forms.ModelForm):
     entity = forms.ModelChoiceField(
         queryset=Entity.objects.all(), widget=forms.HiddenInput(), required=False
     )
-    title = forms.CharField(
+    title = flowbite.FormCharField(
         label=_("Title"),
         widget=forms.TextInput(
             attrs={
@@ -32,7 +32,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    date = forms.DateField(
+    date = flowbite.FormDateField(
         label=_("Date"),
         widget=forms.DateInput(
             format="%Y-%m-%d",
@@ -51,7 +51,7 @@ class ReservationForm(forms.ModelForm):
         ),
         input_formats=["%Y-%m-%d"],
     )
-    start_time = forms.TimeField(
+    start_time = flowbite.FormTimeField(
         label=_("Start Time"),
         widget=forms.TimeInput(
             attrs={
@@ -72,7 +72,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    end_time = forms.TimeField(
+    end_time = flowbite.FormTimeField(
         label=_("End Time"),
         widget=forms.TimeInput(
             attrs={
@@ -92,7 +92,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    assistants = forms.IntegerField(
+    assistants = flowbite.FormIntegerField(
         label=_("Assitants"),
         widget=forms.NumberInput(
             attrs={
@@ -109,7 +109,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    catering = forms.BooleanField(
+    catering = flowbite.FormBooleanField(
         label=_("Do I need catering service?"),
         widget=forms.CheckboxInput(
             attrs={
@@ -122,7 +122,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    catering = forms.BooleanField(
+    catering = flowbite.FormBooleanField(
         label=_("Do I need catering service?"),
         required=False,
         widget=forms.CheckboxInput(
@@ -136,7 +136,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    notes = forms.CharField(
+    notes = flowbite.FormCharField(
         label=_("Notes"),
         widget=forms.Textarea(
             attrs={
@@ -151,7 +151,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    bloc4_reservation = forms.BooleanField(
+    bloc4_reservation = flowbite.FormBooleanField(
         label=_("Reservation for Bloc4 services"),
         required=False,
         widget=forms.CheckboxInput(
@@ -182,27 +182,27 @@ class ReservationForm(forms.ModelForm):
                     "If the training is public, it will appear in the bloc4 agenda"
                 ),
                 "_": "init if my.value is 'public' "
-                "remove .hidden from #id_description.parentElement "
-                "then remove .hidden from #id_url.parentElement "
-                "then remove .hidden from #id_poster.parentElement "
-                "else "
-                "add .hidden to #id_description.parentElement "
-                "then add .hidden to #id_url.parentElement "
-                "then add .hidden to #id_poster.parentElement "
-                "end "
+                        "remove .hidden from #id_description.parentElement "
+                        "then remove .hidden from #id_url.parentElement "
+                        "then remove .hidden from #id_poster.parentElement "
+                    "else "
+                        "add .hidden to #id_description.parentElement "
+                        "then add .hidden to #id_url.parentElement "
+                        "then add .hidden to #id_poster.parentElement "
+                    "end "
                 "on change "
-                "if my.value is 'public' "
-                "remove .hidden from #id_description.parentElement "
-                "then remove .hidden from #id_url.parentElement "
-                "then remove .hidden from #id_poster.parentElement "
-                "else "
-                "add .hidden to #id_description.parentElement "
-                "then add .hidden to #id_url.parentElement "
-                "then add .hidden to #id_poster.parentElement ",
+                    "if my.value is 'public' "
+                        "remove .hidden from #id_description.parentElement "
+                        "then remove .hidden from #id_url.parentElement "
+                        "then remove .hidden from #id_poster.parentElement "
+                    "else "
+                        "add .hidden to #id_description.parentElement "
+                        "then add .hidden to #id_url.parentElement "
+                        "then add .hidden to #id_poster.parentElement ",
             }
         ),
     )
-    description = forms.CharField(
+    description = flowbite.FormCharField(
         label=_("Description"),
         required=False,
         widget=forms.Textarea(
@@ -224,7 +224,7 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    url = forms.URLField(
+    url = flowbite.FormUrlField(
         label=_("URL of the activity"),
         required=False,
         widget=forms.URLInput(
@@ -288,17 +288,3 @@ class ReservationForm(forms.ModelForm):
             self.fields["assistants"].widget.attrs.update(
                 {"min": "1", "max": str(room.capacity)}
             )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        date = cleaned_data.get("date")
-        errors = {}
-        if date and date < date.today():
-            errors.update(
-                {
-                    "date": ValidationError(
-                        _("The date must be greater than the current date.")
-                    )
-                },
-            )
-            raise ValidationError(errors)

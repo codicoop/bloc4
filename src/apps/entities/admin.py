@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.translation import gettext as _
 
 from apps.entities.choices import EntityTypesChoices
-from apps.entities.models import Entity, EntityPrivilege
+from apps.entities.models import Entity, EntityPrivilege, MonthlyBonus
 from project.admin import ModelAdmin
 
 
@@ -49,3 +49,22 @@ class EntityAdmin(ModelAdmin):
         ]:
             return [EntityPrivilegeInline]
         return []
+
+
+@admin.register(MonthlyBonus)
+class MonthlyBonusAdmin(ModelAdmin):
+    fields = [
+        "entity",
+        "month_and_year",
+        "amount",
+        "created_at",
+        "updated_at",
+        "created_by",
+    ]
+    list_display = (
+        "entity",
+        "month_and_year",
+        "amount",
+    )
+    search_fields = ["entity__fiscal_name"]
+    readonly_fields = ("entity", "month_and_year", "amount")

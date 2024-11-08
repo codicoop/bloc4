@@ -11,6 +11,8 @@ from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from apps.entities.choices import EntityTypesChoices
+from apps.entities.models import MonthlyBonus
 from apps.reservations.constants import (
     END_TIME,
     END_TIME_MINUS_ONE,
@@ -47,7 +49,6 @@ class Reservation(BaseModel):
         max_length=100,
         blank=False,
         default="",
-        help_text=_("Title for the reservation"),
     )
     date = models.DateField(
         _("Date"),
@@ -72,7 +73,6 @@ class Reservation(BaseModel):
         null=True,
         default=1,
         validators=[MinValueValidator(1)],
-        help_text=_("Assistants for the reservation"),
     )
     room = models.ForeignKey(
         "rooms.Room",
@@ -85,7 +85,6 @@ class Reservation(BaseModel):
         _("Is paid?"),
         null=False,
         default=False,
-        help_text=_("Is the reservation paid?"),
     )
     catering = models.BooleanField(
         _("Do I need catering service?"),
@@ -120,7 +119,7 @@ class Reservation(BaseModel):
         _("Description"),
         max_length=500,
         blank=True,
-        help_text=_("Description for the reservation"),
+        help_text=_("Description for the activity"),
     )
     poster = models.ImageField(
         _("Poster"),
@@ -218,6 +217,15 @@ class Reservation(BaseModel):
 
     def save(self, *args, **kwargs):
         self.total_price = self.calculated_total_price
+        if self.entity.entity_type in [
+            EntityTypesChoices.BLOC4,
+            EntityTypesChoices.HOSTED,
+        ]:
+            monthly_bonus = MonthlyBonus.objects.update_or_create(
+                entity=self.entity,
+                date=date(self.date.year, self.date.month, 1),
+            )
+            print(monthly_bonus)
         super(Reservation, self).save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):

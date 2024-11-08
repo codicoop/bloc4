@@ -117,3 +117,31 @@ class EntityPrivilege(BaseModel):
 
     def __str__(self):
         return _("Entity privilege for %(name)s") % {"name": self.entity.fiscal_name}
+
+
+class MonthlyBonus(BaseModel):
+    entity = models.ForeignKey(
+        Entity,
+        verbose_name=_("Entity monthly bonus"),
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="monthly_bonus",
+    )
+    date = models.DateField(_("Date"))
+    amount = models.FloatField(_("Amount"))
+
+    class Meta:
+        ordering = ["entity", "date"]
+        verbose_name = _("Monthly bonus")
+        verbose_name_plural = _("Monthly bonuses")
+
+    def __str__(self):
+        return _("Monthly bonus for %(entity)s in %(date)s") % {
+            "date": self.date.strftime("%B %Y"),
+            "entity": self.entity.fiscal_name,
+        }
+
+    @property
+    def month_and_year(self):
+        return self.date.strftime("%B %Y")

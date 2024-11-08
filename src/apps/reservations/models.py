@@ -227,17 +227,6 @@ class Reservation(BaseModel):
             self.url = ""
             self.description = ""
             self.poster = ""
-        if self.date:
-            # Validates that the reservation date is later than the current date.
-            if self.date < date.today():
-                errors.update(
-                    {
-                        "date": ValidationError(
-                            _("The date must be greater than the current date.")
-                        )
-                    },
-                )
-                raise ValidationError(errors)
         if self.start_time and self.end_time:
             # Validates that the reservation end time is later than the start time.
             if self.end_time < self.start_time:

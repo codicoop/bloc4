@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.models import Entity
@@ -287,3 +288,17 @@ class ReservationForm(forms.ModelForm):
             self.fields["assistants"].widget.attrs.update(
                 {"min": "1", "max": str(room.capacity)}
             )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        date = cleaned_data.get("date")
+        errors = {}
+        if date and date < date.today():
+            errors.update(
+                {
+                    "date": ValidationError(
+                        _("The date must be greater than the current date.")
+                    )
+                },
+            )
+            raise ValidationError(errors)

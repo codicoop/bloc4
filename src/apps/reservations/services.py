@@ -32,7 +32,7 @@ def send_mail_reservation(reservation, action):
         "room": reservation.room,
         "entity": reservation.entity.fiscal_name,
         "total_price": reservation.total_price,
-        "status": reservation.get_status_display().lower(),
+        "status": reservation.status,
         "reservation_url_admin": f"{settings.ABSOLUTE_URL}/"
         f"admin/reservations/reservation/{reservation.id}",
     }

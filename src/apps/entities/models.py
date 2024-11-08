@@ -8,7 +8,7 @@ from project.storage_backends import PublicMediaStorage
 
 
 class Entity(BaseModel):
-    email = models.EmailField(
+    entity_email = models.EmailField(
         _("Email address"),
         max_length=100,
         blank=False,

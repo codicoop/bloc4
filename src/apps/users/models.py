@@ -5,8 +5,10 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from project.helpers import absolute_url
 from project.models import BaseModel
 
 
@@ -86,7 +88,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
         ),
     )
     is_verified = models.BooleanField(
-        _("is verified"),
+        _("Account verified"),
         default=True,
         help_text=_(
             "If the box is unchecked, its means that the user is from an"
@@ -113,6 +115,12 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     def has_admin_role(self):
         return self.is_staff or self.is_superuser
+
+    @property
+    def user_admin_url(self):
+        return absolute_url(
+            reverse("admin:users_user_change", kwargs={"object_id": self.pk})
+        )
 
     class Meta:
         verbose_name = _("user")

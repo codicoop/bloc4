@@ -110,9 +110,63 @@ ben llarga i t'agrairem que ens informis de la situació.
                     "body": """
     <p>Hola, {{user_name}},</p>
     <p>T'enviem aquest correu electrònic perquè avui {{date}} a les {{time}}
-        has fer el registre d'un compte per a {{absolute_url}}.</p>
+        has fet el registre d'un compte per a {{absolute_url}}.</p>
     <p>La sol·licitud està pendent de validar.</p>
     <p>Si no has estat tu qui ho ha demanat, ignora aquest missatge.</p>
+                        """,
+                },
+            },
+        ),
+        dict(
+            id="email_registration_pending_to_bloc4",
+            translated_templates={
+                "en": {
+                    "subject": "Pending account for {{user_entity}}",
+                    "body": """
+    <p>Hello,</p>
+    <p>We're sending you this e-mail because today {{date}} at {{time}}
+    a new account have registered in {{absolute_url}}.</p>
+
+    <p>The request for the entity {{user_entity_name}} with email {{user_email}} is pending to be validated. If you want to accept the request, go to the <a href="{{user_admin_url}}">user profile</a> an click in the "Verify the account and notify the user" button.</p>
+
+    <p>If you want to reject the request, please, delete de <a href="{{user_admin_url}}">user profile</a> and the entity.</p>
+                        """,
+                },
+                "ca": {
+                    "subject": "Compte pendent d'activació per {{user_entity}}",
+                    "body": """
+    <p>Hola,</p>
+
+    <p>T'enviem aquest correu electrònic perquè avui {{date}} a les {{time}}
+        s'ha registrat un nou compte a {{absolute_url}}.</p>
+
+    <p>La sol·licitud de l'entitat {{user_entity_name}} amb correu {{user_email}} està pendent de validar.</p>
+
+    <p>Si vols acceptar aquesta petició, has d'anar al <a href="{{user_admin_url}}">perfil d'usuari</a> i fer clic al botó "Verifiqueu el compte i notifiqueu a l'usuari".</p>
+
+    <p>Si vols rebutjar la petició, has d'esborrar el <a href="{{user_admin_url}}">perfil del usuari</a> i la seva entitat.</p>
+                        """,
+                },
+            },
+        ),
+        dict(
+            id="email_account_activated",
+            translated_templates={
+                "en": {
+                    "subject": "Account activated in {{absolute_url}}",
+                    "body": """
+    <p>Hello, {{user_name}},</p>
+    <p>We're sending you this e-mail because today {{date}} at {{time}}
+    your account in {{absolute_url}} with username {{user_email}} with the entity {{user_entity_name}} is activated.</p>
+                        """,
+                },
+                "ca": {
+                    "subject": "Compte activat {{absolute_url}}",
+                    "body": """
+    <p>Hola, {{user_name}},</p>
+
+    <p>T'enviem aquest correu electrònic perquè avui {{date}} a les {{time}}
+        s'ha activat el teu compte a {{absolute_url}} amb nom d'usuari {{user_email}} en l'entitat {{user_entity_name}}.</p>
                         """,
                 },
             },

@@ -40,10 +40,13 @@ def send_confirmation_mail(user_instance):
     )
 
 
-def send_registration_pending_mail(user_instance):
+def send_registration_pending_mail(user_instance, template, recipients):
     context = {
         "project_name": config.PROJECT_NAME,
         "user_name": user_instance.name,
+        "user_entity_name": user_instance.entity.fiscal_name,
+        "user_email": user_instance.email,
+        "user_admin_url": user_instance.user_admin_url,
         "date": str(
             formats.date_format(
                 timezone.now().date(),
@@ -52,13 +55,12 @@ def send_registration_pending_mail(user_instance):
             )
         ),
         "time": str(formats.time_format(timezone.localtime(timezone.now()).time())),
-        "user_email": user_instance.email,
         "absolute_url": settings.ABSOLUTE_URL,
     }
     send(
         recipients=[
-            user_instance.email,
+            recipients,
         ],
-        template="email_registration_pending",
+        template=template,
         context=context,
     )

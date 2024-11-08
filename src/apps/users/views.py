@@ -52,7 +52,14 @@ def signup_view(request):
             user_instance.save()
             entity_instance.person_responsible = user_instance
             entity_instance.save()
-            send_registration_pending_mail(user_instance) # To user
+            send_registration_pending_mail(
+                user_instance, "email_registration_pending", user_instance.email
+            )  # To user
+            send_registration_pending_mail(
+                user_instance,
+                "email_registration_pending_to_bloc4",
+                user_instance.email,
+            )  # To Bloc4
             return redirect("registration:signup_success")
     else:
         user_form = UserSignUpForm()

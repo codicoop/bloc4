@@ -10,7 +10,7 @@ class EntitySignUpForm(forms.ModelForm):
         fields = (
             "fiscal_name",
             "nif",
-            "email",
+            "entity_email",
             "town",
             "postal_code",
             "address",

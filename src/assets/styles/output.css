@@ -1410,6 +1410,10 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
+.h-11 {
+  height: 2.75rem;
+}
+
 .max-h-48 {
   max-height: 12rem;
 }
@@ -2122,6 +2126,10 @@ input:checked + .toggle-bg {
   padding: 1.5rem;
 }
 
+.p-3 {
+  padding: 0.75rem;
+}
+
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
@@ -2776,6 +2784,11 @@ input:checked + .toggle-bg {
   --tw-ring-color: rgb(240 82 82 / var(--tw-ring-opacity));
 }
 
+.focus\:ring-gray-100:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(226 226 226 / var(--tw-ring-opacity));
+}
+
 .disabled\:cursor-not-allowed:disabled {
   cursor: not-allowed;
 }
@@ -3145,6 +3158,11 @@ input:checked + .toggle-bg {
 :is(.dark .dark\:focus\:ring-primary-900:focus) {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(47 32 90 / var(--tw-ring-opacity));
+}
+
+:is(.dark .dark\:focus\:ring-gray-700:focus) {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(116 116 109 / var(--tw-ring-opacity));
 }
 
 :is(.dark .peer:checked ~ .dark\:peer-checked\:text-primary-500) {

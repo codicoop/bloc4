@@ -7,7 +7,7 @@ from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
-from django.views.generic.list import ListView
+from icecream import ic
 
 from apps.entities.choices import EntityTypesChoices
 from apps.reservations.choices import ReservationTypeChoices
@@ -18,6 +18,7 @@ from apps.reservations.services import (
     calculate_reservation_price,
     date_to_full_calendar_format,
     delete_zeros,
+    get_years_and_months,
     send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
@@ -26,16 +27,26 @@ from apps.rooms.models import Room
 from project.views import StandardSuccess
 
 
-class ReservationsListView(ListView):
-    model = Reservation
-    template_name = "reservations/reservations_list.html"
+def reservations_list(request):
+    reservations = Reservation.objects.filter(entity=request.user.entity).order_by(
+        "-date"
+    )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["reservations"] = Reservation.objects.filter(
-            entity=self.request.user.entity
-        ).order_by("-date")
-        return context
+    months_list, years_list = get_years_and_months(reservations)
+
+    ic(months_list)
+    ic(years_list)
+
+    context = {
+        "reservations": reservations,
+        "months": months_list,
+        "years": years_list,
+    }
+    return render(
+        request,
+        "reservations/reservations_list.html",
+        context,
+    )
 
 
 def create_reservation_view(request):

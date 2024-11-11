@@ -2,9 +2,11 @@ from datetime import datetime, timedelta
 
 from constance import config
 from django.conf import settings
+from django.db.models.functions import ExtractMonth, ExtractYear
 from django.utils import formats, timezone
 
 from apps.entities.choices import EntityTypesChoices
+from apps.reservations.constants import MONTHS
 from project.post_office import send
 
 
@@ -85,3 +87,21 @@ def calculate_reservation_price(start_time, end_time, price):
 def calculate_discount_price(entity_type, price):
     discount = EntityTypesChoices(entity_type).get_discount_percentage()
     return delete_zeros(price + price * discount)
+
+
+def get_years_and_months(reservations):
+    years_with_reservations = (
+        reservations.annotate(year=ExtractYear("date"))
+        .values_list("year", flat=True)
+        .distinct()
+    )
+
+    years_list = sorted(set(years_with_reservations))
+    months_with_reservations = (
+        reservations.annotate(month=ExtractMonth("date"))
+        .values_list("month", flat=True)
+        .distinct()
+    )
+    sorted_months = sorted(months_with_reservations)
+    months_list = [MONTHS[month] for month in sorted(set(sorted_months))]
+    return months_list, years_list

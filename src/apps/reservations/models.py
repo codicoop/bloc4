@@ -13,10 +13,10 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.models import EntityPrivilege, MonthlyBonus
+from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.constants import (
     END_TIME,
     END_TIME_MINUS_ONE,
-    HALF_TIME,
     START_TIME,
     START_TIME_PLUS_ONE,
 )
@@ -49,6 +49,14 @@ class Reservation(BaseModel):
         max_length=100,
         blank=False,
         default="",
+    )
+    reservation_type = models.CharField(
+        _("Reservation type"),
+        choices=ReservationTypeChoices,
+        default=ReservationTypeChoices.HOURLY,
+        blank=False,
+        help_text=_("Only hourly reservations are available for hourly bonuses"),
+        max_length=10,
     )
     date = models.DateField(
         _("Date"),
@@ -107,7 +115,6 @@ class Reservation(BaseModel):
     )
     privacy = models.CharField(
         choices=PrivacyChoices,
-        null=False,
         blank=False,
         default=PrivacyChoices.PRIVATE,
         help_text=_("If the training is public, it will appear in the bloc4 agenda"),
@@ -136,7 +143,6 @@ class Reservation(BaseModel):
         blank=False,
         default=0,
         validators=[MinValueValidator(0.0)],
-        help_text=_("Total price will be calculated on save."),
     )
     entity = models.ForeignKey(
         "entities.Entity",
@@ -193,20 +199,18 @@ class Reservation(BaseModel):
         )
 
     @property
-    def calculated_total_price(self):
+    def get_total_price(self):
         total_price = 0
-        if self.start_time == START_TIME and self.end_time == END_TIME:
+        if self.reservation_type == ReservationTypeChoices.WHOLE_DAY:
             total_price = calculate_discount_price(
                 self.entity.entity_type, self.room.price_all_day
             )
-        elif self.start_time == START_TIME and self.end_time == HALF_TIME:
+        elif self.reservation_type in [
+            ReservationTypeChoices.MORNING,
+            ReservationTypeChoices.AFTERNOON,
+        ]:
             total_price = calculate_discount_price(
                 self.entity.entity_type, self.room.price_half_day
-            )
-        elif self.start_time == HALF_TIME and self.end_time == END_TIME:
-            total_price = calculate_discount_price(
-                self.entity.entity_type,
-                self.room.price_half_day,
             )
         else:
             start_time = datetime.combine(datetime.today(), self.start_time)
@@ -216,7 +220,6 @@ class Reservation(BaseModel):
         return total_price
 
     def save(self, *args, **kwargs):
-        self.total_price = self.calculated_total_price
         if self.entity.entity_type in [
             EntityTypesChoices.BLOC4,
             EntityTypesChoices.HOSTED,

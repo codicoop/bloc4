@@ -3,6 +3,7 @@ from django.core.validators import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.models import Entity
+from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
@@ -16,6 +17,13 @@ class ReservationForm(forms.ModelForm):
     entity = forms.ModelChoiceField(
         queryset=Entity.objects.all(), widget=forms.HiddenInput(), required=False
     )
+    reservation_type = forms.ChoiceField(
+        label=_("Reservation Type"),
+        choices=ReservationTypeChoices,
+        required=True,
+        widget=forms.RadioSelect(),
+        initial=ReservationTypeChoices.HOURLY,
+    )
     title = forms.CharField(
         label=_("Title"),
         widget=forms.TextInput(
@@ -27,7 +35,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500"
                 "dark:focus:border-primary-500",
-                "autofocus": True,
                 "autocomplete": "on",
             }
         ),
@@ -214,7 +221,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:bg-gray-700 dark:border-gray-600 "
                 "dark:placeholder-gray-400 dark:text-white"
                 "dark:focus:ring-primary-500 dark:focus:border-primary-500",
-                "autofocus": True,
                 "autocomplete": True,
                 "cols": "40",
                 "rows": "10",
@@ -246,8 +252,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500"
                 "dark:focus:border-primary-500",
-                "autofocus": True,
-                "autocomplete": True,
                 "help_text": _(
                     "This field will be used for the public add of the event."
                 ),
@@ -258,6 +262,7 @@ class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = [
+            "reservation_type",
             "room",
             "entity",
             "title",

@@ -9,15 +9,27 @@
   <script>
     const startTimeInput = document.getElementById('id_start_time');
     startTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
-    startTimeInput.setAttribute('hx-vals', '{"selected_price": "{{ price }}", "id": "start-hourly-day"}');
     startTimeInput.setAttribute('hx-trigger', 'change');
     startTimeInput.setAttribute('hx-target', '#total_price');
     const endTimeInput = document.getElementById('id_end_time');
     endTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
-    endTimeInput.setAttribute('hx-vals', '{"selected_price": "{{ price }}", "id": "end-hourly-day"}');
     endTimeInput.setAttribute('hx-trigger', 'change');
     endTimeInput.setAttribute('hx-target', '#total_price');
-
+    const reservationType = document.getElementById('id_reservation_type');
+    reservationType.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
+    reservationType.setAttribute('hx-target', '#total_price');  
+    const reservationTypeInputs = document.querySelectorAll('input[name="reservation_type"]');
+    reservationTypeInputs.forEach(input => {
+      if (input.value === "hourly") {
+        input.setAttribute('_', "on click add .bg-gray-50 to #id_start_time then add .bg-gray-50 to #id_end_time then remove .bg-gray-200 .pointer-events-none from #id_start_time then remove .bg-gray-200 .pointer-events-none from #id_end_time")
+    } else if (input.value === "morning") {
+        input.setAttribute('_', "on click set #id_start_time.value to '08:00' then set #id_end_time.value to '14:00' then add .bg-gray-200 .pointer-events-none to #id_start_time then add .bg-gray-200 .pointer-events-none to #id_end_time then remove .bg-gray-50 from #id_start_time then remove .bg-gray-50 from #id_end_time")
+    } else if (input.value === "afternoon") {
+        input.setAttribute('_', "on click set #id_start_time.value to '14:00' then set #id_end_time.value to '18:00' then add .bg-gray-200 .pointer-events-none to #id_start_time then add .bg-gray-200 .pointer-events-none to #id_end_time then remove .bg-gray-50 from #id_start_time then remove .bg-gray-50 from #id_end_time")
+    } else if (input.value === "whole_day") {
+        input.setAttribute('_', "on click set #id_start_time.value to '08:00' then set #id_end_time.value to '18:00' then add .bg-gray-200 .pointer-events-none to #id_start_time then add .bg-gray-200 .pointer-events-none to #id_end_time then remove .bg-gray-50 from #id_start_time then remove .bg-gray-50 from #id_end_time")
+    } 
+  });
   </script>
 {% endblock %}
 
@@ -60,7 +72,8 @@
 {% block form_intro %}
 <h1 class="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
   {% translate "New reservation" %}
-</h1>{% if room.room_type == 'event_room' %}
+</h1>
+{% if room.room_type == 'event_room' %}
   <div class="pb-4">
     <p>{% translate 'To book the Event Hall, fill up the form below and send it to the administration. Until they confirm or reject it, the reservation will appear as pending.' %}</p>
   </div>
@@ -99,98 +112,11 @@
     {% include 'reservations/total_price.html' %}
   </div>
 </div>
-<ul class="flex flex-col w-full gap-4 lg:grid lg:grid-cols-2">
-  <li>
-    <input type="radio" id="reservation_type_1" name="reservation_type" value="hours" class="hidden peer" required checked />
-    <label for="reservation_type_1"
-      class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
-        dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-      hx-post="{% url 'reservations:calculate_total_price' %}"
-      hx-vals='{"selected_price": "{{ price }}", "id": "hourly-day"}'
-      hx-target="#total_price"
-      _="on click add .bg-gray-50 to #id_start_time
-          then add .bg-gray-50 to #id_end_time
-          then remove .bg-gray-200 .pointer-events-none from #id_start_time
-          then remove .bg-gray-200 .pointer-events-none from #id_end_time
-      ">
-      <div class="flex flex-col">
-        <b class="mb-1">{% translate 'Hourly reservation' %}</b>
-        <p class="mb-2">{% translate 'The rooms are booked in half-hour slots, starting at a quarter.' %}</p>
-        <p class="mt-auto">{% translate 'Price ' %}: {{ price }}{% translate ' €/hour' %}</p>
-      </div>
-    </label>
-  </li>
-  <li>
-    <input type="radio" id="reservation_type_2" name="reservation_type" value="morning"
-      class="hidden peer" required />
-    <label for="reservation_type_2"
-      class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
-        dark:hover:text-gray-300 pointer dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-      hx-post="{% url 'reservations:calculate_total_price' %}"
-      hx-vals='{"selected_price": "{{ price_half_day }}"}'
-      hx-target="#total_price"
-      _="on click set #id_start_time.value to '08:00'
-        then set #id_end_time.value to '14:00'
-        then add .bg-gray-200 .pointer-events-none to #id_start_time
-        then add .bg-gray-200 .pointer-events-none to #id_end_time
-        then remove .bg-gray-50 from #id_start_time
-        then remove .bg-gray-50 from #id_end_time
-      "
-      >
-      <div class="flex flex-col">
-        <b class="mb-1">{% translate 'Morning reservation' %}</b>
-        <p class="mb-2">{% translate 'Rooms are reserved for a whole morning, with space available from 8:00 to 14:00' %}</p>
-        <p class="mt-auto">{% translate 'Price ' %}: {{ price_half_day }}{% translate ' €/morning' %}</p>
-      </div>
-    </label>
-  </li>
-  <li>
-    <input type="radio" id="reservation_type_3" name="reservation_type" value="afternoon" class="hidden peer"
-      required />
-    <label for="reservation_type_3"
-      class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
-        dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-      hx-post="{% url 'reservations:calculate_total_price' %}"
-      hx-vals='{"selected_price": "{{ price_half_day }}"}'
-      hx-target="#total_price"
-      _="on click set #id_start_time.value to '14:00'        
-        then set #id_end_time.value to '18:00'
-        then add .bg-gray-200 .pointer-events-none to #id_start_time
-        then add .bg-gray-200 .pointer-events-none to #id_end_time
-        then remove .bg-gray-50 from #id_start_time
-        then remove .bg-gray-50 from #id_end_time
-      ">
-      <div class="flex flex-col">
-        <b class="mb-1">{% translate 'Afternoon reservation' %}</b>
-        <p class="mb-2">{% translate 'Rooms are reserved for an entire afternoon, with the space available from 14:00 to 18:00.' %}</p>
-        <p class="mt-auto">{% translate 'Price ' %}: {{ price_half_day }}{% translate ' €/afternoon' %}</p>
-      </div>
-    </label>
-  </li>
-  <li>
-    <input type="radio" id="reservation_type_4" name="reservation_type" value="whole_day" class="hidden peer"
-      required />
-    <label for="reservation_type_4"
-      class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
-        dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-      hx-post="{% url 'reservations:calculate_total_price' %}"
-      hx-vals='{"selected_price": "{{ price_all_day }}"}'
-      hx-target="#total_price"
-      _="on click set #id_start_time.value to '08:00'        
-        then set #id_end_time.value to '18:00'
-        then add .bg-gray-200 .pointer-events-none to #id_start_time
-        then add .bg-gray-200 .pointer-events-none to #id_end_time
-        then remove .bg-gray-50 from #id_start_time
-        then remove .bg-gray-50 from #id_end_time
-      ">
-      <div class="flex flex-col">
-        <b class="mb-1">{% translate 'Whole day reservation' %}</b>
-        <p class="mb-2">{% translate 'Rooms are reserved for a whole day, with the space available from 8:00 to 18:00.' %}</p>
-        <p class="mt-auto">{% translate 'Price ' %}: {{ price_all_day }}{% translate ' €/day' %}</p>
-      </div>
-    </label>
-  </li>
-</ul>
+{% if entity.entity_type == "bloc4" or entity.entity_type == "hosted" %}
+<div class="pb-4">
+  <p>{% translate 'Only hourly reservations are available for hourly bonuses.' %}</p>
+</div>
+{% endif %}
 
 {{ form }}
 

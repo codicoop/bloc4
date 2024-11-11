@@ -55,6 +55,7 @@ class ReservationAdmin(ModelAdmin):
                 "fields": (
                     "room",
                     "title",
+                    "reservation_type",
                     "date",
                     "start_time",
                     "end_time",
@@ -85,7 +86,7 @@ class ReservationAdmin(ModelAdmin):
             },
         ),
     )
-    readonly_fields = ("actions_field", "total_price")
+    readonly_fields = ("actions_field",)
 
     def get_urls(self):
         urls = super().get_urls()

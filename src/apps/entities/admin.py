@@ -67,4 +67,7 @@ class MonthlyBonusAdmin(ModelAdmin):
         "amount",
     )
     search_fields = ["entity__fiscal_name"]
-    readonly_fields = ("entity", "month_and_year", "amount")
+    readonly_fields = (
+        "entity",
+        "month_and_year",
+    )

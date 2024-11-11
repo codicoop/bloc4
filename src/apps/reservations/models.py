@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.choices import EntityTypesChoices
-from apps.entities.models import MonthlyBonus
+from apps.entities.models import EntityPrivilege, MonthlyBonus
 from apps.reservations.constants import (
     END_TIME,
     END_TIME_MINUS_ONE,
@@ -221,11 +221,19 @@ class Reservation(BaseModel):
             EntityTypesChoices.BLOC4,
             EntityTypesChoices.HOSTED,
         ]:
-            monthly_bonus = MonthlyBonus.objects.update_or_create(
-                entity=self.entity,
-                date=date(self.date.year, self.date.month, 1),
-            )
-            print(monthly_bonus)
+            try:
+                entity_privilege = self.entity.entity_privilege
+                monthly_bonus, created = MonthlyBonus.objects.get_or_create(
+                    entity=self.entity,
+                    date=date(self.date.year, self.date.month, 1),
+                    defaults={"amount": 0},
+                )
+                if created:
+                    amount = entity_privilege.monthly_hours_meeting
+                    monthly_bonus.amount = amount
+                    monthly_bonus.save()
+            except EntityPrivilege.DoesNotExist:
+                pass
         super(Reservation, self).save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):

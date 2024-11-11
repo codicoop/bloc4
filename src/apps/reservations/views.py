@@ -85,7 +85,7 @@ def create_reservation_view(request):
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
-            reservation.total_price = reservation.calculated_total_price
+            reservation.total_price = reservation.get_total_price
             reservation.save()
             form.save()
             send_mail_reservation(reservation, "reservation_request_user")

@@ -46,12 +46,43 @@
 <h1 class="mt-4 mb-8 md:mb-16 text-2xl font-bold leading-tight tracking-tight text-primary-900 md:text-3xl dark:text-white">
   {% translate "Your reservations" %}
 </h1>
-{% for year in years %}
-  <button>{{year}}</button>
-{% endfor %}
-{% for month in months %}
-  <button>{{month}}</button>
-{% endfor %}
+
+<form class="mb-8">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      {% translate "Filter by" %}
+    </label>
+    <div class="flex gap-2 items-center">
+      <!-- Al seleccionar un any, s'envia una petició al back amb la configuració actual d'any i mes -->
+      <!-- i es retorna un llistat de reservations nou -->
+      <select id="filter_year"
+        class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
+          focus:ring-primary-500 focus:border-primary-500">
+        <option selected>{% translate "Choose a year" %}</option>
+        {% for year in years %}
+          <option value="{{ year }}">{{ year }}</option>
+        {% endfor %}
+      </select>
+      <!-- Al seleccionar un mes, s'envia una petició al back amb la configuració actual d'any i mes -->
+      <!-- i es retorna un llistat de reservations nou -->
+      <select id="filter_month"
+        class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
+        focus:ring-primary-500 focus:border-primary-500">
+        <option selected>{% translate "Choose a month" %}</option>
+        {% for month in months %}
+        <option value="{{ month }}">{{ month }}</option>
+        {% endfor %}
+      </select>
+      <!-- Al fer click a la X, s'esborren els filtres d'any i mes  -->
+      <!-- i es retorna un llistat de reservations nou -->
+      <svg class="w-6 h-6 text-primary-400 cursor-pointer dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+      </svg>      
+    </div>
+</form>
+
+
+
 <div class="flex flex-col gap-4 mb-8 md:grid md:grid-cols-2">
   {% for reservation in reservations %}
     <div
@@ -63,7 +94,7 @@
       dark:focus:ring-primary-800 dark:border-gray-700 dark:text-gray-400"
     >
       <p class="col-span-2 pr-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-        {% translate "Room reservation" %} {{ reservation.room.name }}
+        {% translate "Reservation of" %} {{ reservation.room.name }}
       </p>
       <div class="text-md font-normal tracking-tight text-gray-900 dark:text-white col-start-1 row-span-3">
         <p>{{ reservation.date}}</p>

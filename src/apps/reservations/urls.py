@@ -8,6 +8,7 @@ from apps.reservations.views import (
     ReservationSuccessView,
     calculate_total_price,
     create_reservation_view,
+    filter_reservations,
     reservation_detail_view,
     reservations_calendar_view,
     reservations_list,
@@ -49,4 +50,5 @@ urlpatterns = [
     path(
         _("price/"), login_required(calculate_total_price), name="calculate_total_price"
     ),
+    path(_("filter/"), login_required(filter_reservations), name="filter_reservations"),
 ]

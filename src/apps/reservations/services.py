@@ -103,5 +103,5 @@ def get_years_and_months(reservations):
         .distinct()
     )
     sorted_months = sorted(months_with_reservations)
-    months_list = [MONTHS[month] for month in sorted(set(sorted_months))]
-    return months_list, years_list
+    months_dict = {month: MONTHS[month] for month in sorted(set(sorted_months))}
+    return months_dict, years_list

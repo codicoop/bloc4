@@ -7,7 +7,6 @@ from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
-from icecream import ic
 
 from apps.entities.choices import EntityTypesChoices
 from apps.reservations.choices import ReservationTypeChoices
@@ -31,12 +30,7 @@ def reservations_list(request):
     reservations = Reservation.objects.filter(entity=request.user.entity).order_by(
         "-date"
     )
-
     months_list, years_list = get_years_and_months(reservations)
-
-    ic(months_list)
-    ic(years_list)
-
     context = {
         "reservations": reservations,
         "months": months_list,
@@ -46,6 +40,26 @@ def reservations_list(request):
         request,
         "reservations/reservations_list.html",
         context,
+    )
+
+
+# htmx
+def filter_reservations(request):
+    reservations = Reservation.objects.filter(entity=request.user.entity).order_by(
+        "date"
+    )
+    filter_year = request.POST.get("filter_year")
+    filter_month = request.POST.get("filter_month")
+    if filter_month != "month":
+        reservations = reservations.filter(date__month=filter_month).order_by("date")
+    if filter_year != "year":
+        reservations = reservations.filter(date__year=filter_year).order_by("date")
+    return render(
+        request,
+        "reservations/components/reservations.html",
+        {
+            "reservations": reservations,
+        },
     )
 
 
@@ -155,7 +169,6 @@ def reservation_detail_view(request, id):
 
 # htmx
 def calculate_total_price(request):
-    print(request)
     entity_type = request.user.entity.entity_type
     total_price = 0
     if request.htmx:

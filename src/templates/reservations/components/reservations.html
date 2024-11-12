@@ -1,0 +1,37 @@
+{% load i18n %}
+
+{% for reservation in reservations %}
+<div
+  class="relative grid grid-cols-2 gap-2 w-full max-w-2xl p-5 rounded-xl font-medium rtl:text-right shadow-md
+  {% if reservation.status == reservation.StatusChoices.CANCELED or reservation.status == reservation.StatusChoices.REFUSED %}
+    bg-gray-300 text-gray-600
+  {% else %}bg-primary-300 text-gray-500 {% endif %}
+  focus:ring-4 focus:ring-primary-200
+  dark:focus:ring-primary-800 dark:border-gray-700 dark:text-gray-400"
+>
+  <p class="col-span-2 pr-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+    {% translate "Reservation of" %} {{ reservation.room.name }}
+  </p>
+  <div class="text-md font-normal tracking-tight text-gray-900 dark:text-white col-start-1 row-span-3">
+    <p>{{ reservation.date}}</p>
+    <p>
+      {% if reservation.start_time and reservation.end_time %}
+      {{ reservation.start_time }} - {{ reservation.end_time }}
+      {% else %}
+      {% translate '---' %}
+      {% endif %}
+    </p>
+  </div>
+  <a class="absolute right-0" href="{% url 'reservations:reservations_details' id=reservation.id %}">
+    <div class="p-4">
+      <svg class="w-6 h-6 text-primary-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
+      </svg>
+    </div>
+  </a>
+</div>
+{% empty %}
+<div>
+  <p>{% translate 'You have made no reservations yet. When you do, they will appear here.' %}</p>
+</div>
+{% endfor %}

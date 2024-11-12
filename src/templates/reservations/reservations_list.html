@@ -7,8 +7,10 @@
 {% block bodyclasses %}{% endblock %}
 {% block mainclasses %} reservations {% endblock %}
 {% block extra_js %}{% endblock %}
-{% block extra_head %}{% endblock %}
 
+{% block extra_head %}
+<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+{% endblock %}
 
 {% block main %}
 <nav class="flex mb-4" aria-label="Breadcrumb">
@@ -53,10 +55,10 @@
       {% translate "Filter by" %}
     </label>
     <div class="flex gap-2 items-center">
-      <!-- Al seleccionar un any, s'envia una petició al back amb la configuració actual d'any i mes -->
-      <!-- i es retorna un llistat de reservations nou -->
-      <select id="filter_year" name="filter_year"                     hx-target="#htmx-reservations"   
+      <select id="filter_year" name="filter_year"
+        hx-target="#htmx-reservations"   
         hx-post="{% url 'reservations:filter_reservations' %}"
+        hx-trigger="change"
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
           focus:ring-primary-500 focus:border-primary-500"
       >
@@ -65,22 +67,28 @@
           <option value="{{ year }}">{{ year }}</option>
         {% endfor %}
       </select>
-      <!-- Al seleccionar un mes, s'envia una petició al back amb la configuració actual d'any i mes -->
-      <!-- i es retorna un llistat de reservations nou -->
       <select id="filter_month" name="filter_month"
         hx-target="#htmx-reservations"   
         hx-post="{% url 'reservations:filter_reservations' %}"
+        hx-trigger="change"
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
-        focus:ring-primary-500 focus:border-primary-500">
+          focus:ring-primary-500 focus:border-primary-500"
+      >
         <option value="month" selected>{% translate "Choose a month" %}</option>
         {% for month_number, month_name in months.items %}
-        <option value="{{ month_number }}">{{ month_name }}</option>
+          <option value="{{ month_number }}">{{ month_name }}</option>
         {% endfor %}
       </select>
-      <!-- Al fer click a la X, s'esborren els filtres d'any i mes  -->
-      <!-- i es retorna un llistat de reservations nou -->
-      <svg class="w-6 h-6 text-primary-400 cursor-pointer dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+        width="24" height="24" fill="currentColor" viewBox="0 0 24 24"
+        class="w-6 h-6 text-primary-400 cursor-pointer dark:text-white"
+        _="on click set #filter_year.value to 'year'
+            then set #filter_month.value to 'month'
+            then log #filter_year
+        "
+        hx-target="#htmx-reservations"   
+        hx-post="{% url 'reservations:filter_reservations' %}"
+      >
         <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
       </svg>      
     </div>

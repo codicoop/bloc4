@@ -76,7 +76,7 @@
       >
         <option value="month" selected>{% translate "Choose a month" %}</option>
         {% for month_number, month_name in months.items %}
-          <option value="{{ month_number }}">{{ month_name }}</option>
+          <option value="{{ month_number }}">{{ month_name|capfirst }}</option>
         {% endfor %}
       </select>
       <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

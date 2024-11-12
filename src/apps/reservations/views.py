@@ -66,13 +66,14 @@ def filter_reservations(request):
                 amount_left,
                 amount,
             ) = monthly_bonus.get_monthly_meeting_total_price(reservations)
-            context["total_price"] = reservations.aggregate(
-                total_sum=Sum("total_price")
-            )["total_sum"]
-            context["bonus_price"] = bonus_price
-            context["amount"] = amount
-            context["amount_left"] = amount_left
-        context["reservations"] = reservations
+            total_price = reservations.aggregate(total_sum=Sum("total_price"))[
+                "total_sum"
+            ]
+            context["total_price"] = delete_zeros(total_price)
+            context["bonus_price"] = delete_zeros(total_price - bonus_price)
+            context["amount"] = delete_zeros(amount)
+            context["amount_left"] = delete_zeros(amount_left)
+    context["reservations"] = reservations
     return render(
         request,
         "reservations/components/reservations.html",

@@ -37,9 +37,9 @@
 {% endfor %}
 {% if is_monthly_bonus %}
 <div>
-  <p>{% translate 'Total amount of free monthly hours for meeting rooms' %} {{ amount }} hrs</p>
-  <p>{% translate 'Amount of free monthly hours for meeting rooms left' %} {{ amount_left }} hrs</p>
-  <p>{% translate 'Total price' %} {{ total_price }} €</p>
-  <p>{% translate 'Total price with bonus' %} {{ bonus_price }} €</p>
+  <p>{% translate 'Total amount of free monthly hours for meeting rooms' %}: {{ amount }}</p>
+  <p>{% translate 'Amount of free monthly hours for meeting rooms left' %}: {{ amount_left }}</p>
+  <p>{% translate 'Total price' %}: {{ total_price }} €</p>
+  <p>{% translate 'Total price to be invoiced (with bonus discount)' %}: {{ bonus_price }} €</p>
 </div>
 {% endif %}

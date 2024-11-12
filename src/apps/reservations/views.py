@@ -1,6 +1,7 @@
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 
+from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
@@ -9,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
 
 from apps.entities.choices import EntityTypesChoices
+from apps.entities.models import MonthlyBonus
 from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
@@ -27,9 +29,8 @@ from project.views import StandardSuccess
 
 
 def reservations_list(request):
-    reservations = Reservation.objects.filter(entity=request.user.entity).order_by(
-        "-date"
-    )
+    entity = request.user.entity
+    reservations = Reservation.objects.filter(entity=entity).order_by("-date")
     months_list, years_list = get_years_and_months(reservations)
     context = {
         "reservations": reservations,
@@ -45,21 +46,37 @@ def reservations_list(request):
 
 # htmx
 def filter_reservations(request):
-    reservations = Reservation.objects.filter(entity=request.user.entity).order_by(
-        "date"
-    )
+    context = {"is_monthly_bonus": False}
+    entity = request.user.entity
+    reservations = Reservation.objects.filter(entity=entity).order_by("date")
     filter_year = request.POST.get("filter_year")
     filter_month = request.POST.get("filter_month")
     if filter_month != "month":
         reservations = reservations.filter(date__month=filter_month).order_by("date")
     if filter_year != "year":
         reservations = reservations.filter(date__year=filter_year).order_by("date")
+    if filter_month != "month" and filter_year != "year" and reservations:
+        monthly_bonus = MonthlyBonus.objects.filter(
+            date=date(int(filter_year), int(filter_month), 1)
+        ).first()
+        if monthly_bonus:
+            context["is_monthly_bonus"] = True
+            (
+                bonus_price,
+                amount_left,
+                amount,
+            ) = monthly_bonus.get_monthly_meeting_total_price(reservations)
+            context["total_price"] = reservations.aggregate(
+                total_sum=Sum("total_price")
+            )["total_sum"]
+            context["bonus_price"] = bonus_price
+            context["amount"] = amount
+            context["amount_left"] = amount_left
+        context["reservations"] = reservations
     return render(
         request,
         "reservations/components/reservations.html",
-        {
-            "reservations": reservations,
-        },
+        context,
     )
 
 

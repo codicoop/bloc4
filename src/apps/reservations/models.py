@@ -12,7 +12,6 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.choices import EntityTypesChoices
-from apps.entities.models import EntityPrivilege, MonthlyBonus
 from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.constants import (
     END_TIME,
@@ -220,6 +219,8 @@ class Reservation(BaseModel):
         return total_price
 
     def save(self, *args, **kwargs):
+        from apps.entities.models import EntityPrivilege, MonthlyBonus
+
         if self.entity.entity_type in [
             EntityTypesChoices.BLOC4,
             EntityTypesChoices.HOSTED,

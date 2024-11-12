@@ -1,8 +1,10 @@
 from django.core.validators import validate_image_file_extension
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from icecream import ic
 
 from apps.entities.choices import EntityTypesChoices
+from apps.rooms.choices import RoomTypeChoices
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
 
@@ -145,3 +147,27 @@ class MonthlyBonus(BaseModel):
     @property
     def month_and_year(self):
         return self.date.strftime("%B %Y")
+
+    def get_monthly_meeting_total_price(self, reservations):
+        amount_left = float(self.amount)
+        bonus_price = 0
+        ic(amount_left)
+        if amount_left > 0:
+            reservations = reservations.filter(
+                room__room_type=RoomTypeChoices.MEETING_ROOM
+            ).order_by("created_at")
+            for reservation in reservations:
+                start_time = reservation.start_time
+                end_time = reservation.end_time
+                start_seconds = start_time.hour * 3600 + start_time.minute * 60
+                end_seconds = end_time.hour * 3600 + end_time.minute * 60
+                time_difference = (end_seconds - start_seconds) / 3600.0
+                ic(time_difference)
+                bonus_price += reservation.total_price
+                amount_left -= time_difference
+                if amount_left == 0:
+                    return bonus_price
+                if amount_left < 0:
+                    return bonus_price
+
+        return bonus_price, amount_left, self.amount

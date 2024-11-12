@@ -35,3 +35,11 @@
   <p>{% translate 'You have made no reservations yet. When you do, they will appear here.' %}</p>
 </div>
 {% endfor %}
+{% if is_monthly_bonus %}
+<div>
+  <p>{% translate 'Total amount of free monthly hours for meeting rooms' %} {{ amount }} hrs</p>
+  <p>{% translate 'Amount of free monthly hours for meeting rooms left' %} {{ amount_left }} hrs</p>
+  <p>{% translate 'Total price' %} {{ total_price }} €</p>
+  <p>{% translate 'Total price with bonus' %} {{ bonus_price }} €</p>
+</div>
+{% endif %}

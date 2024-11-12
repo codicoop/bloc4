@@ -56,7 +56,11 @@
       <!-- i es retorna un llistat de reservations nou -->
       <select id="filter_year"
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
-          focus:ring-primary-500 focus:border-primary-500">
+          focus:ring-primary-500 focus:border-primary-500"
+      >
+          <!-- hx-target="#htmx-reservations" // inside the html
+            hx-post="{% url '' %}"
+          -->
         <option selected>{% translate "Choose a year" %}</option>
         {% for year in years %}
           <option value="{{ year }}">{{ year }}</option>
@@ -83,7 +87,7 @@
 
 
 
-<div class="flex flex-col gap-4 mb-8 md:grid md:grid-cols-2">
+<div class="flex flex-col gap-4 mb-8 md:grid md:grid-cols-2" id="htmx-reservations">
   {% for reservation in reservations %}
     <div
       class="relative grid grid-cols-2 gap-2 w-full max-w-2xl p-5 rounded-xl font-medium rtl:text-right shadow-md

@@ -171,6 +171,7 @@ def populate_mail_templates(apps, schema_editor):
             <li>End time: {{end_time_reservation}}</li>
             <li>Reserved by the entity: {{entity}}</li>
             <li>Responsible person: {{reserved_by}}</li>
+            <li>Correu electrònic: {{user_email}}</li>
             <li>Total price: {{total_price}} €</li>
         </ul>
 
@@ -196,6 +197,7 @@ def populate_mail_templates(apps, schema_editor):
             <li>Hora de finalització: {{end_time_reservation}}</li>
             <li>Reservada per l'entitat: {{entity}}</li>
             <li>Persona responsable: {{reserved_by}}</li>
+            <li>E-mail: {{user_email}}</li>
             <li>Preu total: {{total_price}} €</li>
         </ul>
 

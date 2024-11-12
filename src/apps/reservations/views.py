@@ -129,6 +129,11 @@ def create_reservation_view(request):
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
             reservation.total_price = reservation.get_total_price
+            if (
+                reservation.room.room_type == RoomTypeChoices.CLASSROOM
+                and reservation.entity.entity_privilege.class_reservation_privilege
+            ):
+                reservation.status = Reservation.StatusChoices.CONFIRMED
             reservation.save()
             form.save()
             send_mail_reservation(reservation, "reservation_request_user")

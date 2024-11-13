@@ -3,7 +3,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.choices import EntityTypesChoices
-from apps.reservations.choices import ReservationTypeChoices
 from apps.rooms.choices import RoomTypeChoices
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
@@ -154,7 +153,7 @@ class MonthlyBonus(BaseModel):
         if amount_left > 0:
             reservations = reservations.filter(
                 room__room_type=RoomTypeChoices.MEETING_ROOM,
-                reservation_type=ReservationTypeChoices.HOURLY,
+                # reservation_type=ReservationTypeChoices.HOURLY,
             ).order_by("created_at")
             for reservation in reservations:
                 start_time = reservation.start_time
@@ -166,9 +165,9 @@ class MonthlyBonus(BaseModel):
                     bonus_price += (
                         amount_left * reservation.total_price / reservation_time
                     )
-                    return bonus_price, 0, self.amount
+                    return bonus_price, 0
                 amount_left -= reservation_time
                 bonus_price += reservation.total_price
                 if amount_left == 0:
                     break
-        return bonus_price, amount_left, self.amount
+        return bonus_price, amount_left

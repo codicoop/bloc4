@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from constance import config
 from django.conf import settings
-from django.db.models.functions import ExtractMonth, ExtractYear
+from django.db.models.functions import ExtractYear
 from django.utils import formats, timezone
 
 from apps.entities.choices import EntityTypesChoices
@@ -91,18 +91,22 @@ def calculate_discount_price(entity_type, price):
 
 
 def get_years_and_months(reservations):
+    current_year = datetime.now().year
+    current_month = datetime.now().month
     years_with_reservations = (
         reservations.annotate(year=ExtractYear("date"))
         .values_list("year", flat=True)
         .distinct()
     )
+    years_list = [
+        {"year": year, "current": (year == current_year)}
+        for year in sorted(set(years_with_reservations))
+    ]
+    if current_year not in [year["year"] for year in years_list]:
+        years_list.append({"year": current_year, "current": True})
 
-    years_list = sorted(set(years_with_reservations))
-    months_with_reservations = (
-        reservations.annotate(month=ExtractMonth("date"))
-        .values_list("month", flat=True)
-        .distinct()
-    )
-    sorted_months = sorted(months_with_reservations)
-    months_dict = {month: MONTHS[month] for month in sorted(set(sorted_months))}
-    return months_dict, years_list
+    months_list = [
+        {"month": month, "name": MONTHS[month], "current": (month == current_month)}
+        for month in range(1, 13)
+    ]
+    return months_list, years_list

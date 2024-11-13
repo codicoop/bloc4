@@ -62,9 +62,8 @@
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
           focus:ring-primary-500 focus:border-primary-500"
       >
-        <option value="year" selected>{% translate "Choose a year" %}</option>
         {% for year in years %}
-          <option value="{{ year }}">{{ year }}</option>
+          <option value="{{ year.year }}"{% if year.current %}selected{% endif %}>{{ year.year }}</option>
         {% endfor %}
       </select>
       <select id="filter_month" name="filter_month"
@@ -74,9 +73,8 @@
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
           focus:ring-primary-500 focus:border-primary-500"
       >
-        <option value="month" selected>{% translate "Choose a month" %}</option>
-        {% for month_number, month_name in months.items %}
-          <option value="{{ month_number }}">{{ month_name|capfirst }}</option>
+        {% for month in months %}
+          <option value="{{ month.month }}" {% if month.current %}selected{% endif %}>{{ month.name|capfirst }}</option>
         {% endfor %}
       </select>
       <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

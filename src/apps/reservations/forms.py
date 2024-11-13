@@ -137,7 +137,7 @@ class ReservationForm(forms.ModelForm):
         ),
     )
     notes = forms.CharField(
-        label=_("Notes"),
+        label=_("Do you need to tell us something?"),
         widget=forms.Textarea(
             attrs={
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
@@ -166,7 +166,7 @@ class ReservationForm(forms.ModelForm):
         ),
     )
     privacy = forms.ChoiceField(
-        label=_("Privacy"),
+        label=_("Type of event"),
         choices=Reservation.PrivacyChoices,
         required=False,
         help_text=_(

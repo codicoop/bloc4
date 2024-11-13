@@ -94,11 +94,10 @@ class Reservation(BaseModel):
         default=False,
     )
     notes = models.CharField(
-        _("Notes"),
+        _("Do you need to tell us something?"),
         max_length=500,
         blank=False,
         default="",
-        help_text=_("Notes for the reservation"),
     )
     bloc4_reservation = models.BooleanField(
         _("Reservation for Bloc4 services"),
@@ -107,6 +106,7 @@ class Reservation(BaseModel):
         default=False,
     )
     privacy = models.CharField(
+        _("Type of event"),
         choices=PrivacyChoices,
         null=False,
         blank=False,
@@ -115,7 +115,6 @@ class Reservation(BaseModel):
             "Public events must be open to all citizens and will "
             "be published in the Bloc4BCN Agenda, subject to approval."
         ),
-        verbose_name=_("privacy"),
         max_length=20,
     )
     # Only for public training

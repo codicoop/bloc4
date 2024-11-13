@@ -4,7 +4,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.choices import EntityTypesChoices
-from apps.rooms.choices import RoomTypeChoices
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
 
@@ -158,7 +157,6 @@ class MonthlyBonus(BaseModel):
 
     def clean(self, *args, **kwargs):
         super().clean()
-        print(self.date.year)
         existing_objects = MonthlyBonus.objects.filter(
             entity=self.entity, date__year=self.date.year, date__month=self.date.month
         ).exclude(pk=self.pk)
@@ -173,31 +171,3 @@ class MonthlyBonus(BaseModel):
                     )
                 },
             )
-
-    def get_monthly_meeting_total_price(self, reservations):
-        from datetime import datetime
-
-        amount_left = float(self.amount)
-        bonus_price = 0
-        if amount_left > 0:
-            reservations = reservations.filter(
-                room__room_type=RoomTypeChoices.MEETING_ROOM,
-                # reservation_type=ReservationTypeChoices.HOURLY,
-            ).order_by("created_at")
-            for reservation in reservations:
-                today = datetime.today().date()
-                start_datetime = datetime.combine(today, reservation.start_time)
-                end_datetime = datetime.combine(today, reservation.end_time)
-                reservation_time = (
-                    end_datetime - start_datetime
-                ).total_seconds() / 3600
-                if amount_left - reservation_time < 0:
-                    bonus_price += (
-                        amount_left * reservation.total_price / reservation_time
-                    )
-                    return bonus_price, 0
-                amount_left -= reservation_time
-                bonus_price += reservation.total_price
-                if amount_left == 0:
-                    break
-        return bonus_price, amount_left

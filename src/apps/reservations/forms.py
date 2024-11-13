@@ -169,6 +169,10 @@ class ReservationForm(forms.ModelForm):
         label=_("Privacy"),
         choices=Reservation.PrivacyChoices,
         required=False,
+        help_text=_(
+            "Public events must be open to all citizens and will "
+            "be published in the Bloc4BCN Agenda, subject to approval."
+        ),
         widget=forms.Select(
             attrs={
                 "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "

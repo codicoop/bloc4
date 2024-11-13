@@ -111,7 +111,10 @@ class Reservation(BaseModel):
         null=False,
         blank=False,
         default=PrivacyChoices.PRIVATE,
-        help_text=_("If the training is public, it will appear in the bloc4 agenda"),
+        help_text=_(
+            "Public events must be open to all citizens and will "
+            "be published in the Bloc4BCN Agenda, subject to approval."
+        ),
         verbose_name=_("privacy"),
         max_length=20,
     )

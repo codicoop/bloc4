@@ -1,7 +1,6 @@
 from django.core.validators import validate_image_file_extension
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from icecream import ic
 
 from apps.entities.choices import EntityTypesChoices
 from apps.reservations.choices import ReservationTypeChoices
@@ -164,8 +163,9 @@ class MonthlyBonus(BaseModel):
                 end_seconds = end_time.hour * 3600 + end_time.minute * 60
                 reservation_time = (end_seconds - start_seconds) / 3600.0
                 if amount_left - reservation_time < 0:
-                    price = amount_left * reservation.total_price / reservation_time
-                    bonus_price += price
+                    bonus_price += (
+                        amount_left * reservation.total_price / reservation_time
+                    )
                     return bonus_price, 0, self.amount
                 amount_left -= reservation_time
                 bonus_price += reservation.total_price

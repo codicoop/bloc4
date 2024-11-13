@@ -67,7 +67,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     entity = models.ForeignKey(
         "entities.Entity",
         verbose_name=_("Entity"),
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         null=True,
         blank=False,
         related_name="entities",

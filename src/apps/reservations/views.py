@@ -48,16 +48,16 @@ def reservations_list(request):
 
 # htmx
 def filter_reservations(request):
-    context = {"is_monthly_bonus": False}
     entity = request.user.entity
     filter_year = request.POST.get("filter_year")
     filter_month = request.POST.get("filter_month")
     reservations = Reservation.objects.filter(
         entity=entity, date__month=filter_month, date__year=filter_year
     ).order_by("date")
+    context = {"is_monthly_bonus": False, "reservations": reservations}
     if reservations:
         monthly_bonus = MonthlyBonus.objects.filter(
-            date=date(int(filter_year), int(filter_month), 1)
+            entity=entity, date=date(int(filter_year), int(filter_month), 1)
         ).first()
         if monthly_bonus:
             context["is_monthly_bonus"] = True
@@ -103,8 +103,6 @@ def create_reservation_view(request):
         start_datetime = datetime.fromisoformat(start)
         end_datetime = datetime.fromisoformat(end)
         date = start_datetime.date().strftime("%Y-%m-%d")
-        start_time = start_datetime.time()
-        end_time = end_datetime.time()
         price_discount = calculate_discount_price(entity_type, room.price)
         total_price = calculate_reservation_price(
             start_datetime, end_datetime, price_discount
@@ -113,8 +111,8 @@ def create_reservation_view(request):
         form = ReservationForm(
             initial={
                 "date": date,
-                "start_time": start_time.strftime("%H:%M"),
-                "end_time": end_time.strftime("%H:%M"),
+                "start_time": start_datetime,
+                "end_time": end_datetime,
                 "entity": request.user.entity,
                 "room": room.id,
             },

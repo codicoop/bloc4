@@ -24,7 +24,6 @@ class ReservationAdmin(ModelAdmin):
         "privacy",
     )
     list_filter = (
-        "title",
         "date",
         "room",
         "is_paid",

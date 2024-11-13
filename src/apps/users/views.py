@@ -244,7 +244,7 @@ class SignUpSuccessView(StandardSuccess):
     page_title = _("Sign Up Success")
     description = _(
         "Your account has been successfully created and its "
-        "validation it's pending by Bloc4. "
+        "validation it's pending by Bloc4BCN. "
         "You'll receive an email when your account is available."
     )
     url = reverse_lazy("home")

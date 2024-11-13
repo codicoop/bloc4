@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import validate_image_file_extension
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -93,6 +94,14 @@ class Entity(BaseModel):
         verbose_name = _("entity")
         verbose_name_plural = _("entities")
 
+    def save(self, *args, **kwargs):
+        if self.entity_type in [
+            EntityTypesChoices.HOSTED,
+            EntityTypesChoices.BLOC4,
+        ] and not hasattr(self, "entity_privilege"):
+            EntityPrivilege.objects.create(entity=self)
+        super().save(*args, **kwargs)
+
 
 class EntityPrivilege(BaseModel):
     entity = models.OneToOneField(
@@ -102,13 +111,13 @@ class EntityPrivilege(BaseModel):
         _("Free monthly hours for meeting rooms"),
         max_digits=5,
         decimal_places=2,
-        default=0,
+        default=10,
     )
     anual_hours_class = models.DecimalField(
         _("Free annual hours for classrooms"),
         max_digits=5,
         decimal_places=2,
-        default=0,
+        default=100,
     )
     class_reservation_privilege = models.BooleanField(
         _("Classroom privilege"),
@@ -147,7 +156,27 @@ class MonthlyBonus(BaseModel):
     def month_and_year(self):
         return self.date.strftime("%B %Y")
 
+    def clean(self, *args, **kwargs):
+        super().clean()
+        print(self.date.year)
+        existing_objects = MonthlyBonus.objects.filter(
+            entity=self.entity, date__year=self.date.year, date__month=self.date.month
+        ).exclude(pk=self.pk)
+        if existing_objects.exists():
+            raise ValidationError(
+                {
+                    "date": ValidationError(
+                        _(
+                            f"A record for {self.entity} "
+                            f"for {self.month_and_year} already exists."
+                        )
+                    )
+                },
+            )
+
     def get_monthly_meeting_total_price(self, reservations):
+        from datetime import datetime
+
         amount_left = float(self.amount)
         bonus_price = 0
         if amount_left > 0:
@@ -156,11 +185,12 @@ class MonthlyBonus(BaseModel):
                 # reservation_type=ReservationTypeChoices.HOURLY,
             ).order_by("created_at")
             for reservation in reservations:
-                start_time = reservation.start_time
-                end_time = reservation.end_time
-                start_seconds = start_time.hour * 3600 + start_time.minute * 60
-                end_seconds = end_time.hour * 3600 + end_time.minute * 60
-                reservation_time = (end_seconds - start_seconds) / 3600.0
+                today = datetime.today().date()
+                start_datetime = datetime.combine(today, reservation.start_time)
+                end_datetime = datetime.combine(today, reservation.end_time)
+                reservation_time = (
+                    end_datetime - start_datetime
+                ).total_seconds() / 3600
                 if amount_left - reservation_time < 0:
                     bonus_price += (
                         amount_left * reservation.total_price / reservation_time

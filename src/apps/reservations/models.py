@@ -229,8 +229,12 @@ class Reservation(BaseModel):
                 entity_privilege = self.entity.entity_privilege
                 monthly_bonus, created = MonthlyBonus.objects.get_or_create(
                     entity=self.entity,
-                    date=date(self.date.year, self.date.month, 1),
-                    defaults={"amount": 0},
+                    date__year=self.date.year,
+                    date__month=self.date.month,
+                    defaults={
+                        "amount": 0,
+                        "date": datetime(self.date.year, self.date.month, 1),
+                    },
                 )
                 if created:
                     amount = entity_privilege.monthly_hours_meeting

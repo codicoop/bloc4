@@ -1,5 +1,5 @@
 import uuid
-from datetime import date, datetime
+from datetime import datetime
 
 from django.db.models import Q, Sum
 from django.http import JsonResponse
@@ -57,7 +57,9 @@ def filter_reservations(request):
     context = {"is_monthly_bonus": False, "reservations": reservations}
     if reservations:
         monthly_bonus = MonthlyBonus.objects.filter(
-            entity=entity, date=date(int(filter_year), int(filter_month), 1)
+            entity=entity,
+            date__year=int(filter_year),
+            date__month=int(filter_month),
         ).first()
         if monthly_bonus:
             context["is_monthly_bonus"] = True

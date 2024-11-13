@@ -55,7 +55,7 @@ class EntityAdmin(ModelAdmin):
 class MonthlyBonusAdmin(ModelAdmin):
     fields = [
         "entity",
-        "month_and_year",
+        "date",
         "amount",
         "created_at",
         "updated_at",
@@ -67,7 +67,4 @@ class MonthlyBonusAdmin(ModelAdmin):
         "amount",
     )
     search_fields = ["entity__fiscal_name"]
-    readonly_fields = (
-        "entity",
-        "month_and_year",
-    )
+

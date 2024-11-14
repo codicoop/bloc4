@@ -1,13 +1,12 @@
 from datetime import datetime, timedelta
 
 from django.conf import settings
-from django.db.models import Q, Sum
+from django.db.models import Sum
 from django.db.models.functions import ExtractYear
 from django.utils import formats, timezone
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
-from apps.entities.models import MonthlyBonus
 from apps.reservations.constants import MONTHS
 from apps.rooms.choices import RoomTypeChoices
 from project.post_office import send
@@ -138,30 +137,16 @@ def get_monthly_hours_amount_letf(monthly_bonus, reservations):
     return bonus_price, amount_left
 
 
-def get_monthly_bonus_totals(reservations, filter_year, filter_month, entity):
-    from apps.reservations.models import Reservation
-
+def get_monthly_bonus_totals(
+    monthly_bonus, reservations
+):
     bonuses = {}
-    monthly_bonus = MonthlyBonus.objects.filter(
-        entity=entity,
-        date__year=int(filter_year),
-        date__month=int(filter_month),
-    ).first()
     if monthly_bonus:
-        bonuses["is_monthly_bonus"] = True
-        active_reservations = reservations.filter(
-            Q(
-                status__in=[
-                    Reservation.StatusChoices.PENDING,
-                    Reservation.StatusChoices.CONFIRMED,
-                ]
-            )
-        )
         (
             bonus_price,
             amount_left,
-        ) = get_monthly_hours_amount_letf(monthly_bonus, active_reservations)
-        total_price = active_reservations.aggregate(
+        ) = get_monthly_hours_amount_letf(monthly_bonus, reservations)
+        total_price = reservations.aggregate(
             total_sum=Sum("total_price"),
         )["total_sum"]
         bonuses["total_price"] = delete_zeros(total_price)

@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
@@ -9,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
 
 from apps.entities.choices import EntityTypesChoices
+from apps.entities.models import MonthlyBonus
 from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
@@ -36,9 +38,32 @@ def reservations_list(request):
     reservations = reservations_all.filter(
         date__year=now.year, date__month=now.month
     ).order_by("date")
-    if reservations:
-        bonuses = get_monthly_bonus_totals(reservations, now.year, now.month, entity)
-
+    active_reservations = reservations.filter(
+        Q(
+            status__in=[
+                Reservation.StatusChoices.PENDING,
+                Reservation.StatusChoices.CONFIRMED,
+            ]
+        )
+    )
+    monthly_bonus = MonthlyBonus.objects.filter(
+        entity=entity,
+        date__year=now.year,
+        date__month=now.month,
+    )
+    if (
+        entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
+        and monthly_bonus.exists()
+        and reservations.exists()
+    ):
+        monthly_bonus = monthly_bonus.first()
+        bonuses["amount"] = delete_zeros(monthly_bonus.amount)
+        bonuses["amount_left"] = 0
+        bonuses["total_price"] = 0
+        bonuses["bonus_price"] = 0
+        if active_reservations:
+            bonuses = get_monthly_bonus_totals(monthly_bonus, active_reservations)
+        bonuses["is_monthly_bonus"] = True
     context = {
         "reservations": reservations,
         "months": months_list,
@@ -55,17 +80,39 @@ def reservations_list(request):
 # htmx
 def filter_reservations(request):
     bonuses = {}
-    context = {"is_monthly_bonus": False}
     entity = request.user.entity
+    context = {"is_monthly_bonus": False}
     filter_year = request.POST.get("filter_year")
     filter_month = request.POST.get("filter_month")
     reservations = Reservation.objects.filter(
         entity=entity, date__month=filter_month, date__year=filter_year
     ).order_by("date")
-    if reservations:
-        bonuses = get_monthly_bonus_totals(
-            reservations, filter_year, filter_month, entity
+    active_reservations = reservations.filter(
+        Q(
+            status__in=[
+                Reservation.StatusChoices.PENDING,
+                Reservation.StatusChoices.CONFIRMED,
+            ]
         )
+    )
+    monthly_bonus = MonthlyBonus.objects.filter(
+        entity=entity,
+        date__year=int(filter_year),
+        date__month=int(filter_month),
+    )
+    if (
+        entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
+        and monthly_bonus.exists()
+        and reservations.exists()
+    ):
+        monthly_bonus = monthly_bonus.first()
+        bonuses["amount"] = delete_zeros(monthly_bonus.amount)
+        bonuses["amount_left"] = 0
+        bonuses["total_price"] = 0
+        bonuses["bonus_price"] = 0
+        if active_reservations:
+            bonuses = get_monthly_bonus_totals(monthly_bonus, active_reservations)
+        bonuses["is_monthly_bonus"] = True
     context["reservations"] = reservations
     context.update(bonuses)
     return render(

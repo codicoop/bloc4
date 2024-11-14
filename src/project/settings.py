@@ -401,13 +401,12 @@ EXTRA_SETTINGS_DEFAULTS = [
         "description": _("Maximum advance reservation days."),
     },
     {
-        "name": "BANK_ACCOUNT_INFORMATION",
+        "name": "PAYMENT_INFORMATION",
         "type": "Setting.TYPE_TEXT",
         "value": "",
         "description": _(
             "Text which will be displayed in non hosted entities' "
-            "reservations, with the bank account number for make "
-            "the reservation payment."
+            "reservations, with the instructions for payment."
         ),
     },
     {

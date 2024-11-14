@@ -13,10 +13,17 @@ from project.post_office import send
 
 
 def send_mail_reservation(reservation, action):
+    extra_info = ""
+    entity_type = reservation.entity.entity_type
     if "bloc4" in action:
         recipients = [Setting.get("RESERVATIONS_EMAIL")]
     else:
         recipients = [reservation.reserved_by.email]
+    if Setting.get("PAYMENT_INFORMATION") and entity_type in [
+        EntityTypesChoices.GENERAL,
+        EntityTypesChoices.OUTSIDE,
+    ]:
+        extra_info = Setting.get("PAYMENT_INFORMATION")
     context = {
         "reserved_by": reservation.reserved_by,
         "canceled_by": reservation.canceled_by,
@@ -38,6 +45,7 @@ def send_mail_reservation(reservation, action):
         "user_email": reservation.reserved_by.email,
         "total_price": reservation.total_price,
         "status": reservation.get_status_display().lower(),
+        "extra_info": extra_info,
         "reservation_url_admin": f"{settings.ABSOLUTE_URL}/"
         f"admin/reservations/reservation/{reservation.id}",
     }
@@ -137,9 +145,7 @@ def get_monthly_hours_amount_letf(monthly_bonus, reservations):
     return bonus_price, amount_left
 
 
-def get_monthly_bonus_totals(
-    monthly_bonus, reservations
-):
+def get_monthly_bonus_totals(monthly_bonus, reservations):
     bonuses = {}
     if monthly_bonus:
         (

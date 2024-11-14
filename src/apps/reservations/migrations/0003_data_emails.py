@@ -65,8 +65,7 @@ def populate_mail_templates(apps, schema_editor):
                     "subject": "Your Bloc4BCN reservation is confirmed",
                     "body": """
             <p>Hello, {{reserved_by}}!</p>
-            <p>We're sending you this e-mail because
-            Bloc4BCN has confirmed your room reservation request.</p>
+            <p>We're sending you this e-mail because your room reservation request is confirmed.</p>
 
             <p>Here are the details of your reservation:</p>
              <ul>
@@ -79,13 +78,15 @@ def populate_mail_templates(apps, schema_editor):
                 <li>Total price: {{total_price}} €</li>
             </ul>
 
+            <p>{{extra_info}}</p>
+
                         """,
                 },
                 "ca": {
                     "subject": "La teva reserva Bloc4BCN està confirmada",
                     "body": """
             <p>Hola, {{reserved_by}}!</p>
-            <p>T'enviem aquest correu electrònic perquè Bloc4BCN ha confirmat la vostra sol·licitud de reserva de sala.</p>
+            <p>T'enviem aquest correu electrònic perquè confirma la vostra sol·licitud de reserva de sala està confirmada.</p>
 
             <p>Aquí tens els detalls de la teva reserva:</p>
              <ul>
@@ -97,6 +98,9 @@ def populate_mail_templates(apps, schema_editor):
                 <li>Persona responsable: {{reserved_by}}</li>
                 <li>Preu total: {{total_price}} €</li>
             </ul>
+
+            <p>{{extra_info}}</p>
+
                         """,
                 },
             },

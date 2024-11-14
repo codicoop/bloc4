@@ -8,6 +8,7 @@ from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
+from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.models import MonthlyBonus
@@ -168,10 +169,10 @@ def create_reservation_view(request):
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
             reservation.total_price = reservation.get_total_price
-            if (
-                reservation.room.room_type == RoomTypeChoices.CLASSROOM
-                and reservation.entity.entity_privilege.class_reservation_privilege
-            ):
+            privilege = getattr(reservation.entity, "entity_privilege", None)
+            if privilege:
+                privilege = privilege.class_reservation_privilege
+            if privilege and reservation.room.room_type == RoomTypeChoices.CLASSROOM:
                 reservation.status = Reservation.StatusChoices.CONFIRMED
                 send_mail_reservation(reservation, "reservation_confirmed_user")
             else:
@@ -274,6 +275,16 @@ class ReservationSuccessView(StandardSuccess):
     page_title = _("Successful reservation")
     description = _("Successful reservation.")
     url = reverse_lazy("reservations:reservations_list")
+
+    def dispatch(self, request, *args, **kwargs):
+        entity_type = request.user.entity.entity_type
+        if Setting.get("PAYMENT_INFORMATION") and entity_type in [
+            EntityTypesChoices.GENERAL,
+            EntityTypesChoices.OUTSIDE,
+        ]:
+            self.description += "<br><br>" + Setting.get("PAYMENT_INFORMATION")
+
+        return super().dispatch(request, *args, **kwargs)
 
     def get_url(self):
         try:

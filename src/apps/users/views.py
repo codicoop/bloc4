@@ -107,8 +107,10 @@ class EmailVerificationView(FormView, StandardSuccess):
             form.add_error(
                 "email_verification_code",
                 ValidationError(
-                    "Code entered is not correct and the user cannot "
-                    "be verified. Please try again."
+                    _(
+                        "Code entered is not correct and the user cannot "
+                        "be verified. Please try again."
+                    )
                 ),
             )
             return super().form_invalid(form)

@@ -173,10 +173,12 @@ def create_reservation_view(request):
                 and reservation.entity.entity_privilege.class_reservation_privilege
             ):
                 reservation.status = Reservation.StatusChoices.CONFIRMED
+                send_mail_reservation(reservation, "reservation_confirmed_user")
+            else:
+                send_mail_reservation(reservation, "reservation_request_user")
+            send_mail_reservation(reservation, "reservation_request_bloc4")
             reservation.save()
             form.save()
-            send_mail_reservation(reservation, "reservation_request_user")
-            send_mail_reservation(reservation, "reservation_request_bloc4")
             return redirect("reservations:reservations_success")
     return render(
         request,

@@ -52,7 +52,7 @@ def populate_mail_templates(apps, schema_editor):
             </ul>
 
             <p>L'estat actual de la reserva és {{status}},
-            quan BCN confirmi la sol·licitud de la reserva rebrà un correu electrònic informant-lo.
+            quan Bloc4BCN confirmi la sol·licitud de la reserva rebràs un correu electrònic informant-lo.
             </p>
                     """,
                 },
@@ -85,8 +85,7 @@ def populate_mail_templates(apps, schema_editor):
                     "subject": "La teva reserva Bloc4BCN està confirmada",
                     "body": """
             <p>Hola, {{reserved_by}}!</p>
-            <p>T'enviem aquest correu electrònic perquè
-            BCN ha confirmat la vostra sol·licitud de reserva de sala.</p>
+            <p>T'enviem aquest correu electrònic perquè Bloc4BCN ha confirmat la vostra sol·licitud de reserva de sala.</p>
 
             <p>Aquí tens els detalls de la teva reserva:</p>
              <ul>
@@ -146,7 +145,7 @@ def populate_mail_templates(apps, schema_editor):
                     "body": """
     <p>Hola, {{canceled_by}},</p>
     <p>T'enviem aquest e-mail perquè la teva reserva
-     de BCN per a la sala {{room}} el dia {{date_reservation}}
+     de Bloc4BCN per a la sala {{room}} el dia {{date_reservation}}
      amb hora d'inici {{start_time_reservation}}
      i hora de finalització {{end_time_reservation}} ha estat cancel·lada.
     </p>

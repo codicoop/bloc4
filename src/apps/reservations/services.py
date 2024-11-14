@@ -9,7 +9,6 @@ from django.utils import formats, timezone
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.models import MonthlyBonus
 from apps.reservations.constants import MONTHS
-from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from project.post_office import send
 
@@ -140,6 +139,8 @@ def get_monthly_hours_amount_letf(monthly_bonus, reservations):
 
 
 def get_monthly_bonus_totals(reservations, filter_year, filter_month, entity):
+    from apps.reservations.models import Reservation
+
     bonuses = {}
     monthly_bonus = MonthlyBonus.objects.filter(
         entity=entity,

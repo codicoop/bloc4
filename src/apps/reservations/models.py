@@ -50,7 +50,7 @@ class Reservation(BaseModel):
         default="",
     )
     reservation_type = models.CharField(
-        _("Reservation type"),
+        _("Choose the option that interests you most"),
         choices=ReservationTypeChoices,
         default=ReservationTypeChoices.HOURLY,
         blank=False,

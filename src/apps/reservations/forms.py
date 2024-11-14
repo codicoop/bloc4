@@ -21,7 +21,7 @@ class ReservationForm(forms.ModelForm):
         queryset=Entity.objects.all(), widget=forms.HiddenInput(), required=False
     )
     reservation_type = forms.ChoiceField(
-        label=_("Reservation Type"),
+        label=_("Choose the option that interests you most"),
         choices=ReservationTypeChoices,
         required=True,
         widget=forms.RadioSelect(),

@@ -107,8 +107,6 @@ DATABASES = {
 INSTALLED_APPS = [
     "maintenance_mode",
     "django.contrib.postgres",
-    "constance.backends.database",
-    "constance",
     "logentry_admin",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -129,6 +127,7 @@ INSTALLED_APPS = [
     "apps.reservations",
     "django_htmx",
     "sorl.thumbnail",
+    "extra_settings",
 ]
 
 
@@ -270,9 +269,7 @@ TEMPLATES = [
         ],
         "OPTIONS": {
             "context_processors": [
-                "constance.context_processors.config",
                 "maintenance_mode.context_processors.maintenance_mode",
-                "constance.context_processors.config",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -316,7 +313,6 @@ AWS_LOCATION = "static"
 
 DEFAULT_FILE_STORAGE = "project.storage_backends.PublicMediaStorage"
 THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
-
 
 
 ################################################################################
@@ -372,21 +368,76 @@ EMAIL_BACKEND = env.str(
 DJANGO_SUPERUSER_EMAIL = env("DJANGO_SUPERUSER_EMAIL", default=None)
 DJANGO_SUPERUSER_PASSWORD = env("DJANGO_SUPERUSER_PASSWORD", default=None)
 
-
-# Constance
-# https://django-constance.readthedocs.io/en/latest/#configuration
-CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
-CONSTANCE_CONFIG = {
-    "PROJECT_NAME": ("Bloc4BCN", _("Name of the website."), str),
-    "CONTACT_EMAIL": ("", _("Contact email address."), str),
-    "RESERVATIONS_EMAIL": ("", _("Reservations email address."), str),
-    "MAXIMUM_ADVANCE_RESERVATION_DAYS": (
-        30,
-        _("Maximum advance reservation days."),
-        int,
-    ),
-}
-
+################################################################################
+#                         django-extra-settings                                #
+################################################################################
+PROJECT_NAME = env.str("PROJECT_NAME", default="Bloc4BCN")
+EXTRA_SETTINGS_DEFAULTS = [
+    {
+        "name": "PROJECT_NAME",
+        "type": "Setting.TYPE_STRING",
+        "value": PROJECT_NAME,
+        "description": _(
+            "This name will be used for the HTML title of the "
+            "public app, logo alt text and other places."
+        ),
+    },
+    {
+        "name": "CONTACT_EMAIL",
+        "type": "Setting.TYPE_EMAIL",
+        "value": "",
+        "description": _("Contact email address."),
+    },
+    {
+        "name": "RESERVATIONS_EMAIL",
+        "type": "Setting.TYPE_EMAIL",
+        "value": "",
+        "description": _("Reservations email address."),
+    },
+    {
+        "name": "MAXIMUM_ADVANCE_RESERVATION_DAYS",
+        "type": "Setting.TYPE_INT",
+        "value": 30,
+        "description": _("Maximum advance reservation days."),
+    },
+    {
+        "name": "BANK_ACCOUNT_INFORMATION",
+        "type": "Setting.TYPE_TEXT",
+        "value": "",
+        "description": _(
+            "Text which will be displayed in non hosted entities' "
+            "reservations, with the bank account number for make "
+            "the reservation payment."
+        ),
+    },
+    {
+        "name": "DATA_POLICY",
+        "type": "Setting.TYPE_TEXT",
+        "value": "",
+        "description": _(
+            "Text which will be displayed in the reservations "
+            "for accepting the data policy."
+        ),
+    },
+    {
+        "name": "REGULATIONS",
+        "type": "Setting.TYPE_FILE",
+        "value": "",
+        "description": _(
+            "PDF file which will be linked in the reservations "
+            "for accepting the regulations."
+        ),
+    },
+    {
+        "name": "CATERING_ROOM",
+        "type": "Setting.TYPE_STRING",
+        "value": "",
+        "description": _("ID for the room designated to host the caterings."),
+    },
+]
+EXTRA_SETTINGS_IMAGE_UPLOAD_TO = "django-extra-settings-images"
+EXTRA_SETTINGS_FILE_UPLOAD_TO = "django-extra-settings-files"
+EXTRA_SETTINGS_VERBOSE_NAME = _("Dynamic settings")
 
 ################################################################################
 #                                  Logging                                     #

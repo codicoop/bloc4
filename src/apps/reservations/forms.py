@@ -3,6 +3,7 @@ from django.core.validators import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.models import Entity
+from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
@@ -16,6 +17,13 @@ class ReservationForm(forms.ModelForm):
     entity = forms.ModelChoiceField(
         queryset=Entity.objects.all(), widget=forms.HiddenInput(), required=False
     )
+    reservation_type = forms.ChoiceField(
+        label=_("Reservation Type"),
+        choices=ReservationTypeChoices,
+        required=True,
+        widget=forms.RadioSelect(),
+        initial=ReservationTypeChoices.HOURLY,
+    )
     title = forms.CharField(
         label=_("Title"),
         widget=forms.TextInput(
@@ -27,7 +35,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500"
                 "dark:focus:border-primary-500",
-                "autofocus": True,
                 "autocomplete": "on",
             }
         ),
@@ -152,7 +159,7 @@ class ReservationForm(forms.ModelForm):
         ),
     )
     bloc4_reservation = forms.BooleanField(
-        label=_("Reservation for Bloc4 services"),
+        label=_("Reservation for Bloc4BCN services"),
         required=False,
         widget=forms.CheckboxInput(
             attrs={
@@ -161,7 +168,7 @@ class ReservationForm(forms.ModelForm):
                 "border-gray-300 bg-gray-50 focus:ring-3 "
                 "focus:ring-primary-300 "
                 "dark:bg-gray-700 dark:border-gray-600 ",
-                "help_text": _("Bloc4 reservation"),
+                "help_text": _("Bloc4BCN reservation"),
             }
         ),
     )
@@ -183,7 +190,7 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "autocomplete": True,
                 "help_text": _(
-                    "If the training is public, it will appear in the bloc4 agenda"
+                    "If the training is public, it will appear in the Bloc4BCN agenda"
                 ),
                 "_": "init if my.value is 'public' "
                 "remove .hidden from #id_description.parentElement "
@@ -218,7 +225,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:bg-gray-700 dark:border-gray-600 "
                 "dark:placeholder-gray-400 dark:text-white"
                 "dark:focus:ring-primary-500 dark:focus:border-primary-500",
-                "autofocus": True,
                 "autocomplete": True,
                 "cols": "40",
                 "rows": "10",
@@ -250,8 +256,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500"
                 "dark:focus:border-primary-500",
-                "autofocus": True,
-                "autocomplete": True,
                 "help_text": _(
                     "This field will be used for the public add of the event."
                 ),
@@ -261,7 +265,8 @@ class ReservationForm(forms.ModelForm):
 
     class Meta:
         model = Reservation
-        fields = [
+        fields = (
+            "reservation_type",
             "room",
             "entity",
             "title",
@@ -276,7 +281,7 @@ class ReservationForm(forms.ModelForm):
             "description",
             "url",
             "poster",
-        ]
+        )
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)

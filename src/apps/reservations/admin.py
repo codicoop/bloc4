@@ -24,7 +24,6 @@ class ReservationAdmin(ModelAdmin):
         "privacy",
     )
     list_filter = (
-        "title",
         "date",
         "room",
         "is_paid",
@@ -35,6 +34,7 @@ class ReservationAdmin(ModelAdmin):
         "canceled_at",
         "status",
     )
+    date_hierarchy = "date"
     search_fields = (
         "title",
         "date",
@@ -54,6 +54,7 @@ class ReservationAdmin(ModelAdmin):
                 "fields": (
                     "room",
                     "title",
+                    "reservation_type",
                     "date",
                     "start_time",
                     "end_time",
@@ -84,7 +85,7 @@ class ReservationAdmin(ModelAdmin):
             },
         ),
     )
-    readonly_fields = ("actions_field", "total_price")
+    readonly_fields = ("actions_field",)
 
     def get_urls(self):
         urls = super().get_urls()

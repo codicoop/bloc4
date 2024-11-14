@@ -6,7 +6,7 @@ from project.admin import ModelAdmin
 
 @admin.register(Room)
 class RoomAdmin(ModelAdmin):
-    fields = [
+    fields = (
         "name",
         "room_type",
         "code",
@@ -17,7 +17,7 @@ class RoomAdmin(ModelAdmin):
         "picture",
         "description",
         "equipment",
-    ]
+    )
     list_display = (
         "name",
         "room_type",

@@ -1,16 +1,17 @@
 import uuid
 from datetime import datetime
 
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
-from django.views.generic.list import ListView
 
 from apps.entities.choices import EntityTypesChoices
-from apps.reservations.constants import END_TIME, HALF_TIME, START_TIME
+from apps.entities.models import MonthlyBonus
+from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
@@ -18,6 +19,8 @@ from apps.reservations.services import (
     calculate_reservation_price,
     date_to_full_calendar_format,
     delete_zeros,
+    get_monthly_bonus_totals,
+    get_years_and_months,
     send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
@@ -26,16 +29,97 @@ from apps.rooms.models import Room
 from project.views import StandardSuccess
 
 
-class ReservationsListView(ListView):
-    model = Reservation
-    template_name = "reservations/reservations_list.html"
+def reservations_list(request):
+    bonuses = {}
+    entity = request.user.entity
+    now = timezone.now()
+    reservations_all = Reservation.objects.filter(entity=entity)
+    months_list, years_list = get_years_and_months(reservations_all)
+    reservations = reservations_all.filter(
+        date__year=now.year, date__month=now.month
+    ).order_by("date")
+    active_reservations = reservations.filter(
+        Q(
+            status__in=[
+                Reservation.StatusChoices.PENDING,
+                Reservation.StatusChoices.CONFIRMED,
+            ]
+        )
+    )
+    monthly_bonus = MonthlyBonus.objects.filter(
+        entity=entity,
+        date__year=now.year,
+        date__month=now.month,
+    )
+    if (
+        entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
+        and monthly_bonus.exists()
+        and reservations.exists()
+    ):
+        monthly_bonus = monthly_bonus.first()
+        bonuses["amount"] = delete_zeros(monthly_bonus.amount)
+        bonuses["amount_left"] = 0
+        bonuses["total_price"] = 0
+        bonuses["bonus_price"] = 0
+        if active_reservations:
+            bonuses = get_monthly_bonus_totals(monthly_bonus, active_reservations)
+        bonuses["is_monthly_bonus"] = True
+    context = {
+        "reservations": reservations,
+        "months": months_list,
+        "years": years_list,
+    }
+    context.update(bonuses)
+    return render(
+        request,
+        "reservations/reservations_list.html",
+        context,
+    )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["reservations"] = Reservation.objects.filter(
-            entity=self.request.user.entity
-        ).order_by("-date")
-        return context
+
+# htmx
+def filter_reservations(request):
+    bonuses = {}
+    entity = request.user.entity
+    context = {"is_monthly_bonus": False}
+    filter_year = request.POST.get("filter_year")
+    filter_month = request.POST.get("filter_month")
+    reservations = Reservation.objects.filter(
+        entity=entity, date__month=filter_month, date__year=filter_year
+    ).order_by("date")
+    active_reservations = reservations.filter(
+        Q(
+            status__in=[
+                Reservation.StatusChoices.PENDING,
+                Reservation.StatusChoices.CONFIRMED,
+            ]
+        )
+    )
+    monthly_bonus = MonthlyBonus.objects.filter(
+        entity=entity,
+        date__year=int(filter_year),
+        date__month=int(filter_month),
+    )
+    if (
+        entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
+        and monthly_bonus.exists()
+        and reservations.exists()
+    ):
+        monthly_bonus = monthly_bonus.first()
+        bonuses["amount"] = delete_zeros(monthly_bonus.amount)
+        bonuses["amount_left"] = 0
+        bonuses["total_price"] = 0
+        bonuses["bonus_price"] = 0
+        if active_reservations:
+            bonuses = get_monthly_bonus_totals(monthly_bonus, active_reservations)
+        bonuses["is_monthly_bonus"] = True
+    context["reservations"] = reservations
+    context.update(bonuses)
+    return render(
+        request,
+        "reservations/components/reservations.html",
+        context,
+    )
 
 
 def create_reservation_view(request):
@@ -53,8 +137,6 @@ def create_reservation_view(request):
         start_datetime = datetime.fromisoformat(start)
         end_datetime = datetime.fromisoformat(end)
         date = start_datetime.date().strftime("%Y-%m-%d")
-        start_time = start_datetime.time()
-        end_time = end_datetime.time()
         price_discount = calculate_discount_price(entity_type, room.price)
         total_price = calculate_reservation_price(
             start_datetime, end_datetime, price_discount
@@ -63,8 +145,8 @@ def create_reservation_view(request):
         form = ReservationForm(
             initial={
                 "date": date,
-                "start_time": start_time.strftime("%H:%M"),
-                "end_time": end_time.strftime("%H:%M"),
+                "start_time": start_datetime,
+                "end_time": end_datetime,
                 "entity": request.user.entity,
                 "room": room.id,
             },
@@ -85,10 +167,18 @@ def create_reservation_view(request):
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
+            reservation.total_price = reservation.get_total_price
+            if (
+                reservation.room.room_type == RoomTypeChoices.CLASSROOM
+                and reservation.entity.entity_privilege.class_reservation_privilege
+            ):
+                reservation.status = Reservation.StatusChoices.CONFIRMED
+                send_mail_reservation(reservation, "reservation_confirmed_user")
+            else:
+                send_mail_reservation(reservation, "reservation_request_user")
+            send_mail_reservation(reservation, "reservation_request_bloc4")
             reservation.save()
             form.save()
-            send_mail_reservation(reservation, "reservation_request_user")
-            send_mail_reservation(reservation, "reservation_request_bloc4")
             return redirect("reservations:reservations_success")
     return render(
         request,
@@ -143,17 +233,19 @@ def reservation_detail_view(request, id):
 
 # htmx
 def calculate_total_price(request):
+    entity_type = request.user.entity.entity_type
     total_price = 0
     if request.htmx:
-        selected_price = request.POST.get("selected_price")
-        total_price = selected_price
-        element_id = request.POST.get("id")
         room = get_object_or_404(Room, id=request.POST.get("room"))
-        if (
-            element_id == "hourly-day"
-            or element_id == "start-hourly-day"
-            or element_id == "end-hourly-day"
-        ):
+        reservation_type = request.POST.get("reservation_type")
+        if reservation_type == ReservationTypeChoices.WHOLE_DAY:
+            total_price = calculate_discount_price(entity_type, room.price_all_day)
+        elif reservation_type in [
+            ReservationTypeChoices.MORNING,
+            ReservationTypeChoices.AFTERNOON,
+        ]:
+            total_price = calculate_discount_price(entity_type, room.price_half_day)
+        elif reservation_type == ReservationTypeChoices.HOURLY:
             start_time_str = request.POST.get("start_time")
             end_time_str = request.POST.get("end_time")
             try:
@@ -162,16 +254,10 @@ def calculate_total_price(request):
                 today = datetime.today().date()
                 start_datetime = datetime.combine(today, start_time)
                 end_datetime = datetime.combine(today, end_time)
-                if start_time == START_TIME and end_time == END_TIME:
-                    total_price = room.price_all_day
-                elif start_time == START_TIME and end_time == HALF_TIME:
-                    total_price = room.price_half_day
-                elif start_time == HALF_TIME and end_time == END_TIME:
-                    total_price = room.price_half_day
-                else:
-                    total_price = calculate_reservation_price(
-                        start_datetime, end_datetime, selected_price
-                    )
+                total_price = calculate_reservation_price(
+                    start_datetime, end_datetime, room.price
+                )
+                total_price = calculate_discount_price(entity_type, total_price)
             except ValueError:
                 total_price = 0
         return render(

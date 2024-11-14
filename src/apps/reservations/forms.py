@@ -159,7 +159,7 @@ class ReservationForm(forms.ModelForm):
         ),
     )
     bloc4_reservation = forms.BooleanField(
-        label=_("Reservation for Bloc4 services"),
+        label=_("Reservation for Bloc4BCN services"),
         required=False,
         widget=forms.CheckboxInput(
             attrs={
@@ -168,7 +168,7 @@ class ReservationForm(forms.ModelForm):
                 "border-gray-300 bg-gray-50 focus:ring-3 "
                 "focus:ring-primary-300 "
                 "dark:bg-gray-700 dark:border-gray-600 ",
-                "help_text": _("Bloc4 reservation"),
+                "help_text": _("Bloc4BCN reservation"),
             }
         ),
     )
@@ -186,7 +186,7 @@ class ReservationForm(forms.ModelForm):
                 "dark:focus:border-primary-500",
                 "autocomplete": True,
                 "help_text": _(
-                    "If the training is public, it will appear in the bloc4 agenda"
+                    "If the training is public, it will appear in the Bloc4BCN agenda"
                 ),
                 "_": "init if my.value is 'public' "
                 "remove .hidden from #id_description.parentElement "

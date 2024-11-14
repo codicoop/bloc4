@@ -1,6 +1,5 @@
 from datetime import date, datetime, timedelta
 
-from constance import config
 from django.core.validators import (
     MinValueValidator,
     ValidationError,
@@ -10,6 +9,7 @@ from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
 from apps.reservations.choices import ReservationTypeChoices
@@ -107,7 +107,7 @@ class Reservation(BaseModel):
         help_text=_("Notes for the reservation"),
     )
     bloc4_reservation = models.BooleanField(
-        _("Reservation for Bloc4 services"),
+        _("Reservation for Bloc4BCN services"),
         null=False,
         blank=False,
         default=False,
@@ -424,7 +424,7 @@ class Reservation(BaseModel):
                 # Validation reservation is made within maximum day
                 # in advance configured.
                 future_date = date.today() + timedelta(
-                    days=config.MAXIMUM_ADVANCE_RESERVATION_DAYS
+                    days=Setting.get("MAXIMUM_ADVANCE_RESERVATION_DAYS"),
                 )
                 if not entity.reservation_privilege and self.date > future_date:
                     errors.update(
@@ -434,7 +434,11 @@ class Reservation(BaseModel):
                                     "The maximum advance reservation "
                                     "period is %(days)s days."
                                 )
-                                % {"days": config.MAXIMUM_ADVANCE_RESERVATION_DAYS}
+                                % {
+                                    "days": Setting.get(
+                                        "MAXIMUM_ADVANCE_RESERVATION_DAYS"
+                                    )
+                                }
                             )
                         },
                     )

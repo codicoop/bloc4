@@ -1,5 +1,5 @@
 {% extends "../base_form.html" %}
-{% load i18n static %}
+{% load i18n static extra_settings %}
 
 {# Blocks de base.html #}
 {% block page_title %}{% translate "Log in" %}{% endblock %}
@@ -45,7 +45,7 @@
   {% translate "and ask for a registration." %}
 </p> -->
 <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-  {% translate "If your entity doesn't belong to Bloc4, you can" %}
+  {% translate "If your entity doesn't belong to " %} {% get_setting "PROJECT_NAME" %}, {% translate "you can" %}
 </p>
 <a href="{% url 'registration:signup' %}">
   <div class="w-full mb-4 mt-2 px-5 py-2.5 rounded-lg bg-white text-primary-600 font-bold text-sm 

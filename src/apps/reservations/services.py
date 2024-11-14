@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 
-from constance import config
 from django.conf import settings
 from django.db.models import Q, Sum
 from django.db.models.functions import ExtractYear
 from django.utils import formats, timezone
+from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.models import MonthlyBonus
@@ -15,7 +15,7 @@ from project.post_office import send
 
 def send_mail_reservation(reservation, action):
     if "bloc4" in action:
-        recipients = [config.RESERVATIONS_EMAIL]
+        recipients = [Setting.get("RESERVATIONS_EMAIL")]
     else:
         recipients = [reservation.reserved_by.email]
     context = {
@@ -42,7 +42,7 @@ def send_mail_reservation(reservation, action):
         "reservation_url_admin": f"{settings.ABSOLUTE_URL}/"
         f"admin/reservations/reservation/{reservation.id}",
     }
-    if config.RESERVATIONS_EMAIL:
+    if Setting.get("RESERVATIONS_EMAIL"):
         send(
             recipients=recipients,
             template=action,

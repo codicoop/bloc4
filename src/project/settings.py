@@ -420,12 +420,12 @@ EXTRA_SETTINGS_DEFAULTS = [
         ),
     },
     {
-        "name": "REGULATIONS",
+        "name": "TERMS_USE",
         "type": "Setting.TYPE_FILE",
         "value": "",
         "description": _(
             "PDF file which will be linked in the reservations "
-            "for accepting the regulations."
+            "for accepting the terms of use."
         ),
     },
     {

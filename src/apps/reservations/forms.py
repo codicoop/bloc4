@@ -1,6 +1,9 @@
 from django import forms
+from django.conf import settings
 from django.core.validators import ValidationError
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from extra_settings.models import Setting
 
 from apps.entities.models import Entity
 from apps.reservations.choices import ReservationTypeChoices
@@ -262,6 +265,43 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
+    data_policy = forms.BooleanField(
+        label=_("I agree to Privacy Policy"),
+        required=True,
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "ms-2 text-sm font-medium text-gray-900 "
+                "dark:text-gray-300 w-4 h-4 border rounded text-primary-500 "
+                "border-gray-300 bg-gray-50 focus:ring-3 "
+                "focus:ring-primary-300 "
+                "dark:bg-gray-700 dark:border-gray-600 ",
+                "help_text": _("Bloc4BCN reservation"),
+            }
+        ),
+        help_text=Setting.get("DATA_POLICY"),
+    )
+    terms_use = forms.BooleanField(
+        label=mark_safe(
+            _(
+                f'I agree the <a href="{settings.AWS_S3_ENDPOINT_URL}/'
+                f'{settings.AWS_STORAGE_BUCKET_NAME}/'
+                f'{settings.AWS_PUBLIC_MEDIA_LOCATION}/'
+                f'{Setting.get("TERMS_USE")}" target="_blank"'
+                f'style="color: #be3bc7; font-weight: bold;">Terms of Use</a>'
+            )
+        ),
+        required=True,
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "ms-2 text-sm font-medium text-gray-900 "
+                "dark:text-gray-300 w-4 h-4 border rounded text-primary-500 "
+                "border-gray-300 bg-gray-50 focus:ring-3 "
+                "focus:ring-primary-300 "
+                "dark:bg-gray-700 dark:border-gray-600 ",
+                "help_text": _("Bloc4BCN reservation"),
+            }
+        ),
+    )
 
     class Meta:
         model = Reservation
@@ -281,6 +321,8 @@ class ReservationForm(forms.ModelForm):
             "description",
             "url",
             "poster",
+            "data_policy",
+            "terms_use",
         )
 
     def __init__(self, *args, **kwargs):

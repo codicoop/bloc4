@@ -49,7 +49,8 @@
   {% translate "Your reservations" %}
 </h1>
 
-<form class="mb-8">
+<form class="mb-8 flex flex-col gap-4 md:grid md:grid-cols-2">
+  <div class="col-start-1">
     {% csrf_token %}
     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
       {% translate "Filter by" %}
@@ -78,6 +79,7 @@
         {% endfor %}
       </select>
     </div>
+  </div>
 </form>
 <div class="flex flex-col gap-4 mb-8 md:grid md:grid-cols-2" id="htmx-reservations">
   {% include './components/reservations.html' %}

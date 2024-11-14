@@ -34,7 +34,7 @@ class ReservationAdmin(ModelAdmin):
         "canceled_at",
         "status",
     )
-    date_hierarchy = "date"
+    date_hierarchy = ("date",)
     search_fields = (
         "title",
         "date",

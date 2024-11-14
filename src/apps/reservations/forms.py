@@ -261,7 +261,7 @@ class ReservationForm(forms.ModelForm):
 
     class Meta:
         model = Reservation
-        fields = [
+        fields = (
             "reservation_type",
             "room",
             "entity",
@@ -277,7 +277,7 @@ class ReservationForm(forms.ModelForm):
             "description",
             "url",
             "poster",
-        ]
+        )
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)

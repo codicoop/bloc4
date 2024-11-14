@@ -10,16 +10,16 @@ class EntityPrivilegeInline(admin.StackedInline):
     model = EntityPrivilege
     can_delete = False
     verbose_name = _("Entity Privileges")
-    fields = [
+    fields = (
         "monthly_hours_meeting",
         "anual_hours_class",
         "class_reservation_privilege",
-    ]
+    )
 
 
 @admin.register(Entity)
 class EntityAdmin(ModelAdmin):
-    fields = [
+    fields = (
         "entity_email",
         "fiscal_name",
         "nif",
@@ -31,7 +31,7 @@ class EntityAdmin(ModelAdmin):
         "entity_type",
         "reservation_privilege",
         "logo",
-    ]
+    )
     list_display = (
         "fiscal_name",
         "entity_email",
@@ -53,18 +53,17 @@ class EntityAdmin(ModelAdmin):
 
 @admin.register(MonthlyBonus)
 class MonthlyBonusAdmin(ModelAdmin):
-    fields = [
+    fields = (
         "entity",
         "date",
         "amount",
         "created_at",
         "updated_at",
         "created_by",
-    ]
+    )
     list_display = (
         "entity",
         "month_and_year",
         "amount",
     )
-    search_fields = ["entity__fiscal_name"]
-
+    search_fields = ("entity__fiscal_name",)

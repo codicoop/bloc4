@@ -153,7 +153,7 @@ ben llarga i t'agrairem que ens informis de la situació.
             id="email_account_activated",
             translated_templates={
                 "en": {
-                    "subject": "Account activated in {{absolute_url}}",
+                    "subject": "Account activated in Bloc4BCN",
                     "body": """
     <p>Hello, {{user_name}},</p>
     <p>We're sending you this e-mail because today {{date}} at {{time}}
@@ -161,7 +161,7 @@ ben llarga i t'agrairem que ens informis de la situació.
                         """,
                 },
                 "ca": {
-                    "subject": "Compte activat {{absolute_url}}",
+                    "subject": "Compte activat a Bloc4BCN",
                     "body": """
     <p>Hola, {{user_name}},</p>
 

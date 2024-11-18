@@ -215,6 +215,13 @@ def reservation_detail_view(request, id):
             )
     except ValueError:
         return redirect("reservations:reservations_list")
+    extra_info = None
+    if (
+        reservation.entity.entity_type
+        in [EntityTypesChoices.GENERAL, EntityTypesChoices.OUTSIDE]
+        and reservation.status == Reservation.StatusChoices.CONFIRMED
+    ):
+        extra_info = Setting.get("PAYMENT_INFORMATION")
     if "cancel_reservation" in request.POST:
         id = request.POST.get("cancel_reservation")
         reservation = get_object_or_404(Reservation, id=id)
@@ -225,10 +232,12 @@ def reservation_detail_view(request, id):
         send_mail_reservation(reservation, "reservation_canceled_user")
         send_mail_reservation(reservation, "reservation_canceled_bloc4")
         return redirect("reservations:reservations_cancelled")
+
+    print("extra_info", extra_info)
     return render(
         request,
         "reservations/details.html",
-        {"reservation": reservation, "is_staff": is_staff},
+        {"reservation": reservation, "is_staff": is_staff, "extra_info": extra_info},
     )
 
 
@@ -276,15 +285,15 @@ class ReservationSuccessView(StandardSuccess):
     description = _("Successful reservation.")
     url = reverse_lazy("reservations:reservations_list")
 
-    def dispatch(self, request, *args, **kwargs):
-        entity_type = request.user.entity.entity_type
-        if Setting.get("PAYMENT_INFORMATION") and entity_type in [
-            EntityTypesChoices.GENERAL,
-            EntityTypesChoices.OUTSIDE,
-        ]:
-            self.description += "<br><br>" + Setting.get("PAYMENT_INFORMATION")
+    # def dispatch(self, request, *args, **kwargs):
+    #     entity_type = request.user.entity.entity_type
+    #     if Setting.get("PAYMENT_INFORMATION") and entity_type in [
+    #         EntityTypesChoices.GENERAL,
+    #         EntityTypesChoices.OUTSIDE,
+    #     ]:
+    #         self.description += "<br><br>" + Setting.get("PAYMENT_INFORMATION")
 
-        return super().dispatch(request, *args, **kwargs)
+    #     return super().dispatch(request, *args, **kwargs)
 
     def get_url(self):
         try:

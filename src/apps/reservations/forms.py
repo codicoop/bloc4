@@ -1,12 +1,13 @@
 from django import forms
-from django.conf import settings
 from django.core.validators import ValidationError
-from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from extra_settings.models import Setting
 
 from apps.entities.models import Entity
-from apps.reservations.choices import ReservationTypeChoices
+from apps.reservations.choices import (
+    ActivityTypeChoices,
+    Bloc4TypeChoices,
+    ReservationTypeChoices,
+)
 from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
@@ -161,18 +162,38 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
-    bloc4_reservation = forms.BooleanField(
-        label=_("Reservation for Bloc4BCN services"),
-        required=False,
-        widget=forms.CheckboxInput(
+    activity_type = forms.ChoiceField(
+        label=_("Ateneu's activity"),
+        choices=ActivityTypeChoices,
+        required=True,
+        widget=forms.Select(
             attrs={
-                "class": "ms-2 text-sm font-medium text-gray-900 "
-                "dark:text-gray-300 w-4 h-4 border rounded text-primary-500 "
-                "border-gray-300 bg-gray-50 focus:ring-3 "
-                "focus:ring-primary-300 "
-                "dark:bg-gray-700 dark:border-gray-600 ",
-                "help_text": _("Bloc4BCN reservation"),
-            }
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
+                "border-gray-300 text-gray-900 focus:ring-primary-500 "
+                "focus:border-primary-500 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
+                "autocomplete": True,
+                "_": "",  # Hypertext
+            },
+        ),
+        initial=ActivityTypeChoices.BLOC4,
+    )
+    bloc4_type = forms.ChoiceField(
+        label=_("Service type Bloc4BCN"),
+        choices=Bloc4TypeChoices,
+        required=False,
+        widget=forms.Select(
+            attrs={
+                "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
+                "border-gray-300 text-gray-900 focus:ring-primary-500 "
+                "focus:border-primary-500 dark:bg-gray-700 "
+                "dark:border-gray-600 dark:placeholder-gray-400 "
+                "dark:text-white dark:focus:ring-primary-500 "
+                "dark:focus:border-primary-500",
+                "autocomplete": True,
+            },
         ),
     )
     privacy = forms.ChoiceField(
@@ -278,18 +299,18 @@ class ReservationForm(forms.ModelForm):
                 "help_text": _("Bloc4BCN reservation"),
             }
         ),
-        help_text=Setting.get("DATA_POLICY"),
+        # help_text=Setting.get("DATA_POLICY"),
     )
     terms_use = forms.BooleanField(
-        label=mark_safe(
-            _(
-                f'I agree the <a href="{settings.AWS_S3_ENDPOINT_URL}/'
-                f'{settings.AWS_STORAGE_BUCKET_NAME}/'
-                f'{settings.AWS_PUBLIC_MEDIA_LOCATION}/'
-                f'{Setting.get("TERMS_USE")}" target="_blank"'
-                f'style="color: #be3bc7; font-weight: bold;">Terms of Use</a>'
-            )
-        ),
+        # label=mark_safe(
+        #     _(
+        #         f'I agree the <a href="{settings.AWS_S3_ENDPOINT_URL}/'
+        #         f'{settings.AWS_STORAGE_BUCKET_NAME}/'
+        #         f'{settings.AWS_PUBLIC_MEDIA_LOCATION}/'
+        #         f'{Setting.get("TERMS_USE")}" target="_blank"'
+        #         f'style="color: #be3bc7; font-weight: bold;">Terms of Use</a>'
+        #     )
+        # ),
         required=True,
         widget=forms.CheckboxInput(
             attrs={
@@ -316,7 +337,8 @@ class ReservationForm(forms.ModelForm):
             "assistants",
             "catering",
             "notes",
-            "bloc4_reservation",
+            "activity_type",
+            "bloc4_type",
             "privacy",
             "description",
             "url",

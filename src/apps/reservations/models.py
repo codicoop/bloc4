@@ -12,7 +12,11 @@ from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
-from apps.reservations.choices import ReservationTypeChoices
+from apps.reservations.choices import (
+    ActivityTypeChoices,
+    Bloc4TypeChoices,
+    ReservationTypeChoices,
+)
 from apps.reservations.constants import (
     END_TIME,
     END_TIME_MINUS_ONE,
@@ -99,17 +103,25 @@ class Reservation(BaseModel):
         blank=False,
         default=False,
     )
-    notes = models.CharField(
+    notes = models.TextField(
         _("Do you need to tell us something?"),
         max_length=500,
         blank=False,
         default="",
     )
-    bloc4_reservation = models.BooleanField(
-        _("Reservation for Bloc4BCN services"),
-        null=False,
+    activity_type = models.CharField(
+        _("Ateneu's activity"),
+        choices=ActivityTypeChoices,
+        default=ActivityTypeChoices.BLOC4,
         blank=False,
-        default=False,
+        max_length=10,
+    )
+    bloc4_type = models.CharField(
+        _("Service type Bloc4BCN"),
+        choices=Bloc4TypeChoices,
+        default="",
+        blank=True,
+        max_length=20,
     )
     privacy = models.CharField(
         _("Type of event"),
@@ -264,7 +276,6 @@ class Reservation(BaseModel):
                     },
                 )
                 raise ValidationError(errors)
-
             # Validates that the reservation duration is between 1 and 20 hours.
             if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
                 str(self.start_time), "%H:%M:%S"

@@ -33,6 +33,8 @@ class ReservationAdmin(ModelAdmin):
         "canceled_by",
         "canceled_at",
         "status",
+        "activity_type",
+        "bloc4_type",
     )
     date_hierarchy = "date"
     search_fields = (
@@ -61,7 +63,8 @@ class ReservationAdmin(ModelAdmin):
                     "assistants",
                     "catering",
                     "notes",
-                    "bloc4_reservation",
+                    "activity_type",
+                    "bloc4_type",
                     "is_paid",
                     "total_price",
                     "entity",

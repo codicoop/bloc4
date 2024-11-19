@@ -121,21 +121,12 @@ class ReservationForm(forms.ModelForm):
         ),
     )
     catering = forms.BooleanField(
-        label=_("Do I need catering service?"),
-        widget=forms.CheckboxInput(
-            attrs={
-                "class": "ms-2 text-sm font-medium text-gray-900 "
-                "dark:text-gray-300 w-4 h-4 border rounded text-primary-500 "
-                "border-gray-300 bg-gray-50 focus:ring-3 "
-                "focus:ring-primary-300 "
-                "dark:bg-gray-700 dark:border-gray-600 ",
-                "help_text": _("Bloc4 reservation"),
-            }
+        label=_("Do you need catering space outside the room?"),
+        help_text=_(
+            "Only small refreshments are allowed. Other types of meals must "
+            "be made by reserving the Meeting Space. You are in charge of "
+            "coordinating all aspects related to catering."
         ),
-    )
-    catering = forms.BooleanField(
-        label=_("Do I need catering service?"),
-        required=False,
         widget=forms.CheckboxInput(
             attrs={
                 "class": "ms-2 text-sm font-medium text-gray-900 "
@@ -175,7 +166,16 @@ class ReservationForm(forms.ModelForm):
                 "dark:text-white dark:focus:ring-primary-500 "
                 "dark:focus:border-primary-500",
                 "autocomplete": True,
-                "_": "",  # Hypertext
+                "_": "init if my.value is 'bloc4' "
+                "remove .hidden from #id_bloc4_type.parentElement "
+                "else "
+                "add .hidden to #id_bloc4_type.parentElement "
+                "end "
+                "on change "
+                "if my.value is 'bloc4' "
+                "remove .hidden from #id_bloc4_type.parentElement "
+                "else "
+                "add .hidden to #id_bloc4_type.parentElement ",
             },
         ),
         initial=ActivityTypeChoices.BLOC4,
@@ -213,9 +213,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:text-white dark:focus:ring-primary-500 "
                 "dark:focus:border-primary-500",
                 "autocomplete": True,
-                "help_text": _(
-                    "If the training is public, it will appear in the Bloc4BCN agenda"
-                ),
                 "_": "init if my.value is 'public' "
                 "remove .hidden from #id_description.parentElement "
                 "then remove .hidden from #id_url.parentElement "

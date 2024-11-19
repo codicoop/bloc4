@@ -195,6 +195,7 @@ def create_reservation_view(request):
                             "start": start_time_str,
                             "end": end_time_str,
                             "id": catering_id,
+                            "catering": True,
                         }
                         url = f"{base_url}?{urlencode(query_params)}"
                         return redirect(url)
@@ -252,8 +253,6 @@ def reservation_detail_view(request, id):
         send_mail_reservation(reservation, "reservation_canceled_user")
         send_mail_reservation(reservation, "reservation_canceled_bloc4")
         return redirect("reservations:reservations_cancelled")
-
-    print("extra_info", extra_info)
     return render(
         request,
         "reservations/details.html",
@@ -356,6 +355,7 @@ def reservations_calendar_view(request):
     context["discount"] = EntityTypesChoices(
         request.user.entity.entity_type
     ).get_discount_percentage()
+    context["is_staff"] = request.user.is_staff
     if request.htmx:
         room_type = request.POST.get("room_type")
         if room_type != "all":
@@ -401,5 +401,7 @@ class AjaxCalendarFeed(View):
                 "is_staff": request.user.is_staff,
                 "reservation_id": reservation.id,
             }
+            if request.user.is_staff:
+                reservation_data["entity"] = reservation.entity.fiscal_name
             data.append(reservation_data)
         return JsonResponse(data, safe=False)

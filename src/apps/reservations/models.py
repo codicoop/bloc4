@@ -58,7 +58,6 @@ class Reservation(BaseModel):
         choices=ReservationTypeChoices,
         default=ReservationTypeChoices.HOURLY,
         blank=False,
-        help_text=_("Only hourly reservations are available for hourly bonuses"),
         max_length=10,
     )
     date = models.DateField(

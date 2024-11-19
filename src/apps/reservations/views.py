@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from urllib.parse import urlencode
 
 from django.db.models import Q
 from django.http import JsonResponse
@@ -18,6 +19,7 @@ from apps.reservations.models import Reservation
 from apps.reservations.services import (
     calculate_discount_price,
     calculate_reservation_price,
+    convert_datetime_to_str,
     date_to_full_calendar_format,
     delete_zeros,
     get_monthly_bonus_totals,
@@ -180,6 +182,24 @@ def create_reservation_view(request):
             send_mail_reservation(reservation, "reservation_request_bloc4")
             reservation.save()
             form.save()
+            if reservation.catering and Setting.get("CATERING_ROOM"):
+                try:
+                    catering_id = uuid.UUID(Setting.get("CATERING_ROOM"))
+                    catering_room = Room.objects.filter(id=catering_id)
+                    if catering_room.exists():
+                        base_url = reverse("reservations:create_reservation")
+                        start_time_str, end_time_str = convert_datetime_to_str(
+                            reservation
+                        )
+                        query_params = {
+                            "start": start_time_str,
+                            "end": end_time_str,
+                            "id": catering_id,
+                        }
+                        url = f"{base_url}?{urlencode(query_params)}"
+                        return redirect(url)
+                except ValueError:
+                    return redirect("reservations:reservations_success")
             return redirect("reservations:reservations_success")
     return render(
         request,

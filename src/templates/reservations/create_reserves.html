@@ -78,6 +78,11 @@
     <p>{% translate 'To book the Event Hall, fill up the form below and send it to the administration. Until they confirm or reject it, the reservation will appear as pending.' %}</p>
   </div>
 {% endif %}
+{% if request.GET.catering %}
+  <div class="pb-4">
+    <p>{% translate "As you select you'll need space outside the room for catering, you need to book this room." %}</p>
+  </div>
+{% endif %}
 {% if messages %}
 <div class="modal">
   <div class="modal__background" onclick="hideModal(event)"></div>

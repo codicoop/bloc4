@@ -160,3 +160,14 @@ def get_monthly_bonus_totals(monthly_bonus, reservations):
         bonuses["amount"] = delete_zeros(monthly_bonus.amount)
         bonuses["amount_left"] = delete_zeros(amount_left)
     return bonuses
+
+
+def convert_datetime_to_str(reservation):
+    reservation_date = reservation.date
+    start_time = reservation.start_time
+    end_time = reservation.end_time
+    start_datetime = datetime.combine(reservation_date, start_time).replace(tzinfo=None)
+    end_datetime = datetime.combine(reservation_date, end_time).replace(tzinfo=None)
+    start_time_str = start_datetime.isoformat() + "+01:00"
+    end_time_str = end_datetime.isoformat() + "+01:00"
+    return start_time_str, end_time_str

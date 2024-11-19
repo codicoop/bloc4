@@ -1,6 +1,7 @@
 from django import forms
 from django.core.validators import ValidationError
 from django.utils.translation import gettext_lazy as _
+from extra_settings.models import Setting
 
 from apps.entities.models import Entity
 from apps.reservations.choices import (
@@ -122,6 +123,7 @@ class ReservationForm(forms.ModelForm):
     )
     catering = forms.BooleanField(
         label=_("Do you need catering space outside the room?"),
+        required=False,
         help_text=_(
             "Only small refreshments are allowed. Other types of meals must "
             "be made by reserving the Meeting Space. You are in charge of "
@@ -358,6 +360,8 @@ class ReservationForm(forms.ModelForm):
             self.fields["assistants"].widget.attrs.update(
                 {"min": "1", "max": str(room.capacity)}
             )
+            if id == Setting.get("CATERING_ROOM"):
+                self.fields.pop("catering", None)
 
     def clean(self):
         cleaned_data = super().clean()

@@ -80,7 +80,9 @@
 {% endif %}
 {% if request.GET.catering %}
   <div class="pb-4">
-    <p>{% translate "As you select you'll need space outside the room for catering, you need to book this room." %}</p>
+    <p>{% translate "As you have selected that you will need space outside the room for catering, you'll also need to reserve this room. " %}</p>
+    <p><a href="{% url 'rooms:room_detail' id=request.GET.id %}" target="_blank">{% translate "Check availability." %}</a></p>
+    
   </div>
 {% endif %}
 {% if messages %}

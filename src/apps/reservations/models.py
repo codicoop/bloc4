@@ -265,6 +265,21 @@ class Reservation(BaseModel):
             self.url = ""
             self.description = ""
             self.poster = ""
+        if self.activity_type != ActivityTypeChoices.BLOC4:
+            self.bloc4_type = ""
+        if self.activity_type == ActivityTypeChoices.BLOC4 and not self.bloc4_type:
+            errors.update(
+                {
+                    "bloc4_type": ValidationError(
+                        _(
+                            "If ateneus'activity is "
+                            "{activity} this field is required."
+                        ).format(activity=ActivityTypeChoices.BLOC4.label),
+                    )
+                }
+            )
+            raise ValidationError(errors)
+
         if self.start_time and self.end_time:
             # Validates that the reservation end time is later than the start time.
             if self.end_time < self.start_time:
@@ -284,8 +299,8 @@ class Reservation(BaseModel):
                     {
                         "end_time": ValidationError(
                             _(
-                                "The reservation must have a minimum duration of one "
-                                "hour."
+                                "The reservation must have a minimum "
+                                "duration of one hour."
                             )
                         )
                     },
@@ -308,8 +323,10 @@ class Reservation(BaseModel):
                         "start_time": ValidationError(
                             _(
                                 "The start time must be between "
-                                '{START_TIME.strftime("%H:%M")} and '
-                                '{END_TIME_MINUS_ONE.strftime("%H:%M")}.'
+                                "{start_time} and {end_time}."
+                            ).format(
+                                start_time=START_TIME.strftime("%H:%M"),
+                                end_time=END_TIME_MINUS_ONE.strftime("%H:%M"),
                             )
                         )
                     },
@@ -321,8 +338,10 @@ class Reservation(BaseModel):
                         "end_time": ValidationError(
                             _(
                                 "The end time must be between "
-                                '{START_TIME_PLUS_ONE.strftime("%H:%M")} and '
-                                '{END_TIME.strftime("%H:%M")}.'
+                                "{start_time} and {end_time}."
+                            ).format(
+                                start_time=START_TIME_PLUS_ONE.strftime("%H:%M"),
+                                end_time=END_TIME.strftime("%H:%M"),
                             )
                         )
                     },
@@ -332,7 +351,7 @@ class Reservation(BaseModel):
             if self.start_time.minute not in valid_minutes:
                 errors.update(
                     {
-                        "end_time": ValidationError(
+                        "start_time": ValidationError(
                             _("The start time must be in 00, 15, 30 or 45 minutes.")
                         )
                     },
@@ -370,9 +389,8 @@ class Reservation(BaseModel):
                         {
                             "privacy": ValidationError(
                                 _(
-                                    f"{RoomTypeChoices.MEETING_ROOM.label} cannot "
-                                    "be used in public trainings."
-                                )
+                                    "{room_type} cannot be used in public trainings."
+                                ).format(room_type=RoomTypeChoices.MEETING_ROOM.label)
                             )
                         },
                     )
@@ -408,9 +426,9 @@ class Reservation(BaseModel):
                         {
                             "assistants": ValidationError(
                                 _(
-                                    f"The maximum capacity for this room "
-                                    f"is {room.capacity}"
-                                )
+                                    "The maximum capacity for this room "
+                                    "is {capacity}."
+                                ).format(capacity=room.capacity)
                             )
                         },
                     )
@@ -423,8 +441,10 @@ class Reservation(BaseModel):
                 if self.entity != user_entity:
                     errors.update(
                         {
-                            "reserved_by": ValidationError(
-                                _(f"This user belong to {user_entity} entity.")
+                            "entity": ValidationError(
+                                _("This user belong to {entity}.").format(
+                                    entity=user_entity
+                                )
                             )
                         },
                     )

@@ -19,7 +19,6 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
-from extra_settings.models import Setting
 
 from apps.entities.forms import EntitySignUpForm
 from apps.users.forms import (
@@ -246,11 +245,9 @@ class SignUpSuccessView(StandardSuccess):
     title = _("Done!")
     page_title = _("Sign Up Success")
     description = _(
-        f"Your account has been successfully "
-        f"created and its validation it's pending "
-        f"by {Setting.get('PROJECT_NAME')}. "
-        "You'll receive an email "
-        f"when your account is available."
+        "Your account has been successfully created and its validation "
+        "it's pending by Bloc4BCN. You'll receive an email "
+        "when your account is available."
     )
     url = reverse_lazy("home")
     link_text = _("Continue")

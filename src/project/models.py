@@ -1,8 +1,11 @@
 import uuid
 
+from django.core.exceptions import AppRegistryNotReady
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from extra_settings.cache import set_cached_setting
+from extra_settings.models import Setting as BaseSetting
 
 
 class SetBooleanDatetimeMixin:
@@ -43,3 +46,22 @@ class BaseModel(SetBooleanDatetimeMixin, models.Model):
 
     class Meta:
         abstract = True
+
+
+# class Setting(BaseSetting):
+#     """
+#     This version catches the AppRegistryNotReady exception to make it possible
+#     for the extra-settings to load the settings or default value when you
+#     use it in a place that is loaded during the initialization, i.e., a
+#     `help_text` argument of a model's field.
+#     """
+
+#     @staticmethod
+#     def _get_from_database(name):
+#         try:
+#             setting_obj = Setting.objects.get(name=name)
+#             value = setting_obj.value
+#             set_cached_setting(name, value)
+#             return value
+#         except (AppRegistryNotReady, Setting.DoesNotExist):
+#             return None

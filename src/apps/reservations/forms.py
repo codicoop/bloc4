@@ -1,5 +1,7 @@
 from django import forms
+from django.conf import settings
 from django.core.validators import ValidationError
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
 
@@ -151,7 +153,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:text-white dark:focus:ring-primary-500 "
                 "dark:focus:border-primary-500",
                 "autocomplete": True,
-                "help_text": _("Notes"),
             }
         ),
     )
@@ -251,22 +252,13 @@ class ReservationForm(forms.ModelForm):
                 "autocomplete": True,
                 "cols": "40",
                 "rows": "10",
-                "help_text": _(
-                    "This field will be used for the public add of the event."
-                ),
             }
         ),
     )
     url = forms.URLField(
         label=_("URL of the activity"),
         required=False,
-        widget=forms.URLInput(
-            attrs={
-                "help_text": _(
-                    "This field will be used for the public add of the event."
-                ),
-            }
-        ),
+        widget=forms.URLInput(),
     )
     poster = forms.ImageField(
         required=False,
@@ -279,9 +271,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500"
                 "dark:focus:border-primary-500",
-                "help_text": _(
-                    "This field will be used for the public add of the event."
-                ),
             }
         ),
     )
@@ -295,21 +284,10 @@ class ReservationForm(forms.ModelForm):
                 "border-gray-300 bg-gray-50 focus:ring-3 "
                 "focus:ring-primary-300 "
                 "dark:bg-gray-700 dark:border-gray-600 ",
-                "help_text": _("Bloc4BCN reservation"),
             }
         ),
-        # help_text=Setting.get("DATA_POLICY"),
     )
     terms_use = forms.BooleanField(
-        # label=mark_safe(
-        #     _(
-        #         f'I agree the <a href="{settings.AWS_S3_ENDPOINT_URL}/'
-        #         f'{settings.AWS_STORAGE_BUCKET_NAME}/'
-        #         f'{settings.AWS_PUBLIC_MEDIA_LOCATION}/'
-        #         f'{Setting.get("TERMS_USE")}" target="_blank"'
-        #         f'style="color: #be3bc7; font-weight: bold;">Terms of Use</a>'
-        #     )
-        # ),
         required=True,
         widget=forms.CheckboxInput(
             attrs={
@@ -318,7 +296,6 @@ class ReservationForm(forms.ModelForm):
                 "border-gray-300 bg-gray-50 focus:ring-3 "
                 "focus:ring-primary-300 "
                 "dark:bg-gray-700 dark:border-gray-600 ",
-                "help_text": _("Bloc4BCN reservation"),
             }
         ),
     )
@@ -362,6 +339,22 @@ class ReservationForm(forms.ModelForm):
             )
             if id == Setting.get("CATERING_ROOM"):
                 self.fields.pop("catering", None)
+            if Setting.get("TERMS_USE"):
+                self.fields["terms_use"].label = mark_safe(
+                    _(
+                        'I agree the <a href="{url}" target="_blank" style="color: '
+                        '#be3bc7; font-weight: bold;">Terms of Use</a>'
+                    ).format(
+                        url=(
+                            f"{settings.AWS_S3_ENDPOINT_URL}/"
+                            f"{settings.AWS_STORAGE_BUCKET_NAME}/"
+                            f"{settings.AWS_PUBLIC_MEDIA_LOCATION}/"
+                            f"{Setting.get('TERMS_USE')}"
+                        )
+                    )
+                )
+
+            self.fields["data_policy"].help_text = Setting.get("DATA_POLICY")
 
     def clean(self):
         cleaned_data = super().clean()

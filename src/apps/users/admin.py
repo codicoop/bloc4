@@ -170,11 +170,11 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
                 confirmed_verification_text,
             )
         ]
-        return format_html("<br class='grp-button grp-default'><br>".join(buttons))
+        return format_html("<br><br>".join(buttons))
 
     def _get_url_with_alert_msg(self, alert_msg, url, text):
-        return (
-            '<a class="grp-button grp-default" '
+        return format_html(
+            f'<a class="submit-row" style="color: white; background-color: #417690;"'
             f"href=\"javascript:if(confirm('{escapejs(alert_msg)}')) "
             f"window.location.href = '{url}'\">{text}</a>"
         )

@@ -147,7 +147,7 @@ class ReservationAdmin(ModelAdmin):
 
     def _get_url_with_alert_msg(self, alert_msg, url, text):
         return (
-            '<a class="grp-button grp-default" '
+            '<a class="submit-row" style="color: white; background-color: #417690;" '
             f"href=\"javascript:if(confirm('{escapejs(alert_msg)}')) "
             f"window.location.href = '{url}'\">{text}</a>"
         )

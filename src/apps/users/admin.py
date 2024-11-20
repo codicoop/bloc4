@@ -151,7 +151,7 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         ]
         return custom_urls + urls
 
-    @admin.display(description="Accions")
+    @admin.display(description=_("Actions"))
     def actions_field(self, obj):
         if not obj or obj.is_verified:
             return "-"

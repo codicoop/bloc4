@@ -55,8 +55,9 @@ class ReservationAdmin(ModelAdmin):
             None,
             {
                 "fields": (
-                    "room",
                     "title",
+                    "room",
+                    "room_field",
                     "reservation_type",
                     "date",
                     "start_time",
@@ -90,7 +91,7 @@ class ReservationAdmin(ModelAdmin):
             },
         ),
     )
-    readonly_fields = ("actions_field",)
+    readonly_fields = ("actions_field", "room_field")
 
     def get_urls(self):
         urls = super().get_urls()
@@ -105,10 +106,51 @@ class ReservationAdmin(ModelAdmin):
                 self.admin_site.admin_view(self.notify_rejected_reservation),
                 name="notify_rejected_reservation",
             ),
+            path(
+                "<uuid:reservation_id>/change_room/",
+                self.admin_site.admin_view(self.notify_confirmed_room_change),
+                name="notify_confirmed_room_change",
+            ),
         ]
         return custom_urls + urls
 
-    @admin.display(description="Accions")
+    @admin.display(description=_("Change room"))
+    def room_field(self, obj):
+        if not obj or obj.is_paid:
+            return "-"
+        confirmed_room_change_msg = _(
+            "Are you sure you want to confirm the room's change and notify the user?"
+        )
+        confirmed_room_change_url = reverse(
+            "admin:notify_confirmed_room_change",
+            args=[obj.id],
+        )
+        confirmed_room_change_text = _("Confirm the room change and notify the user")
+        buttons = [
+            self._get_url_with_alert_msg(
+                confirmed_room_change_msg,
+                confirmed_room_change_url,
+                confirmed_room_change_text,
+            )
+        ]
+        return format_html("<br><br>".join(buttons))
+
+    def notify_confirmed_room_change(self, request, reservation_id):
+        reservation = Reservation.objects.get(pk=reservation_id)
+        print(self.room)
+        print(reservation.room)
+        reservation.save()
+        # send_mail_reservation(reservation, "reservation_confirmed_user")
+        messages.success(
+            request,
+            _(
+                "An email has been sent to the entity to inform"
+                " them that the room reservation has been confirmed."
+            ),
+        )
+        return self._redirect_to_change(reservation.id)
+
+    @admin.display(description=_("Actions"))
     def actions_field(self, obj):
         if not obj:
             return "-"

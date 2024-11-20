@@ -8,6 +8,8 @@ from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
+from .widgets.custom_radio import CustomRadioSelect
+
 
 class ReservationForm(forms.ModelForm):
     room = forms.ModelChoiceField(
@@ -18,10 +20,10 @@ class ReservationForm(forms.ModelForm):
         queryset=Entity.objects.all(), widget=forms.HiddenInput(), required=False
     )
     reservation_type = forms.ChoiceField(
-        label=_("Reservation Type"),
+        label=_("Reservation type"),
         choices=ReservationTypeChoices,
         required=True,
-        widget=forms.RadioSelect(),
+        widget=CustomRadioSelect(),
         initial=ReservationTypeChoices.HOURLY,
     )
     title = forms.CharField(

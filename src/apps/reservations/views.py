@@ -187,7 +187,7 @@ def create_reservation_view(request):
                     catering_id = uuid.UUID(Setting.get("CATERING_ROOM"))
                     catering_room = Room.objects.filter(id=catering_id)
                     if catering_room.exists():
-                        base_url = reverse("reservations:create_reservation")
+                        base_url = reverse("reservations:reservations_redirect_success")
                         start_time_str, end_time_str = convert_datetime_to_str(
                             reservation
                         )
@@ -195,7 +195,6 @@ def create_reservation_view(request):
                             "start": start_time_str,
                             "end": end_time_str,
                             "id": catering_id,
-                            "catering": True,
                         }
                         url = f"{base_url}?{urlencode(query_params)}"
                         return redirect(url)
@@ -305,19 +304,35 @@ class ReservationSuccessView(StandardSuccess):
     description = _("Successful reservation.")
     url = reverse_lazy("reservations:reservations_list")
 
-    # def dispatch(self, request, *args, **kwargs):
-    #     entity_type = request.user.entity.entity_type
-    #     if Setting.get("PAYMENT_INFORMATION") and entity_type in [
-    #         EntityTypesChoices.GENERAL,
-    #         EntityTypesChoices.OUTSIDE,
-    #     ]:
-    #         self.description += "<br><br>" + Setting.get("PAYMENT_INFORMATION")
+    def get_url(self):
+        try:
+            reversed_url = reverse(self.url)
+        except NoReverseMatch:
+            return self.url
+        return reversed_url
 
-    #     return super().dispatch(request, *args, **kwargs)
+
+class ReservationRedirectSuccessView(StandardSuccess):
+    page_title = _("Successful reservation")
+    description = _(
+        "Successful reservation.<br><br> As you've selected you need "
+        " catering space outside the room, it's mandatory to make a "
+        "reservation for it."
+    )
+    link_text = _("Continue")
+    page_title = _("Successful reservation")
+    url = "reservations:create_reservation"
 
     def get_url(self):
         try:
             reversed_url = reverse(self.url)
+            request = self.request
+            query_params = {
+                "id": request.GET.get("id"),
+                "start": request.GET.get("start"),
+                "end": request.GET.get("end"),
+            }
+            return f"{reversed_url}?{urlencode(query_params)}"
         except NoReverseMatch:
             return self.url
         return reversed_url
@@ -327,6 +342,7 @@ class ReservationCancelledView(StandardSuccess):
     page_title = _("Reservation cancelled")
     description = _("Reservation cancelled.")
     url = reverse_lazy("reservations:reservations_list")
+    page_title = _("Reservation cancelled")
 
     def get_url(self):
         try:

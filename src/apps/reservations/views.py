@@ -241,6 +241,7 @@ def reservation_detail_view(request, id):
         reservation.entity.entity_type
         in [EntityTypesChoices.GENERAL, EntityTypesChoices.OUTSIDE]
         and reservation.status == Reservation.StatusChoices.CONFIRMED
+        and not reservation.is_paid
     ):
         extra_info = Setting.get("PAYMENT_INFORMATION")
     if "cancel_reservation" in request.POST:

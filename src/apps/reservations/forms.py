@@ -283,7 +283,11 @@ class ReservationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
+        prices = kwargs.pop("prices", {})
         super(ReservationForm, self).__init__(*args, **kwargs)
+        self.fields["reservation_type"].widget.attrs.update({
+            "prices": prices,
+        })
         if request:
             id = request.GET.get("id")
             room = Room.objects.get(id=id)

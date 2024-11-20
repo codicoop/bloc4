@@ -116,16 +116,14 @@ class ReservationAdmin(ModelAdmin):
 
     @admin.display(description=_("Change room"))
     def room_field(self, obj):
-        if not obj or obj.is_paid:
+        if not obj:
             return "-"
-        confirmed_room_change_msg = _(
-            "Are you sure you want to confirm the room's change and notify the user?"
-        )
+        confirmed_room_change_msg = _("Are you sure you want to notify the user?")
         confirmed_room_change_url = reverse(
             "admin:notify_confirmed_room_change",
             args=[obj.id],
         )
-        confirmed_room_change_text = _("Confirm the room change and notify the user")
+        confirmed_room_change_text = _("Notify the user")
         buttons = [
             self._get_url_with_alert_msg(
                 confirmed_room_change_msg,
@@ -137,9 +135,6 @@ class ReservationAdmin(ModelAdmin):
 
     def notify_confirmed_room_change(self, request, reservation_id):
         reservation = Reservation.objects.get(pk=reservation_id)
-        print(self.room)
-        print(reservation.room)
-        reservation.save()
         # send_mail_reservation(reservation, "reservation_confirmed_user")
         messages.success(
             request,
@@ -152,6 +147,7 @@ class ReservationAdmin(ModelAdmin):
 
     @admin.display(description=_("Actions"))
     def actions_field(self, obj):
+        print(obj)
         if not obj:
             return "-"
         confirmed_reservation_msg = _(

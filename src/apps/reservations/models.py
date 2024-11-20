@@ -90,6 +90,10 @@ class Reservation(BaseModel):
         null=False,
         on_delete=models.CASCADE,
         related_name="reservation_room",
+        help_text=_(
+            "If you want to change the room and notify the user,"
+            " first, change the room, save and then click the button to notify."
+        ),
     )
     is_budgeted = models.BooleanField(
         _("Is budgeted?"),

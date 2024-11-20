@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 
+from django.db.models import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
@@ -137,9 +138,15 @@ def create_reservation_view(request):
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
             reservation.total_price = reservation.get_total_price
+            try:
+                entity_privilege = (
+                    reservation.entity.entity_privilege.class_reservation_privilege
+                )
+            except ObjectDoesNotExist:
+                entity_privilege = False
             if (
-                reservation.room.room_type == RoomTypeChoices.CLASSROOM
-                and reservation.entity.entity_privilege.class_reservation_privilege
+                entity_privilege
+                and reservation.room.room_type == RoomTypeChoices.CLASSROOM
             ):
                 reservation.status = Reservation.StatusChoices.CONFIRMED
                 send_mail_reservation(reservation, "reservation_confirmed_user")

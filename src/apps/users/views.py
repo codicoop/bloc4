@@ -19,6 +19,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
+from extra_settings.models import Setting
 
 from apps.entities.forms import EntitySignUpForm
 from apps.users.forms import (
@@ -50,15 +51,13 @@ def signup_view(request):
             user_instance.is_active = False
             user_instance.is_verified = False
             user_instance.save()
-            entity_instance.person_responsible = user_instance
-            entity_instance.save()
             send_registration_pending_mail(
                 user_instance, "email_registration_pending", user_instance.email
             )  # To user
             send_registration_pending_mail(
                 user_instance,
                 "email_registration_pending_to_bloc4",
-                user_instance.email,
+                Setting.get("RESERVATIONS_EMAIL"),
             )  # To Bloc4
             return redirect("registration:signup_success")
     else:

@@ -121,7 +121,7 @@ ben llarga i t'agrairem que ens informis de la situació.
             id="email_registration_pending_to_bloc4",
             translated_templates={
                 "en": {
-                    "subject": "Pending account for {{user_entity}}",
+                    "subject": "Pending account for {{user_entity_name}}",
                     "body": """
     <p>Hello,</p>
     <p>We're sending you this e-mail because today {{date}} at {{time}}
@@ -133,7 +133,7 @@ ben llarga i t'agrairem que ens informis de la situació.
                         """,
                 },
                 "ca": {
-                    "subject": "Compte pendent d'activació per {{user_entity}}",
+                    "subject": "Compte pendent d'activació per {{user_entity_name}}",
                     "body": """
     <p>Hola,</p>
 

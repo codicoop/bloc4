@@ -91,6 +91,11 @@ class Reservation(BaseModel):
         on_delete=models.CASCADE,
         related_name="reservation_room",
     )
+    is_budgeted = models.BooleanField(
+        _("Is budgeted?"),
+        null=False,
+        default=False,
+    )
     is_paid = models.BooleanField(
         _("Is paid?"),
         null=False,

@@ -19,6 +19,7 @@ class ReservationAdmin(ModelAdmin):
         "end_time",
         "room",
         "total_price",
+        "is_budgeted",
         "is_paid",
         "status",
         "privacy",
@@ -26,6 +27,7 @@ class ReservationAdmin(ModelAdmin):
     list_filter = (
         "date",
         "room",
+        "is_budgeted",
         "is_paid",
         "entity",
         "privacy",
@@ -40,13 +42,12 @@ class ReservationAdmin(ModelAdmin):
     search_fields = (
         "title",
         "date",
-        "room",
+        "room__name",
+        "is_budgeted",
         "is_paid",
-        "entity",
+        "entity__fiscal_name",
         "privacy",
-        "reserved_by",
-        "canceled_by",
-        "canceled_at",
+        "reserved_by__name",
         "status",
     )
     fieldsets = (
@@ -65,6 +66,7 @@ class ReservationAdmin(ModelAdmin):
                     "notes",
                     "activity_type",
                     "bloc4_type",
+                    "is_budgeted",
                     "is_paid",
                     "total_price",
                     "entity",
@@ -155,6 +157,8 @@ class ReservationAdmin(ModelAdmin):
     def notify_confirmed_reservation(self, request, reservation_id):
         reservation = Reservation.objects.get(pk=reservation_id)
         reservation.status = Reservation.StatusChoices.CONFIRMED
+        reservation.canceled_by = None
+        reservation.canceled_at = None
         reservation.save()
         send_mail_reservation(reservation, "reservation_confirmed_user")
         messages.success(

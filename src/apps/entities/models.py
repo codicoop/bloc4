@@ -101,6 +101,27 @@ class Entity(BaseModel):
             EntityPrivilege.objects.create(entity=self)
         super().save(*args, **kwargs)
 
+    def clean(self, *args, **kwargs):
+        super().clean()
+        errors = {}
+        try:
+            user_entity = self.person_responsible.entity
+            if self != self.person_responsible.entity:
+                errors.update(
+                    {
+                        "person_responsible": ValidationError(
+                            _(
+                                "This user belong to {entity}. To be "
+                                "person responsible the user must belong to "
+                                "the entity first."
+                            ).format(entity=user_entity)
+                        )
+                    },
+                )
+            raise ValidationError(errors)
+        except AttributeError:
+            pass
+
 
 class EntityPrivilege(BaseModel):
     entity = models.OneToOneField(

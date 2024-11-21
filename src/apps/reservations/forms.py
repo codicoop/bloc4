@@ -52,7 +52,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:text-white dark:focus:ring-primary-500 "
                 "dark:focus:border-primary-500",
                 "required": True,
-                "help_text": _("Start time"),
                 "hx-target": "#total_price",
                 "hx-trigger": "change",
             }

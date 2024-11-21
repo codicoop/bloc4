@@ -215,19 +215,14 @@ def calculate_total_price(request):
         elif reservation_type == ReservationTypeChoices.HOURLY:
             start_time_str = request.POST.get("start_time")
             end_time_str = request.POST.get("end_time")
-            print(start_time_str, end_time_str)
             try:
-                start_time = datetime.strptime(start_time_str, "%H:%M").time()
-                end_time = datetime.strptime(end_time_str, "%H:%M").time()
-                print(start_time, end_time)
+                start_time = datetime.strptime(start_time_str, "%H:%M%S").time()
+                end_time = datetime.strptime(end_time_str, "%H:%M%S").time()
                 today = datetime.today().date()
                 start_datetime = datetime.combine(today, start_time)
                 end_datetime = datetime.combine(today, end_time)
                 total_price = calculate_reservation_price(
                     start_datetime, end_datetime, room.price
-                )
-                print(
-                    total_price,
                 )
                 total_price = calculate_discount_price(entity_type, total_price)
             except ValueError:

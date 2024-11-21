@@ -14,6 +14,4 @@ class CustomRadioSelect(RadioSelect):
         context = super().get_context(name, value, attrs)
         context["choices"] = ReservationTypeChoices
         context["prices"] = self.prices
-        print(self.prices)
-
         return context

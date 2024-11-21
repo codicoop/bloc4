@@ -206,16 +206,13 @@ def calculate_total_price(request):
         room = get_object_or_404(Room, id=request.POST.get("room"))
         reservation_type = request.POST.get("reservation_type")
         if reservation_type == ReservationTypeChoices.WHOLE_DAY:
-            print("whole", reservation_type)
             total_price = calculate_discount_price(entity_type, room.price_all_day)
         elif reservation_type in [
             ReservationTypeChoices.MORNING,
             ReservationTypeChoices.AFTERNOON,
         ]:
-            print("half", reservation_type)
             total_price = calculate_discount_price(entity_type, room.price_half_day)
         elif reservation_type == ReservationTypeChoices.HOURLY:
-            print("hour", reservation_type)
             start_time_str = request.POST.get("start_time")
             end_time_str = request.POST.get("end_time")
             try:
@@ -224,7 +221,6 @@ def calculate_total_price(request):
                 today = datetime.today().date()
                 start_datetime = datetime.combine(today, start_time)
                 end_datetime = datetime.combine(today, end_time)
-                print(start_datetime, end_datetime)
                 total_price = calculate_reservation_price(
                     start_datetime, end_datetime, room.price
                 )

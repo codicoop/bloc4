@@ -2285,6 +2285,10 @@ input:checked + .toggle-bg {
   text-align: right;
 }
 
+.font-body {
+  font-family: General Sans, sans-serif;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -2342,6 +2346,10 @@ input:checked + .toggle-bg {
 
 .uppercase {
   text-transform: uppercase;
+}
+
+.italic {
+  font-style: italic;
 }
 
 .leading-6 {

@@ -235,14 +235,14 @@ def reservation_detail_view(request, id):
             )
     except ValueError:
         return redirect("reservations:reservations_list")
-    extra_info = None
+    payment_info = None
     if (
         reservation.entity.entity_type
         in [EntityTypesChoices.GENERAL, EntityTypesChoices.OUTSIDE]
         and reservation.status == Reservation.StatusChoices.CONFIRMED
         and not reservation.is_paid
     ):
-        extra_info = Setting.get("PAYMENT_INFORMATION")
+        payment_info = Setting.get("PAYMENT_INFORMATION")
     if "cancel_reservation" in request.POST:
         id = request.POST.get("cancel_reservation")
         reservation = get_object_or_404(Reservation, id=id)
@@ -256,7 +256,11 @@ def reservation_detail_view(request, id):
     return render(
         request,
         "reservations/details.html",
-        {"reservation": reservation, "is_staff": is_staff, "extra_info": extra_info},
+        {
+            "reservation": reservation,
+            "is_staff": is_staff,
+            "payment_info": payment_info,
+        },
     )
 
 

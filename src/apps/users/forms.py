@@ -86,24 +86,6 @@ class UserChangeForm(forms.ModelForm):
 
 
 class ProfileDetailsForm(forms.ModelForm):
-    name = forms.CharField(
-        label=_("Name"),
-        widget=forms.TextInput(),
-    )
-    surnames = forms.CharField(
-        label=_("Surnames"),
-        widget=forms.TextInput(),
-    )
-    email = forms.EmailField(
-        label=_("Email"),
-        max_length=254,
-        widget=forms.EmailInput(
-            attrs={
-                "autocomplete": "email",
-            }
-        ),
-    )
-
     class Meta(UserCreationForm.Meta):
         model = User
         fields = (

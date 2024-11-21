@@ -1,5 +1,6 @@
 from django import forms
 from django.core.validators import ValidationError
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from apps.reservations.models import Reservation
@@ -126,6 +127,9 @@ class ReservationForm(forms.ModelForm):
         request = kwargs.pop("request", None)
         prices = kwargs.pop("prices", {})
         super(ReservationForm, self).__init__(*args, **kwargs)
+        calculate_price_url = reverse("reservations:calculate_total_price")
+        self.fields["start_time"].widget.attrs.update({"hx-post": calculate_price_url})
+        self.fields["end_time"].widget.attrs.update({"hx-post": calculate_price_url})
         self.fields["reservation_type"].widget = CustomRadioSelect(
             prices=prices,
         )

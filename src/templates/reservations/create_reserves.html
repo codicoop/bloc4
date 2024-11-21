@@ -5,14 +5,7 @@
 {% block page_title %}{% translate "New Reservation" %}{% endblock %}
 {% block bodyclasses %}{% endblock %}
 {% block mainclasses %} reservations {% endblock %}
-{% block extra_js %}
-  <script>
-    const startTimeInput = document.getElementById('id_start_time');
-    startTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
-    const endTimeInput = document.getElementById('id_end_time');
-    endTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
-  </script>
-{% endblock %}
+{% block extra_js %}{% endblock %}
 
 {% block extra_head %}
 <script type="text/javascript" src="{% static 'js/_hyperscript.min.js' %}"></script>

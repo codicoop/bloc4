@@ -99,7 +99,6 @@ def create_reservation_view(request):
         total_price = calculate_reservation_price(
             start_datetime, end_datetime, price_discount
         )
-        total_price = calculate_discount_price(entity_type, total_price)
         prices = {
             "price": calculate_discount_price(entity_type, room.price),
             "price_half_day": calculate_discount_price(
@@ -205,6 +204,7 @@ def calculate_total_price(request):
     if request.htmx:
         room = get_object_or_404(Room, id=request.POST.get("room"))
         reservation_type = request.POST.get("reservation_type")
+        print(reservation_type)
         if reservation_type == ReservationTypeChoices.WHOLE_DAY:
             total_price = calculate_discount_price(entity_type, room.price_all_day)
         elif reservation_type in [
@@ -215,14 +215,19 @@ def calculate_total_price(request):
         elif reservation_type == ReservationTypeChoices.HOURLY:
             start_time_str = request.POST.get("start_time")
             end_time_str = request.POST.get("end_time")
+            print(start_time_str, end_time_str)
             try:
                 start_time = datetime.strptime(start_time_str, "%H:%M").time()
                 end_time = datetime.strptime(end_time_str, "%H:%M").time()
+                print(start_time, end_time)
                 today = datetime.today().date()
                 start_datetime = datetime.combine(today, start_time)
                 end_datetime = datetime.combine(today, end_time)
                 total_price = calculate_reservation_price(
                     start_datetime, end_datetime, room.price
+                )
+                print(
+                    total_price,
                 )
                 total_price = calculate_discount_price(entity_type, total_price)
             except ValueError:

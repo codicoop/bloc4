@@ -3,7 +3,6 @@ from django.core.validators import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from apps.entities.models import Entity
-from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
@@ -18,28 +17,6 @@ class ReservationForm(forms.ModelForm):
     )
     entity = forms.ModelChoiceField(
         queryset=Entity.objects.all(), widget=forms.HiddenInput(), required=False
-    )
-    reservation_type = forms.ChoiceField(
-        label=_("Reservation type"),
-        choices=ReservationTypeChoices,
-        required=True,
-        widget=CustomRadioSelect(),
-        initial=ReservationTypeChoices.HOURLY,
-    )
-    title = forms.CharField(
-        label=_("Title"),
-        widget=forms.TextInput(
-            attrs={
-                "class": "text-sm border rounded-lg "
-                "block w-full p-2.5 bg-gray-50 border-gray-300 "
-                "text-gray-900 focus:ring-primary-600 "
-                "focus:border-primary-600 dark:bg-gray-700 "
-                "dark:border-gray-600 dark:placeholder-gray-400 "
-                "dark:text-white dark:focus:ring-primary-500"
-                "dark:focus:border-primary-500",
-                "autocomplete": "on",
-            }
-        ),
     )
     date = forms.DateField(
         label=_("Date"),
@@ -254,9 +231,6 @@ class ReservationForm(forms.ModelForm):
                 "dark:border-gray-600 dark:placeholder-gray-400 "
                 "dark:text-white dark:focus:ring-primary-500"
                 "dark:focus:border-primary-500",
-                "help_text": _(
-                    "This field will be used for the public add of the event."
-                ),
             }
         ),
     )
@@ -285,9 +259,9 @@ class ReservationForm(forms.ModelForm):
         request = kwargs.pop("request", None)
         prices = kwargs.pop("prices", {})
         super(ReservationForm, self).__init__(*args, **kwargs)
-        self.fields["reservation_type"].widget.attrs.update({
-            "prices": prices,
-        })
+        self.fields["reservation_type"].widget = CustomRadioSelect(
+            prices=prices,
+        )
         if request:
             id = request.GET.get("id")
             room = Room.objects.get(id=id)

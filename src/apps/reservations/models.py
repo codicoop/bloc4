@@ -66,19 +66,17 @@ class Reservation(BaseModel):
         _("Start time"),
         null=False,
         blank=False,
-        help_text=_("Start time of the reservation"),
     )
     end_time = models.TimeField(
         _("End time"),
         null=False,
         blank=False,
-        help_text=_("End time of the reservation"),
     )
     assistants = models.IntegerField(
         _("Assistants"),
         blank=False,
         null=True,
-        default=1,
+        default="",
         validators=[MinValueValidator(1)],
     )
     room = models.ForeignKey(
@@ -95,8 +93,7 @@ class Reservation(BaseModel):
     )
     catering = models.BooleanField(
         _("Do I need catering service?"),
-        null=False,
-        blank=False,
+        blank=True,
         default=False,
     )
     notes = models.CharField(
@@ -104,7 +101,6 @@ class Reservation(BaseModel):
         max_length=500,
         blank=False,
         default="",
-        help_text=_("Notes for the reservation"),
     )
     bloc4_reservation = models.BooleanField(
         _("Reservation for Bloc4BCN services"),
@@ -125,7 +121,6 @@ class Reservation(BaseModel):
         _("Description"),
         max_length=500,
         blank=True,
-        help_text=_("Description for the activity"),
     )
     poster = models.ImageField(
         _("Poster"),

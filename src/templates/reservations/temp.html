@@ -113,7 +113,7 @@
 {% endblock %}
 
 {% block extra_head %}
-<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+<script type="text/javascript" src="{% static 'js/_hyperscript.min.js' %}"></script>
 {% endblock %}
 
 {# Blocks de base_form.html #}
@@ -240,8 +240,11 @@
     <input type="radio" id="reservation_type_3" name="reservation_type" value="afternoon" class="hidden peer"
       required />
     <label for="reservation_type_3"
-      class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer shadow
-        dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+      class="flex items-stretch justify-between w-full h-full p-5 text-gray-900 bg-white border 
+      border-gray-200 rounded-lg cursor-pointer shadow
+        dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 
+        peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 
+        dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
       hx-post="{% url 'reservations:calculate_total_price' %}"
       hx-vals='{"selected_price": "{{ price_half_day }}"}'
       hx-target="#total_price"

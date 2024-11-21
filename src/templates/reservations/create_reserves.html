@@ -9,12 +9,8 @@
   <script>
     const startTimeInput = document.getElementById('id_start_time');
     startTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
-    startTimeInput.setAttribute('hx-trigger', 'change');
-    startTimeInput.setAttribute('hx-target', '#total_price');
     const endTimeInput = document.getElementById('id_end_time');
     endTimeInput.setAttribute('hx-post', '{% url "reservations:calculate_total_price" %}');
-    endTimeInput.setAttribute('hx-trigger', 'change');
-    endTimeInput.setAttribute('hx-target', '#total_price');
   </script>
 {% endblock %}
 

@@ -69,6 +69,7 @@ class ReservationAdmin(ModelAdmin):
                     "bloc4_type",
                     "is_budgeted",
                     "is_paid",
+                    "payment_field",
                     "total_price",
                     "entity",
                     "reserved_by",
@@ -91,7 +92,7 @@ class ReservationAdmin(ModelAdmin):
             },
         ),
     )
-    readonly_fields = ("actions_field", "room_field")
+    readonly_fields = ("actions_field", "room_field", "payment_field")
 
     def get_urls(self):
         urls = super().get_urls()
@@ -111,6 +112,11 @@ class ReservationAdmin(ModelAdmin):
                 self.admin_site.admin_view(self.notify_confirmed_room_change),
                 name="notify_confirmed_room_change",
             ),
+            path(
+                "<uuid:reservation_id>/payment_reminder/",
+                self.admin_site.admin_view(self.notify_payment_reminder),
+                name="notify_payment_reminder",
+            ),
         ]
         return custom_urls + urls
 
@@ -123,7 +129,7 @@ class ReservationAdmin(ModelAdmin):
             "admin:notify_confirmed_room_change",
             args=[obj.id],
         )
-        confirmed_room_change_text = _("Notify the user")
+        confirmed_room_change_text = _("Notify the user the room is changed")
         buttons = [
             self._get_url_with_alert_msg(
                 confirmed_room_change_msg,
@@ -135,19 +141,49 @@ class ReservationAdmin(ModelAdmin):
 
     def notify_confirmed_room_change(self, request, reservation_id):
         reservation = Reservation.objects.get(pk=reservation_id)
-        # send_mail_reservation(reservation, "reservation_confirmed_user")
+        # send_mail_reservation(reservation, "confirmed_room_change")
         messages.success(
             request,
             _(
                 "An email has been sent to the entity to inform"
-                " them that the room reservation has been confirmed."
+                " them that the room of the reservation has change."
+            ),
+        )
+        return self._redirect_to_change(reservation.id)
+
+    @admin.display(description=_("Payment reminder"))
+    def payment_field(self, obj):
+        if not obj or obj.is_paid:
+            return "-"
+        notify_payment_reminder_msg = _("Are you sure you want to notify the user?")
+        notify_payment_reminder_url = reverse(
+            "admin:notify_payment_reminder",
+            args=[obj.id],
+        )
+        notify_payment_reminder_text = _("Notify the user a payment reminder")
+        buttons = [
+            self._get_url_with_alert_msg(
+                notify_payment_reminder_msg,
+                notify_payment_reminder_url,
+                notify_payment_reminder_text,
+            )
+        ]
+        return format_html("<br><br>".join(buttons))
+
+    def notify_payment_reminder(self, request, reservation_id):
+        reservation = Reservation.objects.get(pk=reservation_id)
+        # send_mail_reservation(reservation, "payment_reminder")
+        messages.success(
+            request,
+            _(
+                "An email has been sent to the entity to inform with a "
+                "payment reminder."
             ),
         )
         return self._redirect_to_change(reservation.id)
 
     @admin.display(description=_("Actions"))
     def actions_field(self, obj):
-        print(obj)
         if not obj:
             return "-"
         confirmed_reservation_msg = _(
@@ -183,7 +219,7 @@ class ReservationAdmin(ModelAdmin):
                 rejected_reservation_text,
             )
         )
-        return format_html("<br><br>".join(buttons))
+        return format_html("<br>".join(buttons))
 
     def _get_url_with_alert_msg(self, alert_msg, url, text):
         return (

@@ -94,6 +94,15 @@ def calculate_discount_price(entity_type, price):
     return delete_zeros(price + price * discount)
 
 
+def parse_time(time_str):
+    if not time_str:
+        return False
+    try:
+        return datetime.strptime(time_str, "%H:%M:%S").time()
+    except ValueError:
+        return datetime.strptime(time_str, "%H:%M").time()
+
+
 def get_years_and_months(reservations):
     current_year = datetime.now().year
     current_month = datetime.now().month

@@ -45,10 +45,6 @@ class AuthenticationForm(BaseAuthenticationForm):
 
 
 class UserSignUpForm(UserCreationForm):
-    name = forms.CharField(
-        label=_("Name"), widget=forms.TextInput(attrs={"autofocus": "autofocus"})
-    )
-
     class Meta(UserCreationForm.Meta):
         model = User
         fields = (
@@ -58,6 +54,7 @@ class UserSignUpForm(UserCreationForm):
             "password1",
             "password2",
         )
+        widgets = {"name": forms.TextInput(attrs={"autofocus": "autofocus"})}
 
 
 class UserChangeForm(forms.ModelForm):

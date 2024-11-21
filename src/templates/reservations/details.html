@@ -251,6 +251,7 @@
     </div>
   </div>
 
+  {% if payment_info %}
   <div class="flex justify-center items-center mt-8 md:p-8">
     <div class="w-full rounded-t-xl rounded-b-none sm:max-w-lg">
       <div
@@ -263,10 +264,11 @@
           {% translate "Payment information" %}
         </p>
       </div>
-      <div class="w-full max-w-2xl p-5 border border-gray-200 rounded-b-xl">
-        {{ config.PAYMENT_INFORMATION }}
+        <div class="w-full max-w-2xl p-5 border border-gray-200 rounded-b-xl">
+          <div>{{ payment_info }}</div>
+        </div>
       </div>
     </div>
-  </div>
+    {% endif %}
 
 {% endblock %}

@@ -20,6 +20,7 @@ from apps.reservations.services import (
     delete_zeros,
     get_monthly_bonus_totals,
     get_years_and_months,
+    parse_time,
     send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
@@ -204,7 +205,6 @@ def calculate_total_price(request):
     if request.htmx:
         room = get_object_or_404(Room, id=request.POST.get("room"))
         reservation_type = request.POST.get("reservation_type")
-        print(reservation_type)
         if reservation_type == ReservationTypeChoices.WHOLE_DAY:
             total_price = calculate_discount_price(entity_type, room.price_all_day)
         elif reservation_type in [
@@ -213,11 +213,9 @@ def calculate_total_price(request):
         ]:
             total_price = calculate_discount_price(entity_type, room.price_half_day)
         elif reservation_type == ReservationTypeChoices.HOURLY:
-            start_time_str = request.POST.get("start_time")
-            end_time_str = request.POST.get("end_time")
-            try:
-                start_time = datetime.strptime(start_time_str, "%H:%M%S").time()
-                end_time = datetime.strptime(end_time_str, "%H:%M%S").time()
+            start_time = parse_time(request.POST.get("start_time"))
+            end_time = parse_time(request.POST.get("end_time"))
+            if start_time and end_time:
                 today = datetime.today().date()
                 start_datetime = datetime.combine(today, start_time)
                 end_datetime = datetime.combine(today, end_time)
@@ -225,8 +223,6 @@ def calculate_total_price(request):
                     start_datetime, end_datetime, room.price
                 )
                 total_price = calculate_discount_price(entity_type, total_price)
-            except ValueError:
-                total_price = 0
         return render(
             request,
             "reservations/total_price.html",

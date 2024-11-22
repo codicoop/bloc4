@@ -13,7 +13,7 @@ def populate_mail_templates(apps, schema_editor):
                 "en": {
                     "subject": "You have requested a new room reservation in Bloc4BCN",
                     "body": """
-            <p>Hello,, {{reserved_by}}!</p>
+            <p>Hello, {{reserved_by}},</p>
             <p>We're sending you this e-mail because today {{current_date}} at {{current_time}}
             you have requested a new reservation on Bloc4BCN.</p>
 
@@ -36,7 +36,7 @@ def populate_mail_templates(apps, schema_editor):
                 "ca": {
                     "subject": "Has sol·licitat una nova reserva de sala a Bloc4BCN",
                     "body": """
-            <p>Hola, {{reserved_by}}!</p>
+            <p>Hola, {{reserved_by}},</p>
             <p>T'enviem aquest correu electrònic perquè avui {{current_date}} a {{current_time}}
             has sol·licitat una nova reserva de sala al Bloc4BCN.</p>
 
@@ -64,7 +64,7 @@ def populate_mail_templates(apps, schema_editor):
                 "en": {
                     "subject": "Your Bloc4BCN reservation is confirmed",
                     "body": """
-            <p>Hello, {{reserved_by}}!</p>
+            <p>Hello, {{reserved_by}},</p>
             <p>We're sending you this e-mail because your room reservation request is confirmed.</p>
 
             <p>Here are the details of your reservation:</p>
@@ -78,14 +78,14 @@ def populate_mail_templates(apps, schema_editor):
                 <li>Total price: {{total_price}} €</li>
             </ul>
 
-            <p>{{extra_info}}</p>
+            <p>{{payment_info}}</p>
 
                         """,
                 },
                 "ca": {
                     "subject": "La teva reserva Bloc4BCN està confirmada",
                     "body": """
-            <p>Hola, {{reserved_by}}!</p>
+            <p>Hola, {{reserved_by}},</p>
             <p>T'enviem aquest correu electrònic perquè confirma la vostra sol·licitud de reserva de sala està confirmada.</p>
 
             <p>Aquí tens els detalls de la teva reserva:</p>
@@ -99,7 +99,7 @@ def populate_mail_templates(apps, schema_editor):
                 <li>Preu total: {{total_price}} €</li>
             </ul>
 
-            <p>{{extra_info}}</p>
+            <p>{{payment_info}}</p>
 
                         """,
                 },
@@ -232,6 +232,48 @@ def populate_mail_templates(apps, schema_editor):
     <p>{{entity}} ha cancel·lat la reserva de la sala
     {{room}} per a {{date_reservation}} amb hora d'inici {{start_time_reservation}}
      i hora de finalització {{end_time_reservation}}</p>
+                            """,
+                },
+            },
+        ),
+        dict(
+            id="payment_reminder",
+            translated_templates={
+                "en": {
+                    "subject": "Reservation pending payment in Bloc4BCN",
+                    "body": """
+    <p>Hello, {{ reserved_by }},</p>
+    <p>The payment of the reservation for {{ room }} on {{ date_reservation }} from {{ start_time_reservation }} to {{ end_time_reservation }} for an amount of {{ total_price }} € made by {{ entity }} still pending.</p>
+    <p>{{ payment_info }}</p>
+                            """,
+                },
+                "ca": {
+                    "subject": "Pagament pendent de cobrament en Bloc4BCN",
+                    "body": """
+    <p>Hola, {{ reserved_by }},</p>
+    <p>El pagament de la reserva per {{ entity }} de {{ room }} el dia {{ date_reservation }} de {{ start_time_reservation }} a {{ end_time_reservation }}, encara està pendent de pagament amb una quantitat de {{ total_price }} €.</p>
+    <p>{{ payment_info }}</p>
+                            """,
+                },
+            },
+        ),
+        dict(
+            id="confirmed_room_change",
+            translated_templates={
+                "en": {
+                    "subject": "Room reservation change in Bloc4BCN",
+                    "body": """
+    <p>Hello, {{ reserved_by }},</p>
+    <p>We're sending you this e-mail, because we changed the location for the reservation for {{ entity }} on {{ date_reservation }} from {{ start_time_reservation }} to {{ end_time_reservation }}.</p>
+    <p>The new location will be {{ room }}.</p>
+                            """,
+                },
+                "ca": {
+                    "subject": "Canvi de sala de la reserva en Bloc4BCN",
+                    "body": """
+    <p>Hola, {{ reserved_by }},</p>
+    <p>T'enviem aquest correu, perquè s'ha canviat la localització de la reserva per {{ entity }} el dia {{ date_reservation }} de {{ start_time_reservation }} a {{ end_time_reservation }}.</p>
+    <p>La nova sala serà {{ room }}.</p>
                             """,
                 },
             },

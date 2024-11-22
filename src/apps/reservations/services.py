@@ -15,7 +15,7 @@ from project.post_office import send
 
 
 def send_mail_reservation(reservation, action):
-    extra_info = ""
+    payment_info = ""
     entity_type = reservation.entity.entity_type
     if "bloc4" in action:
         recipients = [Setting.get("RESERVATIONS_EMAIL")]
@@ -25,7 +25,7 @@ def send_mail_reservation(reservation, action):
         EntityTypesChoices.GENERAL,
         EntityTypesChoices.OUTSIDE,
     ]:
-        extra_info = Setting.get("PAYMENT_INFORMATION")
+        payment_info = Setting.get("PAYMENT_INFORMATION")
     context = {
         "reserved_by": reservation.reserved_by,
         "canceled_by": reservation.canceled_by,
@@ -47,7 +47,7 @@ def send_mail_reservation(reservation, action):
         "user_email": reservation.reserved_by.email,
         "total_price": reservation.total_price,
         "status": reservation.get_status_display().lower(),
-        "extra_info": extra_info,
+        "payment_info": payment_info,
         "reservation_url_admin": f"{settings.ABSOLUTE_URL}/"
         f"admin/reservations/reservation/{reservation.id}",
     }
@@ -156,7 +156,7 @@ def get_monthly_bonus(monthly_bonus, reservations):
     return bonus_price, amount_left
 
 
-def get_monthly_bonus_totals(monthly_bonus, reservations):
+def get_monthly_bonus_totals(reservations, entity):
     bonuses = {}
     Reservation = apps.get_model("reservations", "Reservation")
     now = timezone.now()
@@ -168,6 +168,9 @@ def get_monthly_bonus_totals(monthly_bonus, reservations):
             ]
         )
     )
+    total_price = active_reservations.aggregate(
+            total_sum=Sum("total_price"),
+        )["total_sum"]
     monthly_bonus = MonthlyBonus.objects.filter(
         entity=entity,
         date__year=now.year,
@@ -184,15 +187,12 @@ def get_monthly_bonus_totals(monthly_bonus, reservations):
                 bonus_price,
                 amount_left,
             ) = get_monthly_bonus(monthly_bonus, active_reservations)
-            total_price = active_reservations.aggregate(
-                total_sum=Sum("total_price"),
-            )["total_sum"]
             bonuses = {
-                "total_price": delete_zeros(total_price),
                 "bonus_price": delete_zeros(total_price - bonus_price),
                 "amount": delete_zeros(monthly_bonus.amount),
                 "amount_left": delete_zeros(amount_left),
             }
+        bonuses["total_price"] = total_price
         bonuses["is_monthly_bonus"] = True
         bonuses["amount"] = delete_zeros(monthly_bonus.amount)
     return bonuses

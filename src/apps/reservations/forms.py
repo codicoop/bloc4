@@ -14,6 +14,16 @@ from .widgets.custom_radio import CustomRadioSelect
 
 
 class ReservationForm(forms.ModelForm):
+    data_policy = forms.BooleanField(
+        label=_("I agree to Privacy Policy"),
+        required=True,
+        widget=forms.CheckboxInput(
+        ),
+    )
+    terms_use = forms.BooleanField(
+        required=True,
+        widget=forms.CheckboxInput(),
+        )
     class Meta:
         model = Reservation
         fields = (

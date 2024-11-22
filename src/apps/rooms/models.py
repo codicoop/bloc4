@@ -76,7 +76,6 @@ class Room(BaseModel):
         max_length=50,
         choices=RoomTypeChoices,
         blank=False,
-        help_text=_("Room type"),
     )
 
     class Meta:

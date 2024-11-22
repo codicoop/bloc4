@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.reservations.models import Reservation
 from apps.reservations.services import send_mail_reservation
 from project.admin import ModelAdmin
-
+from apps.entities.choices import EntityTypesChoices
 
 @admin.register(Reservation)
 class ReservationAdmin(ModelAdmin):
@@ -94,6 +94,26 @@ class ReservationAdmin(ModelAdmin):
     )
     readonly_fields = ("actions_field", "room_field", "payment_field")
 
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super().get_fieldsets(request, obj)
+        if obj is None:
+            new_fieldsets = []
+            for name, opts in fieldsets:
+                filtered_fields = [field for field in opts['fields'] if field not in ('actions_field', 'payment_field', "room_field")]
+                if filtered_fields:
+                    new_fieldsets.append((name, {'fields': filtered_fields}))
+            return tuple(new_fieldsets)
+        if obj and obj.entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]:
+            new_fieldsets = []
+            for name, opts in fieldsets:
+                # Filtra el campo que deseas ocultar
+                filtered_fields = [field for field in opts['fields'] if field != 'payment_field']
+                if filtered_fields:
+                    new_fieldsets.append((name, {'fields': filtered_fields}))
+            return tuple(new_fieldsets)
+        return fieldsets
+
+
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
@@ -141,7 +161,7 @@ class ReservationAdmin(ModelAdmin):
 
     def notify_confirmed_room_change(self, request, reservation_id):
         reservation = Reservation.objects.get(pk=reservation_id)
-        # send_mail_reservation(reservation, "confirmed_room_change")
+        send_mail_reservation(reservation, "confirmed_room_change")
         messages.success(
             request,
             _(
@@ -168,11 +188,11 @@ class ReservationAdmin(ModelAdmin):
                 notify_payment_reminder_text,
             )
         ]
-        return format_html("<br><br>".join(buttons))
+        return format_html("<br>".join(buttons))
 
     def notify_payment_reminder(self, request, reservation_id):
         reservation = Reservation.objects.get(pk=reservation_id)
-        # send_mail_reservation(reservation, "payment_reminder")
+        send_mail_reservation(reservation, "payment_reminder")
         messages.success(
             request,
             _(
@@ -184,7 +204,7 @@ class ReservationAdmin(ModelAdmin):
 
     @admin.display(description=_("Actions"))
     def actions_field(self, obj):
-        if not obj:
+        if obj is None:
             return "-"
         confirmed_reservation_msg = _(
             "Are you sure you want to confirm the reservation and notify the user?"

@@ -156,11 +156,7 @@ def get_monthly_bonus(monthly_bonus, reservations):
     return bonus_price, amount_left
 
 
-<<<<<<< HEAD
 def get_monthly_bonus_totals(monthly_bonus, reservations):
-=======
-def get_monthly_bonus_totals(reservations, entity):
->>>>>>> iteracio4-#113
     bonuses = {}
     Reservation = apps.get_model("reservations", "Reservation")
     now = timezone.now()

@@ -141,23 +141,10 @@ def create_reservation_view(request):
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
             reservation.total_price = reservation.get_total_price
-<<<<<<< HEAD
             privilege = getattr(reservation.entity, "entity_privilege", None)
             if privilege:
                 privilege = privilege.class_reservation_privilege
             if privilege and reservation.room.room_type == RoomTypeChoices.CLASSROOM:
-=======
-            try:
-                entity_privilege = (
-                    reservation.entity.entity_privilege.class_reservation_privilege
-                )
-            except ObjectDoesNotExist:
-                entity_privilege = False
-            if (
-                entity_privilege
-                and reservation.room.room_type == RoomTypeChoices.CLASSROOM
-            ):
->>>>>>> iteracio4-#113
                 reservation.status = Reservation.StatusChoices.CONFIRMED
                 send_mail_reservation(reservation, "reservation_confirmed_user")
             else:

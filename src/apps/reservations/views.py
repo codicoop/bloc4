@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlencode
 
-from django.db.models import Q
+from django.db.models import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
@@ -12,7 +12,6 @@ from django.views.generic import View
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
-from apps.entities.models import MonthlyBonus
 from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
@@ -24,6 +23,7 @@ from apps.reservations.services import (
     delete_zeros,
     get_monthly_bonus_totals,
     get_years_and_months,
+    parse_time,
     send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
@@ -33,7 +33,6 @@ from project.views import StandardSuccess
 
 
 def reservations_list(request):
-    bonuses = {}
     entity = request.user.entity
     now = timezone.now()
     reservations_all = Reservation.objects.filter(entity=entity)
@@ -41,37 +40,16 @@ def reservations_list(request):
     reservations = reservations_all.filter(
         date__year=now.year, date__month=now.month
     ).order_by("date")
-    active_reservations = reservations.filter(
-        Q(
-            status__in=[
-                Reservation.StatusChoices.PENDING,
-                Reservation.StatusChoices.CONFIRMED,
-            ]
-        )
-    )
-    monthly_bonus = MonthlyBonus.objects.filter(
-        entity=entity,
-        date__year=now.year,
-        date__month=now.month,
-    )
-    if (
-        entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
-        and monthly_bonus.exists()
-        and reservations.exists()
-    ):
-        monthly_bonus = monthly_bonus.first()
-        bonuses["amount"] = delete_zeros(monthly_bonus.amount)
-        bonuses["amount_left"] = 0
-        bonuses["total_price"] = 0
-        bonuses["bonus_price"] = 0
-        if active_reservations:
-            bonuses = get_monthly_bonus_totals(monthly_bonus, active_reservations)
-        bonuses["is_monthly_bonus"] = True
     context = {
+        "is_monthly_bonus": False,
+        "amount_left": 0,
+        "total_price": 0,
+        "bonus_price": 0,
         "reservations": reservations,
         "months": months_list,
         "years": years_list,
     }
+    bonuses = get_monthly_bonus_totals(reservations, entity)
     context.update(bonuses)
     return render(
         request,
@@ -90,33 +68,14 @@ def filter_reservations(request):
     reservations = Reservation.objects.filter(
         entity=entity, date__month=filter_month, date__year=filter_year
     ).order_by("date")
-    active_reservations = reservations.filter(
-        Q(
-            status__in=[
-                Reservation.StatusChoices.PENDING,
-                Reservation.StatusChoices.CONFIRMED,
-            ]
-        )
-    )
-    monthly_bonus = MonthlyBonus.objects.filter(
-        entity=entity,
-        date__year=int(filter_year),
-        date__month=int(filter_month),
-    )
-    if (
-        entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
-        and monthly_bonus.exists()
-        and reservations.exists()
-    ):
-        monthly_bonus = monthly_bonus.first()
-        bonuses["amount"] = delete_zeros(monthly_bonus.amount)
-        bonuses["amount_left"] = 0
-        bonuses["total_price"] = 0
-        bonuses["bonus_price"] = 0
-        if active_reservations:
-            bonuses = get_monthly_bonus_totals(monthly_bonus, active_reservations)
-        bonuses["is_monthly_bonus"] = True
-    context["reservations"] = reservations
+    context = {
+        "is_monthly_bonus": False,
+        "amount_left": 0,
+        "total_price": 0,
+        "bonus_price": 0,
+        "reservations": reservations,
+    }
+    bonuses = get_monthly_bonus_totals(reservations, entity)
     context.update(bonuses)
     return render(
         request,
@@ -144,7 +103,17 @@ def create_reservation_view(request):
         total_price = calculate_reservation_price(
             start_datetime, end_datetime, price_discount
         )
-        total_price = calculate_discount_price(entity_type, total_price)
+        prices = {
+            "price": calculate_discount_price(entity_type, room.price),
+            "price_half_day": calculate_discount_price(
+                entity_type,
+                room.price_half_day,
+            ),
+            "price_all_day": calculate_discount_price(
+                entity_type,
+                room.price_all_day,
+            ),
+        }
         form = ReservationForm(
             initial={
                 "date": date,
@@ -154,9 +123,10 @@ def create_reservation_view(request):
                 "room": room.id,
             },
             request=request,
+            prices=prices,
         )
     if request.method == "POST":
-        form = ReservationForm(request.POST, request.FILES)
+        form = ReservationForm(request.POST, request.FILES, prices=prices)
         # Validation of the date format
         try:
             datetime.strptime(form.data["date"], "%Y-%m-%d")
@@ -171,10 +141,23 @@ def create_reservation_view(request):
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
             reservation.total_price = reservation.get_total_price
+<<<<<<< HEAD
             privilege = getattr(reservation.entity, "entity_privilege", None)
             if privilege:
                 privilege = privilege.class_reservation_privilege
             if privilege and reservation.room.room_type == RoomTypeChoices.CLASSROOM:
+=======
+            try:
+                entity_privilege = (
+                    reservation.entity.entity_privilege.class_reservation_privilege
+                )
+            except ObjectDoesNotExist:
+                entity_privilege = False
+            if (
+                entity_privilege
+                and reservation.room.room_type == RoomTypeChoices.CLASSROOM
+            ):
+>>>>>>> iteracio4-#113
                 reservation.status = Reservation.StatusChoices.CONFIRMED
                 send_mail_reservation(reservation, "reservation_confirmed_user")
             else:
@@ -208,15 +191,6 @@ def create_reservation_view(request):
             "form": form,
             "room": room,
             "entity": request.user.entity,
-            "price": calculate_discount_price(entity_type, room.price),
-            "price_half_day": calculate_discount_price(
-                entity_type,
-                room.price_half_day,
-            ),
-            "price_all_day": calculate_discount_price(
-                entity_type,
-                room.price_all_day,
-            ),
             "total_price": delete_zeros(total_price),
         },
     )
@@ -279,11 +253,9 @@ def calculate_total_price(request):
         ]:
             total_price = calculate_discount_price(entity_type, room.price_half_day)
         elif reservation_type == ReservationTypeChoices.HOURLY:
-            start_time_str = request.POST.get("start_time")
-            end_time_str = request.POST.get("end_time")
-            try:
-                start_time = datetime.strptime(start_time_str, "%H:%M").time()
-                end_time = datetime.strptime(end_time_str, "%H:%M").time()
+            start_time = parse_time(request.POST.get("start_time"))
+            end_time = parse_time(request.POST.get("end_time"))
+            if start_time and end_time:
                 today = datetime.today().date()
                 start_datetime = datetime.combine(today, start_time)
                 end_datetime = datetime.combine(today, end_time)
@@ -291,8 +263,6 @@ def calculate_total_price(request):
                     start_datetime, end_datetime, room.price
                 )
                 total_price = calculate_discount_price(entity_type, total_price)
-            except ValueError:
-                total_price = 0
         return render(
             request,
             "reservations/total_price.html",

@@ -1,21 +1,30 @@
 from django import forms
 from django.conf import settings
 from django.core.validators import ValidationError
+<<<<<<< HEAD
 from django.utils.safestring import mark_safe
+=======
+from django.urls import reverse
+>>>>>>> iteracio4-#113
 from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
 
+<<<<<<< HEAD
 from apps.entities.models import Entity
 from apps.reservations.choices import (
     ActivityTypeChoices,
     Bloc4TypeChoices,
     ReservationTypeChoices,
 )
+=======
+>>>>>>> iteracio4-#113
 from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
+from .widgets.custom_radio import CustomRadioSelect
 
+<<<<<<< HEAD
 class ReservationForm(forms.ModelForm):
     room = forms.ModelChoiceField(
         queryset=Room.objects.all(),
@@ -299,13 +308,16 @@ class ReservationForm(forms.ModelForm):
             }
         ),
     )
+=======
+>>>>>>> iteracio4-#113
 
+class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = (
-            "reservation_type",
             "room",
             "entity",
+            "reservation_type",
             "title",
             "date",
             "start_time",
@@ -322,10 +334,109 @@ class ReservationForm(forms.ModelForm):
             "data_policy",
             "terms_use",
         )
+        widgets = {
+            "room": forms.HiddenInput(),
+            "entity": forms.HiddenInput(),
+            "date": forms.DateInput(
+                format="%Y-%m-%d",
+                attrs={
+                    "type": "date",
+                    "class": "text-sm border rounded-lg block w-full "
+                    "p-2.5 bg-gray-50 "
+                    "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                    "focus:border-primary-60 dark:bg-gray-700 "
+                    "dark:border-gray-600 dark:placeholder-gray-400 "
+                    "dark:text-white dark:focus:ring-primary-500 "
+                    "dark:focus:border-primary-500",
+                },
+            ),
+            "start_time": forms.TimeInput(
+                attrs={
+                    "type": "time",
+                    "step": 900,
+                    "min": "08:00",
+                    "max": "17:00",
+                    "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
+                    "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                    "focus:border-primary-60 dark:bg-gray-700 "
+                    "dark:border-gray-600 dark:placeholder-gray-400 "
+                    "dark:text-white dark:focus:ring-primary-500 "
+                    "dark:focus:border-primary-500",
+                    "hx-target": "#total_price",
+                    "hx-trigger": "change",
+                }
+            ),
+            "end_time": forms.TimeInput(
+                attrs={
+                    "type": "time",
+                    "step": 900,
+                    "min": "09:00",
+                    "max": "18:00",
+                    "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
+                    "border-gray-300 text-gray-900 focus:ring-primary-600 "
+                    "focus:border-primary-60 dark:bg-gray-700 "
+                    "dark:border-gray-600 dark:placeholder-gray-400 "
+                    "dark:text-white dark:focus:ring-primary-500 "
+                    "dark:focus:border-primary-500",
+                    "hx-target": "#total_price",
+                    "hx-trigger": "change",
+                }
+            ),
+            "assistants": forms.TextInput(),
+            "privacy": forms.Select(
+                attrs={
+                    "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
+                    "border-gray-300 text-gray-900 focus:ring-primary-500 "
+                    "focus:border-primary-500 dark:bg-gray-700 "
+                    "dark:border-gray-600 dark:placeholder-gray-400 "
+                    "dark:text-white dark:focus:ring-primary-500 "
+                    "dark:focus:border-primary-500",
+                    "autocomplete": True,
+                    "_": "init if my.value is 'public' "
+                    "remove .hidden from #id_description.parentElement "
+                    "then remove .hidden from #id_url.parentElement "
+                    "then remove .hidden from #id_poster.parentElement "
+                    "else "
+                    "add .hidden to #id_description.parentElement "
+                    "then add .hidden to #id_url.parentElement "
+                    "then add .hidden to #id_poster.parentElement "
+                    "end "
+                    "on change "
+                    "if my.value is 'public' "
+                    "remove .hidden from #id_description.parentElement "
+                    "then remove .hidden from #id_url.parentElement "
+                    "then remove .hidden from #id_poster.parentElement "
+                    "else "
+                    "add .hidden to #id_description.parentElement "
+                    "then add .hidden to #id_url.parentElement "
+                    "then add .hidden to #id_poster.parentElement ",
+                }
+            ),
+            "notes": forms.Textarea(),
+            "description": forms.Textarea(),
+            "poster": forms.FileInput(
+                attrs={
+                    "class": "text-sm border rounded-lg "
+                    "block w-full px-2.5 bg-gray-50 border-gray-300 "
+                    "text-gray-900 focus:ring-primary-600 "
+                    "focus:border-primary-600 dark:bg-gray-700 "
+                    "dark:border-gray-600 dark:placeholder-gray-400 "
+                    "dark:text-white dark:focus:ring-primary-500"
+                    "dark:focus:border-primary-500",
+                }
+            ),
+        }
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
+        prices = kwargs.pop("prices", {})
         super(ReservationForm, self).__init__(*args, **kwargs)
+        calculate_price_url = reverse("reservations:calculate_total_price")
+        self.fields["start_time"].widget.attrs.update({"hx-post": calculate_price_url})
+        self.fields["end_time"].widget.attrs.update({"hx-post": calculate_price_url})
+        self.fields["reservation_type"].widget = CustomRadioSelect(
+            prices=prices,
+        )
         if request:
             id = request.GET.get("id")
             room = Room.objects.get(id=id)

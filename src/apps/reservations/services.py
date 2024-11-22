@@ -1,12 +1,14 @@
 from datetime import datetime, timedelta
 
+from django.apps import apps
 from django.conf import settings
-from django.db.models import Sum
+from django.db.models import Q, Sum
 from django.db.models.functions import ExtractYear
 from django.utils import formats, timezone
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
+from apps.entities.models import MonthlyBonus
 from apps.reservations.constants import MONTHS
 from apps.rooms.choices import RoomTypeChoices
 from project.post_office import send
@@ -100,6 +102,15 @@ def calculate_discount_price(entity_type, price):
     return delete_zeros(price + price * discount)
 
 
+def parse_time(time_str):
+    if not time_str:
+        return False
+    try:
+        return datetime.strptime(time_str, "%H:%M:%S").time()
+    except ValueError:
+        return datetime.strptime(time_str, "%H:%M").time()
+
+
 def get_years_and_months(reservations):
     current_year = datetime.now().year
     current_month = datetime.now().month
@@ -122,7 +133,7 @@ def get_years_and_months(reservations):
     return months_list, years_list
 
 
-def get_monthly_hours_amount_letf(monthly_bonus, reservations):
+def get_monthly_bonus(monthly_bonus, reservations):
     amount_left = float(monthly_bonus.amount)
     bonus_price = 0
     if amount_left > 0:
@@ -145,20 +156,49 @@ def get_monthly_hours_amount_letf(monthly_bonus, reservations):
     return bonus_price, amount_left
 
 
+<<<<<<< HEAD
 def get_monthly_bonus_totals(monthly_bonus, reservations):
+=======
+def get_monthly_bonus_totals(reservations, entity):
+>>>>>>> iteracio4-#113
     bonuses = {}
-    if monthly_bonus:
-        (
-            bonus_price,
-            amount_left,
-        ) = get_monthly_hours_amount_letf(monthly_bonus, reservations)
-        total_price = reservations.aggregate(
-            total_sum=Sum("total_price"),
-        )["total_sum"]
-        bonuses["total_price"] = delete_zeros(total_price)
-        bonuses["bonus_price"] = delete_zeros(total_price - bonus_price)
+    Reservation = apps.get_model("reservations", "Reservation")
+    now = timezone.now()
+    active_reservations = reservations.filter(
+        Q(
+            status__in=[
+                Reservation.StatusChoices.PENDING,
+                Reservation.StatusChoices.CONFIRMED,
+            ]
+        )
+    )
+    monthly_bonus = MonthlyBonus.objects.filter(
+        entity=entity,
+        date__year=now.year,
+        date__month=now.month,
+    )
+    if (
+        entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
+        and monthly_bonus.exists()
+        and reservations.exists()
+    ):
+        monthly_bonus = monthly_bonus.first()
+        if active_reservations:
+            (
+                bonus_price,
+                amount_left,
+            ) = get_monthly_bonus(monthly_bonus, active_reservations)
+            total_price = active_reservations.aggregate(
+                total_sum=Sum("total_price"),
+            )["total_sum"]
+            bonuses = {
+                "total_price": delete_zeros(total_price),
+                "bonus_price": delete_zeros(total_price - bonus_price),
+                "amount": delete_zeros(monthly_bonus.amount),
+                "amount_left": delete_zeros(amount_left),
+            }
+        bonuses["is_monthly_bonus"] = True
         bonuses["amount"] = delete_zeros(monthly_bonus.amount)
-        bonuses["amount_left"] = delete_zeros(amount_left)
     return bonuses
 
 

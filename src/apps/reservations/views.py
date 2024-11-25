@@ -48,7 +48,7 @@ def reservations_list(request):
         "months": months_list,
         "years": years_list,
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity)
+    bonuses = get_monthly_bonus_totals(reservations, entity, now.month, now.year)
     context.update(bonuses)
     return render(
         request,
@@ -74,7 +74,7 @@ def filter_reservations(request):
         "bonus_price": 0,
         "reservations": reservations,
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity)
+    bonuses = get_monthly_bonus_totals(reservations, entity, filter_month, filter_year)
     context.update(bonuses)
     return render(
         request,

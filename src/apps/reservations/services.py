@@ -156,10 +156,9 @@ def get_monthly_bonus(monthly_bonus, reservations):
     return bonus_price, amount_left
 
 
-def get_monthly_bonus_totals(reservations, entity):
+def get_monthly_bonus_totals(reservations, entity, month, year):
     bonuses = {}
     Reservation = apps.get_model("reservations", "Reservation")
-    now = timezone.now()
     active_reservations = reservations.filter(
         Q(
             status__in=[
@@ -173,9 +172,10 @@ def get_monthly_bonus_totals(reservations, entity):
     )["total_sum"]
     monthly_bonus = MonthlyBonus.objects.filter(
         entity=entity,
-        date__year=now.year,
-        date__month=now.month,
+        date__year=year,
+        date__month=month,
     )
+    print(monthly_bonus)
     try:
         entity_type = entity.entity_type
     except AttributeError:

@@ -46,7 +46,7 @@ class CreateReservationViewTest(TestCase):
     def test_post(self):
         response = self.client.post(self.url, data=self.data, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.request["PATH_INFO"], "/ca/reserves/crear")
+        self.assertEqual(response.request["PATH_INFO"], "/ca/")
         # self.assertTemplateUsed(response, "standard_success.html")
 
 
@@ -59,6 +59,7 @@ class ReservationsCalendarViewTest(TestCase):
         )
 
     def test_get(self):
-        response = self.client.get(reverse("reservations:ajax_calendar_feed"))
+        self.room = RoomFactory()
+        response = self.client.get(reverse("reservations:ajax_room_calendar_feed", kwargs={"id": self.room.id}))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.request["PATH_INFO"], "/ca/reserves/ajax/calendar/")
+        self.assertEqual(response.request["PATH_INFO"], f"/ca/reserves/ajax/calendar/{self.room.id}/")

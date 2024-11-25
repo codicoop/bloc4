@@ -2,7 +2,6 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlencode
 
-from django.db.models import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy

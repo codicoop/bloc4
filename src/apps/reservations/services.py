@@ -176,6 +176,10 @@ def get_monthly_bonus_totals(reservations, entity):
         date__year=now.year,
         date__month=now.month,
     )
+    try:
+        entity_type = entity.entity_type
+    except:
+        return {}
     if (
         entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
         and monthly_bonus.exists()

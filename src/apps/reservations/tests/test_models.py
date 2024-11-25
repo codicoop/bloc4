@@ -3,6 +3,11 @@ from datetime import date, timedelta
 from django.test import TestCase
 
 from apps.entities.tests.factories import EntityFactory
+from apps.reservations.choices import (
+    ActivityTypeChoices,
+    Bloc4TypeChoices,
+    ReservationTypeChoices,
+)
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.rooms.tests.factories import RoomFactory
@@ -17,35 +22,60 @@ class ReservationModelTest(TestCase):
         self.entity = EntityFactory()
         self.form_error_greater_current_date = ReservationForm(
             data={
+                "tile": "Test reservation",
+                "reservation_type": ReservationTypeChoices.HOURLY,
                 "date": date.today() + timedelta(days=-1),
                 "start_time": "10:00",
                 "end_time": "11:00",
                 "room": self.room.id,
                 "entity": self.entity.id,
+                "notes": "Test notes",
+                "assistants": 10,
+                "notes": "Test notes",
+                "activity_type": ActivityTypeChoices.BLOC4,
+                "bloc4_type": Bloc4TypeChoices.TRAINING,
+                "total_price": 100,
+                "privacy": Reservation.PrivacyChoices.PRIVATE,
                 "reserved_by": 1,
                 "status": Reservation.StatusChoices.PENDING,
             }
         )
         self.form_error_no_full_hour = ReservationForm(
             data={
+                "tile": "Test reservation",
+                "reservation_type": ReservationTypeChoices.HOURLY,
                 "date": date.today() + timedelta(days=+1),
                 "start_time": "10:00",
                 "end_time": "10:30",
                 "room": self.room.id,
                 "entity": self.entity.id,
-                "motivation": "Test Motivation",
-                "assistants": "Test Assistants",
+                "notes": "Test notes",
+                "assistants": 10,
+                "notes": "Test notes",
+                "activity_type": ActivityTypeChoices.BLOC4,
+                "bloc4_type": Bloc4TypeChoices.TRAINING,
+                "total_price": 100,
+                "privacy": Reservation.PrivacyChoices.PRIVATE,
                 "reserved_by": 1,
                 "status": Reservation.StatusChoices.PENDING,
             }
         )
         self.form_error_more_20_hours = ReservationForm(
             data={
+                "tile": "Test reservation",
+                "reservation_type": ReservationTypeChoices.HOURLY,
                 "date": date.today() + timedelta(days=+1),
                 "start_time": "02:00",
                 "end_time": "23:00",
                 "room": self.room.id,
                 "entity": self.entity.id,
+                "notes": "Test notes",
+                "assistants": 10,
+                "notes": "Test notes",
+                "activity_type": ActivityTypeChoices.BLOC4,
+                "bloc4_type": Bloc4TypeChoices.TRAINING,
+                "total_price": 100,
+                "privacy": Reservation.PrivacyChoices.PRIVATE,
                 "reserved_by": 1,
                 "status": Reservation.StatusChoices.PENDING,
             }
@@ -65,7 +95,6 @@ class ReservationModelTest(TestCase):
                 self.form_error_no_full_hour.errors["end_time"],
                 ["La durada mínima d'una reserva és d'una hora."],
             )
-
             self.assertEqual(
                 self.form_error_more_20_hours.errors["end_time"],
                 ["La durada máxima d'una reserva és de 20 hores."],

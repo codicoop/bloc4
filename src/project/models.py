@@ -1,11 +1,8 @@
 import uuid
 
-from django.core.exceptions import AppRegistryNotReady
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from extra_settings.cache import set_cached_setting
-from extra_settings.models import Setting as BaseSetting
 
 
 class SetBooleanDatetimeMixin:

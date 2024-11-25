@@ -4,10 +4,11 @@ from django.urls import path, reverse
 from django.utils.html import escapejs, format_html
 from django.utils.translation import gettext_lazy as _
 
+from apps.entities.choices import EntityTypesChoices
 from apps.reservations.models import Reservation
 from apps.reservations.services import send_mail_reservation
 from project.admin import ModelAdmin
-from apps.entities.choices import EntityTypesChoices
+
 
 @admin.register(Reservation)
 class ReservationAdmin(ModelAdmin):

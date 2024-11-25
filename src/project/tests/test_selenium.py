@@ -11,6 +11,8 @@ from django.utils.translation import gettext as _
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 from apps.entities.tests.factories import EntityFactory
 from apps.reservations.models import Reservation
@@ -160,6 +162,9 @@ class MySeleniumTests(StaticLiveServerTestCase):
         burger_menu.click()
 
     def logging_url_title_and_assert_title(self, title=None):
+        WebDriverWait(self.selenium, 10).until(
+        EC.title_is(title), message=f"Expected title '{title}', but got '{self.selenium.title}'"
+    )
         logging.info(f"Opened: {self.selenium.current_url}")
         logging.info(f"Title: {self.selenium.title}")
         assert title == self.selenium.title
@@ -451,10 +456,13 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self.logging_url_title_and_assert_title(Strings.HOME_TITLE.value)
 
     def _reservations_list(self):
+        print(f"Expected title: {Strings.RESERVATION_LIST_TITLE.value}")
+        print(f"Actual title: {self.selenium.title}")
         # Open the menu to select the Reservations option.
         self.burger_menu_action()
         home_menu_option = self.selenium.find_element(By.ID, "menu_reservations")
         home_menu_option.click()
+
 
         self.logging_url_title_and_assert_title(Strings.RESERVATION_LIST_TITLE.value)
 
@@ -462,9 +470,11 @@ class MySeleniumTests(StaticLiveServerTestCase):
         # Create a new room
         self.room_test = Room.objects.create(
             name="Test Room",
-            location="Test Location",
             price=50,
+            price_half_day = 80,
+            price_all_day = 100,
             capacity=10,
+            description = "Description test",
             equipment="Equipment Test",
             room_type=RoomTypeChoices.EVENT_ROOM,
         )
@@ -483,14 +493,14 @@ class MySeleniumTests(StaticLiveServerTestCase):
         reserve_date = self.selenium.find_element(By.ID, "id_date")
         start_time = self.selenium.find_element(By.ID, "id_start_time")
         end_time = self.selenium.find_element(By.ID, "id_end_time")
-        motivation = self.selenium.find_element(By.ID, "id_motivation")
+        notes = self.selenium.find_element(By.ID, "id_notes")
         assistants = self.selenium.find_element(By.ID, "id_assistants")
         button_create = self.selenium.find_element(By.ID, "create_reservation")
         room.send_keys(self.room_test.name)
         reserve_date.send_keys("8.8.2024")
         start_time.send_keys("1000AM")
         end_time.send_keys("1100AM")
-        motivation.send_keys("Test Motivation")
+        notes.send_keys("Test Notes")
         assistants.send_keys("Test Assistants")
         button_create.click()
 

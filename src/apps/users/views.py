@@ -19,6 +19,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
+from extra_settings.models import Setting
 
 from apps.entities.forms import EntitySignUpForm
 from apps.users.forms import (

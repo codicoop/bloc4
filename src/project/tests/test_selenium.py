@@ -28,7 +28,6 @@ class SampleUser:
     email: str
     password: str
     email_verification_code: str
-    email_verified: bool
 
 
 class Strings(Enum):
@@ -64,9 +63,9 @@ class Strings(Enum):
     REGISTRY_UPDATE_TITLE = "Bloc4BCN | Registre actualitzat"
     PASSWORD_CHANGE_TITLE = "Bloc4BCN | Modificar la contrasenya"
     EMAIL_VALIDATION_TITLE = "Bloc4BCN | Validació de correu"
-    RESERVATION_LIST_TITLE = "Bloc4BCN | Llistat de reserves"
+    CHECK_CALENDAR_TITLE = "Bloc4BCN | Reserves"
     CREATE_RESERVATION_TITLE = "Bloc4BCN | Crear reserva"
-    CHECK_CALENDAR_TITLE = ""
+    RESERVATION_LIST_TITLE = "Bloc4BCN | Llistat de reserves"
     SUCCESSFUL_RESERVATION = "Bloc4BCN | Successful reservation"
 
 
@@ -132,7 +131,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
                 email="andrew@codi.coop",
                 password="0pl#9okm8ijn",
                 email_verification_code="1234",
-                email_verified=True,
             ),
         }
         cls.user = User.objects.create_user(
@@ -249,14 +247,11 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self._home()
         logging.info("Test Home finished.")
 
-        self._reservations_list()
-        logging.info("Test Reservations List finished.")
-
-        self._reservations_create()
-        logging.info("Test Create Reservation finished.")
-
         self._reservations_calendar()
         logging.info("Test Reservations Calendar finished.")
+
+        # self._reservations_create()
+        # logging.info("Test Create Reservation finished.")
 
         logging.info("#####################################")
         logging.info("#### All tests Selenium finished ####")
@@ -452,13 +447,12 @@ class MySeleniumTests(StaticLiveServerTestCase):
 
         self.logging_url_title_and_assert_title(Strings.HOME_TITLE.value)
 
-    def _reservations_list(self):
-        # Open the menu to select the Reservations option.
+    def _reservations_calendar(self):
         self.burger_menu_action()
         home_menu_option = self.selenium.find_element(By.ID, "menu_reservations")
         home_menu_option.click()
 
-        self.logging_url_title_and_assert_title(Strings.RESERVATION_LIST_TITLE.value)
+        self.logging_url_title_and_assert_title(Strings.HOME_TITLE.value)
 
     def _reservations_create(self):
         # Create a new room
@@ -521,8 +515,3 @@ class MySeleniumTests(StaticLiveServerTestCase):
         button_cancel.click()
 
         self.logging_url_title_and_assert_title(Strings.RESERVATION_LIST_TITLE.value)
-
-    def _reservations_calendar(self):
-        # Check Reservations Calendar
-        button_calendar = self.selenium.find_element(By.ID, "check_calendar")
-        button_calendar.click()

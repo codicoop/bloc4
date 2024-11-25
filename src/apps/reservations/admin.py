@@ -100,20 +100,28 @@ class ReservationAdmin(ModelAdmin):
         if obj is None:
             new_fieldsets = []
             for name, opts in fieldsets:
-                filtered_fields = [field for field in opts['fields'] if field not in ('actions_field', 'payment_field', "room_field")]
+                filtered_fields = [
+                    field
+                    for field in opts["fields"]
+                    if field not in ("actions_field", "payment_field", "room_field")
+                ]
                 if filtered_fields:
-                    new_fieldsets.append((name, {'fields': filtered_fields}))
+                    new_fieldsets.append((name, {"fields": filtered_fields}))
             return tuple(new_fieldsets)
-        if obj and obj.entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]:
+        if obj and obj.entity.entity_type in [
+            EntityTypesChoices.HOSTED,
+            EntityTypesChoices.BLOC4,
+        ]:
             new_fieldsets = []
             for name, opts in fieldsets:
                 # Filtra el campo que deseas ocultar
-                filtered_fields = [field for field in opts['fields'] if field != 'payment_field']
+                filtered_fields = [
+                    field for field in opts["fields"] if field != "payment_field"
+                ]
                 if filtered_fields:
-                    new_fieldsets.append((name, {'fields': filtered_fields}))
+                    new_fieldsets.append((name, {"fields": filtered_fields}))
             return tuple(new_fieldsets)
         return fieldsets
-
 
     def get_urls(self):
         urls = super().get_urls()

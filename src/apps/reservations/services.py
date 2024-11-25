@@ -169,8 +169,8 @@ def get_monthly_bonus_totals(reservations, entity):
         )
     )
     total_price = active_reservations.aggregate(
-            total_sum=Sum("total_price"),
-        )["total_sum"]
+        total_sum=Sum("total_price"),
+    )["total_sum"]
     monthly_bonus = MonthlyBonus.objects.filter(
         entity=entity,
         date__year=now.year,
@@ -178,10 +178,10 @@ def get_monthly_bonus_totals(reservations, entity):
     )
     try:
         entity_type = entity.entity_type
-    except:
+    except AttributeError:
         return {}
     if (
-        entity.entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
+        entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
         and monthly_bonus.exists()
         and reservations.exists()
     ):

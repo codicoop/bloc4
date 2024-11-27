@@ -41,6 +41,8 @@ def send_confirmation_mail(user_instance):
 
 
 def send_registration_pending_mail(user_instance, template, recipients):
+    if not recipients:
+        return
     context = {
         "project_name": Setting.get("PROJECT_NAME"),
         "user_name": user_instance.name,

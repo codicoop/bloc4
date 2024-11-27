@@ -80,8 +80,7 @@ ben llarga i t'agrairem que ens informis de la situació.
     <p>T'enviem aquest correu electrònic perquè avui {{date}} a les {{time}}
         heu sol·licitat verificar el vostre correu electrònic {{user_email}}
         per a {{absolute_url}}.</p>
-    <p>Per a completar aquesta acció, introduïu el codi {{user_code}} fent clic
-        al següent enllaç: <a href="{{email_verification_url}}">{{email_verification_url}}</a>
+    <p>Per a completar aquesta acció, introduïu el codi <b>{{user_code}}</b> fent clic al següent enllaç: <a href="{{email_verification_url}}">{{email_verification_url}}</a>
     </p>
     <p>Si no has estat tu qui ho ha demanat, ignora aquest missatge.</p>
                         """,
@@ -121,7 +120,7 @@ ben llarga i t'agrairem que ens informis de la situació.
             id="email_registration_pending_to_bloc4",
             translated_templates={
                 "en": {
-                    "subject": "Pending account for {{user_entity}}",
+                    "subject": "Pending account for {{user_entity_name}}",
                     "body": """
     <p>Hello,</p>
     <p>We're sending you this e-mail because today {{date}} at {{time}}
@@ -133,7 +132,7 @@ ben llarga i t'agrairem que ens informis de la situació.
                         """,
                 },
                 "ca": {
-                    "subject": "Compte pendent d'activació per {{user_entity}}",
+                    "subject": "Compte pendent d'activació per {{user_entity_name}}",
                     "body": """
     <p>Hola,</p>
 
@@ -153,7 +152,7 @@ ben llarga i t'agrairem que ens informis de la situació.
             id="email_account_activated",
             translated_templates={
                 "en": {
-                    "subject": "Account activated in {{absolute_url}}",
+                    "subject": "Account activated in Bloc4BCN",
                     "body": """
     <p>Hello, {{user_name}},</p>
     <p>We're sending you this e-mail because today {{date}} at {{time}}
@@ -161,7 +160,7 @@ ben llarga i t'agrairem que ens informis de la situació.
                         """,
                 },
                 "ca": {
-                    "subject": "Compte activat {{absolute_url}}",
+                    "subject": "Compte activat a Bloc4BCN",
                     "body": """
     <p>Hola, {{user_name}},</p>
 

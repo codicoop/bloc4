@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import validate_image_file_extension
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -91,3 +92,103 @@ class Entity(BaseModel):
         unique_together = ("id", "person_responsible")
         verbose_name = _("entity")
         verbose_name_plural = _("entities")
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.entity_type in [
+            EntityTypesChoices.HOSTED,
+            EntityTypesChoices.BLOC4,
+        ] and not hasattr(self, "entity_privilege"):
+            EntityPrivilege.objects.create(entity=self)
+
+    def clean(self, *args, **kwargs):
+        super().clean()
+        errors = {}
+        try:
+            user_entity = self.person_responsible.entity
+            if self != self.person_responsible.entity:
+                errors.update(
+                    {
+                        "person_responsible": ValidationError(
+                            _(
+                                "This user belong to {entity}. To be "
+                                "person responsible the user must belong to "
+                                "the entity first."
+                            ).format(entity=user_entity)
+                        )
+                    },
+                )
+            raise ValidationError(errors)
+        except AttributeError:
+            pass
+
+
+class EntityPrivilege(BaseModel):
+    entity = models.OneToOneField(
+        Entity, on_delete=models.CASCADE, related_name="entity_privilege"
+    )
+    monthly_hours_meeting = models.DecimalField(
+        _("Free monthly hours for meeting rooms"),
+        max_digits=5,
+        decimal_places=2,
+        default=10,
+    )
+    anual_hours_class = models.DecimalField(
+        _("Free annual hours for classrooms"),
+        max_digits=5,
+        decimal_places=2,
+        default=100,
+    )
+    class_reservation_privilege = models.BooleanField(
+        _("Classroom privilege"),
+        help_text=_("Classrooms can be reserved without prior authorization"),
+        default=False,
+    )
+
+    def __str__(self):
+        return _("Entity privilege for %(name)s") % {"name": self.entity.fiscal_name}
+
+
+class MonthlyBonus(BaseModel):
+    entity = models.ForeignKey(
+        Entity,
+        verbose_name=_("Entity monthly bonus"),
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="monthly_bonus",
+    )
+    date = models.DateField(_("Date"))
+    amount = models.FloatField(_("Amount"))
+
+    class Meta:
+        ordering = ["entity", "date"]
+        verbose_name = _("Monthly bonus")
+        verbose_name_plural = _("Monthly bonuses")
+
+    def __str__(self):
+        return _("Monthly bonus for %(entity)s in %(date)s") % {
+            "date": self.date.strftime("%B %Y"),
+            "entity": self.entity.fiscal_name,
+        }
+
+    @property
+    def month_and_year(self):
+        return self.date.strftime("%B %Y")
+
+    def clean(self, *args, **kwargs):
+        super().clean()
+        existing_objects = MonthlyBonus.objects.filter(
+            entity=self.entity, date__year=self.date.year, date__month=self.date.month
+        ).exclude(pk=self.pk)
+        if existing_objects.exists():
+            raise ValidationError(
+                {
+                    "date": ValidationError(
+                        _(
+                            f"A record for {self.entity} "
+                            f"for {self.month_and_year} already exists."
+                        )
+                    )
+                },
+            )

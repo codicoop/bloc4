@@ -1,14 +1,16 @@
 
 {% extends "../base.html" %}
-{% load i18n custom_filters %}
+{% load i18n custom_filters static %}
 
 {# Blocks de base.html #}
 {% block page_title %}{% translate "Reservations List" %}{% endblock %}
 {% block bodyclasses %}{% endblock %}
 {% block mainclasses %} reservations {% endblock %}
 {% block extra_js %}{% endblock %}
-{% block extra_head %}{% endblock %}
 
+{% block extra_head %}
+<script type="text/javascript" src="{% static 'js/_hyperscript.min.js' %}"></script>
+{% endblock %}
 
 {% block main %}
 <nav class="flex mb-4" aria-label="Breadcrumb">
@@ -46,42 +48,41 @@
 <h1 class="mt-4 mb-8 md:mb-16 text-2xl font-bold leading-tight tracking-tight text-primary-900 md:text-3xl dark:text-white">
   {% translate "Your reservations" %}
 </h1>
-<div class="flex flex-col gap-4 mb-8 md:grid md:grid-cols-2">
-  {% for reservation in reservations %}
-    <div
-      class="relative grid grid-cols-2 gap-2 w-full max-w-2xl p-5 rounded-xl font-medium rtl:text-right shadow-md
-      {% if reservation.status == reservation.StatusChoices.CANCELED or reservation.status == reservation.StatusChoices.REFUSED %}
-        bg-gray-300 text-gray-600
-      {% else %}bg-primary-300 text-gray-500 {% endif %}
-      focus:ring-4 focus:ring-primary-200
-      dark:focus:ring-primary-800 dark:border-gray-700 dark:text-gray-400"
-    >
-      <p class="col-span-2 pr-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-        {% translate "Room reservation" %} {{ reservation.room.name }}
-      </p>
-      <div class="text-md font-normal tracking-tight text-gray-900 dark:text-white col-start-1 row-span-3">
-        <p>{{ reservation.date}}</p>
-        <p>
-          {% if reservation.start_time and reservation.end_time %}
-          {{ reservation.start_time }} - {{ reservation.end_time }}
-          {% else %}
-          {% translate '---' %}
-          {% endif %}
-        </p>
-      </div>
-      <a class="absolute right-0" href="{% url 'reservations:reservations_details' id=reservation.id %}">
-        <div class="p-4">
-          <svg class="w-6 h-6 text-primary-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
-          </svg>
-        </div>
-      </a>
+
+<form class="mb-8 flex flex-col gap-4 md:grid md:grid-cols-2">
+  <div class="col-start-1">
+    {% csrf_token %}
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      {% translate "Filter by" %}
+    </label>
+    <div class="flex gap-2 items-center">
+      <select id="filter_year" name="filter_year"
+        hx-target="#htmx-reservations"   
+        hx-post="{% url 'reservations:filter_reservations' %}"
+        hx-trigger="change"
+        class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
+          focus:ring-primary-500 focus:border-primary-500"
+      >
+        {% for year in years %}
+          <option value="{{ year.year }}"{% if year.current %}selected{% endif %}>{{ year.year }}</option>
+        {% endfor %}
+      </select>
+      <select id="filter_month" name="filter_month"
+        hx-target="#htmx-reservations"   
+        hx-post="{% url 'reservations:filter_reservations' %}"
+        hx-trigger="change"
+        class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
+          focus:ring-primary-500 focus:border-primary-500"
+      >
+        {% for month in months %}
+          <option value="{{ month.month }}" {% if month.current %}selected{% endif %}>{{ month.name|capfirst }}</option>
+        {% endfor %}
+      </select>
     </div>
-    {% empty %}
-    <div>
-      <p>{% translate 'You have made no reservations yet. When you do, they will appear here.' %}</p>
-    </div>
-  {% endfor %}
+  </div>
+</form>
+<div class="flex flex-col gap-4 mb-8 md:grid md:grid-cols-2" id="htmx-reservations">
+  {% include './components/reservations.html' %}
 </div>
 
 {% endblock %}

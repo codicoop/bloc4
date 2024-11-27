@@ -12,15 +12,26 @@ const loadCalendar = () => {
         headerToolbar: {
             left: "today",
             center: "title",
-            right: "prev,next",
+            right:
+                (isStaff ? "customTimeGridWeek" : "") +
+                (isStaff ? " " : "") +
+                (isStaff ? "timeGridDay" : "") +
+                (isStaff ? " " : "") +
+                "prev,next",
         },
         views: {
+            timeGridDay: {
+                slotMinTime: "08:00:00",
+                slotMaxTime: "18:00:00",
+                allDaySlot: false,
+                expandRows: true,
+            },
             customTimeGridWeek: {
                 type: "timeGridWeek",
+                buttonText: "Setmana",
                 duration: { days: 7 },
                 firstDay: 1,
                 dateAlignment: "week",
-                // selectable: roomId !== "all",
                 selectable: true,
                 select: function (info) {
                     const start = info.startStr;
@@ -69,18 +80,19 @@ const loadCalendar = () => {
         },
         eventDidMount: function (info) {
             let pill = document.createElement("span");
-            let room = info.event._def.extendedProps["room"];
-            // let color = info.event._def.extendedProps["color"];
-            let eventText = info.el.querySelector(".fc-event-time");
-            pill.classList.add("text-xs");
-            pill.innerText = room;
-            eventText.append(pill);
-            eventText.classList.add(
-                "flex",
-                "flex-wrap",
-                "gap-1",
-                "items-center"
-            );
+            let entity = info.event._def.extendedProps["entity"];
+            if (entity) {
+                let eventText = info.el.querySelector(".fc-event-time");
+                pill.classList.add("text-xs");
+                pill.innerText = entity;
+                eventText.append(pill);
+                eventText.classList.add(
+                    "flex",
+                    "flex-wrap",
+                    "gap-1",
+                    "items-center"
+                );
+            }
         },
         eventClick: function (info) {
             if (info.event.extendedProps.is_staff) {

@@ -92,6 +92,8 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
                 "fields": (
                     "is_janitor",
                     "is_staff",
+                    "roles_explanation_field",
+                    "groups",
                     "is_active",
                     "is_superuser",
                     "is_verified",
@@ -121,7 +123,9 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         "email_verified",
         "actions_field",
         "is_verified",
+        "roles_explanation_field",
     )
+    filter_horizontal = ("groups",)
 
     def get_fieldsets(self, request, obj=None):
         return super().get_fieldsets(request, obj) + self.common_fieldsets
@@ -151,7 +155,7 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         ]
         return custom_urls + urls
 
-    @admin.display(description="Accions")
+    @admin.display(description=_("Actions"))
     def actions_field(self, obj):
         if not obj or obj.is_verified:
             return "-"
@@ -170,11 +174,11 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
                 confirmed_verification_text,
             )
         ]
-        return format_html("<br class='grp-button grp-default'><br>".join(buttons))
+        return format_html("<br><br>".join(buttons))
 
     def _get_url_with_alert_msg(self, alert_msg, url, text):
-        return (
-            '<a class="grp-button grp-default" '
+        return format_html(
+            f'<a class="submit-row" style="color: white; background-color: #417690;"'
             f"href=\"javascript:if(confirm('{escapejs(alert_msg)}')) "
             f"window.location.href = '{url}'\">{text}</a>"
         )

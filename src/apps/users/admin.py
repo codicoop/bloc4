@@ -92,6 +92,8 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
                 "fields": (
                     "is_janitor",
                     "is_staff",
+                    "roles_explanation_field",
+                    "groups",
                     "is_active",
                     "is_superuser",
                     "is_verified",
@@ -121,7 +123,9 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         "email_verified",
         "actions_field",
         "is_verified",
+        "roles_explanation_field",
     )
+    filter_horizontal = ("groups",)
 
     def get_fieldsets(self, request, obj=None):
         return super().get_fieldsets(request, obj) + self.common_fieldsets

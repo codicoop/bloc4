@@ -39,7 +39,7 @@ def update_user_groups(sender, **kwargs):
         # post_office also has the 'attachment' model. Not giving access for now.
         "users": get_permission_codenames("user", "vacd"),
         "entities": get_permission_codenames("entity", "vacd")
-        + get_permission_codenames("monthly_bonus", "vacd"),
+        + get_permission_codenames("monthlybonus", "vacd"),
         "reservations": get_permission_codenames("reservation", "vacd"),
         "rooms": get_permission_codenames("room", "vacd"),
     }
@@ -103,7 +103,7 @@ def get_permission_codenames(base_codename, permissions):
     return strings
 
 
-def check_constance_permissions():
+def check_extra_settings_permissions():
     contenttype_model = apps.get_model("contenttypes", "ContentType")
     permission_model = apps.get_model("auth", "Permission")
     content_type = contenttype_model.objects.get(
@@ -113,11 +113,11 @@ def check_constance_permissions():
     logger.info(content_type)
     change_perm = permission_model.objects.filter(
         content_type=content_type,
-        codename="change_config",
+        codename="change_setting",
     )
     view_perm = permission_model.objects.filter(
         content_type=content_type,
-        codename="view_config",
+        codename="view_setting",
     )
     logger.info(f"{change_perm=}, {view_perm=}")
 

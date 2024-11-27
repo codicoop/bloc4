@@ -175,7 +175,6 @@ def get_monthly_bonus_totals(reservations, entity, month, year):
         date__year=year,
         date__month=month,
     )
-    print(monthly_bonus)
     try:
         entity_type = entity.entity_type
     except AttributeError:

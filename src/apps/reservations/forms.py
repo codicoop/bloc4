@@ -98,16 +98,24 @@ class ReservationForm(forms.ModelForm):
             ),
             "assistants": CustomNumericInput(),
             "catering": CustomCheckboxInput(),
+            "notes": forms.Textarea(),
+            "activity_type": forms.Select(
+                attrs={
+                    "_": "init if my.value is 'bloc4'"
+                    "remove .hidden from #id_bloc4_type.parentElement "
+                    "else "
+                    "add .hidden to #id_bloc4_type.parentElement "
+                    "end "
+                    "on change "
+                    "if my.value is 'bloc4' "
+                    "remove .hidden from #id_bloc4_type.parentElement "
+                    "else "
+                    "add .hidden to #id_bloc4_type.parentElement ",
+                }
+            ),
             "privacy": forms.Select(
                 attrs={
-                    "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                    "border-gray-300 text-gray-900 focus:ring-primary-500 "
-                    "focus:border-primary-500 dark:bg-gray-700 "
-                    "dark:border-gray-600 dark:placeholder-gray-400 "
-                    "dark:text-white dark:focus:ring-primary-500 "
-                    "dark:focus:border-primary-500",
-                    "autocomplete": True,
-                    "_": "init if my.value is 'public' "
+                    "_": "init if my.value is 'public'"
                     "remove .hidden from #id_description.parentElement "
                     "then remove .hidden from #id_url.parentElement "
                     "then remove .hidden from #id_poster.parentElement "
@@ -127,7 +135,6 @@ class ReservationForm(forms.ModelForm):
                     "then add .hidden to #id_poster.parentElement ",
                 }
             ),
-            "notes": forms.Textarea(),
             "description": forms.Textarea(),
             "poster": forms.FileInput(
                 attrs={

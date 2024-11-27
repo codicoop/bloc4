@@ -11,6 +11,7 @@ from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
 from .widgets.custom_checkbox import CustomCheckboxInput
+from .widgets.custom_numeric import CustomNumericInput
 from .widgets.custom_radio import CustomRadioSelect
 
 
@@ -95,7 +96,7 @@ class ReservationForm(forms.ModelForm):
                     "hx-trigger": "change",
                 }
             ),
-            "assistants": forms.TextInput(),
+            "assistants": CustomNumericInput(),
             "privacy": forms.Select(
                 attrs={
                     "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "

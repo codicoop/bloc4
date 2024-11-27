@@ -20,6 +20,7 @@ from django.utils import formats, timezone
 from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
 
+from apps.reservations.widgets.custom_checkbox import CustomCheckboxInput
 from apps.users.models import User
 from project.helpers import absolute_url
 from project.post_office import send
@@ -40,7 +41,7 @@ class AuthenticationForm(BaseAuthenticationForm):
         label=_("Password"),
     )
     remember_me = forms.BooleanField(
-        required=False, widget=forms.CheckboxInput(), label=_("Remember me")
+        required=False, widget=CustomCheckboxInput(), label=_("Remember me")
     )
 
 

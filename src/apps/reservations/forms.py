@@ -10,6 +10,7 @@ from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
+from .widgets.custom_checkbox import CustomCheckboxInput
 from .widgets.custom_radio import CustomRadioSelect
 
 
@@ -17,13 +18,13 @@ class ReservationForm(forms.ModelForm):
     data_policy = forms.BooleanField(
         label=_("I agree to Privacy Policy"),
         required=True,
-        widget=forms.CheckboxInput(
-        ),
+        widget=CustomCheckboxInput(),
     )
     terms_use = forms.BooleanField(
         required=True,
-        widget=forms.CheckboxInput(),
-        )
+        widget=CustomCheckboxInput(),
+    )
+
     class Meta:
         model = Reservation
         fields = (

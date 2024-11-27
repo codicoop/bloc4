@@ -94,12 +94,12 @@ class Entity(BaseModel):
         verbose_name_plural = _("entities")
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         if self.entity_type in [
             EntityTypesChoices.HOSTED,
             EntityTypesChoices.BLOC4,
         ] and not hasattr(self, "entity_privilege"):
             EntityPrivilege.objects.create(entity=self)
-        super().save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):
         super().clean()

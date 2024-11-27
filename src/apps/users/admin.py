@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.utils.html import escapejs, format_html
 from django.utils.translation import gettext_lazy as _
 
+from apps.entities.models import Entity
 from apps.users.models import User
 from apps.users.services import send_registration_pending_mail
 from project.admin import ModelAdminMixin
@@ -188,6 +189,9 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         user.is_active = True
         user.is_verified = True
         user.save()
+        entity = Entity.objects.get(pk=user.entity.id)
+        entity.person_responsible = user
+        entity.save()
         send_registration_pending_mail(user, "email_account_activated", user.email)
         messages.success(
             request,

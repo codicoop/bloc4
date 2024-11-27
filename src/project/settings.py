@@ -122,7 +122,6 @@ INSTALLED_APPS = [
     "apps.users",
     "project",
     "apps.entities",
-    "apps.provinces_towns",
     "apps.rooms",
     "apps.reservations",
     "django_htmx",

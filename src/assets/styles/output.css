@@ -2473,7 +2473,6 @@ input:checked + .toggle-bg {
   --tw-text-opacity: 1;
   color: rgb(226 226 226 / var(--tw-text-opacity));
 }
-
 .underline {
   text-decoration-line: underline;
 }

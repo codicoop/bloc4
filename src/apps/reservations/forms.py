@@ -97,6 +97,7 @@ class ReservationForm(forms.ModelForm):
                 }
             ),
             "assistants": CustomNumericInput(),
+            "catering": CustomCheckboxInput(),
             "privacy": forms.Select(
                 attrs={
                     "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "

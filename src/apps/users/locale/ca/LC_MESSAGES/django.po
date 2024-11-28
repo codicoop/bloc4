@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-16 16:07+0200\n"
-"PO-Revision-Date: 2024-09-16 16:12+0200\n"
+"POT-Creation-Date: 2024-11-28 16:44+0100\n"
+"PO-Revision-Date: 2024-11-28 16:56+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -19,7 +19,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
 
-#: apps/users/forms.py:31 apps/users/forms.py:86 apps/users/forms.py:106
+#: apps/users/admin.py:159
+msgid "Actions"
+msgstr "Accions"
+
+#: apps/users/admin.py:164
+msgid "Are you sure you want to confirm the account and notify the user?"
+msgstr "Estàs segura de que vols confirmar el compte i notificar l'usuari?"
+
+#: apps/users/admin.py:170
+msgid "Verify the account and notify the user"
+msgstr "Verifica el compte i notifica l'usuari"
+
+#: apps/users/admin.py:199
+msgid ""
+"An email has been sent to the user to inform that the account is active."
+msgstr ""
+"S'han enviat un correu electrònic al usuari per informar-lo de que el seu "
+"compte està actiu."
+
+#: apps/users/forms.py:31 apps/users/forms.py:101
 msgid "Email"
 msgstr "Correu electrònic"
 
@@ -31,11 +50,11 @@ msgstr "Contrasenya"
 msgid "Remember me"
 msgstr "Recorda'm"
 
-#: apps/users/forms.py:54
+#: apps/users/forms.py:67
 msgid "Change password"
 msgstr "Canviar la contrasenya"
 
-#: apps/users/forms.py:56
+#: apps/users/forms.py:69
 msgid ""
 "The current password is not displayed for security reasons. Use this field "
 "and save the changes to set a new password. While writing the new password "
@@ -46,57 +65,47 @@ msgstr ""
 "contrasenya serà visible, per facilitar que puguis copiar-la i enviar-li a "
 "l'usuari."
 
-#: apps/users/forms.py:78
-msgid "Name"
-msgstr "Nom"
-
-#: apps/users/forms.py:82
-msgid "Surnames"
-msgstr "Cognoms"
-
-#: apps/users/forms.py:161 apps/users/forms.py:180
+#: apps/users/forms.py:156 apps/users/forms.py:175
 msgid "New password"
 msgstr "Contrasenya nova"
 
-#: apps/users/forms.py:165 apps/users/forms.py:184
+#: apps/users/forms.py:160 apps/users/forms.py:179
 msgid "New password confirmation"
 msgstr "Confirmació de la nova contrasenya"
 
-#: apps/users/forms.py:176
+#: apps/users/forms.py:171
 msgid "Old password"
 msgstr "Contrasenya antiga"
 
-#: apps/users/forms.py:191 apps/users/forms.py:193
+#: apps/users/forms.py:186 apps/users/forms.py:188
 msgid "Verification code"
 msgstr "Codi de verificació"
 
-#: apps/users/models.py:21 apps/users/tests/test_models.py:65
+#: apps/users/models.py:22 apps/users/tests/test_models.py:64
 msgid "Users must have an email address"
 msgstr "Els usuaris han de tenir una adreça electrònica"
 
-#: apps/users/models.py:35 apps/users/tests/test_models.py:88
+#: apps/users/models.py:36 apps/users/tests/test_models.py:87
 msgid "Superusers must have a password"
 msgstr "Els superusuaris han de tenir una contrasenya"
 
-#: apps/users/models.py:45 apps/users/models.py:102
+#: apps/users/models.py:46 apps/users/models.py:111
 msgid "name"
 msgstr "nom"
 
-#: apps/users/models.py:47
+#: apps/users/models.py:48
 msgid "surnames"
 msgstr "cognoms"
 
-#: apps/users/models.py:52
+#: apps/users/models.py:53
 msgid "email address"
 msgstr "adreça electrònica"
 
-#: apps/users/models.py:58
-#, fuzzy
-#| msgid "Account verified"
+#: apps/users/models.py:59
 msgid "email verified"
-msgstr "Compte verificat"
+msgstr "correu electrònic verificat"
 
-#: apps/users/models.py:61
+#: apps/users/models.py:62
 msgid ""
 "Specifies whether the user has verified their email. You can only access the "
 "different sections of the application when you have verified it."
@@ -104,19 +113,19 @@ msgstr ""
 "Informa si l'usuari ha verificat el seu correu electrònic. Només pots "
 "accedir als altres apartats de l'aplicació un cop hagis fet la verificació."
 
-#: apps/users/models.py:68
+#: apps/users/models.py:69
 msgid "Entity"
 msgstr "Entitat"
 
-#: apps/users/models.py:75
+#: apps/users/models.py:76
 msgid "is janitor"
 msgstr "És conserge"
 
-#: apps/users/models.py:81
+#: apps/users/models.py:82
 msgid "is active"
 msgstr "Està actiu"
 
-#: apps/users/models.py:84
+#: apps/users/models.py:85
 msgid ""
 "If the box is unchecked, the user will not be able to authenticate to access "
 "the application. It is usually only disabled when you want to unsubscribe a "
@@ -126,96 +135,120 @@ msgstr ""
 "Normalment només es fa servir quan vols deshabilitar un usuari però guardant "
 "totes les seves dades."
 
-#: apps/users/models.py:89
-msgid "is staff"
-msgstr "És personal"
-
-#: apps/users/models.py:111
-msgid "user"
-msgstr "usuari"
-
-#: apps/users/models.py:112
-msgid "users"
-msgstr "usuaris"
-
-#: apps/users/urls.py:25
-msgid "sign-in/"
-msgstr "accedir/"
-
-#: apps/users/urls.py:27
-msgid "log-out/"
-msgstr "tancar-sessio/"
-
-#: apps/users/urls.py:34
-msgid "password-reset/"
-msgstr "reinici-contrasenya/"
-
-#: apps/users/urls.py:39
-msgid "password-reset/<uidb64>/<token>/"
-msgstr "reinici-contrasenya/<uidb64>/<token>/"
-
-#: apps/users/urls.py:44
-msgid "password-reset/invalid-link/"
-msgstr "reinici-contrasenya/enllac-invalid/"
-
-#: apps/users/urls.py:49
-msgid "password-reset/done/"
-msgstr "reinici-contrasenya/fet/"
-
-#: apps/users/urls.py:54
-msgid "password-reset/complete/"
-msgstr "reinici-contrasenya/completat/"
-
-#: apps/users/urls.py:59
-msgid "password-change/"
-msgstr "modificar-contrasenya/"
-
-#: apps/users/urls.py:64
-msgid "password-change/done/"
-msgstr "modificar-contrasenya/fet/"
-
-#: apps/users/urls.py:70
-msgid "profile/modified/"
-msgstr "perfil/modificat/"
-
-#: apps/users/urls.py:77
-msgid "profile/details/"
-msgstr "perfil/dades/"
-
-#: apps/users/urls.py:82
-msgid "user-validation/"
-msgstr "validacio-usuari/"
-
-#: apps/users/urls.py:87
-msgid "send-verification-code/"
-msgstr "enviar-codi-verificacio/"
-
-#: apps/users/urls.py:92
-msgid "email-verification-complete/"
-msgstr "verificacio-email-completada/"
-
-#: apps/users/urls.py:97
-msgid "privacy-policy/"
-msgstr "politica-privacitat/"
-
-#: apps/users/views.py:92 apps/users/views.py:193
-msgid "Done!"
-msgstr "Fet!"
-
-#: apps/users/views.py:93
+#: apps/users/models.py:91 apps/users/views.py:131
 msgid "Account verified"
 msgstr "Compte verificat"
 
-#: apps/users/views.py:94
+#: apps/users/models.py:94
+msgid ""
+"If the box is unchecked, its means that the user is from an external entity "
+"and its validation is pending."
+msgstr ""
+"Si la casella no està marcada vol dir que l'usuari és d'una entitat externa "
+"i que la seva validació està pendent."
+
+#: apps/users/models.py:98
+msgid "is staff"
+msgstr "És personal"
+
+#: apps/users/models.py:126
+msgid "user"
+msgstr "usuari"
+
+#: apps/users/models.py:127
+msgid "users"
+msgstr "usuaris"
+
+#: apps/users/urls.py:27
+msgid "sign-up/"
+msgstr "registre/"
+
+#: apps/users/urls.py:28
+msgid "sign-in/"
+msgstr "accedir/"
+
+#: apps/users/urls.py:30
+msgid "log-out/"
+msgstr "tancar-sessio/"
+
+#: apps/users/urls.py:37
+msgid "password-reset/"
+msgstr "reinici-contrasenya/"
+
+#: apps/users/urls.py:42
+msgid "password-reset/<uidb64>/<token>/"
+msgstr "reinici-contrasenya/<uidb64>/<token>/"
+
+#: apps/users/urls.py:47
+msgid "password-reset/invalid-link/"
+msgstr "reinici-contrasenya/enllac-invalid/"
+
+#: apps/users/urls.py:52
+msgid "password-reset/done/"
+msgstr "reinici-contrasenya/fet/"
+
+#: apps/users/urls.py:57
+msgid "password-reset/complete/"
+msgstr "reinici-contrasenya/completat/"
+
+#: apps/users/urls.py:62
+msgid "password-change/"
+msgstr "modificar-contrasenya/"
+
+#: apps/users/urls.py:67
+msgid "password-change/done/"
+msgstr "modificar-contrasenya/fet/"
+
+#: apps/users/urls.py:73
+msgid "profile/modified/"
+msgstr "perfil/modificat/"
+
+#: apps/users/urls.py:80
+msgid "profile/details/"
+msgstr "perfil/dades/"
+
+#: apps/users/urls.py:85
+msgid "user-validation/"
+msgstr "validacio-usuari/"
+
+#: apps/users/urls.py:90
+msgid "send-verification-code/"
+msgstr "enviar-codi-verificacio/"
+
+#: apps/users/urls.py:95
+msgid "email-verification-complete/"
+msgstr "verificacio-email-completada/"
+
+#: apps/users/urls.py:100
+msgid "privacy-policy/"
+msgstr "politica-privacitat/"
+
+#: apps/users/urls.py:105
+msgid "sign-up/success/"
+msgstr "registre/correcte"
+
+#: apps/users/views.py:110
+msgid ""
+"Code entered is not correct and the user cannot be verified. Please try "
+"again."
+msgstr ""
+"El codi introduït no és correcte i l'usuari no s'ha pogut verificar. Si us "
+"plau intenti-ho de nou."
+
+#: apps/users/views.py:130 apps/users/views.py:231 apps/users/views.py:244
+msgid "Done!"
+msgstr "Fet!"
+
+#: apps/users/views.py:132
 msgid "Account has been successfully verified."
 msgstr "El compte s'ha verificat correctament."
 
-#: apps/users/views.py:96 apps/users/views.py:160 apps/users/views.py:173
-#: apps/users/views.py:197
+#: apps/users/views.py:134 apps/users/views.py:198 apps/users/views.py:211
+#: apps/users/views.py:235
 msgid "Go back"
 msgstr "Tornar enrere"
 
-#: apps/users/views.py:112
+#: apps/users/views.py:150
 msgid ""
 "This email address does not match any registered account, please check the "
 "spelling."
@@ -223,19 +256,19 @@ msgstr ""
 "El correu indicat no correspon a cap compte registrat, si us plau verifica "
 "que l'hagis escrit correctament."
 
-#: apps/users/views.py:155 apps/users/views.py:156 apps/users/views.py:157
+#: apps/users/views.py:193 apps/users/views.py:194 apps/users/views.py:195
 msgid "Invalid link"
 msgstr "Enllaç invàlid"
 
-#: apps/users/views.py:158
+#: apps/users/views.py:196
 msgid "The link is invalid. Please try again."
 msgstr "L'enllaç és invàlid. Si us plau torna-ho a intentar."
 
-#: apps/users/views.py:165 apps/users/views.py:166
+#: apps/users/views.py:203 apps/users/views.py:204
 msgid "Password reset sent"
 msgstr "Reinici de contrasenya enviat"
 
-#: apps/users/views.py:168
+#: apps/users/views.py:206
 msgid ""
 "An email has been sent to your inbox. Please check it and follow the "
 "instructions to change your password."
@@ -243,21 +276,44 @@ msgstr ""
 "S'ha enviat un correu a la teva bústia. Si us plau obre'l i segueix les "
 "instruccions per tal de canviar la teva contrasenya."
 
-#: apps/users/views.py:178 apps/users/views.py:179 apps/users/views.py:180
+#: apps/users/views.py:216 apps/users/views.py:217 apps/users/views.py:218
 msgid "Password reset complete"
 msgstr "Reinici de contrasenya completat"
 
-#: apps/users/views.py:182
+#: apps/users/views.py:220
 msgid "Login"
 msgstr "Autenticació"
 
-#: apps/users/views.py:194
+#: apps/users/views.py:232
 msgid "Password change"
 msgstr "Modificar la contrasenya"
 
-#: apps/users/views.py:195
+#: apps/users/views.py:233
 msgid "Password change successful."
 msgstr "Contrasenya modificada correctament."
+
+#: apps/users/views.py:245
+msgid "Sign Up Success"
+msgstr "Registre correcte"
+
+#: apps/users/views.py:247
+msgid ""
+"Your account has been successfully created and its validation it's pending "
+"by Bloc4BCN. You'll receive an email when your account is available."
+msgstr ""
+"El teu compte ha sigut creat correctament i la seva validació per part de "
+"Bloc4BCN està pendent. Rebràs un correu electrònic quan el teu compte "
+"estigui disponible."
+
+#: apps/users/views.py:252
+msgid "Continue"
+msgstr "Continua"
+
+#~ msgid "Name"
+#~ msgstr "Nom"
+
+#~ msgid "Surnames"
+#~ msgstr "Cognoms"
 
 #~ msgid "Email address"
 #~ msgstr "Adreça electrònica"

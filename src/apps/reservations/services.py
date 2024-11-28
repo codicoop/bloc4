@@ -9,6 +9,9 @@ from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.models import MonthlyBonus
+from apps.reservations.choices import (
+    ReservationTypeChoices,
+)
 from apps.reservations.constants import MONTHS
 from apps.rooms.choices import RoomTypeChoices
 from project.post_office import send
@@ -100,6 +103,29 @@ def calculate_reservation_price(start_time, end_time, price):
 def calculate_discount_price(entity_type, price):
     discount = EntityTypesChoices(entity_type).get_discount_percentage()
     return delete_zeros(price + price * discount)
+
+
+def get_total_price(reservation):
+    total_price = 0
+    if reservation.reservation_type == ReservationTypeChoices.WHOLE_DAY:
+        total_price = calculate_discount_price(
+            reservation.entity.entity_type, reservation.room.price_all_day
+        )
+    elif reservation.reservation_type in [
+        ReservationTypeChoices.MORNING,
+        ReservationTypeChoices.AFTERNOON,
+    ]:
+        total_price = calculate_discount_price(
+            reservation.entity.entity_type, reservation.room.price_half_day
+        )
+    else:
+        start_time = datetime.combine(datetime.today(), reservation.start_time)
+        end_time = datetime.combine(datetime.today(), reservation.end_time)
+        price = calculate_discount_price(
+            reservation.entity.entity_type, reservation.room.price
+        )
+        total_price = calculate_reservation_price(start_time, end_time, price)
+    return total_price
 
 
 def parse_time(time_str):
@@ -195,7 +221,7 @@ def get_monthly_bonus_totals(reservations, entity, month, year):
                 "amount": delete_zeros(monthly_bonus.amount),
                 "amount_left": delete_zeros(amount_left),
             }
-        bonuses["total_price"] = total_price
+        bonuses["total_price"] = delete_zeros(total_price)
         bonuses["is_monthly_bonus"] = True
         bonuses["amount"] = delete_zeros(monthly_bonus.amount)
     return bonuses

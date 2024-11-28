@@ -23,10 +23,6 @@ from apps.reservations.constants import (
     START_TIME,
     START_TIME_PLUS_ONE,
 )
-from apps.reservations.services import (
-    calculate_discount_price,
-    calculate_reservation_price,
-)
 from apps.rooms.choices import RoomTypeChoices
 from project.models import BaseModel
 from project.storage_backends import PublicMediaStorage
@@ -214,27 +210,6 @@ class Reservation(BaseModel):
             "admin:reservations_reservation_change",
             args=(self.pk,),
         )
-
-    @property
-    def get_total_price(self):
-        total_price = 0
-        if self.reservation_type == ReservationTypeChoices.WHOLE_DAY:
-            total_price = calculate_discount_price(
-                self.entity.entity_type, self.room.price_all_day
-            )
-        elif self.reservation_type in [
-            ReservationTypeChoices.MORNING,
-            ReservationTypeChoices.AFTERNOON,
-        ]:
-            total_price = calculate_discount_price(
-                self.entity.entity_type, self.room.price_half_day
-            )
-        else:
-            start_time = datetime.combine(datetime.today(), self.start_time)
-            end_time = datetime.combine(datetime.today(), self.end_time)
-            price = calculate_discount_price(self.entity.entity_type, self.room.price)
-            total_price = calculate_reservation_price(start_time, end_time, price)
-        return total_price
 
     def save(self, *args, **kwargs):
         from apps.entities.models import EntityPrivilege, MonthlyBonus

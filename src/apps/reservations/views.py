@@ -21,6 +21,7 @@ from apps.reservations.services import (
     date_to_full_calendar_format,
     delete_zeros,
     get_monthly_bonus_totals,
+    get_total_price,
     get_years_and_months,
     parse_time,
     send_mail_reservation,
@@ -136,10 +137,11 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
+        print(form.errors)
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
-            reservation.total_price = reservation.get_total_price
+            reservation.total_price = get_total_price(reservation)
             privilege = getattr(reservation.entity, "entity_privilege", None)
             if privilege:
                 privilege = privilege.class_reservation_privilege
@@ -176,7 +178,6 @@ def create_reservation_view(request):
         {
             "form": form,
             "room": room,
-            "entity": request.user.entity,
             "total_price": delete_zeros(total_price),
         },
     )

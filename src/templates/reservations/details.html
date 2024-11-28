@@ -41,10 +41,10 @@
     </li>
   </ul>
 
-  <div class="flex justify-center items-center mt-8 md:p-8">
-    <div class="w-full rounded-t-xl rounded-b-none sm:max-w-lg lg:w-[32rem]">
+  <div class="flex justify-center items-center my-8 md:p-8">
+    <div class="w-full rounded-t-xl rounded-b-none sm:max-w-lg">
       <div
-        class="flex items-center justify-between gap-3 w-full md:w-[532rem] p-5 rounded-t-xl
+        class="flex items-center justify-between gap-3 w-full p-5 rounded-t-xl
           rounded-b-none font-medium rtl:text-right shadow-md
           {% if reservation.status == reservation.StatusChoices.CANCELED or reservation.status == reservation.StatusChoices.REFUSED %}
             bg-gray-300
@@ -252,7 +252,7 @@
   </div>
 
   {% if payment_info %}
-  <div class="flex justify-center items-center mt-8 md:p-8">
+  <div class="flex justify-center items-center mb-8">
     <div class="w-full rounded-t-xl rounded-b-none sm:max-w-lg">
       <div
         class="w-full max-w-2xl p-5 rounded-t-xl rounded-b-none font-medium rtl:text-right shadow-md
@@ -264,11 +264,11 @@
           {% translate "Payment information" %}
         </p>
       </div>
-        <div class="w-full max-w-2xl p-5 border border-gray-200 rounded-b-xl">
-          <div>{{ payment_info }}</div>
-        </div>
+      <div class="w-full max-w-2xl p-5 border border-gray-200 rounded-b-xl">
+        <div>{{ payment_info }}</div>
       </div>
     </div>
-    {% endif %}
+  </div>
+  {% endif %}
 
 {% endblock %}

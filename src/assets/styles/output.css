@@ -1526,8 +1526,12 @@ input:checked + .toggle-bg {
   max-width: 24rem;
 }
 
-.max-w-lg {
-  max-width: 32rem;
+.max-w-\[8rem\] {
+  max-width: 8rem;
+}
+
+.max-w-xs {
+  max-width: 20rem;
 }
 
 .flex-1 {
@@ -1863,6 +1867,11 @@ input:checked + .toggle-bg {
 
 .border-4 {
   border-width: 4px;
+}
+
+.border-x-0 {
+  border-left-width: 0px;
+  border-right-width: 0px;
 }
 
 .border-b {
@@ -2469,10 +2478,6 @@ input:checked + .toggle-bg {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.text-gray-100 {
-  --tw-text-opacity: 1;
-  color: rgb(226 226 226 / var(--tw-text-opacity));
-}
 .underline {
   text-decoration-line: underline;
 }
@@ -2672,6 +2677,11 @@ input:checked + .toggle-bg {
   background-color: rgb(202 179 255 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-primary-400:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(167 150 217 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-primary-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(240 236 254 / var(--tw-bg-opacity));
@@ -2705,11 +2715,6 @@ input:checked + .toggle-bg {
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-primary-400:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(167 150 217 / var(--tw-bg-opacity));
 }
 
 .hover\:text-blue-600:hover {
@@ -2773,6 +2778,11 @@ input:checked + .toggle-bg {
 .focus\:border-red-500:focus {
   --tw-border-opacity: 1;
   border-color: rgb(240 82 82 / var(--tw-border-opacity));
+}
+
+.focus\:border-blue-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(63 131 248 / var(--tw-border-opacity));
 }
 
 .focus\:outline-none:focus {
@@ -2843,9 +2853,19 @@ input:checked + .toggle-bg {
   --tw-ring-color: rgb(240 82 82 / var(--tw-ring-opacity));
 }
 
+.focus\:ring-blue-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(63 131 248 / var(--tw-ring-opacity));
+}
+
 .focus\:ring-gray-100:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(226 226 226 / var(--tw-ring-opacity));
+}
+
+.focus\:ring-primary-100:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(228 224 245 / var(--tw-ring-opacity));
 }
 
 .disabled\:cursor-not-allowed:disabled {
@@ -3259,10 +3279,6 @@ input:checked + .toggle-bg {
     max-width: 28rem;
   }
 
-  .sm\:max-w-2xl {
-    max-width: 42rem;
-  }
-
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3437,10 +3453,6 @@ input:checked + .toggle-bg {
 
   .lg\:w-\[32rem\] {
     width: 32rem;
-  }
-
-  .lg\:w-\[512px\] {
-    width: 512px;
   }
 
   .lg\:translate-x-0 {

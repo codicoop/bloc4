@@ -11,7 +11,6 @@ from django.views.generic import View
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
-from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
@@ -140,7 +139,13 @@ def create_reservation_view(request):
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
-            reservation.total_price = get_total_price(reservation)
+            reservation.total_price = get_total_price(
+                reservation.reservation_type,
+                reservation.entity.entity_type,
+                reservation.room,
+                reservation.start_time,
+                reservation.end_time,
+            )
             privilege = getattr(reservation.entity, "entity_privilege", None)
             if privilege:
                 privilege = privilege.class_reservation_privilege
@@ -226,29 +231,17 @@ def reservation_detail_view(request, id):
 
 # htmx
 def calculate_total_price(request):
-    entity_type = request.user.entity.entity_type
     total_price = 0
     if request.htmx:
+        entity_type = request.user.entity.entity_type
         room = get_object_or_404(Room, id=request.POST.get("room"))
         reservation_type = request.POST.get("reservation_type")
-        if reservation_type == ReservationTypeChoices.WHOLE_DAY:
-            total_price = calculate_discount_price(entity_type, room.price_all_day)
-        elif reservation_type in [
-            ReservationTypeChoices.MORNING,
-            ReservationTypeChoices.AFTERNOON,
-        ]:
-            total_price = calculate_discount_price(entity_type, room.price_half_day)
-        elif reservation_type == ReservationTypeChoices.HOURLY:
-            start_time = parse_time(request.POST.get("start_time"))
-            end_time = parse_time(request.POST.get("end_time"))
-            if start_time and end_time:
-                today = datetime.today().date()
-                start_datetime = datetime.combine(today, start_time)
-                end_datetime = datetime.combine(today, end_time)
-                total_price = calculate_reservation_price(
-                    start_datetime, end_datetime, room.price
-                )
-                total_price = calculate_discount_price(entity_type, total_price)
+        start_time = parse_time(request.POST.get("start_time"))
+        end_time = parse_time(request.POST.get("end_time"))
+        total_price = get_total_price(
+            reservation_type, entity_type, room, start_time, end_time
+        )
+        print(total_price)
         return render(
             request,
             "reservations/total_price.html",

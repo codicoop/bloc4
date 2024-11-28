@@ -105,25 +105,19 @@ def calculate_discount_price(entity_type, price):
     return delete_zeros(price + price * discount)
 
 
-def get_total_price(reservation):
+def get_total_price(reservation_type, entity_type, room, start_time, end_time):
     total_price = 0
-    if reservation.reservation_type == ReservationTypeChoices.WHOLE_DAY:
-        total_price = calculate_discount_price(
-            reservation.entity.entity_type, reservation.room.price_all_day
-        )
-    elif reservation.reservation_type in [
+    if reservation_type == ReservationTypeChoices.WHOLE_DAY:
+        total_price = calculate_discount_price(entity_type, room.price_all_day)
+    elif reservation_type in [
         ReservationTypeChoices.MORNING,
         ReservationTypeChoices.AFTERNOON,
     ]:
-        total_price = calculate_discount_price(
-            reservation.entity.entity_type, reservation.room.price_half_day
-        )
+        total_price = calculate_discount_price(entity_type, room.price_half_day)
     else:
-        start_time = datetime.combine(datetime.today(), reservation.start_time)
-        end_time = datetime.combine(datetime.today(), reservation.end_time)
-        price = calculate_discount_price(
-            reservation.entity.entity_type, reservation.room.price
-        )
+        start_time = datetime.combine(datetime.today(), start_time)
+        end_time = datetime.combine(datetime.today(), end_time)
+        price = calculate_discount_price(entity_type, room.price)
         total_price = calculate_reservation_price(start_time, end_time, price)
     return total_price
 

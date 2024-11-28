@@ -19,11 +19,11 @@ class ReservationForm(forms.ModelForm):
     data_policy = forms.BooleanField(
         label=_("I agree to Privacy Policy"),
         required=True,
-        widget=forms.CheckboxInput(),
+        widget=CustomCheckboxInput(),
     )
     terms_use = forms.BooleanField(
         required=True,
-        widget=forms.CheckboxInput(),
+        widget=CustomCheckboxInput(),
     )
 
     class Meta:
@@ -96,8 +96,8 @@ class ReservationForm(forms.ModelForm):
                     "hx-trigger": "change",
                 }
             ),
-            # "assistants": CustomNumericInput(),
-            # "catering": CustomCheckboxInput(),
+            "assistants": CustomNumericInput(),
+            "catering": CustomCheckboxInput(),
             "notes": forms.Textarea(),
             "activity_type": forms.Select(
                 attrs={

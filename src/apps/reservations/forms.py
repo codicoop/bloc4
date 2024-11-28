@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
 
 from apps.reservations.models import Reservation
+from apps.reservations.services import calculate_discount_price
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
@@ -156,9 +157,6 @@ class ReservationForm(forms.ModelForm):
         calculate_price_url = reverse("reservations:calculate_total_price")
         self.fields["start_time"].widget.attrs.update({"hx-post": calculate_price_url})
         self.fields["end_time"].widget.attrs.update({"hx-post": calculate_price_url})
-        self.fields["reservation_type"].widget = CustomRadioSelect(
-            prices=prices,
-        )
         if request:
             id = request.GET.get("id")
             room = Room.objects.get(id=id)
@@ -186,7 +184,22 @@ class ReservationForm(forms.ModelForm):
                         )
                     )
                 )
-
+            prices = {
+                "price": calculate_discount_price(
+                    request.user.entity.entity_type, room.price
+                ),
+                "price_half_day": calculate_discount_price(
+                    request.user.entity.entity_type,
+                    room.price_half_day,
+                ),
+                "price_all_day": calculate_discount_price(
+                    request.user.entity.entity_type,
+                    room.price_all_day,
+                ),
+            }
+            self.fields["reservation_type"].widget = CustomRadioSelect(
+                prices=prices,
+            )
             self.fields["data_policy"].help_text = Setting.get("DATA_POLICY")
 
     def clean(self):

@@ -102,17 +102,6 @@ def create_reservation_view(request):
         total_price = calculate_reservation_price(
             start_datetime, end_datetime, price_discount
         )
-        prices = {
-            "price": calculate_discount_price(entity_type, room.price),
-            "price_half_day": calculate_discount_price(
-                entity_type,
-                room.price_half_day,
-            ),
-            "price_all_day": calculate_discount_price(
-                entity_type,
-                room.price_all_day,
-            ),
-        }
         form = ReservationForm(
             initial={
                 "date": date,
@@ -122,10 +111,9 @@ def create_reservation_view(request):
                 "room": room.id,
             },
             request=request,
-            prices=prices,
         )
     if request.method == "POST":
-        form = ReservationForm(request.POST, request.FILES, prices=prices)
+        form = ReservationForm(request.POST, request.FILES)
         # Validation of the date format
         try:
             datetime.strptime(form.data["date"], "%Y-%m-%d")

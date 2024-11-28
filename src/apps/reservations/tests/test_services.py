@@ -44,7 +44,7 @@ class ServicesTest(TestCase):
                 self.reservation.end_time,
             )
             self.assertEqual(result, 24)
-        with self.subTest("Bloc4 Entity (50%) | Morning reservation (30€/h)"):
+        with self.subTest("Bloc4 Entity (50%) | Morning reservation (30€)"):
             self.entity.entity_type = EntityTypesChoices.BLOC4
             self.reservation.reservation_type = ReservationTypeChoices.MORNING
             result = get_total_price(
@@ -55,7 +55,7 @@ class ServicesTest(TestCase):
                 self.reservation.end_time,
             )
             self.assertEqual(result, 15)
-        with self.subTest("General Entity (0%) | Afternoon reservation (30€/h)"):
+        with self.subTest("General Entity (0%) | Afternoon reservation (30€)"):
             self.entity.entity_type = EntityTypesChoices.GENERAL
             self.reservation.reservation_type = ReservationTypeChoices.AFTERNOON
             result = get_total_price(
@@ -66,7 +66,7 @@ class ServicesTest(TestCase):
                 self.reservation.end_time,
             )
             self.assertEqual(result, 30)
-        with self.subTest("Outside Entity (+15%) | Whole day reservation (50€/h)"):
+        with self.subTest("Outside Entity (+15%) | Whole day reservation (50€)"):
             self.entity.entity_type = EntityTypesChoices.OUTSIDE
             self.reservation.reservation_type = ReservationTypeChoices.WHOLE_DAY
             result = get_total_price(

@@ -1,20 +1,14 @@
-import random
 from datetime import date, time
 
-import factory
 from django.test import TestCase
-from factory import Faker
 
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.tests.factories import EntityFactory
 from apps.reservations.choices import (
-    ActivityTypeChoices,
     ReservationTypeChoices,
 )
-from apps.reservations.models import Reservation
 from apps.reservations.services import get_total_price
 from apps.reservations.tests.factories import ReservationFactory
-from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.tests.factories import RoomFactory
 from apps.users.tests.factories import UserFactory
 
@@ -22,38 +16,20 @@ from apps.users.tests.factories import UserFactory
 class ServicesTest(TestCase):
     def setUp(self):
         self.room = RoomFactory(
-            name=factory.Sequence(lambda n: f"Room test {n}-{random.randint(0, 1000)}"),
-            room_type=RoomTypeChoices.EVENT_ROOM,
             price=10.0,
             price_half_day=30.0,
             price_all_day=50.0,
-            capacity=10,
-            description="Description test",
-            equipment="Equipment test",
         )
         self.entity = EntityFactory(
-            entity_email=Faker("email"),
-            fiscal_name=Faker("company"),
-            nif=factory.Faker("numerify", text="########"),
-            town="Barcelona",
-            postal_code=int("08080"),
-            address="Address Test",
-            country="Country Test",
             entity_type=EntityTypesChoices.HOSTED,
-            reservation_privilege=True,
         )
         self.reservation = ReservationFactory(
-            title="Title test",
             reservation_type=ReservationTypeChoices.HOURLY,
             date=date(2025, 12, 25),
             start_time=time(8, 0),
             end_time=time(12, 0),
             assistants=10,
             room=self.room,
-            notes="Test notes",
-            activity_type=ActivityTypeChoices.ATENEU,
-            privacy=Reservation.PrivacyChoices.PRIVATE,
-            status=Reservation.StatusChoices.CONFIRMED,
             entity=self.entity,
             reserved_by=UserFactory(),
         )
@@ -62,3 +38,18 @@ class ServicesTest(TestCase):
         with self.subTest("Hosted Entity (40%) | 4hr Hourly reservation (10€/h)"):
             result = get_total_price(self.reservation)
             self.assertEqual(result, 24)
+        with self.subTest("Bloc4 Entity (50%) | Morning reservation (30€/h)"):
+            self.entity.entity_type = EntityTypesChoices.BLOC4
+            self.reservation.reservation_type = ReservationTypeChoices.MORNING
+            result = get_total_price(self.reservation)
+            self.assertEqual(result, 15)
+        with self.subTest("General Entity (0%) | Afternoon reservation (30€/h)"):
+            self.entity.entity_type = EntityTypesChoices.GENERAL
+            self.reservation.reservation_type = ReservationTypeChoices.AFTERNOON
+            result = get_total_price(self.reservation)
+            self.assertEqual(result, 30)
+        with self.subTest("Outside Entity (+15%) | Whole day reservation (50€/h)"):
+            self.entity.entity_type = EntityTypesChoices.OUTSIDE
+            self.reservation.reservation_type = ReservationTypeChoices.WHOLE_DAY
+            result = get_total_price(self.reservation)
+            self.assertEqual(result, 57.5)

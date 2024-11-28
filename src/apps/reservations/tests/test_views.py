@@ -74,7 +74,9 @@ class CreateReservationViewTest(TestCase):
         full_url = f"{self.url}{query_params}"
         response = self.client.post(full_url, data=self.data, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.request["PATH_INFO"], "/ca/reserves/exit/")
+        self.assertEqual(
+            response.request["PATH_INFO"], reverse("reservations:reservations_success")
+        )
         self.assertTemplateUsed(response, "standard_success.html")
 
 

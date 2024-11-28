@@ -36,20 +36,44 @@ class ServicesTest(TestCase):
 
     def test_get_total_price(self):
         with self.subTest("Hosted Entity (40%) | 4hr Hourly reservation (10€/h)"):
-            result = get_total_price(self.reservation)
+            result = get_total_price(
+                self.reservation.reservation_type,
+                self.reservation.entity.entity_type,
+                self.reservation.room,
+                self.reservation.start_time,
+                self.reservation.end_time,
+            )
             self.assertEqual(result, 24)
         with self.subTest("Bloc4 Entity (50%) | Morning reservation (30€/h)"):
             self.entity.entity_type = EntityTypesChoices.BLOC4
             self.reservation.reservation_type = ReservationTypeChoices.MORNING
-            result = get_total_price(self.reservation)
+            result = get_total_price(
+                self.reservation.reservation_type,
+                self.reservation.entity.entity_type,
+                self.reservation.room,
+                self.reservation.start_time,
+                self.reservation.end_time,
+            )
             self.assertEqual(result, 15)
         with self.subTest("General Entity (0%) | Afternoon reservation (30€/h)"):
             self.entity.entity_type = EntityTypesChoices.GENERAL
             self.reservation.reservation_type = ReservationTypeChoices.AFTERNOON
-            result = get_total_price(self.reservation)
+            result = get_total_price(
+                self.reservation.reservation_type,
+                self.reservation.entity.entity_type,
+                self.reservation.room,
+                self.reservation.start_time,
+                self.reservation.end_time,
+            )
             self.assertEqual(result, 30)
         with self.subTest("Outside Entity (+15%) | Whole day reservation (50€/h)"):
             self.entity.entity_type = EntityTypesChoices.OUTSIDE
             self.reservation.reservation_type = ReservationTypeChoices.WHOLE_DAY
-            result = get_total_price(self.reservation)
+            result = get_total_price(
+                self.reservation.reservation_type,
+                self.reservation.entity.entity_type,
+                self.reservation.room,
+                self.reservation.start_time,
+                self.reservation.end_time,
+            )
             self.assertEqual(result, 57.5)

@@ -49,7 +49,7 @@ class CreateReservationViewTest(TestCase):
         self.data = {
             "title": "Test title",
             "reservation_type": ReservationTypeChoices.HOURLY,
-            "date": "2024-11-27",
+            "date": "2024-12-27",
             "start_time": "8:00",
             "end_time": "10:00",
             "assistants": 10,
@@ -58,23 +58,24 @@ class CreateReservationViewTest(TestCase):
             "activity_type": ActivityTypeChoices.BLOC4,
             "bloc4_type": Bloc4TypeChoices.TRAINING,
             "privacy": Reservation.PrivacyChoices.PRIVATE,
-            "entity": self.entity,
+            "entity": self.entity.id,
             "reserved_by": self.user,
             "status": Reservation.StatusChoices.PENDING,
+            "data_policy": True,
+            "terms_use": True,
         }
 
     def test_post(self):
         query_params = (
-            "?start=2024-11-27T08%3A00%3A00%2B01%3A00&"
-            "end=2024-11-27T10%3A00%3A00%2B01%3A00&"
+            "?start=2024-12-27T08%3A00%3A00%2B01%3A00&"
+            "end=2024-12-27T10%3A00%3A00%2B01%3A00&"
             f"id={self.room.id}"
         )
         full_url = f"{self.url}{query_params}"
-        print("full_url", full_url)
         response = self.client.post(full_url, data=self.data, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.request["PATH_INFO"], "/ca/reserves/crear/")
-        # self.assertTemplateUsed(response, "standard_success.html")
+        self.assertEqual(response.request["PATH_INFO"], "/ca/reserves/exit/")
+        self.assertTemplateUsed(response, "standard_success.html")
 
 
 class ReservationsCalendarViewTest(TestCase):

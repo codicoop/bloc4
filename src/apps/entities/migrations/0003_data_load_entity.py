@@ -6,7 +6,7 @@ def generate_entity(apps, schema_editor):
 
     # Creation of the Codi Cooperatiu entity
     codi_entity = entity_model()
-    codi_entity.email = "codi@codi.coop"
+    codi_entity.entity_email = "codi@codi.coop"
     codi_entity.fiscal_name = "Codi Cooperatiu SCCL"
     codi_entity.nif = "F67151233"
     codi_entity.town = "Barcelona"
@@ -17,7 +17,7 @@ def generate_entity(apps, schema_editor):
 
     # Creation of the Bloc4 entity
     bloc4_entity = entity_model()
-    bloc4_entity.email = "info@bloc4.coop"
+    bloc4_entity.entity_email = "info@bloc4.coop"
     bloc4_entity.fiscal_name = "Bloc4BCN"
     bloc4_entity.nif = "B65789543"
     bloc4_entity.town = "Barcelona"

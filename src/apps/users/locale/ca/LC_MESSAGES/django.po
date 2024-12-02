@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-28 16:44+0100\n"
-"PO-Revision-Date: 2024-11-28 16:56+0100\n"
+"POT-Creation-Date: 2024-12-02 16:59+0100\n"
+"PO-Revision-Date: 2024-12-02 17:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -38,23 +38,23 @@ msgstr ""
 "S'han enviat un correu electrònic al usuari per informar-lo de que el seu "
 "compte està actiu."
 
-#: apps/users/forms.py:31 apps/users/forms.py:101
+#: apps/users/forms.py:30 apps/users/forms.py:100
 msgid "Email"
 msgstr "Correu electrònic"
 
-#: apps/users/forms.py:41
+#: apps/users/forms.py:40
 msgid "Password"
 msgstr "Contrasenya"
 
-#: apps/users/forms.py:44
+#: apps/users/forms.py:43
 msgid "Remember me"
 msgstr "Recorda'm"
 
-#: apps/users/forms.py:67
+#: apps/users/forms.py:66
 msgid "Change password"
 msgstr "Canviar la contrasenya"
 
-#: apps/users/forms.py:69
+#: apps/users/forms.py:68
 msgid ""
 "The current password is not displayed for security reasons. Use this field "
 "and save the changes to set a new password. While writing the new password "
@@ -65,19 +65,19 @@ msgstr ""
 "contrasenya serà visible, per facilitar que puguis copiar-la i enviar-li a "
 "l'usuari."
 
-#: apps/users/forms.py:156 apps/users/forms.py:175
+#: apps/users/forms.py:155 apps/users/forms.py:174
 msgid "New password"
 msgstr "Contrasenya nova"
 
-#: apps/users/forms.py:160 apps/users/forms.py:179
+#: apps/users/forms.py:159 apps/users/forms.py:178
 msgid "New password confirmation"
 msgstr "Confirmació de la nova contrasenya"
 
-#: apps/users/forms.py:171
+#: apps/users/forms.py:170
 msgid "Old password"
 msgstr "Contrasenya antiga"
 
-#: apps/users/forms.py:186 apps/users/forms.py:188
+#: apps/users/forms.py:185 apps/users/forms.py:187
 msgid "Verification code"
 msgstr "Codi de verificació"
 
@@ -149,7 +149,7 @@ msgstr ""
 
 #: apps/users/models.py:98
 msgid "is staff"
-msgstr "És personal"
+msgstr "És part de l’equip"
 
 #: apps/users/models.py:126
 msgid "user"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-28 16:44+0100\n"
+"POT-Creation-Date: 2024-12-02 16:59+0100\n"
 "PO-Revision-Date: 2024-11-28 17:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -326,11 +326,11 @@ msgstr "Novembre"
 msgid "December"
 msgstr "Desembre"
 
-#: apps/reservations/forms.py:21
+#: apps/reservations/forms.py:20
 msgid "I agree to Privacy Policy"
 msgstr "Accepto la política de privacitat"
 
-#: apps/reservations/forms.py:176
+#: apps/reservations/forms.py:175
 #, python-brace-format
 msgid ""
 "I agree the <a href=\"{url}\" target=\"_blank\" style=\"color: #be3bc7; font-"
@@ -339,7 +339,7 @@ msgstr ""
 "Accepto les <a href=\"{url}\" target=\"_blank\" style=\"color: #be3bc7; font-"
 "weight: bold;\">condicions d'ús</a>"
 
-#: apps/reservations/forms.py:213
+#: apps/reservations/forms.py:212
 msgid "The date must be greater than the current date."
 msgstr "La data ha de ser posterior a l'actual."
 
@@ -431,7 +431,7 @@ msgstr "Servei de Bloc4BCN"
 msgid "Type of event"
 msgstr "Tipus d'esdeveniment"
 
-#: apps/reservations/models.py:133
+#: apps/reservations/models.py:134
 msgid ""
 "Public events must be open to all citizens and will be published in the "
 "Bloc4BCN Agenda, subject to approval."
@@ -439,56 +439,56 @@ msgstr ""
 "Els esdeveniments públics han de ser oberts a tots els ciutadans i serán "
 "publicats a l'agenda del Bloc4BCN, un cop sigui aprovat."
 
-#: apps/reservations/models.py:140 apps/rooms/models.py:68
+#: apps/reservations/models.py:141 apps/rooms/models.py:68
 #: templates/reservations/details.html:142
 msgid "Description"
 msgstr "Descripció"
 
-#: apps/reservations/models.py:145 templates/reservations/details.html:157
+#: apps/reservations/models.py:146 templates/reservations/details.html:157
 msgid "Poster"
 msgstr "Poster"
 
-#: apps/reservations/models.py:151
+#: apps/reservations/models.py:152
 msgid "URL of the activity"
 msgstr "Url de l'activitat"
 
-#: apps/reservations/models.py:154
+#: apps/reservations/models.py:155
 msgid "Total price"
 msgstr "Preu total"
 
-#: apps/reservations/models.py:162
+#: apps/reservations/models.py:163
 msgid "entity"
 msgstr "entitat"
 
-#: apps/reservations/models.py:170
+#: apps/reservations/models.py:171
 msgid "reserved by"
 msgstr "reservat per"
 
-#: apps/reservations/models.py:178
+#: apps/reservations/models.py:179
 msgid "canceled by"
 msgstr "cancel·lat per"
 
-#: apps/reservations/models.py:185
+#: apps/reservations/models.py:186
 msgid "canceled_at"
 msgstr "cancel·lat a"
 
-#: apps/reservations/models.py:194 templates/reservations/details.html:178
+#: apps/reservations/models.py:195 templates/reservations/details.html:178
 msgid "Status of the reservation"
 msgstr "Estat de la reserva"
 
-#: apps/reservations/models.py:195
+#: apps/reservations/models.py:196
 msgid "status"
 msgstr "estat"
 
-#: apps/reservations/models.py:201
+#: apps/reservations/models.py:202
 msgid "reservation"
 msgstr "reserva"
 
-#: apps/reservations/models.py:202
+#: apps/reservations/models.py:203
 msgid "reservations"
 msgstr "reserves"
 
-#: apps/reservations/models.py:254
+#: apps/reservations/models.py:255
 #, python-brace-format
 msgid "If ateneus'activity is {activity} this field is required."
 msgstr ""
@@ -587,16 +587,16 @@ msgstr "preu/"
 msgid "filter/"
 msgstr "filtre/"
 
-#: apps/reservations/views.py:244 apps/reservations/views.py:257
-#: apps/reservations/views.py:264
+#: apps/reservations/views.py:249 apps/reservations/views.py:262
+#: apps/reservations/views.py:269
 msgid "Successful reservation"
 msgstr "Reserva exitosa"
 
-#: apps/reservations/views.py:245
+#: apps/reservations/views.py:250
 msgid "Successful reservation."
 msgstr "Reserva exitosa."
 
-#: apps/reservations/views.py:259
+#: apps/reservations/views.py:264
 msgid ""
 "Successful reservation.<br><br> As you've selected you need  catering space "
 "outside the room, it's mandatory to make a reservation for it."
@@ -604,19 +604,19 @@ msgstr ""
 "Reserva exitosa.<br><br> Com has seleccioant que necessites espai de "
 "càtering fora de la sala, és obligatori que facis una reserva per això."
 
-#: apps/reservations/views.py:263
+#: apps/reservations/views.py:268
 msgid "Continue"
 msgstr "Continua"
 
-#: apps/reservations/views.py:283 apps/reservations/views.py:286
+#: apps/reservations/views.py:288 apps/reservations/views.py:291
 msgid "Reservation cancelled"
 msgstr "Reserva cancelada"
 
-#: apps/reservations/views.py:284
+#: apps/reservations/views.py:289
 msgid "Reservation cancelled."
 msgstr "Reserva cancelada."
 
-#: apps/reservations/views.py:307
+#: apps/reservations/views.py:312
 msgid "All"
 msgstr "Tots"
 
@@ -846,71 +846,29 @@ msgstr "Hi ha un error en el formulari."
 msgid "Please, check the fields marked in red."
 msgstr "Si us plau, comprova els camps marcats en vermell."
 
-#: templates/demo_flowbite.html:51 templates/profile/details.html:50
-#: templates/reservations/widgets/custom_checkbox.html:35
+#: templates/fields/field_default.html:36
+#: templates/fields/field_default.html:89
+#: templates/fields/field_default.html:134
+#: templates/fields/field_default.html:183
+#: templates/fields/field_default.html:232
+#: templates/fields/field_default.html:277
+#: templates/fields/field_default.html:321
+#: templates/fields/field_default.html:391 templates/profile/details.html:50
 #: templates/reservations/widgets/custom_numeric.html:57
 msgid "Show information"
 msgstr "Mostra la informació"
 
-#: templates/demo_flowbite.html:346
-msgid "Error alert"
-msgstr "Alerta d'error"
-
-#: templates/demo_flowbite.html:348
-msgid "There is an error in the form!"
-msgstr "Hi ha un error en el formulari!"
-
-#: templates/demo_flowbite.html:350
-msgid "Please check the fields marked in red"
-msgstr "Si us plau, comprova els camps marcats en vermell"
-
-#: templates/demo_flowbite.html:362
-msgid "Close error alert"
-msgstr "Tanca l'alerta d'error"
-
-#: templates/demo_flowbite.html:374
-msgid "Form error"
-msgstr "Error de formulari"
-
-#: templates/demo_flowbite.html:376
-msgid "There was an error!"
-msgstr "S'ha produït un error!"
-
-#: templates/demo_flowbite.html:416
-msgid "Upload a file"
-msgstr "Puja un fitxer"
-
-#: templates/demo_flowbite.html:498
-msgid "New file"
-msgstr "Fitxer nou"
-
-#: templates/demo_flowbite.html:519
-msgid "Current file"
-msgstr "Fitxer actual"
-
-#: templates/demo_flowbite.html:539
-msgid "Delete file"
-msgstr "Suprimeix el fitxer"
-
-#: templates/demo_flowbite.html:559
-msgid "This is the current uploaded file:"
-msgstr "Aquest és el fitxer pujat:"
-
-#: templates/demo_flowbite.html:584
-msgid ""
-"Select a new file. Beware that if there was a file already uploaded, it will "
-"be erased."
-msgstr ""
-"Selecciona un fitxer nou. Tingues en compte que si ja hi havia un fitxer "
-"pujat, s'esborrarà."
-
-#: templates/demo_flowbite.html:633
-msgid "Delete the current file."
-msgstr "Suprimeix el fitxer actual."
-
 #: templates/home.html:25
 msgid "Home page"
 msgstr "Inici"
+
+#: templates/home.html:27
+#, fuzzy
+#| msgid "This field will be used for the public add of the event."
+msgid ""
+"This name will be used for the HTML title of the public app, logo alt text "
+"and other places."
+msgstr "Aquest camp es farà servir per l'anunci públic de l'esdeveniment."
 
 #: templates/home_internal.html:5
 msgid "Internal home page"
@@ -1463,6 +1421,49 @@ msgstr "Selecciona"
 msgid "info"
 msgstr "info"
 
+#~ msgid "Error alert"
+#~ msgstr "Alerta d'error"
+
+#~ msgid "There is an error in the form!"
+#~ msgstr "Hi ha un error en el formulari!"
+
+#~ msgid "Please check the fields marked in red"
+#~ msgstr "Si us plau, comprova els camps marcats en vermell"
+
+#~ msgid "Close error alert"
+#~ msgstr "Tanca l'alerta d'error"
+
+#~ msgid "Form error"
+#~ msgstr "Error de formulari"
+
+#~ msgid "There was an error!"
+#~ msgstr "S'ha produït un error!"
+
+#~ msgid "Upload a file"
+#~ msgstr "Puja un fitxer"
+
+#~ msgid "New file"
+#~ msgstr "Fitxer nou"
+
+#~ msgid "Current file"
+#~ msgstr "Fitxer actual"
+
+#~ msgid "Delete file"
+#~ msgstr "Suprimeix el fitxer"
+
+#~ msgid "This is the current uploaded file:"
+#~ msgstr "Aquest és el fitxer pujat:"
+
+#~ msgid ""
+#~ "Select a new file. Beware that if there was a file already uploaded, it "
+#~ "will be erased."
+#~ msgstr ""
+#~ "Selecciona un fitxer nou. Tingues en compte que si ja hi havia un fitxer "
+#~ "pujat, s'esborrarà."
+
+#~ msgid "Delete the current file."
+#~ msgstr "Suprimeix el fitxer actual."
+
 #~ msgid "Start Time"
 #~ msgstr "Hora d’inici"
 
@@ -1483,9 +1484,6 @@ msgstr "info"
 
 #~ msgid "If the training is public, it will appear in the bloc4 agenda"
 #~ msgstr "Si l'esdeveniment és públic, apareixerà a l'agenda del Bloc4."
-
-#~ msgid "This field will be used for the public add of the event."
-#~ msgstr "Aquest camp es farà servir per l'anunci públic de l'esdeveniment."
 
 #~ msgid "Title for the reservation"
 #~ msgstr "Títol de la reserva"

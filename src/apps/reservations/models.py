@@ -128,6 +128,7 @@ class Reservation(BaseModel):
         _("Type of event"),
         choices=PrivacyChoices,
         blank=False,
+        null=False,
         default=PrivacyChoices.PRIVATE,
         help_text=_(
             "Public events must be open to all citizens and will "
@@ -258,7 +259,6 @@ class Reservation(BaseModel):
                 }
             )
             raise ValidationError(errors)
-
         if self.start_time and self.end_time:
             # Validates that the reservation end time is later than the start time.
             if self.end_time < self.start_time:

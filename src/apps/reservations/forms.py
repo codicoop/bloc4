@@ -11,7 +11,6 @@ from apps.reservations.services import calculate_discount_price
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
-from .widgets.custom_numeric import CustomNumericInput
 from .widgets.custom_radio import CustomRadioSelect
 
 
@@ -96,7 +95,7 @@ class ReservationForm(forms.ModelForm):
                     "hx-trigger": "change",
                 }
             ),
-            "assistants": CustomNumericInput(),
+            # "assistants": CustomNumericInput(),
             "catering": forms.CheckboxInput,
             "notes": forms.Textarea(),
             "activity_type": forms.Select(

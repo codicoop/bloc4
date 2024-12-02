@@ -11,6 +11,7 @@ from django.views.generic import View
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
+from apps.reservations.constants import MONTHS
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
@@ -47,6 +48,8 @@ def reservations_list(request):
         "reservations": reservations,
         "months": months_list,
         "years": years_list,
+        "month": MONTHS.get(now.month, "")[:3] + ".",
+        "year": now.year,
     }
     bonuses = get_monthly_bonus_totals(reservations, entity, now.month, now.year)
     context.update(bonuses)
@@ -73,6 +76,8 @@ def filter_reservations(request):
         "total_price": 0,
         "bonus_price": 0,
         "reservations": reservations,
+        "month": MONTHS.get(int(filter_month), "")[:3] + ".",
+        "year": filter_year,
     }
     bonuses = get_monthly_bonus_totals(reservations, entity, filter_month, filter_year)
     context.update(bonuses)
@@ -113,7 +118,7 @@ def create_reservation_view(request):
             request=request,
         )
     if request.method == "POST":
-        form = ReservationForm(request.POST, request.FILES)
+        form = ReservationForm(request.POST, request.FILES, request=request)
         # Validation of the date format
         try:
             datetime.strptime(form.data["date"], "%Y-%m-%d")
@@ -124,6 +129,7 @@ def create_reservation_view(request):
                 "reservations/create_reserves.html",
                 {"form": form},
             )
+        print(form.errors)
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
@@ -229,7 +235,6 @@ def calculate_total_price(request):
         total_price = get_total_price(
             reservation_type, entity_type, room, start_time, end_time
         )
-        print(total_price)
         return render(
             request,
             "reservations/total_price.html",

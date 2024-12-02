@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('date', models.DateField(verbose_name='Date')),
                 ('start_time', models.TimeField(verbose_name='Start time')),
                 ('end_time', models.TimeField(verbose_name='End time')),
-                ('assistants', models.IntegerField(default='', null=True, validators=[django.core.validators.MinValueValidator(1)], verbose_name='Assistants')),
+                ('assistants', models.IntegerField(default=1, null=True, validators=[django.core.validators.MinValueValidator(1)], verbose_name='Assistants')),
                 ('is_budgeted', models.BooleanField(default=False, verbose_name='Is budgeted?')),
                 ('is_paid', models.BooleanField(default=False, verbose_name='Is paid?')),
                 ('catering', models.BooleanField(blank=True, default=False, verbose_name='Do I need catering service?')),

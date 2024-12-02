@@ -36,7 +36,7 @@ We will appreciate it if you could also warn us about the situation.
                     "{{project_name}}",
                     "body": """
 <p>Hola, {{user_name}},</p>
-<p>T'enviem aquest correu perquè avui {{date}} a les {{time}}
+<p>T'enviem aquest correu electrònic perquè avui {{date}} a les {{time}}
 algú ha sol·licitat el reinici de la contrasenya del compte {{user_email}}
 de l'aplicació {{absolute_url}}.</p>
 

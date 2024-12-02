@@ -86,7 +86,7 @@ def populate_mail_templates(apps, schema_editor):
                     "subject": "La teva reserva Bloc4BCN està confirmada",
                     "body": """
             <p>Hola, {{reserved_by}},</p>
-            <p>T'enviem aquest correu electrònic perquè confirma la vostra sol·licitud de reserva de sala està confirmada.</p>
+            <p>T'enviem aquest correu electrònic perquè la vostra sol·licitud de reserva de sala està confirmada.</p>
 
             <p>Aquí tens els detalls de la teva reserva:</p>
              <ul>
@@ -221,7 +221,7 @@ def populate_mail_templates(apps, schema_editor):
                     "body": """
     <p>Hello,</p>
     <p>{{entity}} has cancelled the reservation of the room {{room}} for {{date_reservation}} with start time {{start_time_reservation}}
-      and end time {{end_time_reservation}}</p>
+      and end time {{end_time_reservation}}.</p>
 
                             """,
                 },
@@ -231,7 +231,7 @@ def populate_mail_templates(apps, schema_editor):
     <p>Hola,</p>
     <p>{{entity}} ha cancel·lat la reserva de la sala
     {{room}} per a {{date_reservation}} amb hora d'inici {{start_time_reservation}}
-     i hora de finalització {{end_time_reservation}}</p>
+     i hora de finalització {{end_time_reservation}}.</p>
                             """,
                 },
             },
@@ -272,7 +272,7 @@ def populate_mail_templates(apps, schema_editor):
                     "subject": "Canvi de sala de la reserva en Bloc4BCN",
                     "body": """
     <p>Hola, {{ reserved_by }},</p>
-    <p>T'enviem aquest correu, perquè s'ha canviat la localització de la reserva per {{ entity }} el dia {{ date_reservation }} de {{ start_time_reservation }} a {{ end_time_reservation }}.</p>
+    <p>T'enviem aquest corre, perquè s'ha canviat la localització de la reserva per {{ entity }} el dia {{ date_reservation }} de {{ start_time_reservation }} a {{ end_time_reservation }}.</p>
     <p>La nova sala serà {{ room }}.</p>
                             """,
                 },

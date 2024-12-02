@@ -115,7 +115,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.forms",
-    "flowbite_classes",
     "post_office",
     "django_extensions",
     "phonenumber_field",
@@ -127,6 +126,7 @@ INSTALLED_APPS = [
     "django_htmx",
     "sorl.thumbnail",
     "extra_settings",
+    "flowbite_classes",
 ]
 
 

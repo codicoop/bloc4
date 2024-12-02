@@ -11,7 +11,6 @@ from apps.reservations.services import calculate_discount_price
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
-from .widgets.custom_checkbox import CustomCheckboxInput
 from .widgets.custom_numeric import CustomNumericInput
 from .widgets.custom_radio import CustomRadioSelect
 
@@ -20,11 +19,11 @@ class ReservationForm(forms.ModelForm):
     data_policy = forms.BooleanField(
         label=_("I agree to Privacy Policy"),
         required=True,
-        widget=CustomCheckboxInput(),
+        widget=forms.CheckboxInput,
     )
     terms_use = forms.BooleanField(
         required=True,
-        widget=CustomCheckboxInput(),
+        widget=forms.CheckboxInput,
     )
 
     class Meta:
@@ -98,7 +97,7 @@ class ReservationForm(forms.ModelForm):
                 }
             ),
             "assistants": CustomNumericInput(),
-            "catering": CustomCheckboxInput(),
+            "catering": forms.CheckboxInput,
             "notes": forms.Textarea(),
             "activity_type": forms.Select(
                 attrs={

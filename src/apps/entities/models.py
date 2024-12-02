@@ -30,13 +30,10 @@ class Entity(BaseModel):
         null=False,
         help_text=_("Tax identification number"),
     )
-    town = models.ForeignKey(
-        "provinces_towns.Town",
-        verbose_name=_("Town"),
+    town = flowbite.ModelCharField(
+        _("Town"),
         null=True,
         blank=True,
-        on_delete=models.SET_NULL,
-        related_name="entities",
     )
     postal_code = flowbite.ModelCharField(
         _("Postal Code"),

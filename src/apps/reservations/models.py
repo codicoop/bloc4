@@ -226,57 +226,11 @@ class Reservation(BaseModel):
     def clean(self, *args, **kwargs):
         super().clean()
         errors = {}
-        if (
-            self.room.room_type == RoomTypeChoices.MEETING_ROOM
-            and self.privacy == Reservation.PrivacyChoices.PUBLIC
-        ):
-            errors.update(
-                {
-                    "privacy": ValidationError(
-                        _(
-                            f"{RoomTypeChoices.MEETING_ROOM.label} cannot "
-                            "be used in public trainings."
-                        )
-                    )
-                },
-            )
-            raise ValidationError(errors)
         if self.privacy == Reservation.PrivacyChoices.PRIVATE:
             self.url = ""
             self.description = ""
             self.poster = ""
-        if self.room.room_type != RoomTypeChoices.MEETING_ROOM:
-            if (
-                self.privacy == Reservation.PrivacyChoices.PUBLIC
-                and not self.description
-            ):
-                errors.update(
-                    {
-                        "description": ValidationError(
-                            _("If training is public, this field is required.")
-                        )
-                    },
-                )
-                raise ValidationError(errors)
-
         if self.date:
-            # Validation reservation is made within maximum day in advance configured.
-            future_date = date.today() + timedelta(
-                days=config.MAXIMUM_ADVANCE_RESERVATION_DAYS
-            )
-            if not self.entity.reservation_privilege and self.date > future_date:
-                errors.update(
-                    {
-                        "date": ValidationError(
-                            _(
-                                "The maximum advance reservation period is %(days)s "
-                                "days."
-                            )
-                            % {"days": config.MAXIMUM_ADVANCE_RESERVATION_DAYS}
-                        )
-                    },
-                )
-                raise ValidationError(errors)
             # Validates that the reservation date is later than the current date.
             if self.date < date.today():
                 errors.update(
@@ -372,6 +326,34 @@ class Reservation(BaseModel):
                 raise ValidationError(errors)
             try:
                 room = self.room
+                if room.room_type != RoomTypeChoices.MEETING_ROOM:
+                    if (
+                        self.privacy == Reservation.PrivacyChoices.PUBLIC
+                        and not self.description
+                    ):
+                        errors.update(
+                            {
+                                "description": ValidationError(
+                                    _("If training is public, this field is required.")
+                                )
+                            },
+                        )
+                        raise ValidationError(errors)
+                if (
+                    room.room_type == RoomTypeChoices.MEETING_ROOM
+                    and self.privacy == Reservation.PrivacyChoices.PUBLIC
+                ):
+                    errors.update(
+                        {
+                            "privacy": ValidationError(
+                                _(
+                                    f"{RoomTypeChoices.MEETING_ROOM.label} cannot "
+                                    "be used in public trainings."
+                                )
+                            )
+                        },
+                    )
+                    raise ValidationError(errors)
                 # Validation of room availability
                 room_reservation = (
                     Reservation.objects.filter(
@@ -398,13 +380,13 @@ class Reservation(BaseModel):
                         },
                     )
                     raise ValidationError(errors)
-                if self.assistants > self.room.capacity:
+                if self.assistants > room.capacity:
                     errors.update(
                         {
                             "assistants": ValidationError(
                                 _(
                                     f"The maximum capacity for this room "
-                                    f"is {self.room.capacity}"
+                                    f"is {room.capacity}"
                                 )
                             )
                         },
@@ -420,6 +402,29 @@ class Reservation(BaseModel):
                         {
                             "reserved_by": ValidationError(
                                 _(f"This user belong to {user_entity} entity.")
+                            )
+                        },
+                    )
+                    raise ValidationError(errors)
+        except AttributeError:
+            pass
+        try:
+            entity = self.entity
+            if self.date:
+                # Validation reservation is made within maximum day
+                # in advance configured.
+                future_date = date.today() + timedelta(
+                    days=config.MAXIMUM_ADVANCE_RESERVATION_DAYS
+                )
+                if not entity.reservation_privilege and self.date > future_date:
+                    errors.update(
+                        {
+                            "date": ValidationError(
+                                _(
+                                    "The maximum advance reservation "
+                                    "period is %(days)s days."
+                                )
+                                % {"days": config.MAXIMUM_ADVANCE_RESERVATION_DAYS}
                             )
                         },
                     )

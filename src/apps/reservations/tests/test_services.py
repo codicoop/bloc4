@@ -3,6 +3,7 @@ from datetime import date, time
 from django.test import TestCase
 
 from apps.entities.choices import EntityTypesChoices
+from apps.entities.models import Entity
 from apps.entities.tests.factories import EntityFactory, MonthlyBonusFactory
 from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.models import Reservation
@@ -122,7 +123,6 @@ class ServicesTest(TestCase):
                 },
             )
         with self.subTest("Event & meeting rooms & hosted entity"):
-            self.room.room_type = RoomTypeChoices.MEETING_ROOM
             meeting_room = Room.objects.create(
                 name="Room 2",
                 room_type=RoomTypeChoices.MEETING_ROOM,
@@ -141,6 +141,44 @@ class ServicesTest(TestCase):
             )
             result = get_monthly_bonus_totals(
                 Reservation.objects.filter(), self.entity, 12, 2025
+            )
+            self.assertEqual(
+                result,
+                {
+                    "amount": 20,
+                    "amount_left": 16,
+                    "bonus_price": 70,
+                    "is_monthly_bonus": True,
+                    "total_price": 93,
+                },
+            )
+        with self.subTest("November reservation. New entity"):
+            meeting_room = Room.objects.create(
+                name="Room 3",
+                room_type=RoomTypeChoices.MEETING_ROOM,
+            )
+            new_entity = Entity.objects.create(
+                entity_email="test@example.com",
+                fiscal_name="New entity",
+                nif="12345N",
+                postal_code="00000",
+                country="Country",
+                entity_type=EntityTypesChoices.HOSTED,
+            )
+            Reservation.objects.create(
+                reservation_type=ReservationTypeChoices.AFTERNOON,
+                date=date(2025, 11, 1),
+                start_time=time(14, 0),
+                end_time=time(18, 0),
+                assistants=10,
+                room=meeting_room,
+                entity=new_entity,
+                reserved_by=UserFactory(),
+                status=Reservation.StatusChoices.CONFIRMED,
+                total_price=50,
+            )
+            result = get_monthly_bonus_totals(
+                Reservation.objects.filter(entity=new_entity), self.entity, 11, 2025
             )
             self.assertEqual(
                 result,

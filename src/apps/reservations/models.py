@@ -74,8 +74,7 @@ class Reservation(BaseModel):
     assistants = models.IntegerField(
         _("Assistants"),
         blank=False,
-        null=True,
-        default="",
+        default=1,
         validators=[MinValueValidator(1)],
     )
     room = models.ForeignKey(

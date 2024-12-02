@@ -148,7 +148,6 @@ def get_monthly_bonus(monthly_bonus, reservations):
             room__room_type=RoomTypeChoices.MEETING_ROOM,
             # reservation_type=ReservationTypeChoices.HOURLY,
         ).order_by("created_at")
-        print(reservations)
         for reservation in reservations:
             today = datetime.today().date()
             start_datetime = datetime.combine(today, reservation.start_time)
@@ -206,7 +205,6 @@ def get_monthly_bonus_totals(reservations, entity, month, year):
         bonuses["total_price"] = delete_zeros(total_price)
         bonuses["is_monthly_bonus"] = True
         bonuses["amount"] = delete_zeros(monthly_bonus.amount)
-        print(bonuses)
     return bonuses
 
 

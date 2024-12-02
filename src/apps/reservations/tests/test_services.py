@@ -3,7 +3,7 @@ from datetime import date, time
 from django.test import TestCase
 
 from apps.entities.choices import EntityTypesChoices
-from apps.entities.models import Entity
+from apps.entities.models import Entity, MonthlyBonus
 from apps.entities.tests.factories import EntityFactory, MonthlyBonusFactory
 from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.models import Reservation
@@ -38,6 +38,7 @@ class ServicesTest(TestCase):
             room=self.room,
             entity=self.entity,
             reserved_by=UserFactory(),
+            total_price=60,
         )
 
     def test_get_total_price(self):
@@ -117,9 +118,9 @@ class ServicesTest(TestCase):
                 {
                     "amount": 20,
                     "amount_left": 20,
-                    "bonus_price": 70,
+                    "bonus_price": 130,
                     "is_monthly_bonus": True,
-                    "total_price": 70,
+                    "total_price": 130,
                 },
             )
         with self.subTest("Event & meeting rooms & hosted entity"):
@@ -147,9 +148,9 @@ class ServicesTest(TestCase):
                 {
                     "amount": 20,
                     "amount_left": 16,
-                    "bonus_price": 70,
+                    "bonus_price": 130,
                     "is_monthly_bonus": True,
-                    "total_price": 93,
+                    "total_price": 153,
                 },
             )
         with self.subTest("November reservation. New entity"):
@@ -177,17 +178,25 @@ class ServicesTest(TestCase):
                 status=Reservation.StatusChoices.CONFIRMED,
                 total_price=50,
             )
+            MonthlyBonus.objects.create(
+                entity=new_entity, amount=10, date=date(2025, 11, 1)
+            )
             result = get_monthly_bonus_totals(
-                Reservation.objects.filter(entity=new_entity), self.entity, 11, 2025
+                Reservation.objects.filter(
+                    entity=new_entity, date__month=11, date__year=2025
+                ),
+                new_entity,
+                11,
+                2025,
             )
             self.assertEqual(
                 result,
                 {
-                    "amount": 20,
-                    "amount_left": 16,
-                    "bonus_price": 70,
+                    "amount": 10,
+                    "amount_left": 6,
+                    "bonus_price": 0,
                     "is_monthly_bonus": True,
-                    "total_price": 93,
+                    "total_price": 50,
                 },
             )
         with self.subTest("Not hosted entity"):

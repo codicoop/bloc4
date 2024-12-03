@@ -1731,6 +1731,10 @@ input:checked + .toggle-bg {
   white-space: nowrap;
 }
 
+.overflow-ellipsis {
+  text-overflow: ellipsis;
+}
+
 .text-balance {
   text-wrap: balance;
 }

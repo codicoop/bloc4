@@ -66,8 +66,8 @@
           <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
             {% translate "Admin URL" %}
           </p>
-          <a class="text-gray-700 dark:text-gray-400 col-start-2 underline"
-            href="{{ reservation.get_admin_url }}">
+          <a class="text-gray-700 dark:text-gray-400 col-start-2 underline truncate"
+            href="{{ reservation.get_admin_url }}" target="_blank">
             {{ reservation.get_admin_url }}
           </a>
         {% endif %}

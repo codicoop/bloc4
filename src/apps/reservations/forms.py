@@ -133,7 +133,7 @@ class ReservationForm(forms.ModelForm):
                     "add .hidden to #id_description.parentElement "
                     "then add .hidden to #id_url.parentElement "
                     "then add .hidden to #id_poster.parentElement ",
-                }
+                },
             ),
             "description": forms.Textarea(),
             "poster": forms.FileInput(

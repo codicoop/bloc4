@@ -376,61 +376,53 @@ EXTRA_SETTINGS_DEFAULTS = [
         "name": "PROJECT_NAME",
         "type": "Setting.TYPE_STRING",
         "value": PROJECT_NAME,
-        "description": _(
-            "This name will be used for the HTML title of the "
-            "public app, logo alt text and other places."
-        ),
+        "description": "El nom que será fet servir pel títol del "
+        "HTML de l'aplicació pública, el text alt del logo i altres llocs.",
     },
     {
         "name": "CONTACT_EMAIL",
         "type": "Setting.TYPE_EMAIL",
         "value": "",
-        "description": _("Contact email address."),
+        "description": "Correu electrònic de contacte.",
     },
     {
         "name": "RESERVATIONS_EMAIL",
         "type": "Setting.TYPE_EMAIL",
         "value": "",
-        "description": _("Reservations email address."),
+        "description": "Correu electrònic per reserves.",
     },
     {
         "name": "MAXIMUM_ADVANCE_RESERVATION_DAYS",
         "type": "Setting.TYPE_INT",
         "value": 30,
-        "description": _("Maximum advance reservation days."),
+        "description": "Període màxim d'antelació per reserves.",
     },
     {
         "name": "PAYMENT_INFORMATION",
         "type": "Setting.TYPE_TEXT",
         "value": "",
-        "description": _(
-            "Text which will be displayed in non hosted entities' "
-            "reservations, with the instructions for payment."
-        ),
+        "description": "Text que apareixerà a les reserves de les "
+        "entitats externes, amb les instruccions de pagament.",
     },
     {
         "name": "DATA_POLICY",
         "type": "Setting.TYPE_TEXT",
         "value": "",
-        "description": _(
-            "Text which will be displayed in the reservations "
-            "for accepting the data policy."
-        ),
+        "description": "Text per mostrar a les reserves per "
+        "acceptar la política de dades.",
     },
     {
         "name": "TERMS_USE",
         "type": "Setting.TYPE_FILE",
         "value": "",
-        "description": _(
-            "PDF file which will be linked in the reservations "
-            "for accepting the terms of use."
-        ),
+        "description": "Arxiu pdf que s'enllaçarà a les reserves com "
+        "a termes de condició d'ús.",
     },
     {
         "name": "CATERING_ROOM",
         "type": "Setting.TYPE_STRING",
         "value": "",
-        "description": _("ID for the room designated to host the caterings."),
+        "description": "ID per la sala designada com a lloc dels càterings.",
     },
 ]
 EXTRA_SETTINGS_IMAGE_UPLOAD_TO = "django-extra-settings-images"

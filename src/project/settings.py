@@ -278,7 +278,7 @@ TEMPLATES = [
         },
     },
 ]
-FORM_RENDERER = "flowbite_classes.renderers.CustomFormRenderer"
+FORM_RENDERER = "project.renderers.CustomFormRenderer"
 
 
 ################################################################################

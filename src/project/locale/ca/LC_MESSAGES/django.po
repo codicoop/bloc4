@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 16:59+0100\n"
+"POT-Creation-Date: 2024-12-04 15:42+0100\n"
 "PO-Revision-Date: 2024-11-28 17:17+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,56 +39,11 @@ msgstr "Anglès"
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:382
-msgid ""
-"This name will be used for the HTML title of the public app, logo alt text "
-"and other places."
-msgstr ""
-"El nom que será fet servir pel títol del HTML de l'aplicació pública, el "
-"text alt del logo i altres llocs."
-
-#: project/settings.py:390
-msgid "Contact email address."
-msgstr "Correu electrònic de contacte."
-
-#: project/settings.py:396
-msgid "Reservations email address."
-msgstr "Correu electrònic per reserves."
-
-#: project/settings.py:402
-msgid "Maximum advance reservation days."
-msgstr "Període màxim d'antelació per reserves."
-
-#: project/settings.py:409
-msgid ""
-"Text which will be displayed in non hosted entities' reservations, with the "
-"instructions for payment."
-msgstr ""
-"Text que apareixerà a les reserves de les entitats externes, amb les "
-"instruccions de pagament."
-
-#: project/settings.py:418
-msgid ""
-"Text which will be displayed in the reservations for accepting the data "
-"policy."
-msgstr "Text per mostrar a les reserves per acceptar la política de dades."
-
-#: project/settings.py:427
-msgid ""
-"PDF file which will be linked in the reservations for accepting the terms of "
-"use."
-msgstr ""
-"Arxiu pdf que s'enllaçarà a les reserves com a termes de condició d'ús."
-
-#: project/settings.py:435
-msgid "ID for the room designated to host the caterings."
-msgstr "ID per la sala designada com a lloc dels càterings."
-
-#: project/settings.py:440
+#: project/settings.py:430
 msgid "Dynamic settings"
 msgstr "Configuracions dinàmiques"
 
-#: project/settings.py:506
+#: project/settings.py:496
 msgid "Administrators"
 msgstr "Administradors"
 
@@ -131,6 +86,43 @@ msgstr "Fet!"
 #: project/views.py:41
 msgid "The registry was updated correctly."
 msgstr "El registre ha estat actualitzat correctament."
+
+#~ msgid ""
+#~ "This name will be used for the HTML title of the public app, logo alt "
+#~ "text and other places."
+#~ msgstr ""
+#~ "El nom que será fet servir pel títol del HTML de l'aplicació pública, el "
+#~ "text alt del logo i altres llocs."
+
+#~ msgid "Contact email address."
+#~ msgstr "Correu electrònic de contacte."
+
+#~ msgid "Reservations email address."
+#~ msgstr "Correu electrònic per reserves."
+
+#~ msgid "Maximum advance reservation days."
+#~ msgstr "Període màxim d'antelació per reserves."
+
+#~ msgid ""
+#~ "Text which will be displayed in non hosted entities' reservations, with "
+#~ "the instructions for payment."
+#~ msgstr ""
+#~ "Text que apareixerà a les reserves de les entitats externes, amb les "
+#~ "instruccions de pagament."
+
+#~ msgid ""
+#~ "Text which will be displayed in the reservations for accepting the data "
+#~ "policy."
+#~ msgstr "Text per mostrar a les reserves per acceptar la política de dades."
+
+#~ msgid ""
+#~ "PDF file which will be linked in the reservations for accepting the terms "
+#~ "of use."
+#~ msgstr ""
+#~ "Arxiu pdf que s'enllaçarà a les reserves com a termes de condició d'ús."
+
+#~ msgid "ID for the room designated to host the caterings."
+#~ msgstr "ID per la sala designada com a lloc dels càterings."
 
 #~ msgid "Name of the website."
 #~ msgstr "Nom de la página web."

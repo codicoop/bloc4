@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 16:59+0100\n"
+"POT-Creation-Date: 2024-12-04 15:41+0100\n"
 "PO-Revision-Date: 2024-12-02 17:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"

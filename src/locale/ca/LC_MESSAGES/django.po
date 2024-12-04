@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 16:59+0100\n"
-"PO-Revision-Date: 2024-11-28 17:14+0100\n"
+"POT-Creation-Date: 2024-12-04 15:41+0100\n"
+"PO-Revision-Date: 2024-12-04 15:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -333,11 +333,11 @@ msgstr "Accepto la política de privacitat"
 #: apps/reservations/forms.py:175
 #, python-brace-format
 msgid ""
-"I agree the <a href=\"{url}\" target=\"_blank\" style=\"color: #be3bc7; font-"
-"weight: bold;\">Terms of Use</a>"
+"I have read and agree with the <a href=\"{url}\" target=\"_blank\" "
+"style=\"color: #be3bc7; font-weight: bold;\">rules of use of the space</a>"
 msgstr ""
-"Accepto les <a href=\"{url}\" target=\"_blank\" style=\"color: #be3bc7; font-"
-"weight: bold;\">condicions d'ús</a>"
+"He llegit i accepto les <a href=\"{url}\" target=\"_blank\" style=\"color: "
+"#be3bc7; font-weight: bold;\">la normativa d'ús de l'espai</a>"
 
 #: apps/reservations/forms.py:212
 msgid "The date must be greater than the current date."
@@ -444,113 +444,122 @@ msgstr ""
 msgid "Description"
 msgstr "Descripció"
 
-#: apps/reservations/models.py:146 templates/reservations/details.html:157
+#: apps/reservations/models.py:145 apps/reservations/models.py:155
+#: apps/reservations/models.py:165
+msgid ""
+"This information will be used in the Bloc4BCN Agenda publication of this "
+"event."
+msgstr ""
+"Aquesta información es farà servir per la publicació d'una entrada a "
+"l'Agenda de Bloc4BCN sobre aquest esdeveniment."
+
+#: apps/reservations/models.py:150 templates/reservations/details.html:157
 msgid "Poster"
 msgstr "Poster"
 
-#: apps/reservations/models.py:152
+#: apps/reservations/models.py:160
 msgid "URL of the activity"
 msgstr "Url de l'activitat"
 
-#: apps/reservations/models.py:155
+#: apps/reservations/models.py:170
 msgid "Total price"
 msgstr "Preu total"
 
-#: apps/reservations/models.py:163
+#: apps/reservations/models.py:178
 msgid "entity"
 msgstr "entitat"
 
-#: apps/reservations/models.py:171
+#: apps/reservations/models.py:186
 msgid "reserved by"
 msgstr "reservat per"
 
-#: apps/reservations/models.py:179
+#: apps/reservations/models.py:194
 msgid "canceled by"
 msgstr "cancel·lat per"
 
-#: apps/reservations/models.py:186
+#: apps/reservations/models.py:201
 msgid "canceled_at"
 msgstr "cancel·lat a"
 
-#: apps/reservations/models.py:195 templates/reservations/details.html:178
+#: apps/reservations/models.py:210 templates/reservations/details.html:178
 msgid "Status of the reservation"
 msgstr "Estat de la reserva"
 
-#: apps/reservations/models.py:196
+#: apps/reservations/models.py:211
 msgid "status"
 msgstr "estat"
 
-#: apps/reservations/models.py:202
+#: apps/reservations/models.py:217
 msgid "reservation"
 msgstr "reserva"
 
-#: apps/reservations/models.py:203
+#: apps/reservations/models.py:218
 msgid "reservations"
 msgstr "reserves"
 
-#: apps/reservations/models.py:255
+#: apps/reservations/models.py:270
 #, python-brace-format
 msgid "If ateneus'activity is {activity} this field is required."
 msgstr ""
 "Si l'activitat és de l'ateneu i és {activity}, aquest camp és obligatori."
 
-#: apps/reservations/models.py:268
+#: apps/reservations/models.py:283
 msgid "The end time must be greater than the start time."
 msgstr "L'hora de finalització ja de ser posterior a l'hora d'inici."
 
-#: apps/reservations/models.py:281
+#: apps/reservations/models.py:296
 msgid "The reservation must have a minimum duration of one hour."
 msgstr "La durada mínima d'una reserva és d'una hora."
 
-#: apps/reservations/models.py:294
+#: apps/reservations/models.py:309
 msgid "The maximum standby time is 20 hours."
 msgstr "La durada máxima d'una reserva és de 20 hores."
 
-#: apps/reservations/models.py:304
+#: apps/reservations/models.py:319
 #, python-brace-format
 msgid "The start time must be between {start_time} and {end_time}."
 msgstr "L'hora d'inici ha de ser entre {start_time} i {end_time}."
 
-#: apps/reservations/models.py:319
+#: apps/reservations/models.py:334
 #, python-brace-format
 msgid "The end time must be between {start_time} and {end_time}."
 msgstr "L'hora de finalització ha de ser entre {start_time} i {end_time}."
 
-#: apps/reservations/models.py:334
+#: apps/reservations/models.py:349
 msgid "The start time must be in 00, 15, 30 or 45 minutes."
 msgstr ""
 "L'hora d'inici ha de ser a hores en punt, o quarts (00, 15, 30 o 45 minuts)."
 
-#: apps/reservations/models.py:343
+#: apps/reservations/models.py:358
 msgid "The end time must be in 00, 15, 30 or 45 minutes."
 msgstr ""
 "L'hora de finalització ha de ser a hores en punt, o quarts (00, 15, 30 o 45 "
 "minuts)."
 
-#: apps/reservations/models.py:358
+#: apps/reservations/models.py:373
 msgid "If training is public, this field is required."
 msgstr "Si l'esdeveniment és públic, aquest camp és obligatori."
 
-#: apps/reservations/models.py:371
+#: apps/reservations/models.py:386
 #, python-brace-format
 msgid "{room_type} cannot be used in public trainings."
 msgstr "{room_type} no es pot fer servir per esdeveniments públics."
 
-#: apps/reservations/models.py:398
+#: apps/reservations/models.py:413
 msgid "The room is not available for this time period."
 msgstr "La sala no està disponible a aquest període."
 
-#: apps/reservations/models.py:408
+#: apps/reservations/models.py:423
 #, python-brace-format
 msgid "The maximum capacity for this room is {capacity}."
 msgstr "Capacitat màxima de persones de la sala és {capacity}."
 
-#: apps/reservations/models.py:424
+#: apps/reservations/models.py:439
 #, python-brace-format
 msgid "This user belong to {entity}."
 msgstr "Aquest usuari pertany a {entity}."
 
-#: apps/reservations/models.py:446
+#: apps/reservations/models.py:461
 #, python-format
 msgid "The maximum advance reservation period is %(days)s days."
 msgstr "El període màxim de reserva anticipada és de %(days)s dies."
@@ -847,28 +856,39 @@ msgid "Please, check the fields marked in red."
 msgstr "Si us plau, comprova els camps marcats en vermell."
 
 #: templates/fields/field_default.html:36
-#: templates/fields/field_default.html:89
-#: templates/fields/field_default.html:134
-#: templates/fields/field_default.html:183
-#: templates/fields/field_default.html:232
-#: templates/fields/field_default.html:277
-#: templates/fields/field_default.html:321
-#: templates/fields/field_default.html:391 templates/profile/details.html:50
-#: templates/reservations/widgets/custom_numeric.html:57
+#: templates/fields/field_default.html:82
+#: templates/fields/field_default.html:111
+#: templates/fields/field_default.html:153
+#: templates/fields/field_default.html:182
+#: templates/fields/field_default.html:225
+#: templates/fields/field_default.html:255
+#: templates/fields/field_default.html:298
+#: templates/fields/field_default.html:328
+#: templates/fields/field_default.html:373
+#: templates/fields/field_default.html:418
+#: templates/fields/field_default.html:489
+#: templates/fields/field_default.html:524
+#: templates/flowbite_classes/fields/checkbox.html:34
+#: templates/flowbite_classes/fields/date.html:24
+#: templates/flowbite_classes/fields/date.html:54
+#: templates/flowbite_classes/fields/file.html:27
+#: templates/flowbite_classes/fields/number.html:27
+#: templates/flowbite_classes/fields/other.html:33
+#: templates/flowbite_classes/fields/other.html:68
+#: templates/flowbite_classes/fields/radio.html:24
+#: templates/flowbite_classes/fields/radio.html:53
+#: templates/flowbite_classes/fields/select.html:24
+#: templates/flowbite_classes/fields/select.html:54
+#: templates/flowbite_classes/fields/time.html:24
+#: templates/flowbite_classes/fields/time.html:53
+#: templates/profile/details.html:50
+#: templates/reservations/widgets/custom_numeric.html:61
 msgid "Show information"
 msgstr "Mostra la informació"
 
 #: templates/home.html:25
 msgid "Home page"
 msgstr "Inici"
-
-#: templates/home.html:27
-#, fuzzy
-#| msgid "This field will be used for the public add of the event."
-msgid ""
-"This name will be used for the HTML title of the public app, logo alt text "
-"and other places."
-msgstr "Aquest camp es farà servir per l'anunci públic de l'esdeveniment."
 
 #: templates/home_internal.html:5
 msgid "Internal home page"
@@ -1420,6 +1440,13 @@ msgstr "Selecciona"
 #: templates/rooms/rooms_filtered.html:43
 msgid "info"
 msgstr "info"
+
+#, fuzzy
+#~| msgid "This field will be used for the public add of the event."
+#~ msgid ""
+#~ "This name will be used for the HTML title of the public app, logo alt "
+#~ "text and other places."
+#~ msgstr "Aquest camp es farà servir per l'anunci públic de l'esdeveniment."
 
 #~ msgid "Error alert"
 #~ msgstr "Alerta d'error"

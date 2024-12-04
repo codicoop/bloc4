@@ -601,7 +601,7 @@ msgid ""
 "Successful reservation.<br><br> As you've selected you need  catering space "
 "outside the room, it's mandatory to make a reservation for it."
 msgstr ""
-"Reserva exitosa.<br><br> Com has seleccioant que necessites espai de "
+"Reserva exitosa.<br><br> Com has seleccionat que necessites espai de "
 "càtering fora de la sala, és obligatori que facis una reserva per això."
 
 #: apps/reservations/views.py:268

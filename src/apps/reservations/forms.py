@@ -172,8 +172,8 @@ class ReservationForm(forms.ModelForm):
             if Setting.get("TERMS_USE"):
                 self.fields["terms_use"].label = mark_safe(
                     _(
-                        'I agree the <a href="{url}" target="_blank" style="color: '
-                        '#be3bc7; font-weight: bold;">Terms of Use</a>'
+                        'I have read and agree with the <a href="{url}" target="_blank" style="color: '
+                        '#be3bc7; font-weight: bold;">rules of use of the space</a>'
                     ).format(
                         url=(
                             f"{settings.AWS_S3_ENDPOINT_URL}/"

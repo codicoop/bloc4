@@ -141,15 +141,30 @@ class Reservation(BaseModel):
         _("Description"),
         max_length=500,
         blank=True,
+        help_text=_(
+            "This information will be used in the Bloc4BCN Agenda"
+            " publication of this event."
+        ),
     )
     poster = models.ImageField(
         _("Poster"),
         blank=True,
         storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
+        help_text=_(
+            "This information will be used in the Bloc4BCN Agenda"
+            " publication of this event."
+        ),
     )
     url = models.URLField(
-        _("URL of the activity"), max_length=200, blank=True, default=""
+        _("URL of the activity"),
+        max_length=200,
+        blank=True,
+        default="",
+        help_text=_(
+            "This information will be used in the Bloc4BCN Agenda"
+            " publication of this event."
+        ),
     )
     total_price = models.FloatField(
         _("Total price"),

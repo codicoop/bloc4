@@ -31,8 +31,9 @@
       class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm 
         block w-full py-2.5
         focus:ring-primary-500 focus:border-primary-500"
-        placeholder="999" required
+        placeholder="10" required
       {% include "django/forms/widgets/attrs.html" %}
+      min="0"
     />
     <button type="button" id="increment-button" data-input-counter-increment="{{ widget.attrs.id }}"
       class="bg-primary-100 border border-gray-300 rounded-e-lg p-3 h-11

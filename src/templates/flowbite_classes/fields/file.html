@@ -14,7 +14,7 @@
   {% if field.help_text %}
     <button
       type="button"
-      {% if field.auto_id %} data-tooltip-target="{{ field.auto_id }}_helptext"{% endif %}
+      {% if field.auto_id %} data-tooltip-target="id_{{ field.auto_id }}_helptext"{% endif %}
       data-tooltip-style="dark"
       class="ml-1 -mt-4">
       <svg aria-hidden="true"

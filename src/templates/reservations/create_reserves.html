@@ -81,8 +81,8 @@
 
 {% block form_fields %}
 <div class="pb-8">
-  <div class="flex justify-between items-center">
-    <p>{% translate 'Selected room'%}: {{ room.name }}</p>
+  <div class="flex justify-between items-center gap-2">
+    <p class="text-balance">{% translate 'Selected room'%}: {{ room.name }}</p>
     <div id="total_price" class="py-2 px-4 bg-primary-300 border text-white rounded">
       {% include 'reservations/total_price.html' %}
     </div>

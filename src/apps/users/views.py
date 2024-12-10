@@ -19,7 +19,9 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
+from extra_settings.models import Setting
 
+from apps.entities.forms import EntitySignUpForm
 from apps.users.forms import (
     AuthenticationForm,
     EmailVerificationCodeForm,
@@ -28,10 +30,44 @@ from apps.users.forms import (
     PasswordResetForm,
     ProfileDetailsForm,
     SendVerificationCodeForm,
+    UserSignUpForm,
 )
-from apps.users.services import send_confirmation_mail
+from apps.users.services import send_confirmation_mail, send_registration_pending_mail
+from project.decorators import anonymous_required
 from project.mixins import AnonymousRequiredMixin
 from project.views import StandardSuccess
+
+
+@anonymous_required
+def signup_view(request):
+    if request.method == "POST":
+        user_form = UserSignUpForm(request.POST, None)
+        entity_form = EntitySignUpForm(request.POST, request.FILES)
+        if user_form.is_valid() and entity_form.is_valid():
+            entity_instance = entity_form.save(commit=False)
+            entity_instance.save()
+            user_instance = user_form.save(commit=False)
+            user_instance.entity = entity_instance
+            user_instance.is_active = False
+            user_instance.is_verified = False
+            user_instance.save()
+            send_registration_pending_mail(
+                user_instance, "email_registration_pending", user_instance.email
+            )  # To user
+            send_registration_pending_mail(
+                user_instance,
+                "email_registration_pending_to_bloc4",
+                Setting.get("RESERVATIONS_EMAIL"),
+            )  # To Bloc4
+            return redirect("registration:signup_success")
+    else:
+        user_form = UserSignUpForm()
+        entity_form = EntitySignUpForm()
+    return render(
+        request,
+        "registration/signup.html",
+        {"user_form": user_form, "entity_form": entity_form},
+    )
 
 
 class LoginView(AnonymousRequiredMixin, BaseLoginView):
@@ -60,7 +96,7 @@ class EmailVerificationView(FormView, StandardSuccess):
 
     def form_valid(self, form):
         if (
-            str(form.cleaned_data["email_verification_code"])
+            form.cleaned_data.get("email_verification_code")
             == self.request.user.email_verification_code
         ):
             self.request.user.email_verified = True
@@ -70,8 +106,10 @@ class EmailVerificationView(FormView, StandardSuccess):
             form.add_error(
                 "email_verification_code",
                 ValidationError(
-                    "Code entered is not correct and the user cannot "
-                    "be verified. Please try again."
+                    _(
+                        "Code entered is not correct and the user cannot "
+                        "be verified. Please try again."
+                    )
                 ),
             )
             return super().form_invalid(form)
@@ -199,3 +237,16 @@ class PasswordChangeDoneView(StandardSuccess):
 
 def privacy_policy_view(request):
     return render(request, "registration/privacy_policy.html")
+
+
+class SignUpSuccessView(StandardSuccess):
+    template_name = "standard_success.html"
+    title = _("Done!")
+    page_title = _("Sign Up Success")
+    description = _(
+        "Your account has been successfully created and its validation "
+        "it's pending by Bloc4BCN. You'll receive an email "
+        "when your account is available."
+    )
+    url = reverse_lazy("home")
+    link_text = _("Continue")

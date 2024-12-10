@@ -1,4 +1,3 @@
-from constance import config
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import (
@@ -19,15 +18,15 @@ from django.contrib.auth.forms import (
 from django.urls import reverse
 from django.utils import formats, timezone
 from django.utils.translation import gettext_lazy as _
+from extra_settings.models import Setting
 
 from apps.users.models import User
-from project.fields import flowbite
 from project.helpers import absolute_url
 from project.post_office import send
 
 
 class AuthenticationForm(BaseAuthenticationForm):
-    username = flowbite.FormEmailField(
+    username = forms.EmailField(
         label=_("Email"),
         widget=forms.EmailInput(
             attrs={
@@ -36,13 +35,26 @@ class AuthenticationForm(BaseAuthenticationForm):
             }
         ),
     )
-    password = flowbite.FormPasswordField(
+    password = forms.CharField(
         widget=forms.PasswordInput(),
         label=_("Password"),
     )
-    remember_me = flowbite.FormBooleanField(
-        required=False, widget=forms.CheckboxInput(), label=_("Remember me")
+    remember_me = forms.BooleanField(
+        required=False, widget=forms.CheckboxInput, label=_("Remember me")
     )
+
+
+class UserSignUpForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = (
+            "name",
+            "surnames",
+            "email",
+            "password1",
+            "password2",
+        )
+        widgets = {"name": forms.TextInput(attrs={"autofocus": "autofocus"})}
 
 
 class UserChangeForm(forms.ModelForm):
@@ -74,24 +86,6 @@ class UserChangeForm(forms.ModelForm):
 
 
 class ProfileDetailsForm(forms.ModelForm):
-    name = flowbite.FormCharField(
-        label=_("Name"),
-        widget=forms.TextInput(),
-    )
-    surnames = flowbite.FormCharField(
-        label=_("Surnames"),
-        widget=forms.TextInput(),
-    )
-    email = flowbite.FormEmailField(
-        label=_("Email"),
-        max_length=254,
-        widget=forms.EmailInput(
-            attrs={
-                "autocomplete": "email",
-            }
-        ),
-    )
-
     class Meta(UserCreationForm.Meta):
         model = User
         fields = (
@@ -102,7 +96,7 @@ class ProfileDetailsForm(forms.ModelForm):
 
 
 class PasswordResetForm(BasePasswordResetForm):
-    email = flowbite.FormEmailField(
+    email = forms.EmailField(
         label=_("Email"),
         max_length=254,
         widget=forms.EmailInput(
@@ -132,7 +126,7 @@ class PasswordResetForm(BasePasswordResetForm):
             )
         )
         context = {
-            "project_name": config.PROJECT_NAME,
+            "project_name": Setting.get("PROJECT_NAME"),
             "user_name": context["user"].full_name,
             "date": str(
                 formats.date_format(
@@ -156,18 +150,18 @@ class PasswordResetForm(BasePasswordResetForm):
 
 
 class PasswordResetConfirmForm(BaseSetPasswordForm):
-    new_password1 = flowbite.FormPasswordField(
+    new_password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={"autofocus": True}),
         label=_("New password"),
     )
-    new_password2 = flowbite.FormPasswordField(
+    new_password2 = forms.CharField(
         widget=forms.PasswordInput(),
         label=_("New password confirmation"),
     )
 
 
 class PasswordChangeForm(BasePasswordChangeForm):
-    old_password = flowbite.FormPasswordField(
+    old_password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
                 "autofocus": True,
@@ -175,18 +169,18 @@ class PasswordChangeForm(BasePasswordChangeForm):
         ),
         label=_("Old password"),
     )
-    new_password1 = flowbite.FormPasswordField(
+    new_password1 = forms.CharField(
         widget=forms.PasswordInput(),
         label=_("New password"),
     )
-    new_password2 = flowbite.FormPasswordField(
+    new_password2 = forms.CharField(
         widget=forms.PasswordInput(),
         label=_("New password confirmation"),
     )
 
 
 class EmailVerificationCodeForm(forms.Form):
-    email_verification_code = flowbite.FormIntegerField(
+    email_verification_code = forms.CharField(
         widget=forms.TextInput(
             attrs=({"autofocus": True, "placeholder": _("Verification code")})
         ),

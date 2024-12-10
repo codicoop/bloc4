@@ -1,5 +1,5 @@
 {% extends "../base.html" %}
-{% load i18n custom_filters %}
+{% load i18n custom_filters static %}
 
 {# Blocks de base.html #}
 {% block page_title %}{% translate "Home" %}{% endblock %}
@@ -19,223 +19,256 @@
           {% translate 'Home' %}
         </a>
       </li>
-      <li class="inline-flex items-center">
-        <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 6 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-        </svg>
-        <a href="{% url 'reservations:reservations_list' %}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-400 dark:hover:text-white">
-          {% translate 'Your reservations' %}
-        </a>
-      </li>
     </ol>
   </nav>
-<div class="flex justify-center items-center mt-8 md:p-8">
-  <div class="rounded-t-xl rounded-b-none dark:bg-gray-800 dark:text-white">
-    <div
-      class="flex items-center justify-between gap-3 w-full max-w-2xl p-5 rounded-t-xl rounded-b-none font-medium rtl:text-right shadow-md
-      {% if reservation.status == reservation.StatusChoices.CANCELED or reservation.status == reservation.StatusChoices.REFUSED %}
-        bg-gray-300 text-gray-600
-      {% else %}bg-primary-300 text-gray-500 {% endif %}
-      focus:ring-4 focus:ring-primary-200
-      dark:focus:ring-primary-800 dark:border-gray-700 dark:text-gray-400"
-    >
-      <div class="flex gap-4 w-full justify-between">
-        <p class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          {% translate "Room reservation" %} {{ reservation.room.name }}
-        </p>
-        <p class="text-lg font-normal tracking-tight text-gray-900 dark:text-white">
-          {{ reservation.date}}
-        </p>
-      </div>
-    </div>
-    <div class="w-full max-w-2xl grid grid-cols-2 gap-2 p-5 border border-gray-200 rounded-b-xl dark:border-gray-700 dark:bg-gray-900">
-      {% if is_staff %}
-        <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-          {% translate "Admin URL" %}
-        </p>
-        <a class="text-gray-500 dark:text-gray-400 col-start-2 underline"
-          href="{{ reservation.get_admin_url }}">
-          {{ reservation.get_admin_url }}
+
+  <ul class="flex mb-8 rounded-lg text-center text-sm font-medium text-gray-500 shadow dark:divide-gray-700 dark:text-gray-400">
+    <li class="w-full focus-within:z-10">
+        <a href="{% url 'reservations:reservations_calendar' %}" class="inline-block w-full p-4 bg-white border-r rounded-s-lg border-primary-200
+          dark:border-primary-700
+          hover:text-primary-700 hover:bg-primary-50 dark:hover:text-white dark:bg-primary-800 dark:hover:bg-primary-700
+          focus:ring-4 focus:outline-none focus:ring-primary-700" id="check_calendar">
+          {% translate "Room reservations" %}
         </a>
-      {% endif %}
-      <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-        {% translate 'Title' %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 col-start-2">
-        {{ reservation.title }}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-        {% translate 'Room' %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 col-start-2">
-        {% if reservation.room.name %}
-          {{ reservation.room.name }}
-        {% else %}
-          {% translate 'No room was selected.' %}
-        {% endif %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-        {% translate 'Date' %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 col-start-2">
-        {% if reservation.date %}
-          {{ reservation.date }}
-        {% else %}
-          {% translate 'No date was selected.' %}
-        {% endif %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-        {% translate 'Schedule' %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 col-start-2">
-        {% if reservation.start_time and reservation.end_time %}
-          {{ reservation.start_time }} - {{ reservation.end_time }}
-        {% else %}
-          {% translate 'No start or end time was selected.' %}
-        {% endif %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-        {% translate 'Assistants' %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 col-start-2">
-        {% if reservation.assistants %}
-          {{ reservation.assistants }}
-        {% else %}
-          {% translate 'No assistants were mentioned.' %}
-        {% endif %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-        {% translate 'Is the reservation paid for?' %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 col-start-2">
-        {% if reservation.is_paid %}
-          {% translate 'Yes' %}
-        {% else %}
-          {% translate 'No' %}
-        {% endif %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-        {% translate 'Total price of the reservation' %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 col-start-2">
-        {% if reservation.total_price %}
-          {{ reservation.total_price|round_two}} €
-        {% else %}
-          {% translate 'The price could not be estimated.' %}
-        {% endif %}
-      </p>
-      {% if reservation.privacy == 'public' %}
-        <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-          {% translate 'Description' %}
-        </p>
-        <p class="text-gray-500 dark:text-gray-400 col-start-2">
-          {{ reservation.description }}
-        </p>
-        {% if reservation.equipment %}
-          <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-            {% translate 'Equipment' %}
+    </li>
+    <li class="w-full focus-within:z-10">
+        <a href="{% url 'reservations:reservations_list' %}" class="inline-block w-full p-4 text-primary-900 bg-primary-100 border-s-0 border-primary-200 rounded-e-lg active
+        dark:border-primary-700
+        focus:ring-4 focus:ring-primary-700 focus:outline-none
+        dark:bg-primary-700 dark:text-white" aria-current="page">
+          {% translate "Your reservations" %}
+        </a>
+    </li>
+  </ul>
+
+  <div class="flex justify-center items-center my-8 md:p-8">
+    <div class="w-full rounded-t-xl rounded-b-none sm:max-w-lg">
+      <div
+        class="flex items-center justify-between gap-3 w-full p-5 rounded-t-xl
+          rounded-b-none font-medium rtl:text-right shadow-md
+          {% if reservation.status == reservation.StatusChoices.CANCELED or reservation.status == reservation.StatusChoices.REFUSED %}
+            bg-gray-300
+          {% else %}
+            bg-primary-300
+          {% endif %}"
+      >
+        <div class="flex gap-4 w-full justify-between">
+          <p class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+            {% translate "Room reservation" %} {{ reservation.room.name }}
           </p>
-          <p class="text-gray-500 dark:text-gray-400 col-start-2">
-            {{ reservation.equipment }}
+          <p class="text-lg font-normal tracking-tight text-gray-900 dark:text-white">
+            {{ reservation.date}}
           </p>
-        {% endif %}
-        {% if reservation.poster %}
-          <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-            {% translate 'Poster' %}
+        </div>
+      </div>
+      <div class="w-full grid grid-cols-2 gap-2 p-5 border border-gray-200 rounded-b-xl">
+        {% if is_staff %}
+          <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+            {% translate "Admin URL" %}
           </p>
-          <a class="text-gray-500 dark:text-gray-400 col-start-2 underline"
-            href="{{ reservation.poster.url }}" target="_blank">
-            {% translate 'See poster' %}
+          <a class="text-gray-700 dark:text-gray-400 col-start-2 underline truncate"
+            href="{{ reservation.get_admin_url }}" target="_blank">
+            {{ reservation.get_admin_url }}
           </a>
         {% endif %}
-      {% endif %}
-      <hr class="h-px my-4 bg-primary-200 border-0 dark:bg-primary-700 col-span-2">
-      <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-        {% translate 'Booked by' %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 col-start-2">
-        <!-- entity -->
-        {% if reservation.reserved_by %}
-          {{ reservation.reserved_by }}
-        {% else %}
-          {% translate 'Unknown' %}
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Title' %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {{ reservation.title }}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Room' %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {% if reservation.room.name %}
+            {{ reservation.room.name }}
+          {% else %}
+            {% translate 'No room was selected.' %}
+          {% endif %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Date' %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {% if reservation.date %}
+            {{ reservation.date }}
+          {% else %}
+            {% translate 'No date was selected.' %}
+          {% endif %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Schedule' %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {% if reservation.start_time and reservation.end_time %}
+            {{ reservation.start_time }} - {{ reservation.end_time }}
+          {% else %}
+            {% translate 'No start or end time was selected.' %}
+          {% endif %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Assistants' %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {% if reservation.assistants %}
+            {{ reservation.assistants }}
+          {% else %}
+            {% translate 'No assistants were mentioned.' %}
+          {% endif %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Is the reservation paid for?' %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {% if reservation.is_paid %}
+            {% translate 'Yes' %}
+          {% else %}
+            {% translate 'No' %}
+          {% endif %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Total price of the reservation' %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {% if reservation.total_price %}
+            {{ reservation.total_price|round_two}} €
+          {% else %}
+            {% translate 'The price could not be estimated.' %}
+          {% endif %}
+        </p>
+        {% if reservation.privacy == 'public' %}
+          <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+            {% translate 'Description' %}
+          </p>
+          <p class="text-gray-700 dark:text-gray-400 col-start-2">
+            {{ reservation.description }}
+          </p>
+          {% if reservation.equipment %}
+            <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+              {% translate 'Equipment' %}
+            </p>
+            <p class="text-gray-700 dark:text-gray-400 col-start-2">
+              {{ reservation.equipment }}
+            </p>
+          {% endif %}
+          {% if reservation.poster %}
+            <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+              {% translate 'Poster' %}
+            </p>
+            <a class="text-gray-700 dark:text-gray-400 col-start-2 underline"
+              href="{{ reservation.poster.url }}" target="_blank">
+              {% translate 'See poster' %}
+            </a>
+          {% endif %}
         {% endif %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-        {% translate 'Status of the reservation' %}
-      </p>
-      <p class="text-gray-500 dark:text-gray-400 col-start-2">
-        {{ reservation.get_status_display }}
-      </p>
-      {% if reservation.status == reservation.StatusChoices.CANCELED %}
-        <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-          {% translate 'Canceled by' %}
+        <hr class="h-px my-4 bg-primary-200 border-0 dark:bg-primary-700 col-span-2">
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Booked by' %}
         </p>
-        <p class="text-gray-500 dark:text-gray-400 col-start-2">
-          {% if reservation.canceled_by %}
-            {{ reservation.canceled_by }}
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          <!-- entity -->
+          {% if reservation.reserved_by %}
+            {{ reservation.reserved_by }}
           {% else %}
-            {% translate "Unknown" %}
+            {% translate 'Unknown' %}
           {% endif %}
         </p>
-        <p class="text-gray-500 dark:text-gray-400 font-bold col-start-1">
-          {% translate 'Canceled at' %}
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Status of the reservation' %}
         </p>
-        <p class="text-gray-500 dark:text-gray-400 col-start-2">
-          {% if reservation.canceled_at %}
-            {{ reservation.canceled_at }}
-          {% else %}
-            {% translate "Unknown" %}
-          {% endif %}
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {{ reservation.get_status_display }}
         </p>
-      {% endif %}
-      {% if reservation.status == reservation.StatusChoices.PENDING or reservation.status == reservation.StatusChoices.CONFIRMED %}
-        <!-- Modal toggle -->
-        <button data-modal-target="default-modal-{{ reservation.id }}" data-modal-show="default-modal-{{ reservation.id }}"
-          class="relative flex items-center justify-center p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
-          hover:bg-primary-300"
-            type="button" id="pre_cancel_reservation">
-          {% translate 'Cancel reservation' %}
-        </button>
-        <!-- Main modal -->
-        <div id="default-modal-{{ reservation.id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-          <div class="relative p-4 w-full max-w-2xl max-h-full">
-            <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
-              <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                  {% translate 'Delete confirmation' %}
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="default-modal-{{ reservation.id }}">
-                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                  </svg>
-                  <span class="sr-only">Close modal</span>
-                </button>
-              </div>
-              <div class="p-4 md:p-5 space-y-4">
-                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                  {% translate "Are you sure you want to delete this booking? The action can not be undone. If you delete the booking the administration will be notified." %}
-                </p>
-              </div>
-              <!-- Modal footer -->
-              <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <form method="post" action="" class="w-full">
-                  {% csrf_token %}
-                  <button data-modal-hide="default-modal-{{ reservation.id }}" type="submit"
-                    class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
-                    hover:bg-primary-300" name="cancel_reservation" value="{{ reservation.id }}" id="id_cancel_reservation_{{ reservation.id }}">
-                    {% translate 'Cancel reservation' %}
+        {% if reservation.status == reservation.StatusChoices.CANCELED %}
+          <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+            {% translate 'Canceled by' %}
+          </p>
+          <p class="text-gray-700 dark:text-gray-400 col-start-2">
+            {% if reservation.canceled_by %}
+              {{ reservation.canceled_by }}
+            {% else %}
+              {% translate "Unknown" %}
+            {% endif %}
+          </p>
+          <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+            {% translate 'Canceled at' %}
+          </p>
+          <p class="text-gray-700 dark:text-gray-400 col-start-2">
+            {% if reservation.canceled_at %}
+              {{ reservation.canceled_at }}
+            {% else %}
+              {% translate "Unknown" %}
+            {% endif %}
+          </p>
+        {% endif %}
+        {% if reservation.status == reservation.StatusChoices.PENDING or reservation.status == reservation.StatusChoices.CONFIRMED %}
+          <!-- Modal toggle -->
+          <button data-modal-target="default-modal-{{ reservation.id }}" data-modal-show="default-modal-{{ reservation.id }}"
+            class="relative flex items-center justify-center p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
+            hover:bg-primary-300"
+              type="button" id="pre_cancel_reservation">
+            {% translate 'Cancel reservation' %}
+          </button>
+          <!-- Main modal -->
+          <div id="default-modal-{{ reservation.id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-2xl max-h-full">
+              <!-- Modal content -->
+              <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                  <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    {% translate 'Delete confirmation' %}
+                  </h3>
+                  <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  data-modal-hide="default-modal-{{ reservation.id }}">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
                   </button>
-                </form>
+                </div>
+                <div class="p-4 md:p-5 space-y-4">
+                  <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    {% translate "Are you sure you want to delete this booking? The action can not be undone. If you delete the booking the administration will be notified." %}
+                  </p>
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                  <form method="post" action="" class="w-full">
+                    {% csrf_token %}
+                    <button data-modal-hide="default-modal-{{ reservation.id }}" type="submit"
+                      class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
+                      hover:bg-primary-300" name="cancel_reservation" value="{{ reservation.id }}" id="id_cancel_reservation_{{ reservation.id }}">
+                      {% translate 'Cancel reservation' %}
+                    </button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
     </div>
   </div>
-</div>
+
+  {% if payment_info %}
+  <div class="flex justify-center items-center mb-8">
+    <div class="w-full rounded-t-xl rounded-b-none sm:max-w-lg">
+      <div
+        class="w-full max-w-2xl p-5 rounded-t-xl rounded-b-none font-medium rtl:text-right shadow-md
+          bg-primary-300
+          focus:ring-4 focus:ring-primary-200
+          dark:focus:ring-primary-800 dark:border-gray-700 dark:text-gray-400"
+      >
+        <p class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          {% translate "Payment information" %}
+        </p>
+      </div>
+      <div class="w-full max-w-2xl p-5 border border-gray-200 rounded-b-xl">
+        <div>{{ payment_info }}</div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "../base_form.html" %}
-{% load i18n %}
+{% load i18n static extra_settings %}
 
 {# Blocks de base.html #}
 {% block page_title %}{% translate "Log in" %}{% endblock %}
@@ -37,16 +37,23 @@
   class="inline-flex text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
   {% translate "Forgot your password?" %}
 </a>
-<p class="text-sm font-light text-gray-500 dark:text-gray-400">
-  {% translate "Don’t have an account? Only the BlocIV admins can register new accounts. Send them a message to" %}
+<!-- <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+  {% translate "Don’t have an account? Only the Bloc4BCN admins can register new accounts. Send them a message to" %}
   <a href="mailto:{{ config.CONTACT_EMAIL }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">
     {{ config.CONTACT_EMAIL }}
   </a>
   {% translate "and ask for a registration." %}
+</p> -->
+<p class="text-sm font-light text-gray-500 dark:text-gray-400">
+  {% translate "If your entity doesn't belong to " %} {% get_setting "PROJECT_NAME" %}, {% translate "you can" %}
 </p>
-<!-- TODO Layout this value to show the contact email address
-    
--->
+<a href="{% url 'registration:signup' %}">
+  <div class="w-full mb-4 mt-2 px-5 py-2.5 rounded-lg bg-white text-primary-600 font-bold text-sm 
+  text-center cursor-pointer border border-primary-600
+  hover:bg-primary-50 focus:ring-4 focus:outline-none focus:ring-primary-300">
+    {% translate "Register here" %}
+  </div>
+</a>
 
 {% endblock %}
 

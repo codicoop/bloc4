@@ -107,8 +107,6 @@ DATABASES = {
 INSTALLED_APPS = [
     "maintenance_mode",
     "django.contrib.postgres",
-    "constance.backends.database",
-    "constance",
     "logentry_admin",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -123,11 +121,12 @@ INSTALLED_APPS = [
     "apps.users",
     "project",
     "apps.entities",
-    "apps.provinces_towns",
     "apps.rooms",
     "apps.reservations",
     "django_htmx",
     "sorl.thumbnail",
+    "extra_settings",
+    "flowbite_classes",
 ]
 
 
@@ -269,9 +268,7 @@ TEMPLATES = [
         ],
         "OPTIONS": {
             "context_processors": [
-                "constance.context_processors.config",
                 "maintenance_mode.context_processors.maintenance_mode",
-                "constance.context_processors.config",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -281,7 +278,7 @@ TEMPLATES = [
         },
     },
 ]
-FORM_RENDERER = "project.form_renderer.CustomFormRenderer"
+FORM_RENDERER = "project.renderers.CustomFormRenderer"
 
 
 ################################################################################
@@ -315,7 +312,6 @@ AWS_LOCATION = "static"
 
 DEFAULT_FILE_STORAGE = "project.storage_backends.PublicMediaStorage"
 THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
-
 
 
 ################################################################################
@@ -371,21 +367,67 @@ EMAIL_BACKEND = env.str(
 DJANGO_SUPERUSER_EMAIL = env("DJANGO_SUPERUSER_EMAIL", default=None)
 DJANGO_SUPERUSER_PASSWORD = env("DJANGO_SUPERUSER_PASSWORD", default=None)
 
-
-# Constance
-# https://django-constance.readthedocs.io/en/latest/#configuration
-CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
-CONSTANCE_CONFIG = {
-    "PROJECT_NAME": ("Bloc4BCN", _("Name of the website."), str),
-    "CONTACT_EMAIL": ("", _("Contact email address."), str),
-    "RESERVATIONS_EMAIL": ("", _("Reservations email address."), str),
-    "MAXIMUM_ADVANCE_RESERVATION_DAYS": (
-        30,
-        _("Maximum advance reservation days."),
-        int,
-    ),
-}
-
+################################################################################
+#                         django-extra-settings                                #
+################################################################################
+PROJECT_NAME = env.str("PROJECT_NAME", default="Bloc4BCN")
+EXTRA_SETTINGS_DEFAULTS = [
+    {
+        "name": "PROJECT_NAME",
+        "type": "Setting.TYPE_STRING",
+        "value": PROJECT_NAME,
+        "description": "El nom que será fet servir pel títol del "
+        "HTML de l'aplicació pública, el text alt del logo i altres llocs.",
+    },
+    {
+        "name": "CONTACT_EMAIL",
+        "type": "Setting.TYPE_EMAIL",
+        "value": "",
+        "description": "Correu electrònic de contacte.",
+    },
+    {
+        "name": "RESERVATIONS_EMAIL",
+        "type": "Setting.TYPE_EMAIL",
+        "value": "",
+        "description": "Correu electrònic per reserves.",
+    },
+    {
+        "name": "MAXIMUM_ADVANCE_RESERVATION_DAYS",
+        "type": "Setting.TYPE_INT",
+        "value": 30,
+        "description": "Període màxim d'antelació per reserves.",
+    },
+    {
+        "name": "PAYMENT_INFORMATION",
+        "type": "Setting.TYPE_TEXT",
+        "value": "",
+        "description": "Text que apareixerà a les reserves de les "
+        "entitats externes, amb les instruccions de pagament.",
+    },
+    {
+        "name": "DATA_POLICY",
+        "type": "Setting.TYPE_TEXT",
+        "value": "",
+        "description": "Text per mostrar a les reserves per "
+        "acceptar la política de dades.",
+    },
+    {
+        "name": "TERMS_USE",
+        "type": "Setting.TYPE_FILE",
+        "value": "",
+        "description": "Arxiu pdf que s'enllaçarà a les reserves com "
+        "a termes de condició d'ús.",
+    },
+    {
+        "name": "CATERING_ROOM",
+        "type": "Setting.TYPE_STRING",
+        "value": "",
+        "description": "ID per la sala designada com a lloc dels càterings.",
+    },
+]
+EXTRA_SETTINGS_IMAGE_UPLOAD_TO = "django-extra-settings-images"
+EXTRA_SETTINGS_FILE_UPLOAD_TO = "django-extra-settings-files"
+EXTRA_SETTINGS_VERBOSE_NAME = _("Dynamic settings")
 
 ################################################################################
 #                                  Logging                                     #
@@ -439,3 +481,16 @@ structlog.configure(
     logger_factory=structlog.stdlib.LoggerFactory(),
     cache_logger_on_first_use=True,
 )
+
+CODI_COOP_ENABLE_MONKEY_PATCH = True
+
+################################################################################
+#                                USer groups and permissions                   #
+################################################################################
+
+# User group names that are used programatically in some place, so we don't
+# want them hardcoded.
+# Beware that these CANNOT BE CHANGED once the instance is already deployed, or
+# you are going to end up with a new group with the new name while all the users
+# are still assigned to the previous group.
+GROUP_ADMINS = _("Administrators")

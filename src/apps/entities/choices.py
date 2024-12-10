@@ -10,10 +10,10 @@ from apps.reservations.constants import (
 
 
 class EntityTypesChoices(models.TextChoices):
-    GENERAL = "general", _("General entity")
     HOSTED = "hosted", _("Hosted entity")
     BLOC4 = "bloc4", _("Bloc4 entity")
-    OUTSIDE = "outside", _("Entity outside the ESS and public sector")
+    GENERAL = "general", _("Federated cooperative")
+    OUTSIDE = "outside", _("Other entities")
 
     def get_discount_percentage(self):
         discounts = {

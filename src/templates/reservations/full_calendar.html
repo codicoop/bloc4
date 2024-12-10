@@ -2,7 +2,7 @@
 {% load i18n static %}
 
 {# Blocks de base.html #}
-{% block page_title %}{% translate "Reservations List" %}{% endblock %}
+{% block page_title %}{% translate "Reservations" %}{% endblock %}
 {% block bodyclasses %}{% endblock %}
 {% block mainclasses %} reservations {% endblock %}
 {% block extra_js %}{% endblock %}
@@ -13,11 +13,12 @@
 <script src="{% static 'fullcalendar/index.global.min.js' %}"></script>
 <script src="{% static 'fullcalendar/locales/ca.js' %}"></script>
 <script src="{% static 'js/calendar_filtered.js' %}"></script>
-<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+<script type="text/javascript" src="{% static 'js/_hyperscript.min.js' %}"></script>
 <script>
   let roomId = null;
   const createReservationUrl = "{% url 'reservations:create_reservation' %}";
   const reservationViewUrl = "{% url 'reservations:reservations_details' id=0 %}".replace('/0/', '/');
+  const isStaff = {{ is_staff|yesno:"true,false" }};
 </script>
 {% endblock %}
 

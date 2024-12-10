@@ -5,18 +5,20 @@ from django.utils.translation import gettext_lazy as _
 from apps.reservations.views import (
     AjaxCalendarFeed,
     ReservationCancelledView,
-    ReservationsListView,
+    ReservationRedirectSuccessView,
     ReservationSuccessView,
     calculate_total_price,
     create_reservation_view,
+    filter_reservations,
     reservation_detail_view,
     reservations_calendar_view,
+    reservations_list,
 )
 
 app_name = "reservations"
 urlpatterns = [
     # Reservations
-    path("", login_required(ReservationsListView.as_view()), name="reservations_list"),
+    path("", login_required(reservations_list), name="reservations_list"),
     path(
         _("calendar/"),
         login_required(reservations_calendar_view),
@@ -41,6 +43,11 @@ urlpatterns = [
         name="reservations_success",
     ),
     path(
+        _("success/redirect/"),
+        login_required(ReservationRedirectSuccessView.as_view()),
+        name="reservations_redirect_success",
+    ),
+    path(
         _("cancelled/"),
         login_required(ReservationCancelledView.as_view()),
         name="reservations_cancelled",
@@ -49,4 +56,5 @@ urlpatterns = [
     path(
         _("price/"), login_required(calculate_total_price), name="calculate_total_price"
     ),
+    path(_("filter/"), login_required(filter_reservations), name="filter_reservations"),
 ]

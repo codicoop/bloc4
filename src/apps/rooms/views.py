@@ -7,7 +7,5 @@ from apps.rooms.models import Room
 @login_required
 def room_detail_view(request, id):
     room = get_object_or_404(Room, id=id)
-    context = {
-        'room': room,
-    }
-    return render(request, 'rooms/room_detail.html', context)
+    context = {"room": room, "is_staff": request.user.is_staff}
+    return render(request, "rooms/room_detail.html", context)

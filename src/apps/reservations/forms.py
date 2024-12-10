@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
+from flowbite_classes.widgets import FlowBiteDateInput, FlowBiteTimeInput
 
 from apps.reservations.models import Reservation
 from apps.reservations.services import calculate_discount_price
@@ -51,47 +52,23 @@ class ReservationForm(forms.ModelForm):
         widgets = {
             "room": forms.HiddenInput(),
             "entity": forms.HiddenInput(),
-            "date": forms.DateInput(
-                format="%Y-%m-%d",
-                attrs={
-                    "type": "date",
-                    "class": "text-sm border rounded-lg block w-full "
-                    "p-2.5 bg-gray-50 "
-                    "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                    "focus:border-primary-60 dark:bg-gray-700 "
-                    "dark:border-gray-600 dark:placeholder-gray-400 "
-                    "dark:text-white dark:focus:ring-primary-500 "
-                    "dark:focus:border-primary-500",
-                },
-            ),
-            "start_time": forms.TimeInput(
+            "date": FlowBiteDateInput,
+            "start_time": FlowBiteTimeInput(
                 attrs={
                     "type": "time",
                     "step": 900,
                     "min": "08:00",
                     "max": "17:00",
-                    "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                    "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                    "focus:border-primary-60 dark:bg-gray-700 "
-                    "dark:border-gray-600 dark:placeholder-gray-400 "
-                    "dark:text-white dark:focus:ring-primary-500 "
-                    "dark:focus:border-primary-500",
                     "hx-target": "#total_price",
                     "hx-trigger": "change",
                 }
             ),
-            "end_time": forms.TimeInput(
+            "end_time": FlowBiteTimeInput(
                 attrs={
                     "type": "time",
                     "step": 900,
                     "min": "09:00",
                     "max": "18:00",
-                    "class": "text-sm border rounded-lg block w-full p-2.5 bg-gray-50 "
-                    "border-gray-300 text-gray-900 focus:ring-primary-600 "
-                    "focus:border-primary-60 dark:bg-gray-700 "
-                    "dark:border-gray-600 dark:placeholder-gray-400 "
-                    "dark:text-white dark:focus:ring-primary-500 "
-                    "dark:focus:border-primary-500",
                     "hx-target": "#total_price",
                     "hx-trigger": "change",
                 }
@@ -136,17 +113,6 @@ class ReservationForm(forms.ModelForm):
                 },
             ),
             "description": forms.Textarea(),
-            "poster": forms.FileInput(
-                attrs={
-                    "class": "text-sm border rounded-lg "
-                    "block w-full px-2.5 bg-gray-50 border-gray-300 "
-                    "text-gray-900 focus:ring-primary-600 "
-                    "focus:border-primary-600 dark:bg-gray-700 "
-                    "dark:border-gray-600 dark:placeholder-gray-400 "
-                    "dark:text-white dark:focus:ring-primary-500"
-                    "dark:focus:border-primary-500",
-                }
-            ),
         }
 
     def __init__(self, *args, **kwargs):

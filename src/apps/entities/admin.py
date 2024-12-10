@@ -12,7 +12,7 @@ class EntityPrivilegeInline(admin.StackedInline):
     verbose_name = _("Entity Privileges")
     fields = (
         "monthly_hours_meeting",
-        "anual_hours_class",
+        # "anual_hours_class",
         "class_reservation_privilege",
     )
 

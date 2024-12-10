@@ -117,7 +117,6 @@ class ReservationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
-        prices = kwargs.pop("prices", {})
         super(ReservationForm, self).__init__(*args, **kwargs)
         calculate_price_url = reverse("reservations:calculate_total_price")
         self.fields["start_time"].widget.attrs.update({"hx-post": calculate_price_url})

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-04 15:41+0100\n"
-"PO-Revision-Date: 2024-12-04 15:45+0100\n"
+"POT-Creation-Date: 2024-12-11 11:00+0100\n"
+"PO-Revision-Date: 2024-12-11 11:02+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -194,19 +194,19 @@ msgstr "Reserva per hores"
 
 #: apps/reservations/choices.py:7 templates/reservations/temp.html:51
 #: templates/reservations/temp.html:233
-#: templates/reservations/widgets/custom_radio.html:38
+#: templates/reservations/widgets/custom_radio.html:47
 msgid "Morning reservation"
 msgstr "Reserva de matí"
 
 #: apps/reservations/choices.py:8 templates/reservations/temp.html:74
 #: templates/reservations/temp.html:259
-#: templates/reservations/widgets/custom_radio.html:58
+#: templates/reservations/widgets/custom_radio.html:77
 msgid "Afternoon reservation"
 msgstr "Reserva de tarda"
 
 #: apps/reservations/choices.py:9 templates/reservations/temp.html:97
 #: templates/reservations/temp.html:282
-#: templates/reservations/widgets/custom_radio.html:78
+#: templates/reservations/widgets/custom_radio.html:108
 msgid "Whole day reservation"
 msgstr "Reserva de dia"
 
@@ -326,11 +326,11 @@ msgstr "Novembre"
 msgid "December"
 msgstr "Desembre"
 
-#: apps/reservations/forms.py:20
+#: apps/reservations/forms.py:21
 msgid "I agree to Privacy Policy"
 msgstr "Accepto la política de privacitat"
 
-#: apps/reservations/forms.py:175
+#: apps/reservations/forms.py:140
 #, python-brace-format
 msgid ""
 "I have read and agree with the <a href=\"{url}\" target=\"_blank\" "
@@ -339,7 +339,7 @@ msgstr ""
 "He llegit i accepto les <a href=\"{url}\" target=\"_blank\" style=\"color: "
 "#be3bc7; font-weight: bold;\">la normativa d'ús de l'espai</a>"
 
-#: apps/reservations/forms.py:212
+#: apps/reservations/forms.py:178
 msgid "The date must be greater than the current date."
 msgstr "La data ha de ser posterior a l'actual."
 
@@ -596,16 +596,16 @@ msgstr "preu/"
 msgid "filter/"
 msgstr "filtre/"
 
-#: apps/reservations/views.py:249 apps/reservations/views.py:262
-#: apps/reservations/views.py:269
+#: apps/reservations/views.py:256 apps/reservations/views.py:269
+#: apps/reservations/views.py:276
 msgid "Successful reservation"
 msgstr "Reserva exitosa"
 
-#: apps/reservations/views.py:250
+#: apps/reservations/views.py:257
 msgid "Successful reservation."
 msgstr "Reserva exitosa."
 
-#: apps/reservations/views.py:264
+#: apps/reservations/views.py:271
 msgid ""
 "Successful reservation.<br><br> As you've selected you need  catering space "
 "outside the room, it's mandatory to make a reservation for it."
@@ -613,19 +613,19 @@ msgstr ""
 "Reserva exitosa.<br><br> Com has seleccionat que necessites espai de "
 "càtering fora de la sala, és obligatori que facis una reserva per això."
 
-#: apps/reservations/views.py:268
+#: apps/reservations/views.py:275
 msgid "Continue"
 msgstr "Continua"
 
-#: apps/reservations/views.py:288 apps/reservations/views.py:291
+#: apps/reservations/views.py:295 apps/reservations/views.py:298
 msgid "Reservation cancelled"
 msgstr "Reserva cancelada"
 
-#: apps/reservations/views.py:289
+#: apps/reservations/views.py:296
 msgid "Reservation cancelled."
 msgstr "Reserva cancelada."
 
-#: apps/reservations/views.py:312
+#: apps/reservations/views.py:319
 msgid "All"
 msgstr "Tots"
 
@@ -871,7 +871,7 @@ msgstr "Si us plau, comprova els camps marcats en vermell."
 #: templates/flowbite_classes/fields/checkbox.html:34
 #: templates/flowbite_classes/fields/date.html:24
 #: templates/flowbite_classes/fields/date.html:54
-#: templates/flowbite_classes/fields/file.html:27
+#: templates/flowbite_classes/fields/file.html:28
 #: templates/flowbite_classes/fields/number.html:27
 #: templates/flowbite_classes/fields/other.html:33
 #: templates/flowbite_classes/fields/other.html:68
@@ -882,7 +882,7 @@ msgstr "Si us plau, comprova els camps marcats en vermell."
 #: templates/flowbite_classes/fields/time.html:24
 #: templates/flowbite_classes/fields/time.html:53
 #: templates/profile/details.html:50
-#: templates/reservations/widgets/custom_numeric.html:61
+#: templates/reservations/widgets/custom_numeric.html:62
 msgid "Show information"
 msgstr "Mostra la informació"
 
@@ -1362,9 +1362,9 @@ msgstr ""
 #: templates/reservations/temp.html:211 templates/reservations/temp.html:235
 #: templates/reservations/temp.html:261 templates/reservations/temp.html:284
 #: templates/reservations/widgets/custom_radio.html:18
-#: templates/reservations/widgets/custom_radio.html:40
-#: templates/reservations/widgets/custom_radio.html:60
-#: templates/reservations/widgets/custom_radio.html:80
+#: templates/reservations/widgets/custom_radio.html:49
+#: templates/reservations/widgets/custom_radio.html:79
+#: templates/reservations/widgets/custom_radio.html:110
 msgid "Price "
 msgstr "Preu "
 
@@ -1374,7 +1374,6 @@ msgid " €/hour"
 msgstr " €/hora"
 
 #: templates/reservations/temp.html:52 templates/reservations/temp.html:234
-#: templates/reservations/widgets/custom_radio.html:39
 msgid ""
 "Rooms are reserved for a whole morning, with space available from 8:00 to "
 "14:00"
@@ -1382,12 +1381,11 @@ msgstr ""
 "Les sales es reserven tot el matí, tenint l'espai disponible de 8:00 a 14:00"
 
 #: templates/reservations/temp.html:53 templates/reservations/temp.html:235
-#: templates/reservations/widgets/custom_radio.html:40
+#: templates/reservations/widgets/custom_radio.html:49
 msgid " €/morning"
 msgstr " €/matí"
 
 #: templates/reservations/temp.html:75 templates/reservations/temp.html:260
-#: templates/reservations/widgets/custom_radio.html:59
 msgid ""
 "Rooms are reserved for an entire afternoon, with the space available from "
 "14:00 to 18:00."
@@ -1396,12 +1394,12 @@ msgstr ""
 "18:00."
 
 #: templates/reservations/temp.html:76 templates/reservations/temp.html:261
-#: templates/reservations/widgets/custom_radio.html:60
+#: templates/reservations/widgets/custom_radio.html:79
 msgid " €/afternoon"
 msgstr " €/tarda"
 
 #: templates/reservations/temp.html:98 templates/reservations/temp.html:283
-#: templates/reservations/widgets/custom_radio.html:79
+#: templates/reservations/widgets/custom_radio.html:109
 msgid ""
 "Rooms are reserved for a whole day, with the space available from 8:00 to "
 "18:00."
@@ -1409,13 +1407,28 @@ msgstr ""
 "Les sales es reserven tot el dia, tenint l'espai disponible de 8:00 a 18:00."
 
 #: templates/reservations/temp.html:99 templates/reservations/temp.html:284
-#: templates/reservations/widgets/custom_radio.html:80
+#: templates/reservations/widgets/custom_radio.html:110
 msgid " €/day"
 msgstr " €/dia"
 
 #: templates/reservations/total_price.html:3
 msgid "Reserve price"
 msgstr "Preu de la reserva"
+
+#: templates/reservations/widgets/custom_radio.html:48
+msgid ""
+"Rooms are reserved for a whole morning, with space available from 8:00 to "
+"13:00"
+msgstr ""
+"Les sales es reserven tot el matí, tenint l'espai disponible de 8:00 a 13:00"
+
+#: templates/reservations/widgets/custom_radio.html:78
+msgid ""
+"Rooms are reserved for an entire afternoon, with the space available from "
+"13:00 to 18:00."
+msgstr ""
+"Les sales es reserven tota la tarda, tenint l'espai disponible de 13:00 a "
+"18:00."
 
 #: templates/rooms/room_detail.html:71
 msgid "Availability"

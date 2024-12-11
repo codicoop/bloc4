@@ -169,6 +169,14 @@ def create_reservation_view(request):
                 except ValueError:
                     return redirect("reservations:reservations_success")
             return redirect("reservations:reservations_success")
+        elif form.data.get("end_time") and form.data.get("start_time"):
+            total_price = get_total_price(
+                form.data.get("reservation_type"),
+                entity_type,
+                room,
+                parse_time(form.data.get("start_time")),
+                parse_time(form.data.get("end_time")),
+            )
     return render(
         request,
         "reservations/create_reserves.html",
@@ -231,17 +239,17 @@ def calculate_total_price(request):
         reservation_type = request.POST.get("reservation_type")
         start_time = parse_time(request.POST.get("start_time"))
         end_time = parse_time(request.POST.get("end_time"))
-        total_price = get_total_price(
-            reservation_type, entity_type, room, start_time, end_time
-        )
-        return render(
-            request,
-            "reservations/total_price.html",
-            {
-                "total_price": delete_zeros(total_price),
-            },
-        )
-    return JsonResponse({"error": ""}, status=405)
+        if start_time and end_time:
+            total_price = get_total_price(
+                reservation_type, entity_type, room, start_time, end_time
+            )
+    return render(
+        request,
+        "reservations/total_price.html",
+        {
+            "total_price": delete_zeros(total_price),
+        },
+    )
 
 
 class ReservationSuccessView(StandardSuccess):

@@ -29,14 +29,14 @@
         dark:hover:text-gray-300 pointer dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
         _="init  
         if document.getElementById('reservation_type_2').checked set #id_start_time.value to '08:00'
-          then set #id_end_time.value to '14:00'
+          then set #id_end_time.value to '13:00'
           then add .bg-gray-200 .pointer-events-none to #id_start_time
           then add .bg-gray-200 .pointer-events-none to #id_end_time
           then remove .bg-gray-50 from #id_start_time
           then remove .bg-gray-50 from #id_end_time
         end
       on click set #id_start_time.value to '08:00'
-        then set #id_end_time.value to '14:00'
+        then set #id_end_time.value to '13:00'
         then add .bg-gray-200 .pointer-events-none to #id_start_time
         then add .bg-gray-200 .pointer-events-none to #id_end_time
         then remove .bg-gray-50 from #id_start_time
@@ -45,7 +45,7 @@
       >
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Morning reservation' %}</b>
-        <p class="mb-2">{% translate 'Rooms are reserved for a whole morning, with space available from 8:00 to 14:00' %}</p>
+        <p class="mb-2">{% translate 'Rooms are reserved for a whole morning, with space available from 8:00 to 13:00' %}</p>
         <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price_half_day }}{% translate ' €/morning' %}</p>
       </div>
     </label>
@@ -59,14 +59,14 @@
         dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-primary-500 peer-checked:border-primary-600 peer-checked:text-primary-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
       _="init
         if document.getElementById('reservation_type_3').checked 
-          then set #id_start_time.value to '14:00'        
+          then set #id_start_time.value to '13:00'        
           then set #id_end_time.value to '18:00'
           then add .bg-gray-200 .pointer-events-none to #id_start_time
           then add .bg-gray-200 .pointer-events-none to #id_end_time
           then remove .bg-gray-50 from #id_start_time
           then remove .bg-gray-50 from #id_end_time
         end
-        on click set #id_start_time.value to '14:00'        
+        on click set #id_start_time.value to '13:00'        
           then set #id_end_time.value to '18:00'
           then add .bg-gray-200 .pointer-events-none to #id_start_time
           then add .bg-gray-200 .pointer-events-none to #id_end_time
@@ -75,7 +75,7 @@
       ">
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Afternoon reservation' %}</b>
-        <p class="mb-2">{% translate 'Rooms are reserved for an entire afternoon, with the space available from 14:00 to 18:00.' %}</p>
+        <p class="mb-2">{% translate 'Rooms are reserved for an entire afternoon, with the space available from 13:00 to 18:00.' %}</p>
         <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price_half_day }}{% translate ' €/afternoon' %}</p>
       </div>
     </label>

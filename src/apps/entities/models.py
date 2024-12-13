@@ -185,9 +185,8 @@ class MonthlyBonus(BaseModel):
             raise ValidationError(
                 {
                     "date": ValidationError(
-                        _(
-                            f"A record for {self.entity} "
-                            f"for {self.month_and_year} already exists."
+                        _("A record for {entity} for {month} already exists.").format(
+                            entity=self.entity, month=self.month_and_year
                         )
                     )
                 },

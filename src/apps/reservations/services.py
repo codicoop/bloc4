@@ -20,10 +20,9 @@ from project.post_office import send
 def send_mail_reservation(reservation, action):
     payment_info = ""
     entity_type = reservation.entity.entity_type
+    recipients = [reservation.reserved_by.email]
     if "bloc4" in action:
         recipients = [Setting.get("RESERVATIONS_EMAIL")]
-    else:
-        recipients = [reservation.reserved_by.email]
     if Setting.get("PAYMENT_INFORMATION") and entity_type in [
         EntityTypesChoices.GENERAL,
         EntityTypesChoices.OUTSIDE,

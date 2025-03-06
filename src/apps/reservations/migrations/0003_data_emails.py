@@ -258,6 +258,27 @@ def populate_mail_templates(apps, schema_editor):
             },
         ),
         dict(
+            id="reservation_date_or_time_changed",
+            translated_templates={
+                "en": {
+                    "subject": "Bloc4BCN reservations, room {{ room }}: Modified date or time for {{ date_reservation }} at {{start_time_reservation}}",
+                    "body": """
+    <p>Hello, {{ reserved_by }},</p>
+    <p>The payment of the reservation for {{ room }} on {{ date_reservation }} from {{ start_time_reservation }} to {{ end_time_reservation }} for an amount of {{ total_price }} € made by {{ entity }} still pending.</p>
+    <p>{{ payment_info }}</p>
+                            """,
+                },
+                "ca": {
+                    "subject": "Reserves Bloc4BCN, sala {{ room }}: S'ha modificat la data o hora per {{ date_reservation }} a les {{start_time_reservation}}",
+                    "body": """
+    <p>Hola, {{ reserved_by }},</p>
+    <p>El pagament de la reserva per {{ entity }} de {{ room }} el dia {{ date_reservation }} de {{ start_time_reservation }} a {{ end_time_reservation }}, encara està pendent de pagament amb una quantitat de {{ total_price }} €.</p>
+    <p>{{ payment_info }}</p>
+                            """,
+                },
+            },
+        ),
+        dict(
             id="confirmed_room_change",
             translated_templates={
                 "en": {

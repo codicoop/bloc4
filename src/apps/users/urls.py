@@ -14,14 +14,17 @@ from apps.users.views import (
     PasswordResetInvalidLinkView,
     PasswordResetView,
     SendVerificationCodeView,
+    SignUpSuccessView,
     details_view,
     privacy_policy_view,
+    signup_view,
 )
 from project.views import StandardSuccess
 
 app_name = "registration"
 urlpatterns = [
     # Registration
+    path(_("sign-up/"), signup_view, name="signup"),
     path(_("sign-in/"), LoginView.as_view(), name="login"),
     path(
         _("log-out/"),
@@ -97,5 +100,10 @@ urlpatterns = [
         _("privacy-policy/"),
         privacy_policy_view,
         name="privacy_policy",
+    ),
+    path(
+        _("sign-up/success/"),
+        SignUpSuccessView.as_view(),
+        name="signup_success",
     ),
 ]

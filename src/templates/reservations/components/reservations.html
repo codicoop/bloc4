@@ -1,0 +1,76 @@
+{% load i18n custom_filters static %}
+
+{% if is_monthly_bonus %}
+<div class=" max-w-2xl bg-white border border-accent rounded-xl overflow-hidden
+    lg:col-start-2 lg:-mt-36">
+  <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
+    <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Meeting rooms discount' %}</h3>
+    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{month}} {{ year }} </h3>
+    <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
+    <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} {% translate 'hours' %}</p>
+    <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
+  </div>
+  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-accent text-gray-900">
+    <p class="col-span-4 font-bold text-balance">{% translate 'Total to be invoiced (with bonus discount)' %}</p>
+    <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
+  </div>
+</div>
+{% endif %}
+<!-- Per acabar quan afegim els descomptes anuals -->
+<!-- <div class=" max-w-2xl bg-white border border-accent rounded-lg overflow-hidden
+    lg:col-start-2">
+  <div class="px-3 pt-2 pb-1 grid grid-cols-6">
+    <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Teaching rooms discount' %}</h3>
+    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">2024</h3>
+    <p class="col-span-4 text-balance">{% translate 'Initial year discount hours' %}:</p>
+    <p class="col-start-5 col-span-2 text-right">{{ amount }} {% translate 'hours' %}</p>
+    <p class="col-span-4 text-balance">{% translate 'Discount hours left' %}</p>
+    <p class="col-start-5 col-span-2 text-right">{{ amount_left }} {% translate 'hours' %}</p>
+    <p class="col-span-4 text-balance">{% translate 'Total amount of the resevations' %}</p>
+    <p class="col-start-5 col-span-2 text-right">{{ total_price }} €</p>
+  </div>
+  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-accent">
+    <p class="col-span-4 font-bold text-balance">{% translate 'Total to be invoiced (with bonus discount)' %}</p>
+    <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
+  </div>
+</div> -->
+
+{% for reservation in reservations %}
+<div
+  class="relative grid grid-cols-6 gap-2 w-full max-w-2xl p-5 rounded-xl font-medium rtl:text-right shadow-md
+  {% if reservation.status == reservation.StatusChoices.CANCELED or reservation.status == reservation.StatusChoices.REFUSED %}
+    bg-gray-300 text-gray-600
+  {% else %}bg-primary-300 text-gray-500 {% endif %}
+  focus:ring-4 focus:ring-primary-200
+  dark:focus:ring-primary-800 dark:border-gray-700 dark:text-gray-400"
+>
+  <p class="col-span-6 pr-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+    {% translate "Reservation of" %} {{ reservation.room.name }}
+  </p>
+  <div class="col-span-4 text-md font-normal tracking-tight text-gray-900 dark:text-white col-start-1 row-span-3">
+    <b>{{ reservation.title }}</b>
+    <p>{{ reservation.date}} - 
+      {% if reservation.start_time and reservation.end_time %}
+      {{ reservation.start_time }} - {{ reservation.end_time }}
+      {% endif %}
+    </p>
+    <p>{% translate 'Price' %}: {{ reservation.total_price|round_two }} €</p>
+  </div>
+  <a href="{% url 'reservations:reservations_details' id=reservation.id %}"
+    class="absolute right-0 rounded-xl hover:bg-primary-400" 
+  >
+    <div class="p-4">
+      <svg class="w-6 h-6 text-primary-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
+      </svg>
+    </div>
+  </a>
+</div>
+{% empty %}
+<div>
+  <p>{% translate 'You have made no reservations yet. When you do, they will appear here.' %}</p>
+</div>
+{% endfor %}

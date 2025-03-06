@@ -1,10 +1,15 @@
 from django import forms
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.http import HttpResponseRedirect
+from django.urls import path, reverse
 from django.utils import timezone
-from django.utils.html import format_html
+from django.utils.html import escapejs, format_html
+from django.utils.translation import gettext_lazy as _
 
+from apps.entities.models import Entity
 from apps.users.models import User
+from apps.users.services import send_registration_pending_mail
 from project.admin import ModelAdminMixin
 
 
@@ -47,16 +52,18 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         "entity",
         "is_janitor",
         "is_staff",
-        "is_superuser",
-        "email_verified",
+        "is_verified",
     )
-    list_filter = (
-        "entity",
-        "is_superuser",
+    list_filter = ("entity", "is_superuser", "is_janitor", "is_staff", "is_verified")
+    search_fields = (
+        "email",
+        "name",
+        "surnames",
+        "entity__fiscal_name",
+        "entity__nif",
         "is_janitor",
-        "is_staff",
+        "is_verified",
     )
-    search_fields = ("email", "name", "surnames", "entity", "is_janitor")
     ordering = ("email",)
     fieldsets = (("Autenticació", {"fields": ("email", "password")}),)
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -86,8 +93,12 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
                 "fields": (
                     "is_janitor",
                     "is_staff",
+                    "roles_explanation_field",
+                    "groups",
                     "is_active",
                     "is_superuser",
+                    "is_verified",
+                    "actions_field",
                     "email_verified",
                     # Hiding these fields until we have permission groups and
                     # we actually need to add the explanation:
@@ -108,7 +119,14 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
         ),
     )
     superuser_fields = ("is_superuser",)
-    readonly_fields = ("roles_explanation_field", "email_verified")
+    readonly_fields = (
+        "roles_explanation_field",
+        "email_verified",
+        "actions_field",
+        "is_verified",
+        "roles_explanation_field",
+    )
+    filter_horizontal = ("groups",)
 
     def get_fieldsets(self, request, obj=None):
         return super().get_fieldsets(request, obj) + self.common_fieldsets
@@ -126,3 +144,63 @@ class UserAdmin(ModelAdminMixin, BaseUserAdmin):
             </ul>
             """
         )
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "<uuid:id>/verified_account/",
+                self.admin_site.admin_view(self.notify_verified_account),
+                name="notify_verified_account",
+            ),
+        ]
+        return custom_urls + urls
+
+    @admin.display(description=_("Actions"))
+    def actions_field(self, obj):
+        if not obj or obj.is_verified:
+            return "-"
+        confirmed_verification_msg = _(
+            "Are you sure you want to confirm the account and notify the user?"
+        )
+        confirmed_verification_url = reverse(
+            "admin:notify_verified_account",
+            args=[obj.id],
+        )
+        confirmed_verification_text = _("Verify the account and notify the user")
+        buttons = [
+            self._get_url_with_alert_msg(
+                confirmed_verification_msg,
+                confirmed_verification_url,
+                confirmed_verification_text,
+            )
+        ]
+        return format_html("<br><br>".join(buttons))
+
+    def _get_url_with_alert_msg(self, alert_msg, url, text):
+        return format_html(
+            f'<a class="submit-row" style="color: white; background-color: #417690;"'
+            f"href=\"javascript:if(confirm('{escapejs(alert_msg)}')) "
+            f"window.location.href = '{url}'\">{text}</a>"
+        )
+
+    def notify_verified_account(self, request, id):
+        user = User.objects.get(pk=id)
+        user.is_active = True
+        user.is_verified = True
+        user.save()
+        entity = Entity.objects.get(pk=user.entity.id)
+        entity.person_responsible = user
+        entity.save()
+        send_registration_pending_mail(user, "email_account_activated", user.email)
+        messages.success(
+            request,
+            _(
+                "An email has been sent to the user to inform"
+                " that the account is active."
+            ),
+        )
+        return self._redirect_to_change(user.id)
+
+    def _redirect_to_change(self, id):
+        return HttpResponseRedirect(reverse("admin:users_user_change", args=(id,)))

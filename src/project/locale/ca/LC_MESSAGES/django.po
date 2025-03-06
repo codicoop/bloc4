@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-16 11:25+0200\n"
-"PO-Revision-Date: 2024-09-13 13:25+0200\n"
+"POT-Creation-Date: 2024-12-04 15:42+0100\n"
+"PO-Revision-Date: 2024-11-28 17:17+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -39,39 +39,31 @@ msgstr "Anglès"
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:382
-msgid "Name of the website."
-msgstr "Nom de la página web."
+#: project/settings.py:430
+msgid "Dynamic settings"
+msgstr "Configuracions dinàmiques"
 
-#: project/settings.py:383
-msgid "Contact email address."
-msgstr "Correu electrònic de contacte."
+#: project/settings.py:496
+msgid "Administrators"
+msgstr "Administradors"
 
-#: project/settings.py:384
-msgid "Reservations email address."
-msgstr "Correu electrònic per reserves."
-
-#: project/settings.py:387
-msgid "Maximum advance reservation days."
-msgstr "Període màxim d'antelació per reserves."
-
-#: project/tests/test_selenium.py:59
+#: project/tests/test_selenium.py:66
 msgid "Site administration | Django site admin"
 msgstr "Administració del lloc | Lloc administratiu de Django"
 
-#: project/tests/test_selenium.py:60
+#: project/tests/test_selenium.py:67
 msgid "Log out"
 msgstr "Tancar sessió"
 
-#: project/urls.py:31
+#: project/urls.py:29
 msgid "registration/"
 msgstr "registre/"
 
-#: project/urls.py:33
+#: project/urls.py:31
 msgid "reservations/"
 msgstr "reserves/"
 
-#: project/urls.py:35
+#: project/urls.py:33
 msgid "rooms/"
 msgstr "sales/"
 
@@ -94,6 +86,46 @@ msgstr "Fet!"
 #: project/views.py:41
 msgid "The registry was updated correctly."
 msgstr "El registre ha estat actualitzat correctament."
+
+#~ msgid ""
+#~ "This name will be used for the HTML title of the public app, logo alt "
+#~ "text and other places."
+#~ msgstr ""
+#~ "El nom que será fet servir pel títol del HTML de l'aplicació pública, el "
+#~ "text alt del logo i altres llocs."
+
+#~ msgid "Contact email address."
+#~ msgstr "Correu electrònic de contacte."
+
+#~ msgid "Reservations email address."
+#~ msgstr "Correu electrònic per reserves."
+
+#~ msgid "Maximum advance reservation days."
+#~ msgstr "Període màxim d'antelació per reserves."
+
+#~ msgid ""
+#~ "Text which will be displayed in non hosted entities' reservations, with "
+#~ "the instructions for payment."
+#~ msgstr ""
+#~ "Text que apareixerà a les reserves de les entitats externes, amb les "
+#~ "instruccions de pagament."
+
+#~ msgid ""
+#~ "Text which will be displayed in the reservations for accepting the data "
+#~ "policy."
+#~ msgstr "Text per mostrar a les reserves per acceptar la política de dades."
+
+#~ msgid ""
+#~ "PDF file which will be linked in the reservations for accepting the terms "
+#~ "of use."
+#~ msgstr ""
+#~ "Arxiu pdf que s'enllaçarà a les reserves com a termes de condició d'ús."
+
+#~ msgid "ID for the room designated to host the caterings."
+#~ msgstr "ID per la sala designada com a lloc dels càterings."
+
+#~ msgid "Name of the website."
+#~ msgstr "Nom de la página web."
 
 #~ msgid "Project name"
 #~ msgstr "Nom del projecte"

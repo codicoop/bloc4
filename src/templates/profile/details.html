@@ -33,7 +33,7 @@
   <p>{% translate "Here you can see and edit your data." %}</p>
   {% if user.is_janitor %}
     <p class="inline-block text-sm font-medium text-gray-900 dark:text-gray-300">
-      {% translate "You are a janitor at BlocIV" %}
+      {% translate "You are a janitor at Bloc4BCN" %}
     </p>
     <button
       type="button"
@@ -145,7 +145,7 @@
                     {% translate "Email" %}
                   </th>
                   <td class="px-2 py-2 border-b border-t border-gray-200 dark:border-gray-700">
-                    {{ request.user.entity.email }}
+                    {{ request.user.entity.entity_email }}
                   </td>
                 </tr>
                 <tr class="">

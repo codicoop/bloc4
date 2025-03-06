@@ -4,6 +4,7 @@ from django.urls import path, reverse
 from django.utils.html import escapejs, format_html
 from django.utils.translation import gettext_lazy as _
 
+from apps.entities.choices import EntityTypesChoices
 from apps.reservations.models import Reservation
 from apps.reservations.services import send_mail_reservation
 from project.admin import ModelAdmin
@@ -19,14 +20,15 @@ class ReservationAdmin(ModelAdmin):
         "end_time",
         "room",
         "total_price",
+        "is_budgeted",
         "is_paid",
         "status",
         "privacy",
     )
     list_filter = (
-        "title",
         "date",
         "room",
+        "is_budgeted",
         "is_paid",
         "entity",
         "privacy",
@@ -34,17 +36,19 @@ class ReservationAdmin(ModelAdmin):
         "canceled_by",
         "canceled_at",
         "status",
+        "activity_type",
+        "bloc4_type",
     )
+    date_hierarchy = "date"
     search_fields = (
         "title",
         "date",
-        "room",
+        "room__name",
+        "is_budgeted",
         "is_paid",
-        "entity",
+        "entity__fiscal_name",
         "privacy",
-        "reserved_by",
-        "canceled_by",
-        "canceled_at",
+        "reserved_by__name",
         "status",
     )
     fieldsets = (
@@ -52,16 +56,21 @@ class ReservationAdmin(ModelAdmin):
             None,
             {
                 "fields": (
-                    "room",
                     "title",
+                    "room",
+                    "room_field",
+                    "reservation_type",
                     "date",
                     "start_time",
                     "end_time",
                     "assistants",
                     "catering",
                     "notes",
-                    "bloc4_reservation",
+                    "activity_type",
+                    "bloc4_type",
+                    "is_budgeted",
                     "is_paid",
+                    "payment_field",
                     "total_price",
                     "entity",
                     "reserved_by",
@@ -84,7 +93,35 @@ class ReservationAdmin(ModelAdmin):
             },
         ),
     )
-    readonly_fields = ("actions_field", "total_price")
+    readonly_fields = ("actions_field", "room_field", "payment_field")
+
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super().get_fieldsets(request, obj)
+        if obj is None:
+            new_fieldsets = []
+            for name, opts in fieldsets:
+                filtered_fields = [
+                    field
+                    for field in opts["fields"]
+                    if field not in ("actions_field", "payment_field", "room_field")
+                ]
+                if filtered_fields:
+                    new_fieldsets.append((name, {"fields": filtered_fields}))
+            return tuple(new_fieldsets)
+        if obj and obj.entity.entity_type in [
+            EntityTypesChoices.HOSTED,
+            EntityTypesChoices.BLOC4,
+        ]:
+            new_fieldsets = []
+            for name, opts in fieldsets:
+                # Filtra el campo que deseas ocultar
+                filtered_fields = [
+                    field for field in opts["fields"] if field != "payment_field"
+                ]
+                if filtered_fields:
+                    new_fieldsets.append((name, {"fields": filtered_fields}))
+            return tuple(new_fieldsets)
+        return fieldsets
 
     def get_urls(self):
         urls = super().get_urls()
@@ -99,12 +136,84 @@ class ReservationAdmin(ModelAdmin):
                 self.admin_site.admin_view(self.notify_rejected_reservation),
                 name="notify_rejected_reservation",
             ),
+            path(
+                "<uuid:reservation_id>/change_room/",
+                self.admin_site.admin_view(self.notify_confirmed_room_change),
+                name="notify_confirmed_room_change",
+            ),
+            path(
+                "<uuid:reservation_id>/payment_reminder/",
+                self.admin_site.admin_view(self.notify_payment_reminder),
+                name="notify_payment_reminder",
+            ),
         ]
         return custom_urls + urls
 
-    @admin.display(description="Accions")
+    @admin.display(description=_("Change room"))
+    def room_field(self, obj):
+        if not obj:
+            return "-"
+        confirmed_room_change_msg = _("Are you sure you want to notify the user?")
+        confirmed_room_change_url = reverse(
+            "admin:notify_confirmed_room_change",
+            args=[obj.id],
+        )
+        confirmed_room_change_text = _("Notify the user the room is changed")
+        buttons = [
+            self._get_url_with_alert_msg(
+                confirmed_room_change_msg,
+                confirmed_room_change_url,
+                confirmed_room_change_text,
+            )
+        ]
+        return format_html("<br><br>".join(buttons))
+
+    def notify_confirmed_room_change(self, request, reservation_id):
+        reservation = Reservation.objects.get(pk=reservation_id)
+        send_mail_reservation(reservation, "confirmed_room_change")
+        messages.success(
+            request,
+            _(
+                "An email has been sent to the entity to inform"
+                " them that the room of the reservation has change."
+            ),
+        )
+        return self._redirect_to_change(reservation.id)
+
+    @admin.display(description=_("Payment reminder"))
+    def payment_field(self, obj):
+        if not obj or obj.is_paid:
+            return "-"
+        notify_payment_reminder_msg = _("Are you sure you want to notify the user?")
+        notify_payment_reminder_url = reverse(
+            "admin:notify_payment_reminder",
+            args=[obj.id],
+        )
+        notify_payment_reminder_text = _("Notify the user a payment reminder")
+        buttons = [
+            self._get_url_with_alert_msg(
+                notify_payment_reminder_msg,
+                notify_payment_reminder_url,
+                notify_payment_reminder_text,
+            )
+        ]
+        return format_html("<br>".join(buttons))
+
+    def notify_payment_reminder(self, request, reservation_id):
+        reservation = Reservation.objects.get(pk=reservation_id)
+        send_mail_reservation(reservation, "payment_reminder")
+        messages.success(
+            request,
+            _(
+                "An email has been sent to the entity to inform with a "
+                "payment reminder."
+            ),
+        )
+        return self._redirect_to_change(reservation.id)
+
+    @admin.display(description=_("Actions"))
     def actions_field(self, obj):
-        if not obj.id:
+        if obj is None:
             return "-"
         confirmed_reservation_msg = _(
             "Are you sure you want to confirm the reservation and notify the user?"
@@ -139,11 +248,11 @@ class ReservationAdmin(ModelAdmin):
                 rejected_reservation_text,
             )
         )
-        return format_html("<br><br>".join(buttons))
+        return format_html("<br>".join(buttons))
 
     def _get_url_with_alert_msg(self, alert_msg, url, text):
         return (
-            '<a class="grp-button grp-default" '
+            '<a class="submit-row" style="color: white; background-color: #417690;" '
             f"href=\"javascript:if(confirm('{escapejs(alert_msg)}')) "
             f"window.location.href = '{url}'\">{text}</a>"
         )
@@ -151,6 +260,8 @@ class ReservationAdmin(ModelAdmin):
     def notify_confirmed_reservation(self, request, reservation_id):
         reservation = Reservation.objects.get(pk=reservation_id)
         reservation.status = Reservation.StatusChoices.CONFIRMED
+        reservation.canceled_by = None
+        reservation.canceled_at = None
         reservation.save()
         send_mail_reservation(reservation, "reservation_confirmed_user")
         messages.success(

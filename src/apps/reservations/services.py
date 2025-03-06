@@ -22,6 +22,8 @@ def send_mail_reservation(reservation, action):
     entity_type = reservation.entity.entity_type
     recipients = [reservation.reserved_by.email]
     if "bloc4" in action:
+        if not Setting.get("RESERVATIONS_EMAIL"):
+            return
         recipients = [Setting.get("RESERVATIONS_EMAIL")]
     if Setting.get("PAYMENT_INFORMATION") and entity_type in [
         EntityTypesChoices.GENERAL,
@@ -53,12 +55,11 @@ def send_mail_reservation(reservation, action):
         "reservation_url_admin": f"{settings.ABSOLUTE_URL}/"
         f"admin/reservations/reservation/{reservation.id}",
     }
-    if Setting.get("RESERVATIONS_EMAIL"):
-        send(
-            recipients=recipients,
-            template=action,
-            context=context,
-        )
+    send(
+        recipients=recipients,
+        template=action,
+        context=context,
+    )
 
 
 def date_to_full_calendar_format(date_obj):

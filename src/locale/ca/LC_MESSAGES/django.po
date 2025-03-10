@@ -505,7 +505,7 @@ msgstr ""
 
 #: apps/reservations/models.py:283
 msgid "The end time must be greater than the start time."
-msgstr "L'hora de finalització ja de ser posterior a l'hora d'inici."
+msgstr "L'hora de finalització ha de ser posterior a l'hora d'inici."
 
 #: apps/reservations/models.py:296
 msgid "The reservation must have a minimum duration of one hour."

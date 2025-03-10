@@ -43,9 +43,22 @@
   --fc-event-bg-color: #927ed0;
 }
 
-@media (min-width: 680px) {
+@media (min-width: 768px) {
   .my-calendar.fc .fc-toolbar-title {
     font-size: 28px;
     line-height: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .my-calendar.fc .fc-header-toolbar.fc-toolbar {
+    flex-wrap: wrap;
+  }
+  .my-calendar.fc .fc-toolbar-chunk
+  .fc-button.fc-button-primary {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-size: 14px;
+    line-height: 20px;
   }
 }

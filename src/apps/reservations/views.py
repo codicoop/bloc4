@@ -91,32 +91,38 @@ def filter_reservations(request):
 def create_reservation_view(request):
     start = request.GET.get("start")
     end = request.GET.get("end")
-    if not start or not end:
-        return redirect("reservations:reservations_calendar")
     try:
         id = uuid.UUID(request.GET.get("id"))
     except ValueError:
         return redirect("reservations:reservations_calendar")
     room = get_object_or_404(Room, id=id)
     entity_type = request.user.entity.entity_type
-    if start and end:
+    start_datetime = None
+    if start:
         start_datetime = datetime.fromisoformat(start)
+    end_datetime = None
+    if end:
         end_datetime = datetime.fromisoformat(end)
-        date = start_datetime.date().strftime("%Y-%m-%d")
+    date = None
+    defined_datetime = start_datetime or end_datetime
+    if defined_datetime:
+        date = defined_datetime.date().strftime("%Y-%m-%d")
+    total_price = 0
+    if start_datetime and end_datetime:
         price_discount = calculate_discount_price(entity_type, room.price)
         total_price = calculate_reservation_price(
             start_datetime, end_datetime, price_discount
         )
-        form = ReservationForm(
-            initial={
-                "date": date,
-                "start_time": start_datetime,
-                "end_time": end_datetime,
-                "entity": request.user.entity,
-                "room": room.id,
-            },
-            request=request,
-        )
+    form = ReservationForm(
+        initial={
+            "date": date,
+            "start_time": start_datetime,
+            "end_time": end_datetime,
+            "entity": request.user.entity,
+            "room": room.id,
+        },
+        request=request,
+    )
     if request.method == "POST":
         form = ReservationForm(request.POST, request.FILES, request=request)
         # Validation of the date format

@@ -207,7 +207,7 @@ class Reservation(BaseModel):
         null=False,
         blank=False,
         default=StatusChoices.PENDING,
-        help_text=_("Status of the reservation"),
+        help_text=_("The Status can only be modified by using the buttons below."),
         verbose_name=_("status"),
         max_length=20,
     )

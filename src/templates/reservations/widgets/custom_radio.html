@@ -2,8 +2,14 @@
 
 <ul class="flex flex-col w-full gap-4 lg:grid lg:grid-cols-2">
   <li>
-    <input type="radio" id="reservation_type_1" name="reservation_type" value="{{ choices.HOURLY }}" class="hidden peer" hx-post="{% url 'reservations:calculate_total_price' %}"
-    hx-target="#total_price" required {% if value == choices.HOURLY %}checked{% endif %} 
+    <input type="radio"
+    id="reservation_type_1"
+    name="reservation_type"
+    value="{{ choices.HOURLY }}"
+    class="hidden peer"
+    hx-post="{% url 'reservations:calculate_total_price' %}"
+    hx-target="#total_price"
+    required {% if value == choices.HOURLY %}checked{% endif %} 
     _="on click 
         add .bg-gray-50 to #id_start_time
         then add .bg-gray-50 to #id_end_time

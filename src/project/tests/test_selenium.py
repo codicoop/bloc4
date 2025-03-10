@@ -263,7 +263,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         # logging.info("Test Create Reservation finished.")
 
         logging.info("#####################################")
-        logging.info("#### All tests Selenium finished ####")
+        logging.info("#### All Selenium tests finished ####")
         logging.info("#####################################")
 
     def _resize(self):

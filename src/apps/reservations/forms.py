@@ -11,6 +11,7 @@ from apps.reservations.models import Reservation
 from apps.reservations.services import calculate_discount_price
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
+from . import constants
 
 from .widgets.custom_numeric import CustomNumericInput
 from .widgets.custom_radio import CustomRadioSelect
@@ -57,8 +58,8 @@ class ReservationForm(forms.ModelForm):
                 attrs={
                     "type": "time",
                     "step": 900,
-                    "min": "08:00",
-                    "max": "17:00",
+                    "min": constants.START_TIME.strftime("%H:%M"),
+                    "max": constants.END_TIME_MINUS_ONE.strftime("%H:%M"),
                     "hx-target": "#total_price",
                     "hx-trigger": "change",
                 }
@@ -67,8 +68,8 @@ class ReservationForm(forms.ModelForm):
                 attrs={
                     "type": "time",
                     "step": 900,
-                    "min": "09:00",
-                    "max": "18:00",
+                    "min": constants.START_TIME_PLUS_ONE.strftime("%H:%M"),
+                    "max": constants.END_TIME.strftime("%H:%M"),
                     "hx-target": "#total_price",
                     "hx-trigger": "change",
                 }

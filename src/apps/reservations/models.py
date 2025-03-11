@@ -77,10 +77,6 @@ class Reservation(BaseModel):
         null=False,
         default=1,
         validators=[MinValueValidator(1)],
-        help_text=_(
-            "The maximum capacity for this room "
-            "is {room.capacity}."
-        ),
     )
     room = models.ForeignKey(
         "rooms.Room",

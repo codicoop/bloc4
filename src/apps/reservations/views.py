@@ -140,10 +140,15 @@ def create_reservation_view(request):
                 reservation.end_time,
             )
             privilege = getattr(reservation.entity, "entity_privilege", None)
+            class_reservation_privilege = getattr(
+                privilege,
+                "class_reservation_privilege",
+                None,
+            )
             if (
                 (
                     reservation.room.room_type == RoomTypeChoices.CLASSROOM
-                    and privilege.class_reservation_privilege
+                    and class_reservation_privilege
                 ) or (
                     # In March 2025, they decide that all meeting room reservations
                     # will be automatically confirmed.

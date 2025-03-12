@@ -1,0 +1,246 @@
+{% load i18n %}
+{# This JS is placed inside the templates folder instead of assets because #}
+{# we need to render it from the back-end. The extension .js.html is to make #}
+{# it easier to tell it apart. #}
+{# Another possible structure would be to create a URL and a view that returns #}
+{# the JS, but you will need this code still in the templates folder, and the #}
+{# view will need any necessary context that this template might be using. #}
+
+<script>
+let calendar;
+const loadCalendar = () => {
+    const calendarEl = document.getElementById("calendar");
+    if (!roomId) {
+        roomId = "all";
+    }
+    calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: "customTimeGridWeek",
+        locale: "ca",
+        firstDay: 1,
+        slotEventOverlap: false,
+        headerToolbar: {
+            left: "today",
+            center: "title",
+            right:
+                (isStaff ? "customTimeGridWeek" : "") +
+                (isStaff ? " " : "") +
+                (isStaff ? "timeGridDay" : "") +
+                (isStaff ? " " : "") +
+                "prev,next",
+        },
+        views: {
+            timeGridDay: {
+                slotMinTime: "08:00:00",
+                slotMaxTime: "20:00:00",
+                allDaySlot: false,
+                expandRows: true,
+            },
+            customTimeGridWeek: {
+                type: "timeGridWeek",
+                buttonText: "Setmana",
+                duration: { days: 7 },
+                firstDay: 1,
+                dateAlignment: "week",
+                selectable: true,
+                select: function (info) {
+                    const start = info.startStr;
+                    const end = info.endStr;
+                    const today = new Date();
+                    const startDate = new Date(info.startStr);
+                    const endDate = new Date(info.endStr);
+                    if (startDate < today) {
+                        showAlertDayError();
+                    } else if (roomId.length == 36) {
+                        const dialog = document.getElementById(
+                            "confirmation-dialog"
+                        );
+
+                        // Volem mostrar el dialog
+                        showConfirmDialog();
+                        dialog.addEventListener("close", (e) => {
+                            if (dialog.returnValue === "true") {
+                                window.location.href = `${createReservationUrl}?start=${encodeURIComponent(
+                                    start
+                                )}&end=${encodeURIComponent(
+                                    end
+                                )}&id=${encodeURIComponent(roomId)}`;
+                            }
+                        });
+                    } else {
+                        showAlertNoRoom();
+                    }
+                },
+                selectMirror: false,
+                // Time Grid:
+                allDaySlot: false,
+                slotMinTime: "08:00:00",
+                slotMaxTime: "20:00:00",
+                expandRows: true,
+            },
+        },
+        weekends: true,
+        events: {
+            url: `/reserves/ajax/calendar/${roomId}`,
+            error: function () {
+                alert(
+                    "No s'han pogut carregar les reserves. Recarrega la pàgina i si d'aquí uns minuts segueix fallant, si us plau avisa'ns."
+                );
+            },
+        },
+        eventDidMount: function (info) {
+            let pill = document.createElement("span");
+            let entity = info.event._def.extendedProps["entity"];
+            if (entity) {
+                let eventText = info.el.querySelector(".fc-event-time");
+                pill.classList.add("text-xs");
+                pill.innerText = entity;
+                eventText.append(pill);
+                eventText.classList.add(
+                    "flex",
+                    "flex-wrap",
+                    "gap-1",
+                    "items-center"
+                );
+            }
+        },
+        eventClick: function (info) {
+            if (info.event.extendedProps.is_staff) {
+                window.location.href =
+                    reservationViewUrl +
+                    info.event.extendedProps.reservation_id;
+            }
+        },
+    });
+    calendar.render();
+};
+document.addEventListener("DOMContentLoaded", loadCalendar);
+const addEventSource = (element) => {
+    roomId = element.getAttribute("data-id");
+    calendar.setOption("selectable", true);
+    calendar.removeAllEventSources();
+    calendar.addEventSource(`/reserves/ajax/calendar/${roomId}`);
+};
+
+const showAlertNoRoom = () => {
+    const dialog = document.getElementById("alert-no-room");
+    dialog.classList.remove("hidden");
+    dialog.show();
+};
+const showAlertDayError = () => {
+    const dialog = document.getElementById("alert-day-error");
+    dialog.classList.remove("hidden");
+    dialog.show();
+};
+const showConfirmDialog = () => {
+    const dialog = document.getElementById("confirmation-dialog");
+    dialog.classList.remove("hidden");
+    dialog.show();
+};
+</script>
+
+{# Keep the dialogs after the fullcalendar JS #}
+<dialog id="alert-no-room" data-modal-target="alert-no-room">
+  <div tabindex="-1" aria-hidden="true" class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            {% translate 'Alert!' %}
+          </h3>
+          <button type="button" class="text-gray-400 bg-transparent hover:bg-primary-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          data-modal-hide="alert-no-room">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">{% translate "Close" %}</span>
+          </button>
+        </div>
+        <div class="p-4 md:p-5 space-y-4">
+          <p class="text-base leading-relaxed text-primary-900 dark:text-primary-100">
+            {% translate "Before being able to book a reservation, you have to select which room you want." %}
+          </p>
+        </div>
+        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+          <form method="post" action="" class="w-full">
+            {% csrf_token %}
+            <div data-modal-hide="alert-no-room"
+              class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
+              hover:bg-primary-300">
+              {% translate 'Go back' %}
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+<dialog id="alert-day-error" data-modal-target="alert-day-error">
+  <div tabindex="-1" aria-hidden="true" class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            {% translate 'Alert!' %}
+          </h3>
+          <button type="button" class="text-gray-400 bg-transparent hover:bg-primary-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          data-modal-hide="alert-day-error">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">{% translate "Close" %}</span>
+          </button>
+        </div>
+        <div class="p-4 md:p-5 space-y-4">
+          <p class="text-base leading-relaxed text-primary-900 dark:text-primary-100">
+            {% translate "The date of the reservation can not be before now." %}
+          </p>
+        </div>
+        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+          <form method="post" action="" class="w-full">
+            {% csrf_token %}
+            <div data-modal-hide="alert-day-error"
+              class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
+              hover:bg-primary-300">
+              {% translate 'Go back' %}
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+<dialog id="confirmation-dialog" data-modal-target="confirmation-dialog">
+  <div tabindex="-1" aria-hidden="true" class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            {% translate 'New reservation' %}
+          </h3>
+          <button type="button" class="text-gray-400 bg-transparent hover:bg-primary-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          data-modal-hide="confirmation-dialog">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">{% translate "Close" %}</span>
+          </button>
+        </div>
+        <div class="p-4 md:p-5 space-y-4">
+          <p class="text-base leading-relaxed text-primary-900 dark:text-primary-100">
+            {% translate "Do you want to create a new reservation in this time?" %}
+          </p>
+        </div>
+        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+          <form method="post" action="" class="w-full">
+            {% csrf_token %}
+            <button data-modal-hide="confirmation-dialog" formmethod="dialog"
+              class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
+              hover:bg-primary-300" value="true" id="confirmBtn">
+              <div id="confirm-reservation">{% translate "Book" %}</div>
+          </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>

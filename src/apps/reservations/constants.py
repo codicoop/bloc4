@@ -5,8 +5,8 @@ from django.utils.translation import gettext_lazy as _
 START_TIME = time(8, 0)
 START_TIME_PLUS_ONE = time(9, 0)
 HALF_TIME = time(13, 0)
-END_TIME = time(18, 0)
-END_TIME_MINUS_ONE = time(17, 0)
+END_TIME = time(20, 0)
+END_TIME_MINUS_ONE = time(19, 0)
 # Discounts
 GENERAL_DISCOUNT = 0
 HOSTED_DISCOUNT = -0.4

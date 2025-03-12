@@ -22,7 +22,7 @@ const loadCalendar = () => {
         views: {
             timeGridDay: {
                 slotMinTime: "08:00:00",
-                slotMaxTime: "18:00:00",
+                slotMaxTime: "20:00:00",
                 allDaySlot: false,
                 expandRows: true,
             },
@@ -65,7 +65,7 @@ const loadCalendar = () => {
                 // Time Grid:
                 allDaySlot: false,
                 slotMinTime: "08:00:00",
-                slotMaxTime: "18:00:00",
+                slotMaxTime: "20:00:00",
                 expandRows: true,
             },
         },

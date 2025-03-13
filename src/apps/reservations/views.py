@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlencode
 
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
@@ -228,6 +229,8 @@ def reservation_detail_view(request, id):
     ):
         payment_info = Setting.get("PAYMENT_INFORMATION")
     if "cancel_reservation" in request.POST:
+        if request.user.is_janitor:
+            raise PermissionDenied
         id = request.POST.get("cancel_reservation")
         reservation = get_object_or_404(Reservation, id=id)
         reservation.status = Reservation.StatusChoices.CANCELED

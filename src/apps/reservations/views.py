@@ -387,7 +387,7 @@ class AjaxCalendarFeed(View):
                 "textColor": CALENDAR_TEXT_COLOR,
                 "reservation_id": reservation.id,
             }
-            if request.user.is_staff:
+            if request.user.is_staff or request.user.is_janitor:
                 reservation_data["entity"] = reservation.entity.fiscal_name
             data.append(reservation_data)
         return JsonResponse(data, safe=False)

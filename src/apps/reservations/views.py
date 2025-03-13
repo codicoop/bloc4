@@ -209,13 +209,12 @@ def create_reservation_view(request):
 def reservation_detail_view(request, id):
     is_staff = request.user.is_staff
     try:
-        reservation_id = uuid.UUID(id)
         if is_staff:
-            reservation = get_object_or_404(Reservation, id=reservation_id)
+            reservation = get_object_or_404(Reservation, id=id)
         else:
             entity = request.user.entity
             reservation = get_object_or_404(
-                Reservation, id=reservation_id, entity=entity
+                Reservation, id=id, entity=entity
             )
     except ValueError:
         return redirect("reservations:reservations_list")

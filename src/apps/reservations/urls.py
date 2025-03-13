@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.decorators import login_required
 from django.urls import path
 from django.utils.translation import gettext_lazy as _
@@ -33,9 +35,20 @@ urlpatterns = [
         _("create/"), login_required(create_reservation_view), name="create_reservation"
     ),
     path(
-        _("details/<str:id>/"),
+        _("details/<uuid:id>/"),
         login_required(reservation_detail_view),
         name="reservations_details",
+    ),
+    path(
+        # This view is only used to obtain the reservation details URL without
+        # the uuid part, because the fullcalendar JS needs it to dynamically
+        # compose the URLs when you click on a reservation at the calendar.
+        # Therefore, this URL is only meant for reversing it. Accessing it
+        # directly is expected to return a 404.
+        _("details/"),
+        login_required(reservation_detail_view),
+        {"id": uuid.uuid4()},
+        name="base_reservations_details",
     ),
     path(
         _("success/"),

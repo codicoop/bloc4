@@ -16,7 +16,6 @@
   let roomId = "{{ room.id }}";
   const createReservationUrl = "{% url 'reservations:create_reservation' %}";
   const reservationViewUrl = "{% url 'reservations:base_reservations_details' %}";
-  const isStaff = {{ is_staff|yesno:"true,false" }};
 </script>
 {% endblock %}
 

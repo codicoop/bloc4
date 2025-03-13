@@ -22,10 +22,9 @@ const loadCalendar = () => {
             left: "today",
             center: "title",
             right:
-                (isStaff ? "customTimeGridWeek" : "") +
-                (isStaff ? " " : "") +
-                (isStaff ? "timeGridDay" : "") +
-                (isStaff ? " " : "") +
+                {% if is_staff %}
+                  "customTimeGridWeek timeGridDay " +
+                {% endif %}
                 "prev,next",
         },
         views: {

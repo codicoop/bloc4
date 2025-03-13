@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="w-full grid grid-cols-2 gap-2 p-5 border border-gray-200 rounded-b-xl">
-        {% if is_staff %}
+        {% if request.user.is_staff %}
           <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
             {% translate "Admin URL" %}
           </p>

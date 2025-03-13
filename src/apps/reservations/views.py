@@ -207,17 +207,18 @@ def create_reservation_view(request):
 
 
 def reservation_detail_view(request, id):
-    is_staff = request.user.is_staff
-    try:
-        if is_staff:
-            reservation = get_object_or_404(Reservation, id=id)
-        else:
+    filter_params = {"id": id }
+    has_access_to_all_reservations = (
+        request.user.is_staff or request.user.is_janitor
+    )
+    if not has_access_to_all_reservations:
+        try:
             entity = request.user.entity
-            reservation = get_object_or_404(
-                Reservation, id=id, entity=entity
-            )
-    except ValueError:
-        return redirect("reservations:reservations_list")
+        except ValueError:
+            return redirect("reservations:reservations_list")
+        filter_params.update({"entity": entity})
+    reservation = get_object_or_404(Reservation, **filter_params)
+
     payment_info = None
     if (
         reservation.entity.entity_type
@@ -241,7 +242,6 @@ def reservation_detail_view(request, id):
         "reservations/details.html",
         {
             "reservation": reservation,
-            "is_staff": is_staff,
             "payment_info": payment_info,
         },
     )
@@ -340,7 +340,6 @@ def reservations_calendar_view(request):
     context["discount"] = EntityTypesChoices(
         request.user.entity.entity_type
     ).get_discount_percentage()
-    context["is_staff"] = request.user.is_staff
     if request.htmx:
         room_type = request.POST.get("room_type")
         if room_type != "all":
@@ -383,7 +382,6 @@ class AjaxCalendarFeed(View):
                 "backgroundColor": color,
                 "borderColor": color,
                 "textColor": CALENDAR_TEXT_COLOR,
-                "is_staff": request.user.is_staff,
                 "reservation_id": reservation.id,
             }
             if request.user.is_staff:

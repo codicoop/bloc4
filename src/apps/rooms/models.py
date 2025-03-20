@@ -14,7 +14,6 @@ class Room(BaseModel):
         blank=False,
         default="",
         unique=True,
-        help_text=_("Name of the room"),
     )
     code = models.CharField(
         _("Room code"),
@@ -23,25 +22,22 @@ class Room(BaseModel):
         default="",
     )
     price = models.FloatField(
-        _("Hourly price"),
+        _("Hourly price (VAT not included"),
         default=0,
         null=False,
         validators=[MinValueValidator(0.0)],
-        help_text=_("Price per hour of the room"),
     )
     price_half_day = models.FloatField(
         _("Half day price"),
         default=0,
         null=False,
         validators=[MinValueValidator(0.0)],
-        help_text=_("Price per half day of the room"),
     )
     price_all_day = models.FloatField(
         _("All day price"),
         default=0,
         null=False,
         validators=[MinValueValidator(0.0)],
-        help_text=_("Price per all day of the room"),
     )
     capacity = models.IntegerField(
         _("Capacity"),
@@ -55,7 +51,6 @@ class Room(BaseModel):
         default="",
         storage=PublicMediaStorage(),
         validators=[validate_image_file_extension],
-        help_text=_("Photo of the room"),
     )
     equipment = models.CharField(
         _("Equipment"),
@@ -69,7 +64,6 @@ class Room(BaseModel):
         max_length=500,
         blank=False,
         default="",
-        help_text=_("Description of the main aspects of the room."),
     )
     room_type = models.CharField(
         _("Room type"),

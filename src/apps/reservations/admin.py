@@ -77,6 +77,7 @@ class ReservationAdmin(ModelAdmin):
                     "canceled_by",
                     "canceled_at",
                     "status",
+                    "checked_in",
                     "actions_field",
                     "privacy",
                 )

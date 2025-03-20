@@ -22,19 +22,19 @@ class Room(BaseModel):
         default="",
     )
     price = models.FloatField(
-        _("Hourly price (VAT not included"),
+        _("Hourly price (VAT not included)"),
         default=0,
         null=False,
         validators=[MinValueValidator(0.0)],
     )
     price_half_day = models.FloatField(
-        _("Half day price"),
+        _("Half day price (VAT not included)"),
         default=0,
         null=False,
         validators=[MinValueValidator(0.0)],
     )
     price_all_day = models.FloatField(
-        _("All day price"),
+        _("All day price (VAT not included)"),
         default=0,
         null=False,
         validators=[MinValueValidator(0.0)],

@@ -240,12 +240,20 @@ def reservation_detail_view(request, id):
         send_mail_reservation(reservation, "reservation_canceled_user")
         send_mail_reservation(reservation, "reservation_canceled_bloc4")
         return redirect("reservations:reservations_cancelled")
+    can_be_canceled = (
+        not request.user.is_janitor
+        and reservation.status in (
+            Reservation.StatusChoices.PENDING,
+            Reservation.StatusChoices.CONFIRMED,
+        )
+    )
     return render(
         request,
         "reservations/details.html",
         {
             "reservation": reservation,
             "payment_info": payment_info,
+            "can_be_canceled": can_be_canceled,
         },
     )
 

@@ -80,7 +80,12 @@
 
 
 {% block form_fields %}
-<div class="pb-8">
+<div class="pb-8"
+  hx-trigger="load once"
+  hx-post="{% url 'reservations:calculate_total_price' %}"
+  hx-target="#total_price"
+  hx-swap="outerHTML"
+>
   <div class="flex justify-between gap-2">
     <p class="text-balance">{% translate 'Selected room'%}: {{ room.name }}</p>
     {% include 'reservations/total_price.html' %}

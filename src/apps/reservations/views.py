@@ -2,8 +2,7 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlencode
 
-from django.core.exceptions import PermissionDenied
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
@@ -228,11 +227,21 @@ def reservation_detail_view(request, id):
         and not reservation.is_paid
     ):
         payment_info = Setting.get("PAYMENT_INFORMATION")
+
+    # Context and status vars
+    can_be_cancelled = (
+        not request.user.is_janitor
+        and reservation.status in (
+            Reservation.StatusChoices.PENDING,
+            Reservation.StatusChoices.CONFIRMED,
+        )
+    )
+    can_be_checked_in = request.user.is_janitor
+
+    # POST actions
     if "cancel_reservation" in request.POST:
-        if request.user.is_janitor:
-            raise PermissionDenied
-        id = request.POST.get("cancel_reservation")
-        reservation = get_object_or_404(Reservation, id=id)
+        if not can_be_cancelled:
+            return HttpResponseNotFound(_("This reservation cannot be cancelled."))
         reservation.status = Reservation.StatusChoices.CANCELED
         reservation.canceled_by = request.user
         reservation.canceled_at = timezone.now()
@@ -240,20 +249,21 @@ def reservation_detail_view(request, id):
         send_mail_reservation(reservation, "reservation_canceled_user")
         send_mail_reservation(reservation, "reservation_canceled_bloc4")
         return redirect("reservations:reservations_cancelled")
-    can_be_canceled = (
-        not request.user.is_janitor
-        and reservation.status in (
-            Reservation.StatusChoices.PENDING,
-            Reservation.StatusChoices.CONFIRMED,
-        )
-    )
+    if "check_in_reservation" in request.POST:
+        if not can_be_checked_in:
+            return HttpResponseNotFound(_("This reservation cannot be checked in."))
+        reservation.checked_in = True
+        reservation.save()
+        return HttpResponseRedirect(request.path_info)
+
     return render(
         request,
         "reservations/details.html",
         {
             "reservation": reservation,
             "payment_info": payment_info,
-            "can_be_canceled": can_be_canceled,
+            "can_be_cancelled": can_be_cancelled,
+            "can_be_checked_in": can_be_checked_in,
         },
     )
 

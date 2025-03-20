@@ -227,7 +227,7 @@
           </svg>
           <p>{% translate "The assistance to this reserve has been confirmed." %}</p>
         </div>
-        <!-- Només usuaris poden cancelar la reserva -->
+        <!-- Només usuaris poden cancel·lar la reserva -->
         {% else %}
           {% if reservation.status == reservation.StatusChoices.PENDING or reservation.status == reservation.StatusChoices.CONFIRMED %}
             <!-- Modal toggle -->

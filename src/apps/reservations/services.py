@@ -93,7 +93,6 @@ def calculate_discount_price(entity_type, price):
 
 
 def get_total_price(reservation_type, entity_type, room, start_time, end_time):
-    total_price = 0
     if reservation_type == ReservationTypeChoices.WHOLE_DAY:
         total_price = calculate_discount_price(entity_type, room.price_all_day)
     elif reservation_type in [

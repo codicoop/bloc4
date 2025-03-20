@@ -11,6 +11,7 @@ from django.views.generic import View
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
+from apps.reservations import constants
 from apps.reservations.constants import MONTHS
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
@@ -265,7 +266,9 @@ def calculate_total_price(request):
         request,
         "reservations/total_price.html",
         {
-            "total_price": delete_zeros(total_price),
+            "tax_base": delete_zeros(total_price),
+            "tax": delete_zeros(total_price) * constants.VAT,
+            "total_price": delete_zeros(total_price) * (constants.VAT + 1),
         },
     )
 

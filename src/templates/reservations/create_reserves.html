@@ -83,25 +83,7 @@
 <div class="pb-8">
   <div class="flex justify-between gap-2">
     <p class="text-balance">{% translate 'Selected room'%}: {{ room.name }}</p>
-    <div
-      class="py-1 w-1/2 bg-primary-300 border border-primary-400 text-white rounded">
-      <div class="px-3 pb-1 border-b border-primary-400">
-        <p class="text-balance text-primary-800">{% translate 'Reserve price' %}</p>
-      </div>
-      <div class="px-3 pt-1 flex justify-between gap-6">
-        <p class="text-primary-800">{% translate 'Tax base' %}:</p>
-        <p>{{ base_price }} €</p>
-      </div>
-      <div class="px-3 flex justify-between gap-6">
-        <p class="text-primary-800">{% translate 'Taxes' %}:</p>
-        <p>{{ tax_price }} €</p>
-      </div>
-      <div class="px-3 flex justify-between gap-6">
-        <p class="text-primary-800">{% translate 'Total' %}:</p>
-        <p id="total_price">{% include 'reservations/total_price.html' %}</p>
-      </div>
-    </div>
-    
+    {% include 'reservations/total_price.html' %}
   </div>
 </div>
 

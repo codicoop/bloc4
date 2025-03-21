@@ -11,10 +11,10 @@
   </div>
   <div class="px-3 flex justify-between gap-6">
     <p class="text-primary-800">{% translate 'Taxes' %}:</p>
-    <p>{{ tax }} €</p>
+    <p>{{ tax|floatformat:2 }} €</p>
   </div>
   <div class="px-3 flex justify-between gap-6 font-semibold">
     <p class="text-primary-800">{% translate 'Total' %}:</p>
-    <p>{{ total_price }} €</p>
+    <p>{{ total_price|floatformat:2 }} €</p>
   </div>
 </div>

@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 
 from django.apps import apps
 from django.conf import settings
@@ -67,29 +68,18 @@ def date_to_full_calendar_format(date_obj):
     return aware_date.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-def delete_zeros(value):
-    if isinstance(value, str):
-        value = float(value.replace(",", "."))
-    if not isinstance(value, int):
-        if value.is_integer():
-            value = int(value)
-        else:
-            value = round(value, 2)
-    return value
-
-
 def calculate_reservation_price(start_time, end_time, price):
     if end_time <= start_time:
         return 0
     if isinstance(price, str):
         price = float(price.replace(",", "."))
-    base_price = price * (end_time - start_time).total_seconds() / 3600
+    base_price = price * Decimal((end_time - start_time).total_seconds() / 3600)
     return base_price
 
 
 def calculate_discount_price(entity_type, price):
     discount = EntityTypesChoices(entity_type).get_discount_percentage()
-    return delete_zeros(price + price * discount)
+    return price + price * discount
 
 
 def get_total_price(reservation_type, entity_type, room, start_time, end_time):
@@ -197,13 +187,13 @@ def get_monthly_bonus_totals(reservations, entity, month, year):
                 amount_left,
             ) = get_monthly_bonus(monthly_bonus, active_reservations)
             bonuses = {
-                "bonus_price": delete_zeros(base_price - bonus_price),
-                "amount": delete_zeros(monthly_bonus.amount),
-                "amount_left": delete_zeros(amount_left),
+                "bonus_price": base_price - bonus_price,
+                "amount": monthly_bonus.amount,
+                "amount_left": amount_left,
             }
-        bonuses["base_price"] = delete_zeros(base_price)
+        bonuses["base_price"] = base_price
         bonuses["is_monthly_bonus"] = True
-        bonuses["amount"] = delete_zeros(monthly_bonus.amount)
+        bonuses["amount"] = monthly_bonus.amount
     return bonuses
 
 

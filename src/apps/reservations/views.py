@@ -17,10 +17,8 @@ from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
     calculate_discount_price,
-    calculate_reservation_price,
     convert_datetime_to_str,
     date_to_full_calendar_format,
-    delete_zeros,
     get_monthly_bonus_totals,
     get_total_price,
     get_years_and_months,
@@ -108,12 +106,6 @@ def create_reservation_view(request):
     defined_datetime = start_datetime or end_datetime
     if defined_datetime:
         date = defined_datetime.date().strftime("%Y-%m-%d")
-    base_price = 0
-    if start_datetime and end_datetime:
-        price_discount = calculate_discount_price(entity_type, room.price)
-        base_price = calculate_reservation_price(
-            start_datetime, end_datetime, price_discount
-        )
     form = ReservationForm(
         initial={
             "date": date,
@@ -202,7 +194,6 @@ def create_reservation_view(request):
         {
             "form": form,
             "room": room,
-            "base_price": delete_zeros(base_price),
         },
     )
 
@@ -262,13 +253,14 @@ def calculate_total_price(request):
             base_price = get_total_price(
                 reservation_type, entity_type, room, start_time, end_time
             )
+    discounted_base_price = calculate_discount_price(entity_type, base_price)
     return render(
         request,
         "reservations/total_price.html",
         {
-            "base_price": delete_zeros(base_price),
-            "tax": delete_zeros(base_price) * constants.VAT,
-            "total_price": delete_zeros(base_price) * (constants.VAT + 1),
+            "base_price": discounted_base_price,
+            "tax": discounted_base_price * constants.VAT,
+            "total_price": discounted_base_price * (constants.VAT + 1),
         },
     )
 

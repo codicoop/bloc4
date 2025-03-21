@@ -131,19 +131,19 @@
           {% translate 'Tax base amount' %}
         </p>
         <p class="text-gray-700 dark:text-gray-400 col-start-2">
-          {{ reservation.base_price|round_two}} €
+          {{ reservation.base_price}} €
         </p>
         <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
           {% translate 'VAT amount' %}
         </p>
         <p class="text-gray-700 dark:text-gray-400 col-start-2">
-          {{ reservation.vat|round_two}} €
+          {{ reservation.vat|floatformat:2 }} €
         </p>
         <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
           {% translate 'Total price of the reservation' %}
         </p>
         <p class="text-gray-700 dark:text-gray-400 col-start-2">
-          {{ reservation.total_price|round_two}} €
+          {{ reservation.total_price|floatformat:2 }} €
         </p>
         {% if reservation.privacy == 'public' %}
           <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">

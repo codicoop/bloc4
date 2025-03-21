@@ -167,12 +167,14 @@ class Reservation(BaseModel):
             " publication of this event."
         ),
     )
-    base_price = models.FloatField(
+    base_price = models.DecimalField(
         _("Total price"),
         null=False,
         blank=False,
         default=0,
         validators=[MinValueValidator(0.0)],
+        decimal_places=2,
+        max_digits=6,
     )
     entity = models.ForeignKey(
         "entities.Entity",

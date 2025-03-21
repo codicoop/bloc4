@@ -21,23 +21,29 @@ class Room(BaseModel):
         blank=True,
         default="",
     )
-    price = models.FloatField(
+    price = models.DecimalField(
         _("Hourly price (VAT not included)"),
         default=0,
         null=False,
         validators=[MinValueValidator(0.0)],
+        decimal_places=2,
+        max_digits=6,
     )
-    price_half_day = models.FloatField(
+    price_half_day = models.DecimalField(
         _("Half day price (VAT not included)"),
         default=0,
         null=False,
         validators=[MinValueValidator(0.0)],
+        decimal_places=2,
+        max_digits=6,
     )
-    price_all_day = models.FloatField(
+    price_all_day = models.DecimalField(
         _("All day price (VAT not included)"),
         default=0,
         null=False,
         validators=[MinValueValidator(0.0)],
+        decimal_places=2,
+        max_digits=6,
     )
     capacity = models.IntegerField(
         _("Capacity"),

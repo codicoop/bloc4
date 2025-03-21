@@ -8,5 +8,9 @@ class CustomNumericInput(TextInput):
         attrs = attrs or {}
         if attrs is None:
             attrs = {}
-        attrs.update({"data-input-counter": "",})
+        attrs.update(
+            {
+                "data-input-counter": "",
+            }
+        )
         super().__init__(attrs)

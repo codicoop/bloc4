@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlencode
 
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
@@ -152,14 +152,12 @@ def create_reservation_view(request):
                 None,
             )
             if (
-                (
-                    reservation.room.room_type == RoomTypeChoices.CLASSROOM
-                    and class_reservation_privilege
-                ) or (
-                    # In March 2025, they decide that all meeting room reservations
-                    # will be automatically confirmed.
-                    reservation.room.room_type == RoomTypeChoices.MEETING_ROOM
-                )
+                reservation.room.room_type == RoomTypeChoices.CLASSROOM
+                and class_reservation_privilege
+            ) or (
+                # In March 2025, they decide that all meeting room reservations
+                # will be automatically confirmed.
+                reservation.room.room_type == RoomTypeChoices.MEETING_ROOM
             ):
                 reservation.status = Reservation.StatusChoices.CONFIRMED
                 send_mail_reservation(reservation, "reservation_confirmed_user")
@@ -207,10 +205,8 @@ def create_reservation_view(request):
 
 
 def reservation_detail_view(request, id):
-    filter_params = {"id": id }
-    has_access_to_all_reservations = (
-        request.user.is_staff or request.user.is_janitor
-    )
+    filter_params = {"id": id}
+    has_access_to_all_reservations = request.user.is_staff or request.user.is_janitor
     if not has_access_to_all_reservations:
         try:
             entity = request.user.entity
@@ -229,12 +225,9 @@ def reservation_detail_view(request, id):
         payment_info = Setting.get("PAYMENT_INFORMATION")
 
     # Context and status vars
-    can_be_cancelled = (
-        not request.user.is_janitor
-        and reservation.status in (
-            Reservation.StatusChoices.PENDING,
-            Reservation.StatusChoices.CONFIRMED,
-        )
+    can_be_cancelled = not request.user.is_janitor and reservation.status in (
+        Reservation.StatusChoices.PENDING,
+        Reservation.StatusChoices.CONFIRMED,
     )
     can_be_checked_in = request.user.is_janitor
 

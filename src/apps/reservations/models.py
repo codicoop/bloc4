@@ -166,7 +166,7 @@ class Reservation(BaseModel):
             " publication of this event."
         ),
     )
-    total_price = models.FloatField(
+    base_price = models.FloatField(
         _("Total price"),
         null=False,
         blank=False,

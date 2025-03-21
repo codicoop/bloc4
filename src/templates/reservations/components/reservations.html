@@ -11,7 +11,7 @@
     <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} {% translate 'hours' %}</p>
     <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ base_price }} €</p>
   </div>
   <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-accent text-gray-900">
     <p class="col-span-4 font-bold text-balance">{% translate 'Total to be invoiced (with bonus discount)' %}</p>
@@ -30,7 +30,7 @@
     <p class="col-span-4 text-balance">{% translate 'Discount hours left' %}</p>
     <p class="col-start-5 col-span-2 text-right">{{ amount_left }} {% translate 'hours' %}</p>
     <p class="col-span-4 text-balance">{% translate 'Total amount of the resevations' %}</p>
-    <p class="col-start-5 col-span-2 text-right">{{ total_price }} €</p>
+    <p class="col-start-5 col-span-2 text-right">{{ base_price }} €</p>
   </div>
   <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-accent">
     <p class="col-span-4 font-bold text-balance">{% translate 'Total to be invoiced (with bonus discount)' %}</p>
@@ -52,15 +52,15 @@
   </p>
   <div class="col-span-4 text-md font-normal tracking-tight text-gray-900 dark:text-white col-start-1 row-span-3">
     <b>{{ reservation.title }}</b>
-    <p>{{ reservation.date}} - 
+    <p>{{ reservation.date}} -
       {% if reservation.start_time and reservation.end_time %}
       {{ reservation.start_time }} - {{ reservation.end_time }}
       {% endif %}
     </p>
-    <p>{% translate 'Price' %}: {{ reservation.total_price|round_two }} €</p>
+    <p>{% translate 'Price' %}: {{ reservation.base_price|round_two }} €</p>
   </div>
   <a href="{% url 'reservations:reservations_details' id=reservation.id %}"
-    class="absolute right-0 rounded-xl hover:bg-primary-400" 
+    class="absolute right-0 rounded-xl hover:bg-primary-400"
   >
     <div class="p-4">
       <svg class="w-6 h-6 text-primary-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

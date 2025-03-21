@@ -131,8 +131,8 @@
           {% translate 'Total price of the reservation' %}
         </p>
         <p class="text-gray-700 dark:text-gray-400 col-start-2">
-          {% if reservation.total_price %}
-            {{ reservation.total_price|round_two}} €
+          {% if reservation.base_price %}
+            {{ reservation.base_price|round_two}} €
           {% else %}
             {% translate 'The price could not be estimated.' %}
           {% endif %}

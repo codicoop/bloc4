@@ -74,8 +74,6 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     )
     is_janitor = models.BooleanField(
         _("is janitor"),
-        null=True,
-        blank=True,
         default=False,
     )
     is_active = models.BooleanField(

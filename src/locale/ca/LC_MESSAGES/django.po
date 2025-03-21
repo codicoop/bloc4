@@ -1246,7 +1246,7 @@ msgstr "No s'ha mencionat cap assistent."
 
 #: templates/reservations/details.html:121
 msgid "Is the reservation paid for?"
-msgstr "Està la reserva pagada?"
+msgstr "Està pagada la reserva?"
 
 #: templates/reservations/details.html:125
 msgid "Yes"

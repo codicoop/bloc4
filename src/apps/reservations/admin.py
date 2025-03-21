@@ -77,6 +77,7 @@ class ReservationAdmin(ModelAdmin):
                     "canceled_by",
                     "canceled_at",
                     "status",
+                    "checked_in",
                     "actions_field",
                     "privacy",
                 )
@@ -94,7 +95,7 @@ class ReservationAdmin(ModelAdmin):
         ),
     )
     readonly_fields = ("actions_field", "room_field", "payment_field")
-    superuser_fields = ("status", )
+    superuser_fields = ("status",)
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)

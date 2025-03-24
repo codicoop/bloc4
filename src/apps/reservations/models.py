@@ -12,6 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
+from apps.reservations import constants
 from apps.reservations.choices import (
     ActivityTypeChoices,
     Bloc4TypeChoices,
@@ -166,12 +167,14 @@ class Reservation(BaseModel):
             " publication of this event."
         ),
     )
-    total_price = models.FloatField(
+    base_price = models.DecimalField(
         _("Total price"),
         null=False,
         blank=False,
         default=0,
         validators=[MinValueValidator(0.0)],
+        decimal_places=2,
+        max_digits=6,
     )
     entity = models.ForeignKey(
         "entities.Entity",
@@ -473,3 +476,9 @@ class Reservation(BaseModel):
                     raise ValidationError(errors)
         except AttributeError:
             pass
+
+    def vat(self):
+        return self.base_price * constants.VAT
+
+    def total_price(self):
+        return self.base_price + self.vat()

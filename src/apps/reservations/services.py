@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 
 from django.apps import apps
 from django.conf import settings
@@ -49,7 +50,7 @@ def send_mail_reservation(reservation, action):
         "room": reservation.room,
         "entity": reservation.entity.fiscal_name,
         "user_email": reservation.reserved_by.email,
-        "total_price": reservation.total_price,
+        "base_price": reservation.base_price,
         "status": reservation.get_status_display().lower(),
         "payment_info": payment_info,
         "reservation_url_admin": f"{settings.ABSOLUTE_URL}/"
@@ -67,33 +68,21 @@ def date_to_full_calendar_format(date_obj):
     return aware_date.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-def delete_zeros(value):
-    if isinstance(value, str):
-        value = float(value.replace(",", "."))
-    if not isinstance(value, int):
-        if value.is_integer():
-            value = int(value)
-        else:
-            value = round(value, 2)
-    return value
-
-
 def calculate_reservation_price(start_time, end_time, price):
     if end_time <= start_time:
         return 0
     if isinstance(price, str):
         price = float(price.replace(",", "."))
-    total_price = price * (end_time - start_time).total_seconds() / 3600
-    return total_price
+    base_price = price * Decimal((end_time - start_time).total_seconds() / 3600)
+    return base_price
 
 
 def calculate_discount_price(entity_type, price):
     discount = EntityTypesChoices(entity_type).get_discount_percentage()
-    return delete_zeros(price + price * discount)
+    return price + price * discount
 
 
 def get_total_price(reservation_type, entity_type, room, start_time, end_time):
-    total_price = 0
     if reservation_type == ReservationTypeChoices.WHOLE_DAY:
         total_price = calculate_discount_price(entity_type, room.price_all_day)
     elif reservation_type in [
@@ -154,10 +143,10 @@ def get_monthly_bonus(monthly_bonus, reservations):
             end_datetime = datetime.combine(today, reservation.end_time)
             reservation_time = (end_datetime - start_datetime).total_seconds() / 3600
             if amount_left - reservation_time < 0:
-                bonus_price += amount_left * reservation.total_price / reservation_time
+                bonus_price += amount_left * reservation.base_price / reservation_time
                 return bonus_price, 0
             amount_left -= reservation_time
-            bonus_price += reservation.total_price
+            bonus_price += reservation.base_price
             if amount_left == 0:
                 break
     return bonus_price, amount_left
@@ -174,8 +163,8 @@ def get_monthly_bonus_totals(reservations, entity, month, year):
             ]
         )
     )
-    total_price = active_reservations.aggregate(
-        total_sum=Sum("total_price"),
+    base_price = active_reservations.aggregate(
+        total_sum=Sum("base_price"),
     )["total_sum"]
     monthly_bonus = MonthlyBonus.objects.filter(
         entity=entity,
@@ -198,13 +187,13 @@ def get_monthly_bonus_totals(reservations, entity, month, year):
                 amount_left,
             ) = get_monthly_bonus(monthly_bonus, active_reservations)
             bonuses = {
-                "bonus_price": delete_zeros(total_price - bonus_price),
-                "amount": delete_zeros(monthly_bonus.amount),
-                "amount_left": delete_zeros(amount_left),
+                "bonus_price": base_price - bonus_price,
+                "amount": monthly_bonus.amount,
+                "amount_left": amount_left,
             }
-        bonuses["total_price"] = delete_zeros(total_price)
+        bonuses["base_price"] = base_price
         bonuses["is_monthly_bonus"] = True
-        bonuses["amount"] = delete_zeros(monthly_bonus.amount)
+        bonuses["amount"] = monthly_bonus.amount
     return bonuses
 
 

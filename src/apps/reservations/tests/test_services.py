@@ -38,7 +38,7 @@ class ServicesTest(TestCase):
             room=self.room,
             entity=self.entity,
             reserved_by=UserFactory(),
-            total_price=60,
+            base_price=60,
         )
 
     def test_get_total_price(self):
@@ -96,7 +96,7 @@ class ServicesTest(TestCase):
             entity=self.entity,
             reserved_by=UserFactory(),
             status=Reservation.StatusChoices.CONFIRMED,
-            total_price=20,
+            base_price=20,
         )
         Reservation.objects.create(
             reservation_type=ReservationTypeChoices.MORNING,
@@ -108,7 +108,7 @@ class ServicesTest(TestCase):
             entity=self.entity,
             reserved_by=UserFactory(),
             status=Reservation.StatusChoices.CONFIRMED,
-            total_price=50,
+            base_price=50,
         )
         reservations = Reservation.objects.filter()
         with self.subTest("Event rooms & hosted entity"):
@@ -120,7 +120,7 @@ class ServicesTest(TestCase):
                     "amount_left": 20,
                     "bonus_price": 130,
                     "is_monthly_bonus": True,
-                    "total_price": 130,
+                    "base_price": 130,
                 },
             )
         with self.subTest("Event & meeting rooms & hosted entity"):
@@ -138,7 +138,7 @@ class ServicesTest(TestCase):
                 entity=self.entity,
                 reserved_by=UserFactory(),
                 status=Reservation.StatusChoices.CONFIRMED,
-                total_price=23,
+                base_price=23,
             )
             result = get_monthly_bonus_totals(
                 Reservation.objects.filter(), self.entity, 12, 2025
@@ -150,7 +150,7 @@ class ServicesTest(TestCase):
                     "amount_left": 16,
                     "bonus_price": 130,
                     "is_monthly_bonus": True,
-                    "total_price": 153,
+                    "base_price": 153,
                 },
             )
         with self.subTest("November reservation. New entity"):
@@ -176,7 +176,7 @@ class ServicesTest(TestCase):
                 entity=new_entity,
                 reserved_by=UserFactory(),
                 status=Reservation.StatusChoices.CONFIRMED,
-                total_price=50,
+                base_price=50,
             )
             MonthlyBonus.objects.create(
                 entity=new_entity, amount=10, date=date(2025, 11, 1)
@@ -196,7 +196,7 @@ class ServicesTest(TestCase):
                     "amount_left": 6,
                     "bonus_price": 0,
                     "is_monthly_bonus": True,
-                    "total_price": 50,
+                    "base_price": 50,
                 },
             )
         with self.subTest("Not hosted entity"):

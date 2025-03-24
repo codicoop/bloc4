@@ -1,4 +1,5 @@
 from datetime import time
+from decimal import Decimal
 
 from django.utils.translation import gettext_lazy as _
 
@@ -27,3 +28,7 @@ MONTHS = {
     11: _("November"),
     12: _("December"),
 }
+# Percentage. It's NOT saved in the database, only used to calculate the total
+# price in the template. Therefore, changing it will modify the VAT amount and
+# the total price for all the historical data.
+VAT = Decimal(0.21)

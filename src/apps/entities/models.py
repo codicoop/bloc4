@@ -159,7 +159,11 @@ class MonthlyBonus(BaseModel):
         related_name="monthly_bonus",
     )
     date = models.DateField(_("Date"))
-    amount = models.FloatField(_("Amount"))
+    amount = models.DecimalField(
+        _("Amount"),
+        decimal_places=2,
+        max_digits=6,
+    )
 
     class Meta:
         ordering = ["entity", "date"]

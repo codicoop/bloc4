@@ -178,14 +178,6 @@ def create_reservation_view(request):
                 except ValueError:
                     return redirect("reservations:reservations_success")
             return redirect("reservations:reservations_success")
-        elif form.data.get("end_time") and form.data.get("start_time"):
-            base_price = get_total_price(
-                form.data.get("reservation_type"),
-                entity_type,
-                room,
-                parse_time(form.data.get("start_time")),
-                parse_time(form.data.get("end_time")),
-            )
     return render(
         request,
         "reservations/create_reserves.html",

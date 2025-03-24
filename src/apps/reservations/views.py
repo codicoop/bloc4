@@ -95,7 +95,6 @@ def create_reservation_view(request):
     except ValueError:
         return redirect("reservations:reservations_calendar")
     room = get_object_or_404(Room, id=id)
-    entity_type = request.user.entity.entity_type
     start_datetime = None
     if start:
         start_datetime = datetime.fromisoformat(start)

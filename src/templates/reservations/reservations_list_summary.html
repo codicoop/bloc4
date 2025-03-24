@@ -36,16 +36,17 @@
       {% translate "Choose an organization" %}
     </label>
     <div class="flex gap-2 items-center">
-      <select id="filter_organization" name="filter_organization"
-        hx-target="#htmx-reservations"   
-        hx-post="{% url 'reservations:filter_reservations' %}"
+      <select id="filter_entity" name="filter_entity"
+        hx-target="#htmx-reservations"
+        hx-post="{% url 'reservations:filter_reservations_summary' %}"
         hx-trigger="change"
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
           focus:ring-primary-500 focus:border-primary-500"
+        autocomplete="off"
       >
-      <!-- FALTA llistat d'entitats -->
-        {% for year in years %}
-          <option value="{{ year.year }}"{% if year.current %}selected{% endif %}>{{ year.year }}</option>
+        <option value="" selected>-</option>
+        {% for entity in entities %}
+          <option value="{{ entity.id }}">{{ entity.fiscal_name }}</option>
         {% endfor %}
       </select>
     </div>
@@ -57,8 +58,8 @@
     </label>
     <div class="flex gap-2 items-center">
       <select id="filter_year" name="filter_year"
-        hx-target="#htmx-reservations"   
-        hx-post="{% url 'reservations:filter_reservations' %}"
+        hx-target="#htmx-reservations"
+        hx-post="{% url 'reservations:filter_reservations_summary' %}"
         hx-trigger="change"
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
           focus:ring-primary-500 focus:border-primary-500"
@@ -68,8 +69,8 @@
         {% endfor %}
       </select>
       <select id="filter_month" name="filter_month"
-        hx-target="#htmx-reservations"   
-        hx-post="{% url 'reservations:filter_reservations' %}"
+        hx-target="#htmx-reservations"
+        hx-post="{% url 'reservations:filter_reservations_summary' %}"
         hx-trigger="change"
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
           focus:ring-primary-500 focus:border-primary-500"

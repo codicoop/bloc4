@@ -12,6 +12,7 @@ from django.views.generic import View
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
+from apps.entities.models import Entity
 from apps.reservations import constants
 from apps.reservations.constants import MONTHS
 from apps.reservations.forms import ReservationForm
@@ -62,26 +63,19 @@ def reservations_list(request):
 
 @user_passes_test(lambda u: u.is_staff)
 def reservations_list_summary(request):
-    entity = request.user.entity
     now = timezone.now()
-    reservations_all = Reservation.objects.filter(entity=entity)
+    reservations_all = Reservation.objects.all()
     months_list, years_list = get_years_and_months(reservations_all)
-    reservations = reservations_all.filter(
-        date__year=now.year, date__month=now.month
-    ).order_by("date")
     context = {
-        "is_monthly_bonus": False,
         "amount_left": 0,
-        "base_price": 0,
         "bonus_price": 0,
-        "reservations": reservations,
+        "reservations": None,  # Initial list empty, they have to pick an Entity
         "months": months_list,
         "years": years_list,
         "month": MONTHS.get(now.month, "")[:3] + ".",
         "year": now.year,
+        "entities": Entity.objects.all(),
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity, now.month, now.year)
-    context.update(bonuses)
     return render(
         request,
         "reservations/reservations_list_summary.html",
@@ -91,9 +85,7 @@ def reservations_list_summary(request):
 
 # htmx
 def filter_reservations(request):
-    bonuses = {}
     entity = request.user.entity
-    context = {"is_monthly_bonus": False}
     filter_year = request.POST.get("filter_year")
     filter_month = request.POST.get("filter_month")
     reservations = Reservation.objects.filter(
@@ -113,6 +105,33 @@ def filter_reservations(request):
     return render(
         request,
         "reservations/components/reservations.html",
+        context,
+    )
+
+
+@user_passes_test(lambda u: u.is_staff)
+def filter_reservations_summary(request):
+    filter_entity = request.POST.get("filter_entity")
+    entity = get_object_or_404(Entity, id=filter_entity)
+    filter_year = request.POST.get("filter_year")
+    filter_month = request.POST.get("filter_month")
+    reservations = Reservation.objects.filter(
+        entity=entity, date__month=filter_month, date__year=filter_year
+    ).order_by("date")
+    context = {
+        "is_monthly_bonus": False,
+        "amount_left": 0,
+        "base_price": 0,
+        "bonus_price": 0,
+        "reservations": reservations,
+        "month": MONTHS.get(int(filter_month), "")[:3] + ".",
+        "year": filter_year,
+    }
+    bonuses = get_monthly_bonus_totals(reservations, entity, filter_month, filter_year)
+    context.update(bonuses)
+    return render(
+        request,
+        "reservations/components/reservations_summary.html",
         context,
     )
 

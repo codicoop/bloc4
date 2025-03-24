@@ -21,7 +21,7 @@ app_name = "reservations"
 urlpatterns = [
     # Reservations
     path("", login_required(reservations_list), name="reservations_list"),
-    path("", reservations_list_summary, name="list_summary"),
+    path(_("summary"), reservations_list_summary, name="list_summary"),
     path(
         _("calendar/"),
         login_required(reservations_calendar_view),

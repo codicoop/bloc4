@@ -54,3 +54,38 @@ Actualment, només ni ha dos tipus de roles:
 - Docker
 - npm, for Tailwind compilation
 - Poetry, a python package manager
+
+## 4. Guia per desenvolupament
+
+#### 4.1 Tesdting, liniting i formateig
+
+Comandaments que cal executar a la carpeta arrel del projecte.
+
+Per validar el linting:
+
+    poetry run ruff check
+
+Per arreglar problemes generals de linting:
+
+    poetry run ruff check --fix
+
+A vegades cal fer:
+
+    poetry run ruff check --fix --unsafe-fixes
+
+En cas de fer això, és encara més important revisar els canvis abans de fer
+el commit.
+
+Per formatejar el codi:
+
+    poetry run ruff format
+
+En cas que només vulguis comprovar el format de codi però sense modificar-lo:
+
+    poetry run ruff format --check
+
+Per tirar els tests de python (inclou els de Selenium):
+
+Cal entrar a la consola del contenidor de docker i allà executar:
+
+    python manage.py test

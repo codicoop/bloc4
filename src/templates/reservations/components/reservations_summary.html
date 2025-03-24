@@ -1,5 +1,13 @@
 {% load i18n custom_filters static %}
 
+<h2 class="mt-8 text-2xl font-bold leading-tight
+  tracking-tight text-primary-900 dark:text-white
+  md:hidden">
+  {% translate "Reservations of" %}
+  <!-- FALTA canviar dinàmicament el nom de l'entitat escollida -->
+  <span id="selected_organization">{{ reservations.entity }} 👽</span>
+</h2>
+
 <!-- FALTA crear el POST per marcar les reserves com a facturades -->
 <!-- Modal toggle -->
 <button type="button" id="mark_reserve_invoiced"
@@ -86,11 +94,11 @@
 </div>
 <!-- End -->
 
-<div class=" max-w-2xl bg-white border border-accent rounded-xl overflow-hidden
+<div class=" max-w-2xl bg-white border border-accent rounded-xl overflow-hidden shadow-md
     md:col-start-2">
   <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
     <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Total' %}</h3>
-    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{month}} {{ year }} </h3>
+    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
     <p class="col-span-4 text-balance text-md">{% translate 'Total meeting room reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} €</p>
     <p class="col-span-4 text-balance text-md">{% translate 'Total teaching room reservations' %}</p>
@@ -99,17 +107,18 @@
     <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
   </div>
   <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-accent text-gray-900">
-    <p class="col-span-4 font-bold text-balance">{% translate 'Total to be invoiced' %}</p>
+    <p class="col-span-4 font-bold text-balance">{% translate 'Base to be invoiced' %}</p>
     <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
   </div>
 </div>
 
 <p class="mt-4 md:col-start-2 md:self-end">{% translate 'Breakdown by room type:' %}</p>
 
-<div class=" max-w-2xl bg-white border border-gray-300 rounded-xl overflow-hidden
+<div class=" max-w-2xl bg-white border border-primary-200 rounded-xl overflow-hidden shadow-md
     md:col-start-2">
   <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
     <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Meeting rooms' %}</h3>
+    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
     <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
     <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
@@ -117,7 +126,7 @@
     <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
   </div>
-  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-gray-300 text-gray-900">
+  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-primary-200 text-gray-900">
     <p class="col-span-4 font-bold text-balance">{% translate 'Total' %}
       <span class="text-sm font-normal">{% translate '(including discounts)' %}</span>
     </p>
@@ -125,10 +134,11 @@
   </div>
 </div>
 
-<div class=" max-w-2xl bg-white border border-gray-300 rounded-xl overflow-hidden
+<div class=" max-w-2xl bg-white border border-primary-200 rounded-xl overflow-hidden shadow-md
     md:col-start-2">
   <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
     <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Teaching rooms' %}</h3>
+    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
     <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
     <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
@@ -136,7 +146,7 @@
     <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
   </div>
-  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-gray-300 text-gray-900">
+  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-primary-200 text-gray-900">
     <p class="col-span-4 font-bold text-balance">{% translate 'Total' %}
       <span class="text-sm font-normal">{% translate '(including discounts)' %}</span>
     </p>
@@ -144,10 +154,11 @@
   </div>
 </div>
 
-<div class=" max-w-2xl bg-white border border-gray-300 rounded-xl overflow-hidden
+<div class=" max-w-2xl bg-white border border-primary-200 rounded-xl overflow-hidden shadow-md
     md:col-start-2">
   <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
     <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Event rooms' %}</h3>
+    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
     <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
     <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
@@ -155,7 +166,7 @@
     <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
   </div>
-  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-gray-300 text-gray-900">
+  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-primary-200 text-gray-900">
     <p class="col-span-4 font-bold text-balance">{% translate 'Total' %}
       <span class="text-sm font-normal">{% translate '(including discounts)' %}</span>
     </p>
@@ -168,8 +179,9 @@
   md:text-3xl md:col-start-1 md:mt-0 md:mb-3 md:self-end">
   {% translate "Reservations of" %}
   <!-- FALTA canviar dinàmicament el nom de l'entitat escollida -->
-  <span id="selected_organization">{{ reservations.entity }}Codi Cooperatiu 👽</span>
+  <span id="selected_organization">{{ reservations.entity }} 👽</span>
 </h2>
+
 {% for reservation in reservations %}
 <div
   class="relative grid grid-cols-6 gap-2 w-full max-w-2xl p-5 rounded-xl font-medium rtl:text-right shadow-md
@@ -190,7 +202,7 @@
       {{ reservation.start_time }} - {{ reservation.end_time }}
       {% endif %}
     </p>
-    <p>{% translate 'Price' %}: {{ reservation.total_price|round_two }} €</p>
+    <p>{% translate 'Price' %}: {{ reservation.total_price|floatformat:2 }} €</p>
   </div>
   <a href="{% url 'reservations:reservations_details' id=reservation.id %}"
     class="absolute right-0 rounded-xl hover:bg-primary-400" 

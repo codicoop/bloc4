@@ -14,13 +14,14 @@ from apps.reservations.views import (
     filter_reservations,
     reservation_detail_view,
     reservations_calendar_view,
-    reservations_list,
+    reservations_list, reservations_list_summary,
 )
 
 app_name = "reservations"
 urlpatterns = [
     # Reservations
     path("", login_required(reservations_list), name="reservations_list"),
+    path("", reservations_list_summary, name="list_summary"),
     path(
         _("calendar/"),
         login_required(reservations_calendar_view),

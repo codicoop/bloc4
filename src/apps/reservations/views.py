@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlencode
 
+from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
@@ -55,6 +56,35 @@ def reservations_list(request):
     return render(
         request,
         "reservations/reservations_list.html",
+        context,
+    )
+
+
+@user_passes_test(lambda u: u.is_staff)
+def reservations_list_summary(request):
+    entity = request.user.entity
+    now = timezone.now()
+    reservations_all = Reservation.objects.filter(entity=entity)
+    months_list, years_list = get_years_and_months(reservations_all)
+    reservations = reservations_all.filter(
+        date__year=now.year, date__month=now.month
+    ).order_by("date")
+    context = {
+        "is_monthly_bonus": False,
+        "amount_left": 0,
+        "base_price": 0,
+        "bonus_price": 0,
+        "reservations": reservations,
+        "months": months_list,
+        "years": years_list,
+        "month": MONTHS.get(now.month, "")[:3] + ".",
+        "year": now.year,
+    }
+    bonuses = get_monthly_bonus_totals(reservations, entity, now.month, now.year)
+    context.update(bonuses)
+    return render(
+        request,
+        "reservations/reservations_list_summary.html",
         context,
     )
 

@@ -172,37 +172,37 @@
             </li>
             {% endif %}
             {% if request.user.is_authenticated %}
-            <!-- Perfil -->
-            <li>
-              <a href="{% url 'registration:profile_details' %}" id="menu_profile"
-                class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
-                <svg class="w-8 h-8 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
-                  <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
-                </svg>
-                <span class="ms-3">{% translate "Profile" %}</span>
-              </a>
-            </li>
-            <!-- Reservations -->
-            {% if request.user.email_verified %}
-            <li>
-              <a href="{% url 'reservations:reservations_calendar' %}" id="menu_reservations"
-                class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
-                <svg class="w-7 h-7 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
-                  <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"/>
-                </svg>
-                <span class="ms-3">{% translate "Reservations" %}</span>
-              </a>
-            </li>
-            {% endif  %}
+              <!-- Perfil -->
+              <li>
+                <a href="{% url 'registration:profile_details' %}" id="menu_profile"
+                  class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
+                  <svg class="w-8 h-8 -ml-1 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
+                  </svg>
+                  <span class="ms-3">{% translate "Profile" %}</span>
+                </a>
+              </li>
+              <!-- Reservations -->
+              {% if request.user.email_verified %}
+              <li>
+                <a href="{% url 'reservations:reservations_calendar' %}" id="menu_reservations"
+                  class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
+                  <svg class="w-7 h-7 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"/>
+                  </svg>
+                  <span class="ms-3">{% translate "Reservations" %}</span>
+                </a>
+              </li>
+              {% endif  %}
               {% if request.user.is_staff %}
               <!-- Admin -->
               <li>
                 <a href="{% url 'reservations:list_summary' %}" id="id_menu_reservations_summary"
                   class="flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-primary-300 dark:hover:bg-primary-700 group">
-                  <svg class="w-7 h-7 text-primary-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M4 4a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2v14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2V5a1 1 0 0 1-1-1Zm5 2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1Zm-5 4a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1h-1Zm-3 4a2 2 0 0 0-2 2v3h2v-3h2v3h2v-3a2 2 0 0 0-2-2h-2Z" clip-rule="evenodd"/>
+                  <svg class="w-6 h-6 text-primary-500 dark:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.3726 2H13.4315C13.4315 1.46957 13.2249 0.960859 12.8572 0.585786C12.4894 0.210714 11.9907 0 11.4707 0H8.52949C8.00946 0 7.51073 0.210714 7.14301 0.585786C6.77529 0.960859 6.56871 1.46957 6.56871 2H3.62753C3.1075 2 2.60877 2.21071 2.24105 2.58579C1.87333 2.96086 1.66675 3.46957 1.66675 4V18C1.66675 18.5304 1.87333 19.0391 2.24105 19.4142C2.60877 19.7893 3.1075 20 3.62753 20H16.3726C16.8927 20 17.3914 19.7893 17.7591 19.4142C18.1268 19.0391 18.3334 18.5304 18.3334 18V4C18.3334 3.46957 18.1268 2.96086 17.7591 2.58579C17.3914 2.21071 16.8927 2 16.3726 2ZM11.4707 2V5H8.52949V2H11.4707ZM13.4315 15H6.56871C6.30869 15 6.05933 14.8946 5.87547 14.7071C5.69161 14.5196 5.58832 14.2652 5.58832 14C5.58832 13.7348 5.69161 13.4804 5.87547 13.2929C6.05933 13.1054 6.30869 13 6.56871 13H13.4315C13.6915 13 13.9408 13.1054 14.1247 13.2929C14.3086 13.4804 14.4118 13.7348 14.4118 14C14.4118 14.2652 14.3086 14.5196 14.1247 14.7071C13.9408 14.8946 13.6915 15 13.4315 15ZM13.4315 11H6.56871C6.30869 11 6.05933 10.8946 5.87547 10.7071C5.69161 10.5196 5.58832 10.2652 5.58832 10C5.58832 9.73478 5.69161 9.48043 5.87547 9.29289C6.05933 9.10536 6.30869 9 6.56871 9H13.4315C13.6915 9 13.9408 9.10536 14.1247 9.29289C14.3086 9.48043 14.4118 9.73478 14.4118 10C14.4118 10.2652 14.3086 10.5196 14.1247 10.7071C13.9408 10.8946 13.6915 11 13.4315 11Z" />
                   </svg>
-                  <span class="ms-3">{% translate "Reservations summary" %}</span>
+                  <span class="ms-4">{% translate "Reservations summary" %}</span>
                 </a>
               </li>
               {% endif %}

@@ -27,7 +27,7 @@ class EntityTest(TestCase):
                 is_staff=True,
                 is_superuser=True,
             ),
-            entity_type=EntityTypesChoices.HOSTED
+            entity_type=EntityTypesChoices.HOSTED,
         )
         self.empty_data = EntityFactory(
             entity_email="",
@@ -48,8 +48,7 @@ class EntityTest(TestCase):
                 is_staff=True,
                 is_superuser=True,
             ),
-            entity_type=""
-
+            entity_type="",
         )
 
     def test_save(self):
@@ -78,4 +77,3 @@ class EntityTest(TestCase):
             self.assertEqual(self.empty_data.person_responsible.name, "Tom")
             self.assertEqual(self.empty_data.person_responsible.surnames, "McTest")
             self.assertEqual(self.empty_data.entity_type, "")
-

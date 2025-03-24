@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlencode
 
-from django.http import JsonResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
@@ -145,14 +145,12 @@ def create_reservation_view(request):
                 None,
             )
             if (
-                (
-                    reservation.room.room_type == RoomTypeChoices.CLASSROOM
-                    and class_reservation_privilege
-                ) or (
-                    # In March 2025, they decide that all meeting room reservations
-                    # will be automatically confirmed.
-                    reservation.room.room_type == RoomTypeChoices.MEETING_ROOM
-                )
+                reservation.room.room_type == RoomTypeChoices.CLASSROOM
+                and class_reservation_privilege
+            ) or (
+                # In March 2025, they decide that all meeting room reservations
+                # will be automatically confirmed.
+                reservation.room.room_type == RoomTypeChoices.MEETING_ROOM
             ):
                 reservation.status = Reservation.StatusChoices.CONFIRMED
                 send_mail_reservation(reservation, "reservation_confirmed_user")
@@ -199,18 +197,16 @@ def create_reservation_view(request):
 
 
 def reservation_detail_view(request, id):
-    is_staff = request.user.is_staff
-    try:
-        reservation_id = uuid.UUID(id)
-        if is_staff:
-            reservation = get_object_or_404(Reservation, id=reservation_id)
-        else:
+    filter_params = {"id": id}
+    has_access_to_all_reservations = request.user.is_staff or request.user.is_janitor
+    if not has_access_to_all_reservations:
+        try:
             entity = request.user.entity
-            reservation = get_object_or_404(
-                Reservation, id=reservation_id, entity=entity
-            )
-    except ValueError:
-        return redirect("reservations:reservations_list")
+        except ValueError:
+            return redirect("reservations:reservations_list")
+        filter_params.update({"entity": entity})
+    reservation = get_object_or_404(Reservation, **filter_params)
+
     payment_info = None
     if (
         reservation.entity.entity_type
@@ -219,9 +215,18 @@ def reservation_detail_view(request, id):
         and not reservation.is_paid
     ):
         payment_info = Setting.get("PAYMENT_INFORMATION")
+
+    # Context and status vars
+    can_be_cancelled = not request.user.is_janitor and reservation.status in (
+        Reservation.StatusChoices.PENDING,
+        Reservation.StatusChoices.CONFIRMED,
+    )
+    can_be_checked_in = request.user.is_janitor
+
+    # POST actions
     if "cancel_reservation" in request.POST:
-        id = request.POST.get("cancel_reservation")
-        reservation = get_object_or_404(Reservation, id=id)
+        if not can_be_cancelled:
+            return HttpResponseNotFound(_("This reservation cannot be cancelled."))
         reservation.status = Reservation.StatusChoices.CANCELED
         reservation.canceled_by = request.user
         reservation.canceled_at = timezone.now()
@@ -229,13 +234,21 @@ def reservation_detail_view(request, id):
         send_mail_reservation(reservation, "reservation_canceled_user")
         send_mail_reservation(reservation, "reservation_canceled_bloc4")
         return redirect("reservations:reservations_cancelled")
+    if "check_in_reservation" in request.POST:
+        if not can_be_checked_in:
+            return HttpResponseNotFound(_("This reservation cannot be checked in."))
+        reservation.checked_in = True
+        reservation.save()
+        return HttpResponseRedirect(request.path_info)
+
     return render(
         request,
         "reservations/details.html",
         {
             "reservation": reservation,
-            "is_staff": is_staff,
             "payment_info": payment_info,
+            "can_be_cancelled": can_be_cancelled,
+            "can_be_checked_in": can_be_checked_in,
         },
     )
 
@@ -336,7 +349,6 @@ def reservations_calendar_view(request):
     context["discount"] = EntityTypesChoices(
         request.user.entity.entity_type
     ).get_discount_percentage()
-    context["is_staff"] = request.user.is_staff
     if request.htmx:
         room_type = request.POST.get("room_type")
         if room_type != "all":
@@ -379,10 +391,9 @@ class AjaxCalendarFeed(View):
                 "backgroundColor": color,
                 "borderColor": color,
                 "textColor": CALENDAR_TEXT_COLOR,
-                "is_staff": request.user.is_staff,
                 "reservation_id": reservation.id,
             }
-            if request.user.is_staff:
+            if request.user.is_staff or request.user.is_janitor:
                 reservation_data["entity"] = reservation.entity.fiscal_name
             data.append(reservation_data)
         return JsonResponse(data, safe=False)

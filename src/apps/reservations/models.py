@@ -214,6 +214,7 @@ class Reservation(BaseModel):
         verbose_name=_("status"),
         max_length=20,
     )
+    checked_in = models.BooleanField(_("Checked in"), default=False)
 
     class Meta:
         ordering = ["-date"]

@@ -63,26 +63,26 @@ Comandaments que cal executar a la carpeta arrel del projecte.
 
 Per validar el linting:
 
-    poetry run ruff check
+    poetry run ruff check .
 
 Per arreglar problemes generals de linting:
 
-    poetry run ruff check --fix
+    poetry run ruff check . --fix
 
 A vegades cal fer:
 
-    poetry run ruff check --fix --unsafe-fixes
+    poetry run ruff check . --fix --unsafe-fixes
 
 En cas de fer això, és encara més important revisar els canvis abans de fer
 el commit.
 
 Per formatejar el codi:
 
-    poetry run ruff format
+    poetry run ruff format .
 
 En cas que només vulguis comprovar el format de codi però sense modificar-lo:
 
-    poetry run ruff format --check
+    poetry run ruff format . --check
 
 Per tirar els tests de python (inclou els de Selenium):
 

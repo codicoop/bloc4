@@ -79,6 +79,7 @@ def calculate_reservation_price(start_time, end_time, price):
 
 def calculate_discount_price(entity_type, price):
     discount = EntityTypesChoices(entity_type).get_discount_percentage()
+    price = Decimal(price)
     return price + price * discount
 
 

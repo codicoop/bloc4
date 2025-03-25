@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django import template
 
 register = template.Library()
@@ -12,4 +14,6 @@ def calculate_discount(price, discount):
     discounted prices and then pass them through the context.
     This solution feels a bit weird, please refactor if it causes any problems.
     """
+    price = Decimal(price)
+    discount = Decimal(discount)
     return price + (price * discount)

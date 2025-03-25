@@ -154,7 +154,12 @@ def get_monthly_bonus(monthly_bonus, reservations):
 
 
 def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
-    bonuses = {}
+    totals = {
+        "bonus_price": 0,
+        "amount": 0,
+        "amount_left": 0,
+        "base_price": 0,
+    }
     Reservation = apps.get_model("reservations", "Reservation")
     active_reservations = reservations.filter(
         Q(
@@ -166,7 +171,7 @@ def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
     )
     if room_type:
         active_reservations = active_reservations.filter(room__room_type=room_type)
-    base_price = active_reservations.aggregate(
+    totals["base_price"] = active_reservations.aggregate(
         total_sum=Sum("base_price"),
     )["total_sum"]
     monthly_bonus = MonthlyBonus.objects.filter(
@@ -174,30 +179,16 @@ def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
         date__year=year,
         date__month=month,
     )
-    try:
-        entity_type = entity.entity_type
-    except AttributeError:
-        return {}
-    if (
-        entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
-        and monthly_bonus.exists()
-        and reservations.exists()
-    ):
-        monthly_bonus = monthly_bonus.first()
-        if active_reservations:
-            (
-                bonus_price,
-                amount_left,
-            ) = get_monthly_bonus(monthly_bonus, active_reservations)
-            bonuses = {
-                "bonus_price": base_price - bonus_price,
-                "amount": monthly_bonus.amount,
-                "amount_left": amount_left,
-            }
-        bonuses["base_price"] = base_price
-        bonuses["is_monthly_bonus"] = True
-        bonuses["amount"] = monthly_bonus.amount
-    return bonuses
+    monthly_bonus = monthly_bonus.first()
+    if active_reservations and monthly_bonus:
+        bonus_price, amount_left = get_monthly_bonus(
+            monthly_bonus,
+            active_reservations,
+        )
+        totals["bonus_price"] = totals["base_price"] - bonus_price
+        totals["amount"] = monthly_bonus.amount
+        totals["amount_left"] = amount_left
+    return totals
 
 
 def convert_datetime_to_str(reservation):

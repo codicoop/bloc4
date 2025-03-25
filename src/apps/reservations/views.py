@@ -126,6 +126,7 @@ def filter_reservations_summary(request):
         "reservations": reservations,
         "month": MONTHS.get(int(filter_month), "")[:3] + ".",
         "year": filter_year,
+        "entity": entity,
     }
     bonuses = get_monthly_bonus_totals(reservations, entity, filter_month, filter_year)
     context.update(bonuses)

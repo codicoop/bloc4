@@ -1,221 +1,219 @@
 {% load i18n custom_filters static %}
 
-<h2 class="mt-8 text-2xl font-bold leading-tight
-  tracking-tight text-primary-900 dark:text-white
-  md:hidden">
-  {% translate "Reservations of" %}
-  <!-- FALTA canviar dinàmicament el nom de l'entitat escollida -->
-  <span id="selected_organization">{{ reservations.entity }} 👽</span>
-</h2>
+{% if reservations %}
+  <h2 class="mt-8 text-2xl font-bold leading-tight
+    tracking-tight text-primary-900 dark:text-white
+    md:hidden">
+    {% translate "Reservations of" %} {{ entity.fiscal_name }}
+  </h2>
 
-<!-- FALTA crear el POST per marcar les reserves com a facturades -->
-<!-- Modal toggle -->
-<button type="button" id="mark_reserve_invoiced"
-  data-modal-target="modal_mark_invoiced"
-  data-modal-show="modal_mark_invoiced"
-  class="relative col-span-2 flex items-center justify-center py-2 px-8 mt-6
-    rounded-md border-2 border-primary-700 bg-primary-700 text-white
-    hover:bg-primary-600 hover:border-primary-600 
-    md:col-span-1 md:col-start-2 md:self-end md:justify-self-end md:mb-2"
-  hx-post=""
-  hx-target="#mark_reserve_invoiced"
->
-  {% translate 'Mark month as invoiced' %}
-</button>
-<!-- Main modal -->
-<div id="modal_mark_invoiced" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-  <div class="relative p-4 w-full max-w-2xl max-h-full">
-    <!-- Modal content -->
-    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
-      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-          {% translate 'Action confirmation' %}
-        </h3>
-        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-        data-modal-hide="modal_mark_invoiced">
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-          <span class="sr-only">Close modal</span>
-        </button>
-      </div>
-      <div class="flex flex-col items-center p-4 space-y-4
-        text-center md:p-5">
-        <p class="text-base leading-relaxed text-gray-700 font-semibold
-          dark:text-gray-400">
-          {% translate "Are you sure that you want to mark this month as invoiced?" %}
-        </p>
-        <p class="text-base leading-relaxed text-gray-700 font-semibold
-          dark:text-gray-400">
-          {% translate "The action can not be undone" %}
-        </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-          {% translate "Doing this will mark all the reservations in this month as invoiced. If later you need to modify this state, you will have to do so individually through the administration panel." %}
-        </p>
-      </div>
-      <!-- Modal footer -->
-      <div class="flex items-center gap-2 p-4 border-t border-gray-200 rounded-b 
-        md:p-5 dark:border-gray-600">
-        <form method="post" action="" class="w-full">
-          {% csrf_token %}
-          <button data-modal-hide="modal_mark_invoiced" type="submit"
-            class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2
-              col-span-2 bg-red-600 border-red-700 text-white
-              hover:bg-red-700" name="cancel_reservation" value="{{ reservation.id }}" id="id_cancel_reservation_{{ reservation.id }}">
-            {% translate 'Yes, I am sure' %}
-          </button>
-        </form>
-        <button data-modal-hide="modal_mark_invoiced" type="button"
-          class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-100 col-span-2
-          hover:bg-primary-100" name="cancel_reservation">
-          {% translate 'No, cancel' %}
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Aquest botó és el que s'haurà de carregar un cop el POST s'hagi fet correctament -->
-<!-- per substituir el botó -->
-<div class="col-span-2 flex gap-4 items-center hidden
-  md:col-span-1 md:col-start-2 md:self-end md:justify-self-end md:mb-2"
->
-  <svg class="fill-primary-700 w-10 h-10" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#clip0_1989_192423)">
-      <path d="M10 0C8.02219 0 6.08879 0.58649 4.4443 1.6853C2.79981 2.78412 1.51809 4.3459 0.761209 6.17316C0.00433284 8.00042 -0.1937 10.0111 0.192152 11.9509C0.578004 13.8907 1.53041 15.6725 2.92894 17.0711C4.32746 18.4696 6.10929 19.422 8.0491 19.8078C9.98891 20.1937 11.9996 19.9957 13.8268 19.2388C15.6541 18.4819 17.2159 17.2002 18.3147 15.5557C19.4135 13.9112 20 11.9778 20 10C19.9971 7.34873 18.9426 4.80688 17.0679 2.93215C15.1931 1.05741 12.6513 0.0029116 10 0ZM13.707 8.707L9.707 12.707C9.51947 12.8945 9.26517 12.9998 9 12.9998C8.73484 12.9998 8.48053 12.8945 8.293 12.707L6.293 10.707C6.11085 10.5184 6.01005 10.2658 6.01233 10.0036C6.01461 9.7414 6.11978 9.49059 6.30518 9.30518C6.49059 9.11977 6.74141 9.0146 7.0036 9.01232C7.2658 9.01005 7.5184 9.11084 7.707 9.293L9 10.586L12.293 7.293C12.4816 7.11084 12.7342 7.01005 12.9964 7.01232C13.2586 7.0146 13.5094 7.11977 13.6948 7.30518C13.8802 7.49059 13.9854 7.7414 13.9877 8.0036C13.99 8.26579 13.8892 8.5184 13.707 8.707Z"/>
-    </g>
-    <defs>
-      <clippath id="clip0_1989_192423">
-        <rect width="20" height="20" fill="white"/>
-      </clippath>
-    </defs>
-  </svg>
-  <p>{% translate "Invoiced month" %}</p>
-</div>
-<!-- End -->
-
-<div class=" max-w-2xl bg-white border border-accent rounded-xl overflow-hidden shadow-md
-    md:col-start-2">
-  <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
-    <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Total' %}</h3>
-    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total meeting room reservations' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} €</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total teaching room reservations' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} €</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total event room reservations' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
-  </div>
-  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-accent text-gray-900">
-    <p class="col-span-4 font-bold text-balance">{% translate 'Base to be invoiced' %}</p>
-    <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
-  </div>
-</div>
-
-<p class="mt-4 md:col-start-2 md:self-end">{% translate 'Breakdown by room type:' %}</p>
-
-<div class=" max-w-2xl bg-white border border-primary-200 rounded-xl overflow-hidden shadow-md
-    md:col-start-2">
-  <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
-    <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Meeting rooms' %}</h3>
-    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
-    <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} {% translate 'hours' %}</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
-  </div>
-  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-primary-200 text-gray-900">
-    <p class="col-span-4 font-bold text-balance">{% translate 'Total' %}
-      <span class="text-sm font-normal">{% translate '(including discounts)' %}</span>
-    </p>
-    <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
-  </div>
-</div>
-
-<div class=" max-w-2xl bg-white border border-primary-200 rounded-xl overflow-hidden shadow-md
-    md:col-start-2">
-  <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
-    <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Teaching rooms' %}</h3>
-    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
-    <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} {% translate 'hours' %}</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
-  </div>
-  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-primary-200 text-gray-900">
-    <p class="col-span-4 font-bold text-balance">{% translate 'Total' %}
-      <span class="text-sm font-normal">{% translate '(including discounts)' %}</span>
-    </p>
-    <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
-  </div>
-</div>
-
-<div class=" max-w-2xl bg-white border border-primary-200 rounded-xl overflow-hidden shadow-md
-    md:col-start-2">
-  <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
-    <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Event rooms' %}</h3>
-    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
-    <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} {% translate 'hours' %}</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
-  </div>
-  <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-primary-200 text-gray-900">
-    <p class="col-span-4 font-bold text-balance">{% translate 'Total' %}
-      <span class="text-sm font-normal">{% translate '(including discounts)' %}</span>
-    </p>
-    <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
-  </div>
-</div>
-
-<h2 class="mt-8 mb-4 text-2xl font-bold leading-tight
-  tracking-tight text-primary-900 dark:text-white
-  md:text-3xl md:col-start-1 md:mt-0 md:mb-3 md:self-end">
-  {% translate "Reservations of" %}
-  <!-- FALTA canviar dinàmicament el nom de l'entitat escollida -->
-  <span id="selected_organization">{{ reservations.entity }} 👽</span>
-</h2>
-
-{% for reservation in reservations %}
-<div
-  class="relative grid grid-cols-6 gap-2 w-full max-w-2xl p-5 rounded-xl font-medium rtl:text-right shadow-md
-  {% if reservation.status == reservation.StatusChoices.CANCELED or reservation.status == reservation.StatusChoices.REFUSED %}
-    bg-gray-300 text-gray-600
-  {% else %}bg-primary-300 text-gray-500 {% endif %}
-  focus:ring-4 focus:ring-primary-200
-  md:col-start-1
-  dark:focus:ring-primary-800 dark:border-gray-700 dark:text-gray-400"
->
-  <p class="col-span-6 pr-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-    {% translate "Reservation of" %} {{ reservation.room.name }}
-  </p>
-  <div class="col-span-4 text-md font-normal tracking-tight text-gray-900 dark:text-white col-start-1 row-span-3">
-    <b>{{ reservation.title }}</b>
-    <p>{{ reservation.date}} - 
-      {% if reservation.start_time and reservation.end_time %}
-      {{ reservation.start_time }} - {{ reservation.end_time }}
-      {% endif %}
-    </p>
-    <p>{% translate 'Price' %}: {{ reservation.total_price|floatformat:2 }} €</p>
-  </div>
-  <a href="{% url 'reservations:reservations_details' id=reservation.id %}"
-    class="absolute right-0 rounded-xl hover:bg-primary-400" 
+  <!-- FALTA crear el POST per marcar les reserves com a facturades -->
+  <!-- Modal toggle -->
+  <button type="button" id="mark_reserve_invoiced"
+    data-modal-target="modal_mark_invoiced"
+    data-modal-show="modal_mark_invoiced"
+    class="relative col-span-2 flex items-center justify-center py-2 px-8 mt-6
+      rounded-md border-2 border-primary-700 bg-primary-700 text-white
+      hover:bg-primary-600 hover:border-primary-600
+      md:col-span-1 md:col-start-2 md:self-end md:justify-self-end md:mb-2"
+    hx-post=""
+    hx-target="#mark_reserve_invoiced"
   >
-    <div class="p-4">
-      <svg class="w-6 h-6 text-primary-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
-      </svg>
+    {% translate 'Mark month as invoiced' %}
+  </button>
+  <!-- Main modal -->
+  <div id="modal_mark_invoiced" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+      <!-- Modal content -->
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            {% translate 'Action confirmation' %}
+          </h3>
+          <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          data-modal-hide="modal_mark_invoiced">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <div class="flex flex-col items-center p-4 space-y-4
+          text-center md:p-5">
+          <p class="text-base leading-relaxed text-gray-700 font-semibold
+            dark:text-gray-400">
+            {% translate "Are you sure that you want to mark this month as invoiced?" %}
+          </p>
+          <p class="text-base leading-relaxed text-gray-700 font-semibold
+            dark:text-gray-400">
+            {% translate "The action can not be undone" %}
+          </p>
+          <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            {% translate "Doing this will mark all the reservations in this month as invoiced. If later you need to modify this state, you will have to do so individually through the administration panel." %}
+          </p>
+        </div>
+        <!-- Modal footer -->
+        <div class="flex items-center gap-2 p-4 border-t border-gray-200 rounded-b
+          md:p-5 dark:border-gray-600">
+          <form method="post" action="" class="w-full">
+            {% csrf_token %}
+            <button data-modal-hide="modal_mark_invoiced" type="submit"
+              class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2
+                col-span-2 bg-red-600 border-red-700 text-white
+                hover:bg-red-700" name="cancel_reservation" value="{{ reservation.id }}" id="id_cancel_reservation_{{ reservation.id }}">
+              {% translate 'Yes, I am sure' %}
+            </button>
+          </form>
+          <button data-modal-hide="modal_mark_invoiced" type="button"
+            class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-100 col-span-2
+            hover:bg-primary-100" name="cancel_reservation">
+            {% translate 'No, cancel' %}
+          </button>
+        </div>
+      </div>
     </div>
-  </a>
-</div>
-{% empty %}
-<div>
-  <p>{% translate 'You have made no reservations yet. When you do, they will appear here.' %}</p>
-</div>
-{% endfor %}
+  </div>
+
+  <!-- Aquest botó és el que s'haurà de carregar un cop el POST s'hagi fet correctament -->
+  <!-- per substituir el botó -->
+  <div class="col-span-2 flex gap-4 items-center hidden
+    md:col-span-1 md:col-start-2 md:self-end md:justify-self-end md:mb-2"
+  >
+    <svg class="fill-primary-700 w-10 h-10" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_1989_192423)">
+        <path d="M10 0C8.02219 0 6.08879 0.58649 4.4443 1.6853C2.79981 2.78412 1.51809 4.3459 0.761209 6.17316C0.00433284 8.00042 -0.1937 10.0111 0.192152 11.9509C0.578004 13.8907 1.53041 15.6725 2.92894 17.0711C4.32746 18.4696 6.10929 19.422 8.0491 19.8078C9.98891 20.1937 11.9996 19.9957 13.8268 19.2388C15.6541 18.4819 17.2159 17.2002 18.3147 15.5557C19.4135 13.9112 20 11.9778 20 10C19.9971 7.34873 18.9426 4.80688 17.0679 2.93215C15.1931 1.05741 12.6513 0.0029116 10 0ZM13.707 8.707L9.707 12.707C9.51947 12.8945 9.26517 12.9998 9 12.9998C8.73484 12.9998 8.48053 12.8945 8.293 12.707L6.293 10.707C6.11085 10.5184 6.01005 10.2658 6.01233 10.0036C6.01461 9.7414 6.11978 9.49059 6.30518 9.30518C6.49059 9.11977 6.74141 9.0146 7.0036 9.01232C7.2658 9.01005 7.5184 9.11084 7.707 9.293L9 10.586L12.293 7.293C12.4816 7.11084 12.7342 7.01005 12.9964 7.01232C13.2586 7.0146 13.5094 7.11977 13.6948 7.30518C13.8802 7.49059 13.9854 7.7414 13.9877 8.0036C13.99 8.26579 13.8892 8.5184 13.707 8.707Z"/>
+      </g>
+      <defs>
+        <clippath id="clip0_1989_192423">
+          <rect width="20" height="20" fill="white"/>
+        </clippath>
+      </defs>
+    </svg>
+    <p>{% translate "Invoiced month" %}</p>
+  </div>
+  <!-- End -->
+
+  <div class=" max-w-2xl bg-white border border-accent rounded-xl overflow-hidden shadow-md
+      md:col-start-2">
+    <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
+      <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Total' %}</h3>
+      <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
+      <p class="col-span-4 text-balance text-md">{% translate 'Total meeting room reservations' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} €</p>
+      <p class="col-span-4 text-balance text-md">{% translate 'Total teaching room reservations' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} €</p>
+      <p class="col-span-4 text-balance text-md">{% translate 'Total event room reservations' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
+    </div>
+    <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-accent text-gray-900">
+      <p class="col-span-4 font-bold text-balance">{% translate 'Base to be invoiced' %}</p>
+      <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
+    </div>
+  </div>
+
+  <p class="mt-4 md:col-start-2 md:self-end">{% translate 'Breakdown by room type:' %}</p>
+
+  <div class=" max-w-2xl bg-white border border-primary-200 rounded-xl overflow-hidden shadow-md
+      md:col-start-2">
+    <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
+      <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Meeting rooms' %}</h3>
+      <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
+      <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
+      <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} {% translate 'hours' %}</p>
+      <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
+    </div>
+    <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-primary-200 text-gray-900">
+      <p class="col-span-4 font-bold text-balance">{% translate 'Total' %}
+        <span class="text-sm font-normal">{% translate '(including discounts)' %}</span>
+      </p>
+      <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
+    </div>
+  </div>
+
+  <div class=" max-w-2xl bg-white border border-primary-200 rounded-xl overflow-hidden shadow-md
+      md:col-start-2">
+    <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
+      <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Teaching rooms' %}</h3>
+      <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
+      <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
+      <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} {% translate 'hours' %}</p>
+      <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
+    </div>
+    <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-primary-200 text-gray-900">
+      <p class="col-span-4 font-bold text-balance">{% translate 'Total' %}
+        <span class="text-sm font-normal">{% translate '(including discounts)' %}</span>
+      </p>
+      <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
+    </div>
+  </div>
+
+  <div class=" max-w-2xl bg-white border border-primary-200 rounded-xl overflow-hidden shadow-md
+      md:col-start-2">
+    <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
+      <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Event rooms' %}</h3>
+      <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
+      <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ amount }} {% translate 'hours' %}</p>
+      <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ amount_left }} {% translate 'hours' %}</p>
+      <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
+      <p class="col-start-5 col-span-2 text-right text-md">{{ total_price }} €</p>
+    </div>
+    <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-primary-200 text-gray-900">
+      <p class="col-span-4 font-bold text-balance">{% translate 'Total' %}
+        <span class="text-sm font-normal">{% translate '(including discounts)' %}</span>
+      </p>
+      <p class="col-start-5 col-span-2 font-bold text-right">{{ bonus_price }} €</p>
+    </div>
+  </div>
+
+  <h2 class="mt-8 mb-4 text-2xl font-bold leading-tight
+    tracking-tight text-primary-900 dark:text-white
+    md:text-3xl md:col-start-1 md:mt-0 md:mb-3 md:self-end">
+    {% translate "Reservations of" %} {{ entity.fiscal_name }}
+  </h2>
+
+  {% for reservation in reservations %}
+    <div
+      class="relative grid grid-cols-6 gap-2 w-full max-w-2xl p-5 rounded-xl font-medium rtl:text-right shadow-md
+      {% if reservation.status == reservation.StatusChoices.CANCELED or reservation.status == reservation.StatusChoices.REFUSED %}
+        bg-gray-300 text-gray-600
+      {% else %}bg-primary-300 text-gray-500 {% endif %}
+      focus:ring-4 focus:ring-primary-200
+      md:col-start-1
+      dark:focus:ring-primary-800 dark:border-gray-700 dark:text-gray-400"
+    >
+      <p class="col-span-6 pr-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+        {% translate "Reservation of" %} {{ reservation.room.name }}
+      </p>
+      <div class="col-span-4 text-md font-normal tracking-tight text-gray-900 dark:text-white col-start-1 row-span-3">
+        <b>{{ reservation.title }}</b>
+        <p>{{ reservation.date}} -
+          {% if reservation.start_time and reservation.end_time %}
+          {{ reservation.start_time }} - {{ reservation.end_time }}
+          {% endif %}
+        </p>
+        <p>{% translate 'Price' %}: {{ reservation.total_price|floatformat:2 }} €</p>
+      </div>
+      <a href="{% url 'reservations:reservations_details' id=reservation.id %}"
+        class="absolute right-0 rounded-xl hover:bg-primary-400"
+      >
+        <div class="p-4">
+          <svg class="w-6 h-6 text-primary-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+{% else %}
+  <div>
+    <p>{% translate 'You have made no reservations yet. When you do, they will appear here.' %}</p>
+  </div>
+{% endif %}

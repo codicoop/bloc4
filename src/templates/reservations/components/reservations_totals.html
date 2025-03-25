@@ -1,19 +1,20 @@
 {% load i18n %}
-<div class="max-w-2xl bg-white border {% if last_row_accent %} border-accent {% else %} border-primary-200 {% endif %} rounded-xl overflow-hidden shadow-md
-    md:col-start-2">
+<div class=" max-w-2xl bg-white border rounded-xl overflow-hidden lg:col-start-2 lg:-mt-36
+    {% if last_row_accent %} border-accent {% else %} border-primary-200 {% endif %}">
   <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
     <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{{ title }}</h3>
-    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total meeting room reservations' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ values.amount }} €</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total teaching room reservations' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ values.amount_left }} €</p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total event room reservations' %}</p>
+    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{month}} {{ year }} </h3>
+    <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ values.amount }} {% translate 'hours' %}</p>
+    <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ values.amount_left }} {% translate 'hours' %}</p>
+    <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">{{ values.base_price }} €</p>
   </div>
   {# This if puts a lot of spaces between classes to make sure tailwind detects them when compiling. It might not be necessary. #}
-  <div class="px-3 pb-2 pt-1 grid grid-cols-6 text-gray-900 {% if last_row_accent %} bg-accent {% else %} bg-primary-200 {% endif %}">
-    <p class="col-span-4 font-bold text-balance">{% translate 'Base to be invoiced' %}</p>
+  <div class="px-3 pb-2 pt-1 grid grid-cols-6 text-gray-900
+    {% if last_row_accent %} bg-accent {% else %} bg-primary-200 {% endif %}">
+    <p class="col-span-4 font-bold text-balance">{% translate 'Total to be invoiced (with bonus discount)' %}</p>
     <p class="col-start-5 col-span-2 font-bold text-right">{{ values.bonus_price }} €</p>
   </div>
 </div>

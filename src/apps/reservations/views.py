@@ -91,17 +91,33 @@ def filter_reservations(request):
     reservations = Reservation.objects.filter(
         entity=entity, date__month=filter_month, date__year=filter_year
     ).order_by("date")
+
+    # This refactor would show the discounts card if the entity have free
+    # monthly hours assigned. Still, this, the if for is_monthly_bonus in the
+    # template and the context var might be removed if we decide that this card
+    # is not a "discounts card" but a monthly totals card and we display it to
+    # everyone.
+    is_monthly_bonus = False
+    if (
+        hasattr(entity, "entity_privilege")
+        and entity.entity_privilege.monthly_hours_meeting
+    ):
+        is_monthly_bonus = True
     context = {
-        "is_monthly_bonus": False,
+        "is_monthly_bonus": is_monthly_bonus,
         "amount_left": 0,
         "base_price": 0,
         "bonus_price": 0,
         "reservations": reservations,
         "month": MONTHS.get(int(filter_month), "")[:3] + ".",
         "year": filter_year,
+        "values": get_monthly_bonus_totals(
+            reservations,
+            entity,
+            filter_month,
+            filter_year,
+        ),
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity, filter_month, filter_year)
-    context.update(bonuses)
     return render(
         request,
         "reservations/components/reservations.html",
@@ -118,8 +134,20 @@ def filter_reservations_summary(request):
     reservations = Reservation.objects.filter(
         entity=entity, date__month=filter_month, date__year=filter_year
     ).order_by("date")
+
+    # This refactor would show the discounts card if the entity have free
+    # monthly hours assigned. Still, this, the if for is_monthly_bonus in the
+    # template and the context var might be removed if we decide that this card
+    # is not a "discounts card" but a monthly totals card and we display it to
+    # everyone.
+    is_monthly_bonus = False
+    if (
+        hasattr(entity, "entity_privilege")
+        and entity.entity_privilege.monthly_hours_meeting
+    ):
+        is_monthly_bonus = True
     context = {
-        "is_monthly_bonus": False,
+        "is_monthly_bonus": is_monthly_bonus,
         "amount_left": 0,
         "base_price": 0,
         "bonus_price": 0,
@@ -127,12 +155,12 @@ def filter_reservations_summary(request):
         "month": MONTHS.get(int(filter_month), "")[:3] + ".",
         "year": filter_year,
         "entity": entity,
-        "totals": get_monthly_bonus_totals(
-            reservations,
-            entity,
-            filter_month,
-            filter_year,
-        ),
+        "totals": {
+            "meeting_rooms": 0,
+            "classrooms": 0,
+            "event_rooms": 0,
+            "sum": 0,
+        },
         "meeting_rooms_totals": get_monthly_bonus_totals(
             reservations,
             entity,

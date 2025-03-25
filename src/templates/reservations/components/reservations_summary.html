@@ -93,18 +93,18 @@
   </div>
   <!-- End -->
   {% translate "Total" as totals_title %}
-  {% include "./reservations_totals.html" with title=totals_title last_row_accent=True %}
+  {% include "./reservations_totals.html" with title=totals_title last_row_accent=True values=totals %}
 
   <p class="mt-4 md:col-start-2 md:self-end">{% translate 'Breakdown by room type:' %}</p>
 
   {% translate "Meeting rooms" as totals_title %}
-  {% include "./reservations_totals.html" with title=totals_title %}
+  {% include "./reservations_totals.html" with title=totals_title values=meeting_rooms_totals %}
 
   {% translate "Teaching rooms" as totals_title %}
-  {% include "./reservations_totals.html" with title=totals_title %}
+  {% include "./reservations_totals.html" with title=totals_title values=classrooms_totals %}
 
   {% translate "Event rooms" as totals_title %}
-  {% include "./reservations_totals.html" with title=totals_title %}
+  {% include "./reservations_totals.html" with title=totals_title values=event_rooms_totals %}
 
   <h2 class="mt-8 mb-4 text-2xl font-bold leading-tight
     tracking-tight text-primary-900 dark:text-white

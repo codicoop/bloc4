@@ -127,9 +127,34 @@ def filter_reservations_summary(request):
         "month": MONTHS.get(int(filter_month), "")[:3] + ".",
         "year": filter_year,
         "entity": entity,
+        "totals": get_monthly_bonus_totals(
+            reservations,
+            entity,
+            filter_month,
+            filter_year,
+        ),
+        "meeting_rooms_totals": get_monthly_bonus_totals(
+            reservations,
+            entity,
+            filter_month,
+            filter_year,
+            RoomTypeChoices.MEETING_ROOM,
+        ),
+        "classrooms_totals": get_monthly_bonus_totals(
+            reservations,
+            entity,
+            filter_month,
+            filter_year,
+            RoomTypeChoices.CLASSROOM,
+        ),
+        "event_rooms_totals": get_monthly_bonus_totals(
+            reservations,
+            entity,
+            filter_month,
+            filter_year,
+            RoomTypeChoices.EVENT_ROOM,
+        ),
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity, filter_month, filter_year)
-    context.update(bonuses)
     return render(
         request,
         "reservations/components/reservations_summary.html",

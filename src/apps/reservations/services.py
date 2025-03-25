@@ -153,7 +153,7 @@ def get_monthly_bonus(monthly_bonus, reservations):
     return bonus_price, amount_left
 
 
-def get_monthly_bonus_totals(reservations, entity, month, year):
+def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
     bonuses = {}
     Reservation = apps.get_model("reservations", "Reservation")
     active_reservations = reservations.filter(
@@ -164,6 +164,8 @@ def get_monthly_bonus_totals(reservations, entity, month, year):
             ]
         )
     )
+    if room_type:
+        active_reservations = active_reservations.filter(room__room_type=room_type)
     base_price = active_reservations.aggregate(
         total_sum=Sum("base_price"),
     )["total_sum"]

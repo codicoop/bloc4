@@ -43,7 +43,7 @@
       {{ reservation.start_time }} - {{ reservation.end_time }}
       {% endif %}
     </p>
-    <p>{% translate 'Price' %}: {{ reservation.base_price }} €</p>
+    <p>{% translate 'Price' %}: {{ reservation.total_price|floatformat:2 }} €</p>
   </div>
   <a href="{% url 'reservations:reservations_details' id=reservation.id %}"
     class="absolute right-0 rounded-xl hover:bg-primary-400"

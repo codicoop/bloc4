@@ -24,7 +24,7 @@
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Hourly reservation' %}</b>
         <p class="mb-2">{% translate 'The rooms are booked in half-hour slots, starting at a quarter.' %}</p>
-        <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price }}{% translate ' €/hour' %}</p>
+        <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price|floatformat:2 }}{% translate ' €/hour' %}</p>
       </div>
     </label>
   </li>
@@ -58,7 +58,7 @@
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Morning reservation' %}</b>
         <p class="mb-2">{% translate 'Rooms are reserved for a whole morning, with space available from 8:00 to 14:00' %}</p>
-        <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price_half_day }}{% translate ' €/morning' %}</p>
+        <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price_half_day|floatformat:2 }}{% translate ' €/morning' %}</p>
       </div>
     </label>
   </li>
@@ -96,7 +96,7 @@
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Afternoon reservation' %}</b>
         <p class="mb-2">{% translate 'Rooms are reserved for an entire afternoon, with the space available from 14:00 to 20:00.' %}</p>
-        <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price_half_day }}{% translate ' €/afternoon' %}</p>
+        <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price_half_day|floatformat:2 }}{% translate ' €/afternoon' %}</p>
       </div>
     </label>
   </li>
@@ -135,7 +135,7 @@
       <div class="flex flex-col">
         <b class="mb-1">{% translate 'Whole day reservation' %}</b>
         <p class="mb-2">{% translate 'Rooms are reserved for a whole day, with the space available from 8:00 to 20:00.' %}</p>
-        <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price_all_day }}{% translate ' €/day' %}</p>
+        <p class="mt-auto">{% translate 'Price ' %}: {{ prices.price_all_day|floatformat:2 }}{% translate ' €/day' %}</p>
       </div>
     </label>
   </li>

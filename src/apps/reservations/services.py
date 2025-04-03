@@ -159,13 +159,15 @@ def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
         "amount": 0,
         "amount_left": 0,
         "base_price": 0,
+        "vat": 0,
+        "total_price": 0,
     }
-    Reservation = apps.get_model("reservations", "Reservation")
+    reservation_model = apps.get_model("reservations", "Reservation")
     active_reservations = reservations.filter(
         Q(
             status__in=[
-                Reservation.StatusChoices.PENDING,
-                Reservation.StatusChoices.CONFIRMED,
+                reservation_model.StatusChoices.PENDING,
+                reservation_model.StatusChoices.CONFIRMED,
             ]
         )
     )
@@ -173,7 +175,7 @@ def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
         active_reservations = active_reservations.filter(room__room_type=room_type)
     totals["base_price"] = active_reservations.aggregate(
         total_sum=Sum("base_price"),
-    )["total_sum"]
+    )["total_sum"] or 0
     monthly_bonus = MonthlyBonus.objects.filter(
         entity=entity,
         date__year=year,

@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-04 15:41+0100\n"
+"POT-Creation-Date: 2025-04-03 12:05+0200\n"
 "PO-Revision-Date: 2024-12-02 17:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -89,7 +89,7 @@ msgstr "Els usuaris han de tenir una adreça electrònica"
 msgid "Superusers must have a password"
 msgstr "Els superusuaris han de tenir una contrasenya"
 
-#: apps/users/models.py:46 apps/users/models.py:111
+#: apps/users/models.py:46 apps/users/models.py:109
 msgid "name"
 msgstr "nom"
 
@@ -121,11 +121,11 @@ msgstr "Entitat"
 msgid "is janitor"
 msgstr "És conserge"
 
-#: apps/users/models.py:82
+#: apps/users/models.py:80
 msgid "is active"
 msgstr "Està actiu"
 
-#: apps/users/models.py:85
+#: apps/users/models.py:83
 msgid ""
 "If the box is unchecked, the user will not be able to authenticate to access "
 "the application. It is usually only disabled when you want to unsubscribe a "
@@ -135,11 +135,11 @@ msgstr ""
 "Normalment només es fa servir quan vols deshabilitar un usuari però guardant "
 "totes les seves dades."
 
-#: apps/users/models.py:91 apps/users/views.py:131
+#: apps/users/models.py:89 apps/users/views.py:131
 msgid "Account verified"
 msgstr "Compte verificat"
 
-#: apps/users/models.py:94
+#: apps/users/models.py:92
 msgid ""
 "If the box is unchecked, its means that the user is from an external entity "
 "and its validation is pending."
@@ -147,15 +147,15 @@ msgstr ""
 "Si la casella no està marcada vol dir que l'usuari és d'una entitat externa "
 "i que la seva validació està pendent."
 
-#: apps/users/models.py:98
+#: apps/users/models.py:96
 msgid "is staff"
 msgstr "Té accés al panell d'administració"
 
-#: apps/users/models.py:126
+#: apps/users/models.py:124
 msgid "user"
 msgstr "usuari"
 
-#: apps/users/models.py:127
+#: apps/users/models.py:125
 msgid "users"
 msgstr "usuaris"
 

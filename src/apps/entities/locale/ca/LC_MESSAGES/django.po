@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-28 16:44+0100\n"
-"PO-Revision-Date: 2024-11-28 16:50+0100\n"
+"POT-Creation-Date: 2025-04-03 12:05+0200\n"
+"PO-Revision-Date: 2025-04-03 12:07+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -147,27 +147,31 @@ msgstr "Bonus mensual de l'entitat"
 msgid "Date"
 msgstr "Data"
 
-#: apps/entities/models.py:162
+#: apps/entities/models.py:163
 msgid "Amount"
 msgstr "Quantia"
 
-#: apps/entities/models.py:166
+#: apps/entities/models.py:170
 msgid "Monthly bonus"
 msgstr "Bonus mensual"
 
-#: apps/entities/models.py:167
+#: apps/entities/models.py:171
 msgid "Monthly bonuses"
 msgstr "Bonus mensuals"
 
-#: apps/entities/models.py:170
+#: apps/entities/models.py:174
 #, python-format
 msgid "Monthly bonus for %(entity)s in %(date)s"
 msgstr "Bonus mensual per %(entity)s a %(date)s"
 
-#: apps/entities/models.py:189
+#: apps/entities/models.py:192
 #, python-brace-format
-msgid "A record for {self.entity} "
-msgstr "Un recordatori per {self.entity}"
+msgid "A record for {entity} for {month} already exists."
+msgstr "Ja existeix un registre per {entity} i per {month}."
+
+#, python-brace-format
+#~ msgid "A record for {self.entity} "
+#~ msgstr "Un recordatori per {self.entity}"
 
 #~ msgid "General entity"
 #~ msgstr "Entitat general"

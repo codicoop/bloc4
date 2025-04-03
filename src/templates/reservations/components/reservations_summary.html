@@ -7,7 +7,7 @@
         md:hidden">
         {% translate "Reservations of" %} {{ entity.fiscal_name }}
       </h2>
-    
+
       <!-- FALTA crear el POST per marcar les reserves com a facturades -->
       <!-- Modal toggle -->
       <button type="button" id="mark_reserve_invoiced"
@@ -76,7 +76,7 @@
           </div>
         </div>
       </div>
-    
+
       <!-- Aquest botó és el que s'haurà de carregar un cop el POST s'hagi fet correctament -->
       <!-- per substituir el botó -->
       <div class="col-span-2 flex gap-4 items-center hidden
@@ -95,32 +95,32 @@
         <p>{% translate "Invoiced month" %}</p>
       </div>
       <!-- End -->
-    
+
       <div class="max-w-2xl bg-white border border-accent rounded-xl overflow-hidden">
         <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
           <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Total' %}</h3>
           <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
           <p class="col-span-4 text-balance text-md">{% translate 'Total meeting room reservations' %}</p>
-          <p class="col-start-5 col-span-2 text-right text-md">{{ totals.meeting_rooms }} €</p>
+          <p class="col-start-5 col-span-2 text-right text-md">{{ totals.meeting_rooms|floatformat:2 }} €</p>
           <p class="col-span-4 text-balance text-md">{% translate 'Total teaching room reservations' %}</p>
-          <p class="col-start-5 col-span-2 text-right text-md">{{ totals.classrooms }} €</p>
+          <p class="col-start-5 col-span-2 text-right text-md">{{ totals.classrooms|floatformat:2 }} €</p>
           <p class="col-span-4 text-balance text-md">{% translate 'Total event room reservations' %}</p>
-          <p class="col-start-5 col-span-2 text-right text-md">{{ totals.event_rooms }} €</p>
+          <p class="col-start-5 col-span-2 text-right text-md">{{ totals.event_rooms|floatformat:2 }} €</p>
         </div>
         <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-accent text-gray-900">
           <p class="col-span-4 font-bold text-balance">{% translate 'Base to be invoiced' %}</p>
-          <p class="col-start-5 col-span-2 font-bold text-right">{{ totals.sum }} €</p>
+          <p class="col-start-5 col-span-2 font-bold text-right">{{ totals.sum|floatformat:2 }} €</p>
         </div>
       </div>
-    
+
       <p class="mt-4">{% translate 'Breakdown by room type:' %}</p>
-    
+
       {% translate "Meeting rooms" as totals_title %}
       {% include "./reservations_totals.html" with title=totals_title values=meeting_rooms_totals %}
-    
+
       {% translate "Teaching rooms" as totals_title %}
       {% include "./reservations_totals.html" with title=totals_title values=classrooms_totals %}
-    
+
       {% translate "Event rooms" as totals_title %}
       {% include "./reservations_totals.html" with title=totals_title values=event_rooms_totals %}
   </div>
@@ -132,7 +132,7 @@
       lg:mt-8 lg:self-auto">
       {% translate "Reservations of" %} {{ entity.fiscal_name }}
     </h2>
-    
+
     {% for reservation in reservations %}
       <div
         class="relative grid grid-cols-6 gap-2 w-full max-w-2xl p-3

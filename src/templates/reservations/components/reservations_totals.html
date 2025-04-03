@@ -12,27 +12,15 @@
     <hr class="col-span-6 h-px my-3 bg-primary-200 border-0 dark:bg-primary-700">
     <p class="col-span-4 text-balance text-md">{% translate 'Tax base of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">
-      {% if values.base_price %}
       {{ values.base_price|floatformat:2 }} €
-      {% else %}
-      0,00 €
-      {% endif %}
     </p>
     <p class="col-span-4 text-balance text-md">{% translate 'VAT amount of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">
-      {% if values.vat %}
       {{ values.vat|floatformat:2 }} €
-      {% else %}
-      0,00 €
-      {% endif %}
     </p>
     <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
     <p class="col-start-5 col-span-2 mb-2 text-right text-md">
-      {% if values.total_price %}
       {{ values.total_price|floatformat:2 }} €
-      {% else %}
-      0,00 €
-      {% endif %}
     </p>
   </div>
   {# This if puts a lot of spaces between classes to make sure tailwind detects them when compiling. It might not be necessary. #}

@@ -12,7 +12,7 @@
     <hr class="col-span-6 h-px my-3 bg-primary-200 border-0 dark:bg-primary-700">
     <p class="col-span-4 text-balance text-md">{% translate 'Tax base of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">
-      {{ values.base_price|floatformat:2 }} €
+      {{ values.bonus_price|floatformat:2 }} €
     </p>
     <p class="col-span-4 text-balance text-md">{% translate 'VAT amount of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">
@@ -26,6 +26,6 @@
       {% translate 'Total' %}
       <span class="font-light">{% translate '(including discounts)' %}</span>
     </p>
-    <p class="col-start-5 col-span-2 font-bold text-right">{{ values.bonus_price|floatformat:2 }} €</p>
+    <p class="col-start-5 col-span-2 font-bold text-right">{{ values.total_price|floatformat:2 }} €</p>
   </div>
 </div>

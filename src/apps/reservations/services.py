@@ -10,6 +10,7 @@ from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.models import MonthlyBonus
+from apps.reservations import constants
 from apps.reservations.choices import (
     ReservationTypeChoices,
 )
@@ -131,18 +132,28 @@ def get_years_and_months(reservations):
 
 
 def get_monthly_bonus(monthly_bonus, reservations):
-    amount_left = float(monthly_bonus.amount)
+    amount_left = monthly_bonus.amount
     bonus_price = 0
     if amount_left > 0:
-        reservations = reservations.filter(
+        # mr = Meeting room reservations
+        mr_reservations = reservations.filter(
             room__room_type=RoomTypeChoices.MEETING_ROOM,
             # reservation_type=ReservationTypeChoices.HOURLY,
         ).order_by("created_at")
-        for reservation in reservations:
+        for reservation in mr_reservations:
             today = datetime.today().date()
+            # reservation.start_time and reservation.end_time contain only the
+            # time, i.e. 11:00, but we need a full date object with that time.
+            # The .combine creates it, i.e.
+            # reservation.start_time=datetime.time(11, 0)
+            # After the combine:
+            # start_datetime=datetime.datetime(2025, 4, 3, 11, 0).
             start_datetime = datetime.combine(today, reservation.start_time)
             end_datetime = datetime.combine(today, reservation.end_time)
-            reservation_time = (end_datetime - start_datetime).total_seconds() / 3600
+            # Getting the duration of the reservation in hours:
+            reservation_time = Decimal(
+                (end_datetime - start_datetime).total_seconds() / 3600
+            )
             if amount_left - reservation_time < 0:
                 bonus_price += amount_left * reservation.base_price / reservation_time
                 return bonus_price, 0
@@ -173,9 +184,9 @@ def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
     )
     if room_type:
         active_reservations = active_reservations.filter(room__room_type=room_type)
-    totals["base_price"] = active_reservations.aggregate(
-        total_sum=Sum("base_price"),
-    )["total_sum"] or 0
+    totals["base_price"] = Decimal(
+        active_reservations.aggregate(total_sum=Sum("base_price"))["total_sum"] or 0
+    )
     monthly_bonus = MonthlyBonus.objects.filter(
         entity=entity,
         date__year=year,
@@ -190,6 +201,8 @@ def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
         totals["bonus_price"] = totals["base_price"] - bonus_price
         totals["amount"] = monthly_bonus.amount
         totals["amount_left"] = amount_left
+    totals["vat"] = totals["bonus_price"] * constants.VAT
+    totals["total_price"] = totals["bonus_price"] + totals["vat"]
     return totals
 
 

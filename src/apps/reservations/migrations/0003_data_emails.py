@@ -25,7 +25,7 @@ def populate_mail_templates(apps, schema_editor):
                 <li>End time: {{end_time_reservation}}</li>
                 <li>Reserved by the entity: {{entity}}</li>
                 <li>Responsible person: {{reserved_by}}</li>
-                <li>Approximate price*: {{total_price}} €</li>
+                <li>Approximate price*: {{total_price|floatformat:2}} €</li>
             </ul>
 
             <p><em>* Soon we'll send you a quote for approval.</em></p>
@@ -49,7 +49,7 @@ def populate_mail_templates(apps, schema_editor):
                 <li>Hora de finalització: {{end_time_reservation}}</li>
                 <li>Reservada per l'entitat: {{entity}}</li>
                 <li>Persona responsable: {{reserved_by}}</li>
-                <li>Preu aproximat*: {{total_price}} €</li>
+                <li>Preu aproximat*: {{total_price|floatformat:2}} €</li>
             </ul>
 
             <p><em>* Aviat t'enviarem un pressupost definitiu per la seva aprovació.</em></p>
@@ -78,7 +78,7 @@ def populate_mail_templates(apps, schema_editor):
                 <li>End time: {{end_time_reservation}}</li>
                 <li>Reserved by the entity: {{entity}}</li>
                 <li>Responsible person: {{reserved_by}}</li>
-                <li>Total price: {{total_price}} €</li>
+                <li>Total price: {{total_price|floatformat:2}} €</li>
             </ul>
 
             <p>{{payment_info}}</p>
@@ -99,7 +99,7 @@ def populate_mail_templates(apps, schema_editor):
                 <li>Hora de finalització: {{end_time_reservation}}</li>
                 <li>Reservada per l'entitat: {{entity}}</li>
                 <li>Persona responsable: {{reserved_by}}</li>
-                <li>Preu total: {{total_price}} €</li>
+                <li>Preu total: {{total_price|floatformat:2}} €</li>
             </ul>
 
             <p>{{payment_info}}</p>
@@ -178,7 +178,7 @@ def populate_mail_templates(apps, schema_editor):
             <li>Reserved by the entity: {{entity}}</li>
             <li>Responsible person: {{reserved_by}}</li>
             <li>Correu electrònic: {{user_email}}</li>
-            <li>Total price: {{total_price}} €</li>
+            <li>Total price: {{total_price|floatformat:2}} €</li>
         </ul>
 
         <p>The current status of the reservation is <b>{{ status }}</b>.</p>
@@ -204,7 +204,7 @@ def populate_mail_templates(apps, schema_editor):
             <li>Reservada per l'entitat: {{entity}}</li>
             <li>Persona responsable: {{reserved_by}}</li>
             <li>E-mail: {{user_email}}</li>
-            <li>Preu total: {{total_price}} €</li>
+            <li>Preu total: {{total_price|floatformat:2}} €</li>
         </ul>
 
         <p>L'estat actual de la reserva és <b>{{status}}</b>.</p>
@@ -246,7 +246,7 @@ def populate_mail_templates(apps, schema_editor):
                     "subject": "Reservation pending payment in Bloc4BCN",
                     "body": """
     <p>Hello {{ reserved_by }},</p>
-    <p>The payment of the reservation for {{ room }} on {{ date_reservation }} from {{ start_time_reservation }} to {{ end_time_reservation }} for an amount of {{ base_price }} € made by {{ entity }} still pending.</p>
+    <p>The payment of the reservation for {{ room }} on {{ date_reservation }} from {{ start_time_reservation }} to {{ end_time_reservation }} for an amount of {{ base_price|floatformat:2 }} € made by {{ entity }} still pending.</p>
     <p>{{ payment_info }}</p>
                             """,
                 },
@@ -254,7 +254,7 @@ def populate_mail_templates(apps, schema_editor):
                     "subject": "Pagament pendent de cobrament en Bloc4BCN",
                     "body": """
     <p>Hola {{ reserved_by }},</p>
-    <p>El pagament de la reserva per {{ entity }} de {{ room }} el dia {{ date_reservation }} de {{ start_time_reservation }} a {{ end_time_reservation }}, encara està pendent de pagament amb una quantitat de {{ base_price }} €.</p>
+    <p>El pagament de la reserva per {{ entity }} de {{ room }} el dia {{ date_reservation }} de {{ start_time_reservation }} a {{ end_time_reservation }}, encara està pendent de pagament amb una quantitat de {{ base_price|floatformat:2 }} €.</p>
     <p>{{ payment_info }}</p>
                             """,
                 },

@@ -51,7 +51,7 @@ def send_mail_reservation(reservation, action):
         "room": reservation.room,
         "entity": reservation.entity.fiscal_name,
         "user_email": reservation.reserved_by.email,
-        "base_price": reservation.base_price,
+        "total_price": reservation.total_price(),
         "status": reservation.get_status_display().lower(),
         "payment_info": payment_info,
         "reservation_url_admin": f"{settings.ABSOLUTE_URL}/"

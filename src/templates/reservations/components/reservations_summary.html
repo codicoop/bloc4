@@ -98,7 +98,7 @@
 
       <div class="max-w-2xl bg-white border border-accent rounded-xl overflow-hidden">
         <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
-          <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Total' %}</h3>
+          <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Totals' %}</h3>
           <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
           <p class="col-span-4 text-balance text-md">{% translate 'Total meeting room reservations' %}</p>
           <p class="col-start-5 col-span-2 text-right text-md">{{ totals.meeting_rooms|floatformat:2 }} €</p>
@@ -108,7 +108,10 @@
           <p class="col-start-5 col-span-2 text-right text-md">{{ totals.event_rooms|floatformat:2 }} €</p>
         </div>
         <div class="px-3 pb-2 pt-1 grid grid-cols-6 bg-accent text-gray-900">
-          <p class="col-span-4 font-bold text-balance">{% translate 'Base to be invoiced' %}</p>
+          <p class="col-span-4 font-bold text-balance">
+            {% translate 'Total' %}
+            <span class="font-light">{% translate '(including discounts)' %}</span>
+          </p>
           <p class="col-start-5 col-span-2 font-bold text-right">{{ totals.sum|floatformat:2 }} €</p>
         </div>
       </div>

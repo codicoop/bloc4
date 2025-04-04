@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-03 12:04+0200\n"
+"POT-Creation-Date: 2025-04-04 10:59+0200\n"
 "PO-Revision-Date: 2025-04-03 12:22+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1262,8 +1262,9 @@ msgid "Invoiced month"
 msgstr "Mes facturat"
 
 #: templates/reservations/components/reservations_summary.html:101
-#: templates/reservations/total_price.html:17
-msgid "Total"
+#, fuzzy
+#| msgid "Total"
+msgid "Totals"
 msgstr "Totals"
 
 #: templates/reservations/components/reservations_summary.html:103
@@ -1314,21 +1315,22 @@ msgstr "Descompte d'hores mensuals inicial"
 msgid "Tax base of the reservations"
 msgstr "Base imponible de les reserves"
 
-#: templates/reservations/components/reservations_totals.html:21
+#: templates/reservations/components/reservations_totals.html:17
 msgid "VAT amount of the reservations"
 msgstr "IVA de les reserves"
 
-#: templates/reservations/components/reservations_totals.html:29
+#: templates/reservations/components/reservations_totals.html:21
 msgid "Total amount of the reservations"
 msgstr "Preu total de les reserves"
 
-#: templates/reservations/components/reservations_totals.html:42
-msgid "Total to be invoiced"
-msgstr "Total a facturar"
+#: templates/reservations/components/reservations_totals.html:30
+#: templates/reservations/total_price.html:17
+msgid "Total"
+msgstr "Total"
 
-#: templates/reservations/components/reservations_totals.html:43
+#: templates/reservations/components/reservations_totals.html:31
 msgid "(including discounts)"
-msgstr "(inclosos els descomptes)"
+msgstr "(després d'impostos i descomptes)"
 
 #: templates/reservations/create_reserves.html:5
 msgid "New Reservation"
@@ -1624,6 +1626,9 @@ msgstr "Selecciona"
 #: templates/rooms/rooms_filtered.html:43
 msgid "info"
 msgstr "info"
+
+#~ msgid "Total to be invoiced"
+#~ msgstr "Total a facturar"
 
 #~ msgid "Name of the room"
 #~ msgstr "Nom de la sala"

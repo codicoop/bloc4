@@ -18,16 +18,12 @@
     <p class="col-start-5 col-span-2 text-right text-md">
       {{ values.vat|floatformat:2 }} €
     </p>
-    <p class="col-span-4 text-balance text-md">{% translate 'Total amount of the reservations' %}</p>
-    <p class="col-start-5 col-span-2 mb-2 text-right text-md">
-      {{ values.total_price|floatformat:2 }} €
-    </p>
   </div>
   {# This if puts a lot of spaces between classes to make sure tailwind detects them when compiling. It might not be necessary. #}
   <div class="px-3 pb-2 pt-1 grid grid-cols-6 text-gray-900
     {% if last_row_accent %} bg-accent {% else %} bg-primary-200 {% endif %}">
     <p class="col-span-4 font-bold text-balance">
-      {% translate 'Total to be invoiced' %}
+      {% translate 'Total' %}
       <span class="font-light">{% translate '(including discounts)' %}</span>
     </p>
     <p class="col-start-5 col-span-2 font-bold text-right">{{ values.bonus_price|floatformat:2 }} €</p>

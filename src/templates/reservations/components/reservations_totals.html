@@ -6,13 +6,13 @@
     <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{{ title }}</h3>
     <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{month}} {{ year }} </h3>
     <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ values.amount|floatformat:1 }} {% translate 'hours' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ values.discounted_hours_amount|floatformat:1 }} {% translate 'hours' %}</p>
     <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
-    <p class="col-start-5 col-span-2 text-right text-md">{{ values.amount_left|floatformat:1 }} {% translate 'hours' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ values.discounted_hours_amount_left|floatformat:1 }} {% translate 'hours' %}</p>
     <hr class="col-span-6 h-px my-3 bg-primary-200 border-0 dark:bg-primary-700">
     <p class="col-span-4 text-balance text-md">{% translate 'Tax base of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">
-      {{ values.bonus_price|floatformat:2 }} €
+      {{ values.base_price|floatformat:2 }} €
     </p>
     <p class="col-span-4 text-balance text-md">{% translate 'VAT amount of the reservations' %}</p>
     <p class="col-start-5 col-span-2 text-right text-md">

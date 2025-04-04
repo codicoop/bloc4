@@ -146,6 +146,27 @@ def filter_reservations_summary(request):
         and entity.entity_privilege.monthly_hours_meeting
     ):
         is_monthly_bonus = True
+    meeting_rooms_totals = get_monthly_bonus_totals(
+        reservations,
+        entity,
+        filter_month,
+        filter_year,
+        RoomTypeChoices.MEETING_ROOM,
+    )
+    classrooms_totals = get_monthly_bonus_totals(
+        reservations,
+        entity,
+        filter_month,
+        filter_year,
+        RoomTypeChoices.CLASSROOM,
+    )
+    event_rooms_totals = get_monthly_bonus_totals(
+        reservations,
+        entity,
+        filter_month,
+        filter_year,
+        RoomTypeChoices.EVENT_ROOM,
+    )
     context = {
         "is_monthly_bonus": is_monthly_bonus,
         "amount_left": 0,
@@ -155,33 +176,19 @@ def filter_reservations_summary(request):
         "month": MONTHS.get(int(filter_month), "")[:3] + ".",
         "year": filter_year,
         "entity": entity,
+        "meeting_rooms_totals": meeting_rooms_totals,
+        "classrooms_totals": classrooms_totals,
+        "event_rooms_totals": event_rooms_totals,
         "totals": {
-            "meeting_rooms": 0,
-            "classrooms": 0,
-            "event_rooms": 0,
-            "sum": 0,
+            "meeting_rooms": meeting_rooms_totals["total_price"],
+            "classrooms": classrooms_totals["total_price"],
+            "event_rooms": event_rooms_totals["total_price"],
+            "sum": (
+                meeting_rooms_totals["total_price"]
+                + classrooms_totals["total_price"]
+                + event_rooms_totals["total_price"]
+            ),
         },
-        "meeting_rooms_totals": get_monthly_bonus_totals(
-            reservations,
-            entity,
-            filter_month,
-            filter_year,
-            RoomTypeChoices.MEETING_ROOM,
-        ),
-        "classrooms_totals": get_monthly_bonus_totals(
-            reservations,
-            entity,
-            filter_month,
-            filter_year,
-            RoomTypeChoices.CLASSROOM,
-        ),
-        "event_rooms_totals": get_monthly_bonus_totals(
-            reservations,
-            entity,
-            filter_month,
-            filter_year,
-            RoomTypeChoices.EVENT_ROOM,
-        ),
     }
     return render(
         request,

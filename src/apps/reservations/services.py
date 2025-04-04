@@ -135,12 +135,7 @@ def get_monthly_bonus(monthly_bonus, reservations):
     amount_left = monthly_bonus.amount
     bonus_price = 0
     if amount_left > 0:
-        # mr = Meeting room reservations
-        mr_reservations = reservations.filter(
-            room__room_type=RoomTypeChoices.MEETING_ROOM,
-            # reservation_type=ReservationTypeChoices.HOURLY,
-        ).order_by("created_at")
-        for reservation in mr_reservations:
+        for reservation in reservations:
             today = datetime.today().date()
             # reservation.start_time and reservation.end_time contain only the
             # time, i.e. 11:00, but we need a full date object with that time.
@@ -166,9 +161,8 @@ def get_monthly_bonus(monthly_bonus, reservations):
 
 def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
     totals = {
-        "bonus_price": 0,
-        "amount": 0,
-        "amount_left": 0,
+        "discounted_hours_amount": 0,
+        "discounted_hours_amount_left": 0,
         "base_price": 0,
         "vat": 0,
         "total_price": 0,
@@ -187,22 +181,24 @@ def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
     totals["base_price"] = Decimal(
         active_reservations.aggregate(total_sum=Sum("base_price"))["total_sum"] or 0
     )
-    monthly_bonus = MonthlyBonus.objects.filter(
-        entity=entity,
-        date__year=year,
-        date__month=month,
-    )
-    monthly_bonus = monthly_bonus.first()
-    if active_reservations and monthly_bonus:
-        bonus_price, amount_left = get_monthly_bonus(
-            monthly_bonus,
-            active_reservations,
+    if room_type is RoomTypeChoices.MEETING_ROOM:
+        """ Monthly discount of hours only applies to meeting rooms. """
+        monthly_bonus = MonthlyBonus.objects.filter(
+            entity=entity,
+            date__year=year,
+            date__month=month,
         )
-        totals["bonus_price"] = totals["base_price"] - bonus_price
-        totals["amount"] = monthly_bonus.amount
-        totals["amount_left"] = amount_left
-    totals["vat"] = totals["bonus_price"] * constants.VAT
-    totals["total_price"] = totals["bonus_price"] + totals["vat"]
+        monthly_bonus = monthly_bonus.first()
+        if active_reservations and monthly_bonus:
+            bonus_price, amount_left = get_monthly_bonus(
+                monthly_bonus,
+                active_reservations,
+            )
+            totals["base_price"] = totals["base_price"] - bonus_price
+            totals["discounted_hours_amount"] = monthly_bonus.amount
+            totals["discounted_hours_amount_left"] = amount_left
+    totals["vat"] = totals["base_price"] * constants.VAT
+    totals["total_price"] = totals["base_price"] + totals["vat"]
     return totals
 
 

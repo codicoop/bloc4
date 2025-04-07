@@ -426,15 +426,16 @@ class AjaxCalendarFeed(View):
 # htmx
 @user_passes_test(lambda u: u.is_staff)
 def mark_reservations_as_billed(request, year, month, entity):
-    print(f"{entity=}")
-    print(f"{month=}")
     entity = get_object_or_404(Entity, id=entity)
-    reservations = Reservation.objects.filter(
+    Reservation.objects.filter(
         entity=entity,
         date__month=month,
         date__year=year,
+    ).update(
+        is_billed=True,
+        billed_by=request.user,
+        billed_at=datetime.now(),
     )
-    print(f"{reservations=}")
     context = get_filter_reservations_context(year, month, entity)
     return render(
         request,

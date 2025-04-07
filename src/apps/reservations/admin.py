@@ -84,6 +84,16 @@ class ReservationAdmin(ModelAdmin):
             },
         ),
         (
+            _("Billing information"),
+            {
+                "fields": (
+                    "is_billed",
+                    "billed_by",
+                    "billed_at",
+                )
+            },
+        ),
+        (
             _("Only for public training"),
             {
                 "fields": (
@@ -94,7 +104,13 @@ class ReservationAdmin(ModelAdmin):
             },
         ),
     )
-    readonly_fields = ("actions_field", "room_field", "payment_field")
+    readonly_fields = (
+        "actions_field",
+        "room_field",
+        "payment_field",
+        "billed_by",
+        "billed_at",
+    )
     superuser_fields = ("status",)
 
     def get_fieldsets(self, request, obj=None):

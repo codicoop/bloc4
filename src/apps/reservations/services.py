@@ -216,6 +216,9 @@ def convert_datetime_to_str(reservation):
 
 
 def get_filter_reservations_context(filter_year, filter_month, entity):
+    """
+    entity: an Entity instance
+    """
     reservations = Reservation.objects.filter(
         entity=entity, date__month=filter_month, date__year=filter_year
     ).order_by("date")

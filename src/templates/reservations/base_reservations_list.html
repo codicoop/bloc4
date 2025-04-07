@@ -43,7 +43,7 @@
     <div class="flex gap-2 items-center">
       <select id="filter_year" name="filter_year"
         hx-target="#htmx-reservations"
-        hx-post="{% url 'reservations:filter_reservations_summary' %}"
+        hx-post="{{ filter_reservations_url }}"
         hx-trigger="change"
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
           focus:ring-primary-500 focus:border-primary-500"
@@ -54,7 +54,7 @@
       </select>
       <select id="filter_month" name="filter_month"
         hx-target="#htmx-reservations"
-        hx-post="{% url 'reservations:filter_reservations_summary' %}"
+        hx-post="{{ filter_reservations_url }}"
         hx-trigger="change,load"
         class="inline-block w-56 p-2.5 bg-white border border-primary-300 text-gray-900 text-sm rounded-lg
           focus:ring-primary-500 focus:border-primary-500"

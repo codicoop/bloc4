@@ -3,7 +3,8 @@ from datetime import datetime
 from urllib.parse import urlencode
 
 from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse, \
+    HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
@@ -48,6 +49,7 @@ def reservations_list(request):
         "years": years_list,
         "month": MONTHS.get(now.month, "")[:3] + ".",
         "year": now.year,
+        "filter_reservations_url": reverse("reservations:filter_my_reservations"),
     }
     return render(
         request,
@@ -70,6 +72,7 @@ def reservations_list_summary(request):
         "month": MONTHS.get(now.month, "")[:3] + ".",
         "year": now.year,
         "entities": Entity.objects.all(),
+        "filter_reservations_url": reverse("reservations:filter_reservations_summary"),
     }
     return render(
         request,
@@ -78,19 +81,29 @@ def reservations_list_summary(request):
     )
 
 
+def filter_my_reservations(request):
+    return base_filter_reservations(request, request.user.entity)
+
+
+@user_passes_test(lambda u: u.is_staff)
 def filter_reservations_summary(request):
-    entity = request.user.entity
-    if request.user.is_staff:
-        # In the reservations_list_summary view (only accessible by is_staff
-        # users) the organization filter dropdown is included.
-        # In the reservations_list view, it's not.
-        # Both views are based in the same template that will trigger the htmx
-        # request pointing to this filter_reservations_summary view.
-        # Therefore, the filter_entity POST value should only arrive when we're
-        # in the Monthly summary section, meaning that only is_staff users can
-        # access it.
-        filter_entity = request.POST.get("filter_entity")
-        entity = get_object_or_404(Entity, id=filter_entity)
+    if not request.POST.get("filter_entity"):
+        return HttpResponse('')
+
+    # In the reservations_list_summary view (only accessible by is_staff
+    # users) the organization filter dropdown is included.
+    # In the reservations_list view, it's not.
+    # Both views are based in the same template that will trigger the htmx
+    # request pointing to this filter_reservations view.
+    # Therefore, the filter_entity POST value should only arrive when we're
+    # in the Monthly summary section, meaning that only is_staff users can
+    # access it.
+    filter_entity = request.POST.get("filter_entity")
+    entity = get_object_or_404(Entity, id=filter_entity)
+    return base_filter_reservations(request, entity)
+
+
+def base_filter_reservations(request, entity):
     filter_year = request.POST.get("filter_year")
     filter_month = request.POST.get("filter_month")
     reservations = Reservation.objects.filter(

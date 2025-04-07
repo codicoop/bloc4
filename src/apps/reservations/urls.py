@@ -11,11 +11,10 @@ from apps.reservations.views import (
     ReservationSuccessView,
     calculate_total_price,
     create_reservation_view,
-    filter_reservations_summary,
     reservation_detail_view,
     reservations_calendar_view,
     reservations_list,
-    reservations_list_summary,
+    reservations_list_summary, filter_reservations_summary, filter_my_reservations,
 )
 
 app_name = "reservations"
@@ -75,5 +74,10 @@ urlpatterns = [
         _("filter_summary/"),
         filter_reservations_summary,
         name="filter_reservations_summary",
+    ),
+    path(
+        _("filter_my_reservations/"),
+        filter_my_reservations,
+        name="filter_my_reservations",
     ),
 ]

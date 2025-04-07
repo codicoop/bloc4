@@ -214,7 +214,23 @@ class Reservation(BaseModel):
         verbose_name=_("status"),
         max_length=20,
     )
-    checked_in = models.BooleanField(_("Checked in"), default=False)
+    checked_in = models.BooleanField(_("checked in"), default=False)
+    is_billed = models.BooleanField(_("billed"), default=False)
+    billed_at = models.DateTimeField(
+        _("billed at"),
+        null=True,
+        editable=False,
+    )
+    billed_by = models.ForeignKey(
+        "users.User",
+        null=True,
+        blank=True,
+        related_name="billed_reservations",
+        on_delete=models.SET_NULL,
+        verbose_name=_("billed by"),
+        editable=False,
+    )
+
 
     class Meta:
         ordering = ["-date"]
@@ -482,3 +498,10 @@ class Reservation(BaseModel):
 
     def total_price(self):
         return self.base_price + self.vat()
+
+    def mark_as_billed(self, user=None):
+        if user:
+            self.billed_by = user
+        self.billed_at = datetime.now()
+        self.is_billed = True
+        self.save()

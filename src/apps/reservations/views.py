@@ -22,11 +22,10 @@ from apps.reservations.services import (
     calculate_discount_price,
     convert_datetime_to_str,
     date_to_full_calendar_format,
-    get_monthly_bonus_totals,
     get_total_price,
     get_years_and_months,
     parse_time,
-    send_mail_reservation,
+    send_mail_reservation, get_filter_reservations_context,
 )
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.constanst import ALL_COLOR, CALENDAR_TEXT_COLOR
@@ -82,7 +81,18 @@ def reservations_list_summary(request):
 
 
 def filter_my_reservations(request):
-    return base_filter_reservations(request, request.user.entity)
+    filter_year = request.POST.get("filter_year")
+    filter_month = request.POST.get("filter_month")
+    context = get_filter_reservations_context(
+        filter_year,
+        filter_month,
+        request.user.entity,
+    )
+    return render(
+        request,
+        "reservations/components/my_reservations.html",
+        context,
+    )
 
 
 @user_passes_test(lambda u: u.is_staff)
@@ -100,71 +110,9 @@ def filter_reservations_summary(request):
     # access it.
     filter_entity = request.POST.get("filter_entity")
     entity = get_object_or_404(Entity, id=filter_entity)
-    return base_filter_reservations(request, entity)
-
-
-def base_filter_reservations(request, entity):
     filter_year = request.POST.get("filter_year")
     filter_month = request.POST.get("filter_month")
-    reservations = Reservation.objects.filter(
-        entity=entity, date__month=filter_month, date__year=filter_year
-    ).order_by("date")
-
-    # This refactor would show the discounts card if the entity have free
-    # monthly hours assigned. Still, this, the if for is_monthly_bonus in the
-    # template and the context var might be removed if we decide that this card
-    # is not a "discounts card" but a monthly totals card and we display it to
-    # everyone.
-    is_monthly_bonus = False
-    if (
-        hasattr(entity, "entity_privilege")
-        and entity.entity_privilege.monthly_hours_meeting
-    ):
-        is_monthly_bonus = True
-    meeting_rooms_totals = get_monthly_bonus_totals(
-        reservations,
-        entity,
-        filter_month,
-        filter_year,
-        RoomTypeChoices.MEETING_ROOM,
-    )
-    classrooms_totals = get_monthly_bonus_totals(
-        reservations,
-        entity,
-        filter_month,
-        filter_year,
-        RoomTypeChoices.CLASSROOM,
-    )
-    event_rooms_totals = get_monthly_bonus_totals(
-        reservations,
-        entity,
-        filter_month,
-        filter_year,
-        RoomTypeChoices.EVENT_ROOM,
-    )
-    context = {
-        "is_monthly_bonus": is_monthly_bonus,
-        "amount_left": 0,
-        "base_price": 0,
-        "bonus_price": 0,
-        "reservations": reservations,
-        "month": MONTHS.get(int(filter_month), "")[:3] + ".",
-        "year": filter_year,
-        "entity": entity,
-        "meeting_rooms_totals": meeting_rooms_totals,
-        "classrooms_totals": classrooms_totals,
-        "event_rooms_totals": event_rooms_totals,
-        "totals": {
-            "meeting_rooms": meeting_rooms_totals["total_price"],
-            "classrooms": classrooms_totals["total_price"],
-            "event_rooms": event_rooms_totals["total_price"],
-            "sum": (
-                meeting_rooms_totals["total_price"]
-                + classrooms_totals["total_price"]
-                + event_rooms_totals["total_price"]
-            ),
-        },
-    }
+    context = get_filter_reservations_context(filter_year, filter_month, entity)
     return render(
         request,
         "reservations/components/reservations_summary.html",

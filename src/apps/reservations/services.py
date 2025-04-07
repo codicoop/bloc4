@@ -15,6 +15,7 @@ from apps.reservations.choices import (
     ReservationTypeChoices,
 )
 from apps.reservations.constants import MONTHS
+from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from project.post_office import send
 
@@ -211,3 +212,66 @@ def convert_datetime_to_str(reservation):
     start_time_str = start_datetime.isoformat() + "+01:00"
     end_time_str = end_datetime.isoformat() + "+01:00"
     return start_time_str, end_time_str
+
+
+def get_filter_reservations_context(filter_year, filter_month, entity):
+    reservations = Reservation.objects.filter(
+        entity=entity, date__month=filter_month, date__year=filter_year
+    ).order_by("date")
+
+    # This refactor would show the discounts card if the entity have free
+    # monthly hours assigned. Still, this, the if for is_monthly_bonus in the
+    # template and the context var might be removed if we decide that this card
+    # is not a "discounts card" but a monthly totals card and we display it to
+    # everyone.
+    is_monthly_bonus = False
+    if (
+        hasattr(entity, "entity_privilege")
+        and entity.entity_privilege.monthly_hours_meeting
+    ):
+        is_monthly_bonus = True
+    meeting_rooms_totals = get_monthly_bonus_totals(
+        reservations,
+        entity,
+        filter_month,
+        filter_year,
+        RoomTypeChoices.MEETING_ROOM,
+    )
+    classrooms_totals = get_monthly_bonus_totals(
+        reservations,
+        entity,
+        filter_month,
+        filter_year,
+        RoomTypeChoices.CLASSROOM,
+    )
+    event_rooms_totals = get_monthly_bonus_totals(
+        reservations,
+        entity,
+        filter_month,
+        filter_year,
+        RoomTypeChoices.EVENT_ROOM,
+    )
+    context = {
+        "is_monthly_bonus": is_monthly_bonus,
+        "amount_left": 0,
+        "base_price": 0,
+        "bonus_price": 0,
+        "reservations": reservations,
+        "month": MONTHS.get(int(filter_month), "")[:3] + ".",
+        "year": filter_year,
+        "entity": entity,
+        "meeting_rooms_totals": meeting_rooms_totals,
+        "classrooms_totals": classrooms_totals,
+        "event_rooms_totals": event_rooms_totals,
+        "totals": {
+            "meeting_rooms": meeting_rooms_totals["total_price"],
+            "classrooms": classrooms_totals["total_price"],
+            "event_rooms": event_rooms_totals["total_price"],
+            "sum": (
+                meeting_rooms_totals["total_price"]
+                + classrooms_totals["total_price"]
+                + event_rooms_totals["total_price"]
+            ),
+        },
+    }
+    return context

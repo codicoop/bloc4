@@ -285,7 +285,7 @@ def get_filter_reservations_context(filter_year, filter_month, entity):
                 "year": filter_year,
                 "month": filter_month,
                 "entity": entity.pk,
-            }
+            },
         ),
         # If a single reservation is not billed, we consider the month as not
         # billed.

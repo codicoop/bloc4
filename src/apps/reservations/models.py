@@ -231,7 +231,6 @@ class Reservation(BaseModel):
         editable=False,
     )
 
-
     class Meta:
         ordering = ["-date"]
         verbose_name = _("reservation")

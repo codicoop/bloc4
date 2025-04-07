@@ -11,11 +11,13 @@ from apps.reservations.views import (
     ReservationSuccessView,
     calculate_total_price,
     create_reservation_view,
+    filter_my_reservations,
+    filter_reservations_summary,
+    mark_reservations_as_billed,
     reservation_detail_view,
     reservations_calendar_view,
     reservations_list,
-    reservations_list_summary, filter_reservations_summary, filter_my_reservations,
-    mark_reservations_as_billed,
+    reservations_list_summary,
 )
 
 app_name = "reservations"

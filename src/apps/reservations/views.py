@@ -3,8 +3,12 @@ from datetime import datetime
 from urllib.parse import urlencode
 
 from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse, \
-    HttpResponse
+from django.http import (
+    HttpResponse,
+    HttpResponseNotFound,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
@@ -22,10 +26,11 @@ from apps.reservations.services import (
     calculate_discount_price,
     convert_datetime_to_str,
     date_to_full_calendar_format,
+    get_filter_reservations_context,
     get_total_price,
     get_years_and_months,
     parse_time,
-    send_mail_reservation, get_filter_reservations_context,
+    send_mail_reservation,
 )
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.constanst import ALL_COLOR, CALENDAR_TEXT_COLOR
@@ -38,9 +43,6 @@ def reservations_list(request):
     now = timezone.now()
     reservations_all = Reservation.objects.filter(entity=entity)
     months_list, years_list = get_years_and_months(reservations_all)
-    reservations = reservations_all.filter(
-        date__year=now.year, date__month=now.month
-    ).order_by("date")
     context = {
         "is_monthly_bonus": False,
         "reservations": None,  # The month filter dropdown triggers on load
@@ -98,7 +100,7 @@ def filter_my_reservations(request):
 @user_passes_test(lambda u: u.is_staff)
 def filter_reservations_summary(request):
     if not request.POST.get("filter_entity"):
-        return HttpResponse('')
+        return HttpResponse("")
 
     # In the reservations_list_summary view (only accessible by is_staff
     # users) the organization filter dropdown is included.

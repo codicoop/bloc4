@@ -1343,6 +1343,10 @@ input:checked + .toggle-bg {
   margin-top: auto;
 }
 
+.mt-24 {
+  margin-top: 6rem;
+}
+
 .block {
   display: block;
 }
@@ -2118,6 +2122,24 @@ input:checked + .toggle-bg {
   background-color: rgb(255 255 255 / 0.5);
 }
 
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
+}
+
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+}
+
+.bg-opacity-20 {
+  --tw-bg-opacity: 0.2;
+}
+
+.bg-opacity-55 {
+  --tw-bg-opacity: 0.55;
+}
+
 .fill-primary-500 {
   fill: #927ed0;
 }
@@ -2456,6 +2478,11 @@ input:checked + .toggle-bg {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-primary-700 {
+  --tw-text-opacity: 1;
+  color: rgb(116 90 196 / var(--tw-text-opacity));
+}
+
 .underline {
   text-decoration-line: underline;
 }
@@ -2726,6 +2753,11 @@ input:checked + .toggle-bg {
   color: rgb(249 128 128 / var(--tw-text-opacity));
 }
 
+.hover\:text-blue-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(26 86 219 / var(--tw-text-opacity));
+}
+
 .hover\:underline:hover {
   text-decoration-line: underline;
 }
@@ -2737,6 +2769,10 @@ input:checked + .toggle-bg {
 
 .hover\:filter:hover {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.focus\:z-10:focus {
+  z-index: 10;
 }
 
 .focus\:border-primary-500:focus {
@@ -3103,6 +3139,11 @@ input:checked + .toggle-bg {
   --tw-ring-color: rgb(70 49 135 / var(--tw-ring-opacity));
 }
 
+:is(.dark .dark\:focus\:ring-blue-800:focus) {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(30 66 159 / var(--tw-ring-opacity));
+}
+
 :is(.dark .peer:checked ~ .dark\:peer-checked\:text-primary-500) {
   --tw-text-opacity: 1;
   color: rgb(146 126 208 / var(--tw-text-opacity));
@@ -3172,10 +3213,6 @@ input:checked + .toggle-bg {
     margin-bottom: 0.5rem;
   }
 
-  .md\:mb-3 {
-    margin-bottom: 0.75rem;
-  }
-
   .md\:me-24 {
     margin-inline-end: 6rem;
   }
@@ -3186,6 +3223,10 @@ input:checked + .toggle-bg {
 
   .md\:mt-0 {
     margin-top: 0px;
+  }
+
+  .md\:mt-20 {
+    margin-top: 5rem;
   }
 
   .md\:block {
@@ -3307,17 +3348,9 @@ input:checked + .toggle-bg {
 }
 
 @media (min-width: 1024px) {
-  .lg\:col-start-2 {
-    grid-column-start: 2;
-  }
-
   .lg\:my-16 {
     margin-top: 4rem;
     margin-bottom: 4rem;
-  }
-
-  .lg\:-mt-36 {
-    margin-top: -9rem;
   }
 
   .lg\:-mt-9 {
@@ -3332,12 +3365,12 @@ input:checked + .toggle-bg {
     margin-right: 0px;
   }
 
-  .lg\:mt-6 {
-    margin-top: 1.5rem;
-  }
-
   .lg\:mt-8 {
     margin-top: 2rem;
+  }
+
+  .lg\:mt-20 {
+    margin-top: 5rem;
   }
 
   .lg\:grid {

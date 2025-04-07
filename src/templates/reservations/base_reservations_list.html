@@ -33,9 +33,9 @@
   {% block "title" %}{% endblock %}
 </h1>
 
-<form class="mb-8 flex flex-col gap-4 md:grid md:grid-cols-3">
+<form class="mb-8 flex flex-col gap-4 md:flex-row md:gap-6">
   {% block organization_filter_dropdown %}{% endblock %}
-  <div class="col-start-2 col-span-2">
+  <div>
     {% csrf_token %}
     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
       {% translate "Filter by" %}

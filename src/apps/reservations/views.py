@@ -43,17 +43,12 @@ def reservations_list(request):
     ).order_by("date")
     context = {
         "is_monthly_bonus": False,
-        "amount_left": 0,
-        "base_price": 0,
-        "bonus_price": 0,
-        "reservations": reservations,
+        "reservations": None,  # The month filter dropdown triggers on load
         "months": months_list,
         "years": years_list,
         "month": MONTHS.get(now.month, "")[:3] + ".",
         "year": now.year,
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity, now.month, now.year)
-    context.update(bonuses)
     return render(
         request,
         "reservations/reservations_list.html",
@@ -83,52 +78,19 @@ def reservations_list_summary(request):
     )
 
 
-# htmx
-def filter_reservations(request):
-    entity = request.user.entity
-    filter_year = request.POST.get("filter_year")
-    filter_month = request.POST.get("filter_month")
-    reservations = Reservation.objects.filter(
-        entity=entity, date__month=filter_month, date__year=filter_year
-    ).order_by("date")
-
-    # This refactor would show the discounts card if the entity have free
-    # monthly hours assigned. Still, this, the if for is_monthly_bonus in the
-    # template and the context var might be removed if we decide that this card
-    # is not a "discounts card" but a monthly totals card and we display it to
-    # everyone.
-    is_monthly_bonus = False
-    if (
-        hasattr(entity, "entity_privilege")
-        and entity.entity_privilege.monthly_hours_meeting
-    ):
-        is_monthly_bonus = True
-    context = {
-        "is_monthly_bonus": is_monthly_bonus,
-        "amount_left": 0,
-        "base_price": 0,
-        "bonus_price": 0,
-        "reservations": reservations,
-        "month": MONTHS.get(int(filter_month), "")[:3] + ".",
-        "year": filter_year,
-        "values": get_monthly_bonus_totals(
-            reservations,
-            entity,
-            filter_month,
-            filter_year,
-        ),
-    }
-    return render(
-        request,
-        "reservations/components/reservations.html",
-        context,
-    )
-
-
-@user_passes_test(lambda u: u.is_staff)
 def filter_reservations_summary(request):
-    filter_entity = request.POST.get("filter_entity")
-    entity = get_object_or_404(Entity, id=filter_entity)
+    entity = request.user.entity
+    if request.user.is_staff:
+        # In the reservations_list_summary view (only accessible by is_staff
+        # users) the organization filter dropdown is included.
+        # In the reservations_list view, it's not.
+        # Both views are based in the same template that will trigger the htmx
+        # request pointing to this filter_reservations_summary view.
+        # Therefore, the filter_entity POST value should only arrive when we're
+        # in the Monthly summary section, meaning that only is_staff users can
+        # access it.
+        filter_entity = request.POST.get("filter_entity")
+        entity = get_object_or_404(Entity, id=filter_entity)
     filter_year = request.POST.get("filter_year")
     filter_month = request.POST.get("filter_month")
     reservations = Reservation.objects.filter(

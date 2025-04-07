@@ -2,7 +2,7 @@
 
 {% if is_monthly_bonus %}
   {% translate "Meeting rooms discount" as totals_title %}
-  {% include "./reservations_totals.html" with title=totals_title last_row_accent=True %}
+  {% include "./reservations_totals.html" with title=totals_title last_row_accent=True values=totals %}
 {% endif %}
 
 <!-- Per acabar quan afegim els descomptes anuals -->
@@ -12,7 +12,7 @@
     <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">{% translate 'Teaching rooms discount' %}</h3>
     <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">2024</h3>
     <p class="col-span-4 text-balance">{% translate 'Initial year discount hours' %}:</p>
-    <p class="col-start-5 col-span-2 text-right">{{ amount }} {% translate 'hours' %}</p>
+    <p class="col-start-5 col-span-2 text-right">{{ discounted_hours_amount }} {% translate 'hours' %}</p>
     <p class="col-span-4 text-balance">{% translate 'Discount hours left' %}</p>
     <p class="col-start-5 col-span-2 text-right">{{ amount_left }} {% translate 'hours' %}</p>
     <p class="col-span-4 text-balance">{% translate 'Total amount of the resevations' %}</p>

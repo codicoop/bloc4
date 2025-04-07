@@ -1,10 +1,13 @@
+import logging
 from datetime import date, time
+from decimal import Decimal
 
 from django.test import TestCase
 
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.models import Entity, MonthlyBonus
 from apps.entities.tests.factories import EntityFactory, MonthlyBonusFactory
+from apps.reservations import constants
 from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.models import Reservation
 from apps.reservations.services import get_monthly_bonus_totals, get_total_price
@@ -17,6 +20,7 @@ from apps.users.tests.factories import UserFactory
 
 class ServicesTest(TestCase):
     def setUp(self):
+        self.maxDiff = None
         self.room = RoomFactory(
             price=10.0,
             price_half_day=30.0,
@@ -50,7 +54,7 @@ class ServicesTest(TestCase):
                 self.reservation.start_time,
                 self.reservation.end_time,
             )
-            self.assertEqual(result, 24)
+            self.assertEqual(round(result, 2), 24)
         with self.subTest("Bloc4 Entity (50%) | Morning reservation (30€)"):
             self.entity.entity_type = EntityTypesChoices.BLOC4
             self.reservation.reservation_type = ReservationTypeChoices.MORNING
@@ -83,7 +87,7 @@ class ServicesTest(TestCase):
                 self.reservation.start_time,
                 self.reservation.end_time,
             )
-            self.assertEqual(result, 57.5)
+            self.assertEqual(round(result, 2), 57.5)
 
     def test_get_monthly_bonus_totals(self):
         Reservation.objects.create(
@@ -113,14 +117,17 @@ class ServicesTest(TestCase):
         reservations = Reservation.objects.filter()
         with self.subTest("Event rooms & hosted entity"):
             result = get_monthly_bonus_totals(reservations, self.entity, 12, 2025)
+            result["base_price"] = round(result["base_price"], 2)
+            result["vat"] = round(result["vat"], 2)
+            result["total_price"] = round(result["total_price"], 2)
             self.assertEqual(
                 result,
                 {
-                    "amount": 20,
-                    "amount_left": 20,
-                    "bonus_price": 130,
-                    "is_monthly_bonus": True,
-                    "base_price": 130,
+                    "discounted_hours_amount": 20,
+                    "discounted_hours_amount_left": 20,
+                    "base_price": Decimal(130),
+                    "vat": round(Decimal(130) * constants.VAT, 2),
+                    "total_price": round(Decimal(130) * (constants.VAT + 1), 2),
                 },
             )
         with self.subTest("Event & meeting rooms & hosted entity"):
@@ -143,14 +150,17 @@ class ServicesTest(TestCase):
             result = get_monthly_bonus_totals(
                 Reservation.objects.filter(), self.entity, 12, 2025
             )
+            result["base_price"] = round(result["base_price"], 2)
+            result["vat"] = round(result["vat"], 2)
+            result["total_price"] = round(result["total_price"], 2)
             self.assertEqual(
                 result,
                 {
-                    "amount": 20,
-                    "amount_left": 16,
-                    "bonus_price": 130,
-                    "is_monthly_bonus": True,
-                    "base_price": 153,
+                    "discounted_hours_amount": 20,
+                    "discounted_hours_amount_left": 16,
+                    "base_price": Decimal(130),
+                    "vat": round(Decimal(130) * constants.VAT, 2),
+                    "total_price": round(Decimal(130) * (constants.VAT + 1), 2),
                 },
             )
         with self.subTest("November reservation. New entity"):
@@ -189,17 +199,29 @@ class ServicesTest(TestCase):
                 11,
                 2025,
             )
+            result["base_price"] = round(result["base_price"], 2)
+            result["vat"] = round(result["vat"], 2)
+            result["total_price"] = round(result["total_price"], 2)
             self.assertEqual(
                 result,
                 {
-                    "amount": 10,
-                    "amount_left": 6,
-                    "bonus_price": 0,
-                    "is_monthly_bonus": True,
-                    "base_price": 50,
+                    "discounted_hours_amount": 10,
+                    "discounted_hours_amount_left": 6,
+                    "base_price": Decimal(0),
+                    "vat": Decimal(0),
+                    "total_price": Decimal(50),
                 },
             )
         with self.subTest("Not hosted entity"):
             self.entity.entity_type = EntityTypesChoices.OUTSIDE
             result = get_monthly_bonus_totals(reservations, self.entity, 12, 2025)
-            self.assertEqual(result, {})
+            self.assertEqual(
+                result,
+        {
+                    "discounted_hours_amount": 0,
+                    "discounted_hours_amount_left": 0,
+                    "base_price": Decimal(999),
+                    "vat": Decimal(999),
+                    "total_price": Decimal(999),
+                },
+            )

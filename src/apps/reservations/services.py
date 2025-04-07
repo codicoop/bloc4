@@ -219,6 +219,7 @@ def get_filter_reservations_context(filter_year, filter_month, entity):
     reservations = Reservation.objects.filter(
         entity=entity, date__month=filter_month, date__year=filter_year
     ).order_by("date")
+    unbilled_reservations = reservations.filter(is_billed=False).first()
 
     # This refactor would show the discounts card if the entity have free
     # monthly hours assigned. Still, this, the if for is_monthly_bonus in the
@@ -283,6 +284,8 @@ def get_filter_reservations_context(filter_year, filter_month, entity):
                 "entity": entity.pk,
             }
         ),
-        "month_is_billed": False,  # TO DO: actually check it!
+        # If a single reservation is not billed, we consider the month as not
+        # billed.
+        "month_is_billed": not unbilled_reservations,
     }
     return context

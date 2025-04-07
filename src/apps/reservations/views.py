@@ -421,3 +421,23 @@ class AjaxCalendarFeed(View):
                 reservation_data["entity"] = reservation.entity.fiscal_name
             data.append(reservation_data)
         return JsonResponse(data, safe=False)
+
+
+# htmx
+@user_passes_test(lambda u: u.is_staff)
+def mark_reservations_as_billed(request, year, month, entity):
+    print(f"{entity=}")
+    print(f"{month=}")
+    entity = get_object_or_404(Entity, id=entity)
+    reservations = Reservation.objects.filter(
+        entity=entity,
+        date__month=month,
+        date__year=year,
+    )
+    print(f"{reservations=}")
+    context = get_filter_reservations_context(year, month, entity)
+    return render(
+        request,
+        "reservations/components/reservations_summary.html",
+        context,
+    )

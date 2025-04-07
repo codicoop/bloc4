@@ -15,6 +15,7 @@ from apps.reservations.views import (
     reservations_calendar_view,
     reservations_list,
     reservations_list_summary, filter_reservations_summary, filter_my_reservations,
+    mark_reservations_as_billed,
 )
 
 app_name = "reservations"
@@ -79,5 +80,10 @@ urlpatterns = [
         _("filter_my_reservations/"),
         filter_my_reservations,
         name="filter_my_reservations",
+    ),
+    path(
+        _("mark_reservations_as_billed/<int:year>/<int:month>/<uuid:entity>/"),
+        mark_reservations_as_billed,
+        name="mark_reservations_as_billed",
     ),
 ]

@@ -5,6 +5,7 @@ from django.apps import apps
 from django.conf import settings
 from django.db.models import Q, Sum
 from django.db.models.functions import ExtractYear
+from django.urls import reverse
 from django.utils import formats, timezone
 from extra_settings.models import Setting
 
@@ -273,5 +274,15 @@ def get_filter_reservations_context(filter_year, filter_month, entity):
                 + event_rooms_totals["total_price"]
             ),
         },
+        # Context only used by the "Monthly summary" section:
+        "mark_month_as_billed_url": reverse(
+            "reservations:mark_reservations_as_billed",
+            kwargs={
+                "year": filter_year,
+                "month": filter_month,
+                "entity": entity.pk,
+            }
+        ),
+        "month_is_billed": False,  # TO DO: actually check it!
     }
     return context

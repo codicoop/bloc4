@@ -161,7 +161,7 @@ def get_monthly_bonus(monthly_bonus, reservations):
     return bonus_price, amount_left
 
 
-def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
+def get_monthly_bonus_totals(reservations, entity, month, year, room_type):
     totals = {
         "discounted_hours_amount": 0,
         "discounted_hours_amount_left": 0,
@@ -176,12 +176,14 @@ def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
                 reservation_model.StatusChoices.PENDING,
                 reservation_model.StatusChoices.CONFIRMED,
             ]
+        ) & Q(
+            room__room_type=room_type
         )
     )
-    if room_type:
-        active_reservations = active_reservations.filter(room__room_type=room_type)
     totals["base_price"] = Decimal(
-        active_reservations.aggregate(total_sum=Sum("base_price"))["total_sum"] or 0
+        active_reservations.aggregate(total_sum=Sum("base_price"))["total_sum"]
+        or
+        0
     )
     if room_type is RoomTypeChoices.MEETING_ROOM:
         """ Monthly discount of hours only applies to meeting rooms. """
@@ -189,8 +191,7 @@ def get_monthly_bonus_totals(reservations, entity, month, year, room_type=None):
             entity=entity,
             date__year=year,
             date__month=month,
-        )
-        monthly_bonus = monthly_bonus.first()
+        ).first()
         if active_reservations and monthly_bonus:
             bonus_price, amount_left = get_monthly_bonus(
                 monthly_bonus,

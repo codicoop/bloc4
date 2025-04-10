@@ -9,9 +9,10 @@ HALF_TIME = time(13, 0)
 END_TIME = time(20, 0)
 END_TIME_MINUS_ONE = time(19, 0)
 # Discounts
-GENERAL_DISCOUNT = Decimal(0)
 HOSTED_DISCOUNT = Decimal(-0.4)
 BLOC4_DISCOUNT = Decimal(-0.5)
+GENERAL_DISCOUNT = Decimal(0)
+FEDERATED_DISCOUNT = Decimal(-0.15)
 OUTSIDE_DISCOUNT = Decimal(0.15)
 # Months
 MONTHS = {

@@ -1,6 +1,8 @@
+import datetime
+
 from django.conf import settings
 from django.shortcuts import reverse
-from django.test import Client, TestCase
+from django.test import Client, TestCase, override_settings
 
 from apps.entities.tests.factories import EntityFactory
 from apps.reservations.choices import (
@@ -13,6 +15,9 @@ from apps.rooms.tests.factories import RoomFactory
 from apps.users.models import User
 
 
+@override_settings(
+    STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage",
+)
 class ReservationsListViewTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -29,6 +34,9 @@ class ReservationsListViewTest(TestCase):
         self.assertTemplateUsed(response, "reservations/reservations_list.html")
 
 
+@override_settings(
+    STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage",
+)
 class CreateReservationViewTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -46,10 +54,11 @@ class CreateReservationViewTest(TestCase):
         )
         self.room = RoomFactory()
         self.url = reverse("reservations:create_reservation")
+        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
         self.data = {
             "title": "Test title",
             "reservation_type": ReservationTypeChoices.HOURLY,
-            "date": "2024-12-27",
+            "date": tomorrow.strftime("%Y-%m-%d"),
             "start_time": "8:00",
             "end_time": "10:00",
             "assistants": 10,
@@ -73,6 +82,8 @@ class CreateReservationViewTest(TestCase):
         )
         full_url = f"{self.url}{query_params}"
         response = self.client.post(full_url, data=self.data, follow=True)
+        # If the test is not passing the form might be returning errors
+        # print(response.context["form"].errors)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.request["PATH_INFO"], reverse("reservations:reservations_success")

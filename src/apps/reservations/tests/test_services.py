@@ -1,4 +1,3 @@
-import logging
 from datetime import date, time
 from decimal import Decimal
 
@@ -7,7 +6,6 @@ from django.test import TestCase
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.models import Entity, MonthlyBonus
 from apps.entities.tests.factories import EntityFactory, MonthlyBonusFactory
-from apps.reservations import constants
 from apps.reservations.choices import ReservationTypeChoices
 from apps.reservations.models import Reservation
 from apps.reservations.services import get_monthly_bonus_totals, get_total_price
@@ -91,6 +89,30 @@ class ServicesTest(TestCase):
             self.assertEqual(round(result, 2), 57.5)
 
     def test_get_monthly_bonus_totals(self):
+        """
+        The situation with this test is quite dramatical.
+        The get_monthly_bonus_totals function instead of taking care of calculating
+        the discounts for the meeting room reservations (as these are the only
+        ones having a monthly discount), it's used to process batches of reservations
+        of every kind, so you could do something like passing it a list of classroom
+        reservations and with the parameter "room_type=Event rooms".
+        The parameters reservations and room_type of the function should not exist,
+        and the function should be repurposed so it only does what the name of it
+        says.
+        The problem with that is that a considerable part of the current code is
+        coupled with this function, so making this changes implies a quite bigger
+        refactor.
+        This test needed a heavy refactor to adapt to some of the changes, which
+        ended up with this current situation:
+        - Some things that are being tested here make no sense, i.e., testing the
+          discounts for EVENT_ROOM reservations.
+        - Many other tests that could be useful are missing.
+
+        It's such a headache to write tests with the current structure that it will
+        be better to wait until a biggger refactor is done (probable necessary to
+        implement the yearly discounts for classrooms) and then write this test
+        from scratch.
+        """
         Reservation.objects.all().delete()
         Reservation.objects.create(
             reservation_type=ReservationTypeChoices.HOURLY,

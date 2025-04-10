@@ -112,9 +112,9 @@ class Reservation(BaseModel):
         default="",
     )
     activity_type = models.CharField(
-        _("Ateneu's activity"),
+        _("Does the activity belong to one of these services?"),
         choices=ActivityTypeChoices,
-        default=ActivityTypeChoices.BLOC4,
+        default=ActivityTypeChoices.NONE,
         blank=False,
         max_length=10,
     )

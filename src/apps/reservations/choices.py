@@ -10,15 +10,9 @@ class ReservationTypeChoices(models.TextChoices):
 
 
 class ActivityTypeChoices(models.TextChoices):
-    BLOC4 = "bloc4", _("Reservation for Bloc4BCN services")
-    ATENEU = (
-        "ateneu",
-        _(
-            "Activity within the work plan of the Ateneu Cooperatiu"
-            " de Barcelona or Bloc4BCN agreement"
-        ),
-    )
     NONE = "none", _("None of the two")
+    BLOC4 = "bloc4", _("Activity for Bloc4BCN services")
+    ATENEU = ("ateneu", _("Activity for the Ateneu Cooperatiu de Barcelona"))
 
 
 class Bloc4TypeChoices(models.TextChoices):

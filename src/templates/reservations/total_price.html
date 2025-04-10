@@ -7,7 +7,7 @@
   </div>
   <div class="px-3 pt-1 flex justify-between gap-6">
     <p class="text-primary-800">{% translate 'Tax base' %}:</p>
-    <p>{{ base_price }} €</p>
+    <p>{{ base_price|floatformat:2 }} €</p>
   </div>
   <div class="px-3 flex justify-between gap-6">
     <p class="text-primary-800">{% translate 'Taxes' %}:</p>

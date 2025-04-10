@@ -5,15 +5,18 @@ from django.apps import apps
 from django.conf import settings
 from django.db.models import Q, Sum
 from django.db.models.functions import ExtractYear
+from django.urls import reverse
 from django.utils import formats, timezone
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
 from apps.entities.models import MonthlyBonus
+from apps.reservations import constants
 from apps.reservations.choices import (
     ReservationTypeChoices,
 )
 from apps.reservations.constants import MONTHS
+from apps.reservations.models import Reservation
 from apps.rooms.choices import RoomTypeChoices
 from project.post_office import send
 
@@ -50,7 +53,7 @@ def send_mail_reservation(reservation, action):
         "room": reservation.room,
         "entity": reservation.entity.fiscal_name,
         "user_email": reservation.reserved_by.email,
-        "base_price": reservation.base_price,
+        "total_price": reservation.total_price(),
         "status": reservation.get_status_display().lower(),
         "payment_info": payment_info,
         "reservation_url_admin": f"{settings.ABSOLUTE_URL}/"
@@ -79,6 +82,7 @@ def calculate_reservation_price(start_time, end_time, price):
 
 def calculate_discount_price(entity_type, price):
     discount = EntityTypesChoices(entity_type).get_discount_percentage()
+    price = Decimal(price)
     return price + price * discount
 
 
@@ -130,18 +134,23 @@ def get_years_and_months(reservations):
 
 
 def get_monthly_bonus(monthly_bonus, reservations):
-    amount_left = float(monthly_bonus.amount)
+    amount_left = monthly_bonus.amount
     bonus_price = 0
     if amount_left > 0:
-        reservations = reservations.filter(
-            room__room_type=RoomTypeChoices.MEETING_ROOM,
-            # reservation_type=ReservationTypeChoices.HOURLY,
-        ).order_by("created_at")
         for reservation in reservations:
             today = datetime.today().date()
+            # reservation.start_time and reservation.end_time contain only the
+            # time, i.e. 11:00, but we need a full date object with that time.
+            # The .combine creates it, i.e.
+            # reservation.start_time=datetime.time(11, 0)
+            # After the combine:
+            # start_datetime=datetime.datetime(2025, 4, 3, 11, 0).
             start_datetime = datetime.combine(today, reservation.start_time)
             end_datetime = datetime.combine(today, reservation.end_time)
-            reservation_time = (end_datetime - start_datetime).total_seconds() / 3600
+            # Getting the duration of the reservation in hours:
+            reservation_time = Decimal(
+                (end_datetime - start_datetime).total_seconds() / 3600
+            )
             if amount_left - reservation_time < 0:
                 bonus_price += amount_left * reservation.base_price / reservation_time
                 return bonus_price, 0
@@ -152,49 +161,45 @@ def get_monthly_bonus(monthly_bonus, reservations):
     return bonus_price, amount_left
 
 
-def get_monthly_bonus_totals(reservations, entity, month, year):
-    bonuses = {}
-    Reservation = apps.get_model("reservations", "Reservation")
+def get_monthly_bonus_totals(reservations, entity, month, year, room_type):
+    totals = {
+        "discounted_hours_amount": 0,
+        "discounted_hours_amount_left": 0,
+        "base_price": 0,
+        "vat": 0,
+        "total_price": 0,
+    }
+    reservation_model = apps.get_model("reservations", "Reservation")
     active_reservations = reservations.filter(
         Q(
             status__in=[
-                Reservation.StatusChoices.PENDING,
-                Reservation.StatusChoices.CONFIRMED,
+                reservation_model.StatusChoices.PENDING,
+                reservation_model.StatusChoices.CONFIRMED,
             ]
         )
+        & Q(room__room_type=room_type)
     )
-    base_price = active_reservations.aggregate(
-        total_sum=Sum("base_price"),
-    )["total_sum"]
-    monthly_bonus = MonthlyBonus.objects.filter(
-        entity=entity,
-        date__year=year,
-        date__month=month,
+    totals["base_price"] = Decimal(
+        active_reservations.aggregate(total_sum=Sum("base_price"))["total_sum"] or 0
     )
-    try:
-        entity_type = entity.entity_type
-    except AttributeError:
-        return {}
-    if (
-        entity_type in [EntityTypesChoices.HOSTED, EntityTypesChoices.BLOC4]
-        and monthly_bonus.exists()
-        and reservations.exists()
-    ):
-        monthly_bonus = monthly_bonus.first()
-        if active_reservations:
-            (
-                bonus_price,
-                amount_left,
-            ) = get_monthly_bonus(monthly_bonus, active_reservations)
-            bonuses = {
-                "bonus_price": base_price - bonus_price,
-                "amount": monthly_bonus.amount,
-                "amount_left": amount_left,
-            }
-        bonuses["base_price"] = base_price
-        bonuses["is_monthly_bonus"] = True
-        bonuses["amount"] = monthly_bonus.amount
-    return bonuses
+    if room_type is RoomTypeChoices.MEETING_ROOM:
+        """ Monthly discount of hours only applies to meeting rooms. """
+        monthly_bonus = MonthlyBonus.objects.filter(
+            entity=entity,
+            date__year=year,
+            date__month=month,
+        ).first()
+        if active_reservations and monthly_bonus:
+            bonus_price, amount_left = get_monthly_bonus(
+                monthly_bonus,
+                active_reservations,
+            )
+            totals["base_price"] = totals["base_price"] - bonus_price
+            totals["discounted_hours_amount"] = monthly_bonus.amount
+            totals["discounted_hours_amount_left"] = amount_left
+    totals["vat"] = totals["base_price"] * constants.VAT
+    totals["total_price"] = totals["base_price"] + totals["vat"]
+    return totals
 
 
 def convert_datetime_to_str(reservation):
@@ -206,3 +211,82 @@ def convert_datetime_to_str(reservation):
     start_time_str = start_datetime.isoformat() + "+01:00"
     end_time_str = end_datetime.isoformat() + "+01:00"
     return start_time_str, end_time_str
+
+
+def get_filter_reservations_context(filter_year, filter_month, entity):
+    """
+    entity: an Entity instance
+    """
+    reservations = Reservation.objects.filter(
+        entity=entity, date__month=filter_month, date__year=filter_year
+    ).order_by("date")
+    unbilled_reservations = reservations.filter(is_billed=False).first()
+
+    # This refactor would show the discounts card if the entity have free
+    # monthly hours assigned. Still, this, the if for is_monthly_bonus in the
+    # template and the context var might be removed if we decide that this card
+    # is not a "discounts card" but a monthly totals card and we display it to
+    # everyone.
+    is_monthly_bonus = False
+    if (
+        hasattr(entity, "entity_privilege")
+        and entity.entity_privilege.monthly_hours_meeting
+    ):
+        is_monthly_bonus = True
+    meeting_rooms_totals = get_monthly_bonus_totals(
+        reservations,
+        entity,
+        filter_month,
+        filter_year,
+        RoomTypeChoices.MEETING_ROOM,
+    )
+    classrooms_totals = get_monthly_bonus_totals(
+        reservations,
+        entity,
+        filter_month,
+        filter_year,
+        RoomTypeChoices.CLASSROOM,
+    )
+    event_rooms_totals = get_monthly_bonus_totals(
+        reservations,
+        entity,
+        filter_month,
+        filter_year,
+        RoomTypeChoices.EVENT_ROOM,
+    )
+    context = {
+        "is_monthly_bonus": is_monthly_bonus,
+        "amount_left": 0,
+        "base_price": 0,
+        "bonus_price": 0,
+        "reservations": reservations,
+        "month": MONTHS.get(int(filter_month), "")[:3] + ".",
+        "year": filter_year,
+        "entity": entity,
+        "meeting_rooms_totals": meeting_rooms_totals,
+        "classrooms_totals": classrooms_totals,
+        "event_rooms_totals": event_rooms_totals,
+        "totals": {
+            "meeting_rooms": meeting_rooms_totals["total_price"],
+            "classrooms": classrooms_totals["total_price"],
+            "event_rooms": event_rooms_totals["total_price"],
+            "sum": (
+                meeting_rooms_totals["total_price"]
+                + classrooms_totals["total_price"]
+                + event_rooms_totals["total_price"]
+            ),
+        },
+        # Context only used by the "Monthly summary" section:
+        "mark_month_as_billed_url": reverse(
+            "reservations:mark_reservations_as_billed",
+            kwargs={
+                "year": filter_year,
+                "month": filter_month,
+                "entity": entity.pk,
+            },
+        ),
+        # If a single reservation is not billed, we consider the month as not
+        # billed.
+        "month_is_billed": not unbilled_reservations,
+    }
+    return context

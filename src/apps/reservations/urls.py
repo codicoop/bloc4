@@ -11,16 +11,20 @@ from apps.reservations.views import (
     ReservationSuccessView,
     calculate_total_price,
     create_reservation_view,
-    filter_reservations,
+    filter_my_reservations,
+    filter_reservations_summary,
+    mark_reservations_as_billed,
     reservation_detail_view,
     reservations_calendar_view,
     reservations_list,
+    reservations_list_summary,
 )
 
 app_name = "reservations"
 urlpatterns = [
     # Reservations
     path("", login_required(reservations_list), name="reservations_list"),
+    path(_("summary"), reservations_list_summary, name="list_summary"),
     path(
         _("calendar/"),
         login_required(reservations_calendar_view),
@@ -69,5 +73,19 @@ urlpatterns = [
     path(
         _("price/"), login_required(calculate_total_price), name="calculate_total_price"
     ),
-    path(_("filter/"), login_required(filter_reservations), name="filter_reservations"),
+    path(
+        _("filter_summary/"),
+        filter_reservations_summary,
+        name="filter_reservations_summary",
+    ),
+    path(
+        _("filter_my_reservations/"),
+        filter_my_reservations,
+        name="filter_my_reservations",
+    ),
+    path(
+        _("mark_reservations_as_billed/<int:year>/<int:month>/<uuid:entity>/"),
+        mark_reservations_as_billed,
+        name="mark_reservations_as_billed",
+    ),
 ]

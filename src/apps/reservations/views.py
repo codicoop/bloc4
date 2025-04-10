@@ -2,7 +2,13 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlencode
 
-from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.contrib.auth.decorators import user_passes_test
+from django.http import (
+    HttpResponse,
+    HttpResponseNotFound,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
@@ -11,15 +17,15 @@ from django.views.generic import View
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
+from apps.entities.models import Entity
 from apps.reservations import constants
 from apps.reservations.constants import MONTHS
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
-    calculate_discount_price,
     convert_datetime_to_str,
     date_to_full_calendar_format,
-    get_monthly_bonus_totals,
+    get_filter_reservations_context,
     get_total_price,
     get_years_and_months,
     parse_time,
@@ -36,22 +42,15 @@ def reservations_list(request):
     now = timezone.now()
     reservations_all = Reservation.objects.filter(entity=entity)
     months_list, years_list = get_years_and_months(reservations_all)
-    reservations = reservations_all.filter(
-        date__year=now.year, date__month=now.month
-    ).order_by("date")
     context = {
         "is_monthly_bonus": False,
-        "amount_left": 0,
-        "base_price": 0,
-        "bonus_price": 0,
-        "reservations": reservations,
+        "reservations": None,  # The month filter dropdown triggers on load
         "months": months_list,
         "years": years_list,
         "month": MONTHS.get(now.month, "")[:3] + ".",
         "year": now.year,
+        "filter_reservations_url": reverse("reservations:filter_my_reservations"),
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity, now.month, now.year)
-    context.update(bonuses)
     return render(
         request,
         "reservations/reservations_list.html",
@@ -59,30 +58,65 @@ def reservations_list(request):
     )
 
 
-# htmx
-def filter_reservations(request):
-    bonuses = {}
-    entity = request.user.entity
-    context = {"is_monthly_bonus": False}
-    filter_year = request.POST.get("filter_year")
-    filter_month = request.POST.get("filter_month")
-    reservations = Reservation.objects.filter(
-        entity=entity, date__month=filter_month, date__year=filter_year
-    ).order_by("date")
+@user_passes_test(lambda u: u.is_staff)
+def reservations_list_summary(request):
+    now = timezone.now()
+    reservations_all = Reservation.objects.all()
+    months_list, years_list = get_years_and_months(reservations_all)
     context = {
-        "is_monthly_bonus": False,
         "amount_left": 0,
-        "base_price": 0,
         "bonus_price": 0,
-        "reservations": reservations,
-        "month": MONTHS.get(int(filter_month), "")[:3] + ".",
-        "year": filter_year,
+        "reservations": None,  # Initial list empty, they have to pick an Entity
+        "months": months_list,
+        "years": years_list,
+        "month": MONTHS.get(now.month, "")[:3] + ".",
+        "year": now.year,
+        "entities": Entity.objects.all(),
+        "filter_reservations_url": reverse("reservations:filter_reservations_summary"),
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity, filter_month, filter_year)
-    context.update(bonuses)
     return render(
         request,
-        "reservations/components/reservations.html",
+        "reservations/reservations_list_summary.html",
+        context,
+    )
+
+
+def filter_my_reservations(request):
+    filter_year = request.POST.get("filter_year")
+    filter_month = request.POST.get("filter_month")
+    context = get_filter_reservations_context(
+        filter_year,
+        filter_month,
+        request.user.entity,
+    )
+    return render(
+        request,
+        "reservations/components/my_reservations.html",
+        context,
+    )
+
+
+@user_passes_test(lambda u: u.is_staff)
+def filter_reservations_summary(request):
+    if not request.POST.get("filter_entity"):
+        return HttpResponse("")
+
+    # In the reservations_list_summary view (only accessible by is_staff
+    # users) the organization filter dropdown is included.
+    # In the reservations_list view, it's not.
+    # Both views are based in the same template that will trigger the htmx
+    # request pointing to this filter_reservations view.
+    # Therefore, the filter_entity POST value should only arrive when we're
+    # in the Monthly summary section, meaning that only is_staff users can
+    # access it.
+    filter_entity = request.POST.get("filter_entity")
+    entity = get_object_or_404(Entity, id=filter_entity)
+    filter_year = request.POST.get("filter_year")
+    filter_month = request.POST.get("filter_month")
+    context = get_filter_reservations_context(filter_year, filter_month, entity)
+    return render(
+        request,
+        "reservations/components/reservations_summary.html",
         context,
     )
 
@@ -257,14 +291,13 @@ def calculate_total_price(request):
             base_price = get_total_price(
                 reservation_type, entity_type, room, start_time, end_time
             )
-    discounted_base_price = calculate_discount_price(entity_type, base_price)
     return render(
         request,
         "reservations/total_price.html",
         {
-            "base_price": discounted_base_price,
-            "tax": discounted_base_price * constants.VAT,
-            "total_price": discounted_base_price * (constants.VAT + 1),
+            "base_price": base_price,
+            "tax": base_price * constants.VAT,
+            "total_price": base_price * (constants.VAT + 1),
         },
     )
 
@@ -388,3 +421,24 @@ class AjaxCalendarFeed(View):
                 reservation_data["entity"] = reservation.entity.fiscal_name
             data.append(reservation_data)
         return JsonResponse(data, safe=False)
+
+
+# htmx
+@user_passes_test(lambda u: u.is_staff)
+def mark_reservations_as_billed(request, year, month, entity):
+    entity = get_object_or_404(Entity, id=entity)
+    Reservation.objects.filter(
+        entity=entity,
+        date__month=month,
+        date__year=year,
+    ).update(
+        is_billed=True,
+        billed_by=request.user,
+        billed_at=datetime.now(),
+    )
+    context = get_filter_reservations_context(year, month, entity)
+    return render(
+        request,
+        "reservations/components/reservations_summary.html",
+        context,
+    )

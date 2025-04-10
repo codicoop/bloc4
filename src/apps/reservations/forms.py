@@ -61,6 +61,7 @@ class ReservationForm(forms.ModelForm):
                     "min": constants.START_TIME.strftime("%H:%M"),
                     "max": constants.END_TIME_MINUS_ONE.strftime("%H:%M"),
                     "hx-target": "#total_price",
+                    "hx-swap": "outerHTML",
                     "hx-trigger": "change",
                 }
             ),
@@ -71,6 +72,7 @@ class ReservationForm(forms.ModelForm):
                     "min": constants.START_TIME_PLUS_ONE.strftime("%H:%M"),
                     "max": constants.END_TIME.strftime("%H:%M"),
                     "hx-target": "#total_price",
+                    "hx-swap": "outerHTML",
                     "hx-trigger": "change",
                 }
             ),

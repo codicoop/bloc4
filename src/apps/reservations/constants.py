@@ -9,10 +9,11 @@ HALF_TIME = time(13, 0)
 END_TIME = time(20, 0)
 END_TIME_MINUS_ONE = time(19, 0)
 # Discounts
-GENERAL_DISCOUNT = 0
-HOSTED_DISCOUNT = -0.4
-BLOC4_DISCOUNT = -0.5
-OUTSIDE_DISCOUNT = 0.15
+HOSTED_DISCOUNT = Decimal(-0.4)
+BLOC4_DISCOUNT = Decimal(-0.5)
+GENERAL_DISCOUNT = Decimal(0)
+FEDERATED_DISCOUNT = Decimal(-0.3)
+OUTSIDE_DISCOUNT = Decimal(0.15)
 # Months
 MONTHS = {
     1: _("January"),
@@ -31,4 +32,6 @@ MONTHS = {
 # Percentage. It's NOT saved in the database, only used to calculate the total
 # price in the template. Therefore, changing it will modify the VAT amount and
 # the total price for all the historical data.
-VAT = Decimal(0.21)
+# Without the round, the value becomes:
+# 0.2099999999999999922284388276239042170345783233642578125
+VAT = round(Decimal(0.21), 2)

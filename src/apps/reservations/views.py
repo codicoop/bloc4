@@ -292,14 +292,13 @@ def calculate_total_price(request):
             base_price = get_total_price(
                 reservation_type, entity_type, room, start_time, end_time
             )
-    discounted_base_price = calculate_discount_price(entity_type, base_price)
     return render(
         request,
         "reservations/total_price.html",
         {
-            "base_price": discounted_base_price,
-            "tax": discounted_base_price * constants.VAT,
-            "total_price": discounted_base_price * (constants.VAT + 1),
+            "base_price": base_price,
+            "tax": base_price * constants.VAT,
+            "total_price": base_price * (constants.VAT + 1),
         },
     )
 

@@ -1,0 +1,16 @@
+{% extends "./base_reservations_totals.html" %}
+{% load i18n static %}
+
+{% block card_title %}
+{% translate "Event rooms" %}
+{% endblock %}
+
+{% block discount %}
+  {% if values.discounted_hours_amount %}
+    <p class="col-span-4 text-balance text-md">{% translate 'Initial month discount hours' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ values.discounted_hours_amount|floatformat:1 }} {% translate 'hours' %}</p>
+    <p class="col-span-4 text-balance text-md">{% translate 'Discount hours left' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">{{ values.discounted_hours_amount_left|floatformat:1 }} {% translate 'hours' %}</p>
+    <hr class="col-span-6 h-px my-3 bg-primary-200 border-0 dark:bg-primary-700">
+  {% endif %}
+{% endblock %}

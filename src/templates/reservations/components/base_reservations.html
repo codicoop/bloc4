@@ -32,14 +32,11 @@
 
       <p class="mt-4">{% translate 'Breakdown by room type:' %}</p>
 
-      {% translate "Meeting rooms" as totals_title %}
-      {% include "./reservations_totals.html" with title=totals_title values=meeting_rooms_totals %}
+      {% include "./reservations_totals_meeting_rooms.html" with values=meeting_rooms_totals %}
 
-      {% translate "Teaching rooms" as totals_title %}
-      {% include "./reservations_totals.html" with title=totals_title values=classrooms_totals %}
+      {% include "./reservations_totals_classrooms.html" with values=classrooms_totals %}
 
-      {% translate "Event rooms" as totals_title %}
-      {% include "./reservations_totals.html" with title=totals_title values=event_rooms_totals %}
+      {% include "./reservations_totals_event_rooms.html" with values=event_rooms_totals %}
   </div>
 
   <div class="col-start-1 flex flex-col gap-4 mb-8">

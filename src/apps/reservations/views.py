@@ -23,7 +23,6 @@ from apps.reservations.constants import MONTHS
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
-    calculate_discount_price,
     convert_datetime_to_str,
     date_to_full_calendar_format,
     get_filter_reservations_context,

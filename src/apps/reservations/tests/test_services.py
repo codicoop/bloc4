@@ -262,7 +262,7 @@ class ServicesTest(TestCase):
             )
             self.assertEqual(
                 result,
-        {
+                {
                     "discounted_hours_amount": Decimal(20),
                     "discounted_hours_amount_left": Decimal(12),
                     "base_price": round(Decimal(0)),

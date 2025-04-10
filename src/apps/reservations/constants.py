@@ -32,5 +32,6 @@ MONTHS = {
 # Percentage. It's NOT saved in the database, only used to calculate the total
 # price in the template. Therefore, changing it will modify the VAT amount and
 # the total price for all the historical data.
-# Without the round, the value becomes: 0.2099999999999999922284388276239042170345783233642578125
+# Without the round, the value becomes:
+# 0.2099999999999999922284388276239042170345783233642578125
 VAT = round(Decimal(0.21), 2)

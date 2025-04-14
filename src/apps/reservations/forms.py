@@ -5,7 +5,8 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
-from flowbite_classes.widgets import FlowBiteDateInput, FlowBiteTimeInput
+from flowbite_classes.widgets import FlowBiteDateInput, FlowBiteTimeInput, \
+    FlowBiteNumericIncrementalInput
 
 from apps.reservations.models import Reservation
 from apps.reservations.services import calculate_discount_price
@@ -13,7 +14,6 @@ from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
 from . import constants
-from .widgets.custom_numeric import CustomNumericInput
 from .widgets.custom_radio import CustomRadioSelect
 
 
@@ -76,7 +76,12 @@ class ReservationForm(forms.ModelForm):
                     "hx-trigger": "change",
                 }
             ),
-            "assistants": CustomNumericInput(),
+            "assistants": FlowBiteNumericIncrementalInput(
+                attrs={
+                    "data-input-counter-min": 1,
+                    "data-input-counter-max": 500,
+                },
+            ),
             "catering": forms.CheckboxInput,
             "notes": forms.Textarea(),
             "activity_type": forms.Select(

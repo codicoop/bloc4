@@ -508,4 +508,4 @@ CODI_COOP_ENABLE_MONKEY_PATCH = True
 # Beware that these CANNOT BE CHANGED once the instance is already deployed, or
 # you are going to end up with a new group with the new name while all the users
 # are still assigned to the previous group.
-GROUP_ADMINS = _("Administrators")
+GROUP_ADMINS = "Administrators"

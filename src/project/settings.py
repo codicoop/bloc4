@@ -224,6 +224,10 @@ VERIFICATION_REQUIRED_IGNORE_VIEW_NAMES = LOGIN_REQUIRED_IGNORE_VIEW_NAMES + [
     "registration:user_validation",
     "registration:send_verification_code",
     "registration:email_verification_complete",
+    # Monthly summary views. They filter to allow only is_staff users.
+    "reservations:list_summary",
+    "reservations:filter_reservations_summary",
+    "reservations:mark_reservations_as_billed",
 ]
 
 ################################################################################

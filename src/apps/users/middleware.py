@@ -12,6 +12,7 @@ class VerificationRequiredMiddleware:
         view_names = settings.VERIFICATION_REQUIRED_IGNORE_VIEW_NAMES
         if (
             view_name not in view_names
+            and not request.path.startswith(reverse('admin:index'))
             and request.user.is_authenticated
             and
             (

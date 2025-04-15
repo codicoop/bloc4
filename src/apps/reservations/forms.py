@@ -5,8 +5,11 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
-from flowbite_classes.widgets import FlowBiteDateInput, FlowBiteTimeInput, \
-    FlowBiteNumericIncrementalInput
+from flowbite_classes.widgets import (
+    FlowBiteDateInput,
+    FlowBiteNumericIncrementalInput,
+    FlowBiteTimeInput,
+)
 
 from apps.reservations.models import Reservation
 from apps.reservations.services import calculate_discount_price
@@ -14,7 +17,7 @@ from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
 from . import constants
-from .constants import START_TIME, END_TIME_MINUS_ONE, START_TIME_PLUS_ONE, END_TIME
+from .constants import END_TIME, END_TIME_MINUS_ONE, START_TIME, START_TIME_PLUS_ONE
 from .widgets.custom_radio import CustomRadioSelect
 
 
@@ -199,9 +202,8 @@ class ReservationForm(forms.ModelForm):
             )
         # April 2025, now admins should be able to make reservations outside
         # the time span.
-        if (
-            not self.request.user.is_administrator() and
-            not (START_TIME <= cleaned_data.get("start_time") <= END_TIME_MINUS_ONE)
+        if not self.request.user.is_administrator() and not (
+            START_TIME <= cleaned_data.get("start_time") <= END_TIME_MINUS_ONE
         ):
             errors.update(
                 {
@@ -216,9 +218,8 @@ class ReservationForm(forms.ModelForm):
                     )
                 },
             )
-        if (
-            not self.request.user.is_administrator() and
-            not (START_TIME_PLUS_ONE <= cleaned_data.get("end_time") <= END_TIME)
+        if not self.request.user.is_administrator() and not (
+            START_TIME_PLUS_ONE <= cleaned_data.get("end_time") <= END_TIME
         ):
             errors.update(
                 {

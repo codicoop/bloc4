@@ -12,12 +12,9 @@ class VerificationRequiredMiddleware:
         view_names = settings.VERIFICATION_REQUIRED_IGNORE_VIEW_NAMES
         if (
             view_name not in view_names
-            and not request.path.startswith(reverse('admin:index'))
+            and not request.path.startswith(reverse("admin:index"))
             and request.user.is_authenticated
-            and
-            (
-                not request.user.email_verified or not request.user.entity
-            )
+            and (not request.user.email_verified or not request.user.entity)
         ):
             return redirect(reverse("registration:profile_details"))
         return self.get_response(request)

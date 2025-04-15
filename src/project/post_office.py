@@ -29,12 +29,10 @@ def send(
 ):
     if not language:
         language = get_language()
-    print(f"before if, {sender=}")
     if not sender:
         # We're defaulting to None so post_office will use the default one,
         # which is settings.DEFAULT_FROM_EMAIL.
         sender = Setting.get("FROM_EMAIL") or None
-        print(f"inside if, {sender=}")
     return base_mail.send(
         recipients=recipients,
         sender=sender,

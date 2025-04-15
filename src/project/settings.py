@@ -384,6 +384,17 @@ EXTRA_SETTINGS_DEFAULTS = [
         "HTML de l'aplicació pública, el text alt del logo i altres llocs.",
     },
     {
+        "name": "FROM_EMAIL",
+        "type": "Setting.TYPE_EMAIL",
+        "value": "",
+        "description": (
+            "Remitent dels correus que genera l'aplicació. IMPORTANT: cal que "
+            "aquest remitent estigui autoritzat pel proveïdor on s'allotja "
+            "l'aplicació. SI INDIQUEU UN REMITENT NO AUTORITZAT, CAP DELS CORREUS "
+            "QUE GENERA L'APLICACIÓ S'ENVIARÀ CORRECTAMENT."
+        ),
+    },
+    {
         "name": "CONTACT_EMAIL",
         "type": "Setting.TYPE_EMAIL",
         "value": "",

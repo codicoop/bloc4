@@ -34,9 +34,15 @@ from apps.reservations.services import (
 from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.constanst import ALL_COLOR, CALENDAR_TEXT_COLOR
 from apps.rooms.models import Room
+from project.mixins import UserHaveEntityAndVerifiedEmail
+from project.services import user_have_entity_and_verified_email
 from project.views import StandardSuccess
 
 
+@user_passes_test(
+    user_have_entity_and_verified_email,
+    login_url=reverse_lazy("registration:profile_details"),
+)
 def reservations_list(request):
     entity = request.user.entity
     now = timezone.now()
@@ -81,6 +87,10 @@ def reservations_list_summary(request):
     )
 
 
+@user_passes_test(
+    user_have_entity_and_verified_email,
+    login_url=reverse_lazy("registration:profile_details"),
+)
 def filter_my_reservations(request):
     filter_year = request.POST.get("filter_year")
     filter_month = request.POST.get("filter_month")
@@ -121,6 +131,10 @@ def filter_reservations_summary(request):
     )
 
 
+@user_passes_test(
+    user_have_entity_and_verified_email,
+    login_url=reverse_lazy("registration:profile_details"),
+)
 def create_reservation_view(request):
     start = request.GET.get("start")
     end = request.GET.get("end")
@@ -221,6 +235,10 @@ def create_reservation_view(request):
     )
 
 
+@user_passes_test(
+    user_have_entity_and_verified_email,
+    login_url=reverse_lazy("registration:profile_details"),
+)
 def reservation_detail_view(request, id):
     filter_params = {"id": id}
     has_access_to_all_reservations = request.user.is_staff or request.user.is_janitor
@@ -279,6 +297,10 @@ def reservation_detail_view(request, id):
 
 
 # htmx
+@user_passes_test(
+    user_have_entity_and_verified_email,
+    login_url=reverse_lazy("registration:profile_details"),
+)
 def calculate_total_price(request):
     base_price = 0
     if request.htmx:
@@ -302,7 +324,7 @@ def calculate_total_price(request):
     )
 
 
-class ReservationSuccessView(StandardSuccess):
+class ReservationSuccessView(UserHaveEntityAndVerifiedEmail, StandardSuccess):
     page_title = _("Successful reservation")
     description = _("Successful reservation.")
     url = reverse_lazy("reservations:reservations_list")
@@ -315,7 +337,7 @@ class ReservationSuccessView(StandardSuccess):
         return reversed_url
 
 
-class ReservationRedirectSuccessView(StandardSuccess):
+class ReservationRedirectSuccessView(UserHaveEntityAndVerifiedEmail, StandardSuccess):
     page_title = _("Successful reservation")
     description = _(
         "Successful reservation.<br><br> As you've selected you need "
@@ -341,7 +363,7 @@ class ReservationRedirectSuccessView(StandardSuccess):
         return reversed_url
 
 
-class ReservationCancelledView(StandardSuccess):
+class ReservationCancelledView(UserHaveEntityAndVerifiedEmail, StandardSuccess):
     page_title = _("Reservation cancelled")
     description = _("Reservation cancelled.")
     url = reverse_lazy("reservations:reservations_list")
@@ -354,6 +376,11 @@ class ReservationCancelledView(StandardSuccess):
             return self.url
         return reversed_url
 
+
+@user_passes_test(
+    user_have_entity_and_verified_email,
+    login_url=reverse_lazy("registration:profile_details"),
+)
 
 def reservations_calendar_view(request):
     context = {}

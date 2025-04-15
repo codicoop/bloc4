@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -111,7 +112,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     def full_name(self):
         return f"{self.name} {self.surnames}".strip()
 
-    def has_admin_role(self):
+    def has_admin_panel_access(self):
         return self.is_staff or self.is_superuser
 
     @property
@@ -119,6 +120,9 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
         return absolute_url(
             reverse("admin:users_user_change", kwargs={"object_id": self.pk})
         )
+
+    def is_administrator(self):
+        return self.groups.filter(name=settings.GROUP_ADMINS).exists()
 
     class Meta:
         verbose_name = _("user")

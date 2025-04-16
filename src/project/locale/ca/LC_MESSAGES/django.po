@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-04 15:42+0100\n"
+"POT-Creation-Date: 2025-04-16 11:30+0200\n"
 "PO-Revision-Date: 2024-11-28 17:17+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,13 +39,9 @@ msgstr "Anglès"
 msgid "Catalan"
 msgstr "Català"
 
-#: project/settings.py:430
+#: project/settings.py:445
 msgid "Dynamic settings"
 msgstr "Configuracions dinàmiques"
-
-#: project/settings.py:496
-msgid "Administrators"
-msgstr "Administradors"
 
 #: project/tests/test_selenium.py:66
 msgid "Site administration | Django site admin"
@@ -86,6 +82,9 @@ msgstr "Fet!"
 #: project/views.py:41
 msgid "The registry was updated correctly."
 msgstr "El registre ha estat actualitzat correctament."
+
+#~ msgid "Administrators"
+#~ msgstr "Administradors"
 
 #~ msgid ""
 #~ "This name will be used for the HTML title of the public app, logo alt "

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-10 16:36+0200\n"
-"PO-Revision-Date: 2025-04-03 12:07+0200\n"
+"POT-Creation-Date: 2025-04-16 11:30+0200\n"
+"PO-Revision-Date: 2025-04-16 11:32+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -25,21 +25,19 @@ msgstr "Privilegis de l'entitat"
 
 #: apps/entities/choices.py:8
 msgid "Hosted entity"
-msgstr "Entitat allotjada"
+msgstr "Entitats allotjada"
 
 #: apps/entities/choices.py:9
 msgid "Bloc4 entity"
-msgstr "Entitat de Bloc4"
+msgstr "Entitats de Bloc4"
 
 #: apps/entities/choices.py:10
 msgid "Public sector and social economy entities"
-msgstr ""
+msgstr "Entitats de l'ESS i sector públic"
 
 #: apps/entities/choices.py:11
-#, fuzzy
-#| msgid "Federated cooperative"
 msgid "Coòpolis and federated cooperatives"
-msgstr "Cooperativa federada"
+msgstr "Entitats sòcies de Coòpolis i federades"
 
 #: apps/entities/choices.py:12
 msgid "Other entities"

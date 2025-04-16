@@ -36,6 +36,12 @@ urlpatterns = [
         name="ajax_room_calendar_feed",
     ),
     path(
+        # This view has one required parameter: id, and 2 optional ones: start
+        # and end. They're passed via query parameters instead of the path
+        # because there are multiple JS features that need to generate the URL
+        # dynamically client-side: when you select a span of time in the calendar
+        # and when you click the "book a room" button that is visible for mobile
+        # resolutions.
         _("create/"), login_required(create_reservation_view), name="create_reservation"
     ),
     path(

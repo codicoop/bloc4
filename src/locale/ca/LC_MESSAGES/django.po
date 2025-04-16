@@ -1343,7 +1343,7 @@ msgstr "Hores de descompte que queden"
 
 #: templates/reservations/components/reservations_totals_event_rooms.html:5
 msgid "Event rooms"
-msgstr "Espais d'esdeveniments"
+msgstr "Esdeveniments"
 
 #: templates/reservations/components/reservations_totals_event_rooms.html:10
 #: templates/reservations/components/reservations_totals_meeting_rooms.html:10

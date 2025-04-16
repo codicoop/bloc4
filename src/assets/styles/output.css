@@ -2757,6 +2757,11 @@ input:checked + .toggle-bg {
   border-color: rgb(146 126 208 / var(--tw-border-opacity));
 }
 
+.focus\:border-primary-600:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(129 105 201 / var(--tw-border-opacity));
+}
+
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -2812,6 +2817,11 @@ input:checked + .toggle-bg {
 .focus\:ring-primary-700:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(116 90 196 / var(--tw-ring-opacity));
+}
+
+.focus\:ring-primary-600:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(129 105 201 / var(--tw-ring-opacity));
 }
 
 .disabled\:cursor-not-allowed:disabled {
@@ -3051,6 +3061,16 @@ input:checked + .toggle-bg {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+:is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(173 173 173 / var(--tw-placeholder-opacity));
+}
+
+:is(.dark .dark\:placeholder-gray-400)::placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(173 173 173 / var(--tw-placeholder-opacity));
+}
+
 :is(.dark .dark\:hover\:\!bg-primary-700:hover) {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(116 90 196 / var(--tw-bg-opacity)) !important;
@@ -3096,6 +3116,11 @@ input:checked + .toggle-bg {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+:is(.dark .dark\:focus\:border-primary-500:focus) {
+  --tw-border-opacity: 1;
+  border-color: rgb(146 126 208 / var(--tw-border-opacity));
+}
+
 :is(.dark .dark\:focus\:ring-gray-600:focus) {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(136 136 129 / var(--tw-ring-opacity));
@@ -3114,6 +3139,11 @@ input:checked + .toggle-bg {
 :is(.dark .dark\:focus\:ring-primary-800:focus) {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(70 49 135 / var(--tw-ring-opacity));
+}
+
+:is(.dark .dark\:focus\:ring-primary-500:focus) {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(146 126 208 / var(--tw-ring-opacity));
 }
 
 :is(.dark .peer:checked ~ .dark\:peer-checked\:text-primary-500) {
@@ -3316,6 +3346,10 @@ input:checked + .toggle-bg {
 }
 
 @media (min-width: 1024px) {
+  .lg\:col-start-2 {
+    grid-column-start: 2;
+  }
+
   .lg\:my-16 {
     margin-top: 4rem;
     margin-bottom: 4rem;
@@ -3335,6 +3369,10 @@ input:checked + .toggle-bg {
 
   .lg\:mt-8 {
     margin-top: 2rem;
+  }
+
+  .lg\:-mt-36 {
+    margin-top: -9rem;
   }
 
   .lg\:grid {

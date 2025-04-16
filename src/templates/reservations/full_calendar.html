@@ -102,8 +102,14 @@
       md:text-lg md:hidden dark:text-white">
       {% translate "To book a room, can choose a day and time on the calendar or go directly to the form with the button." %}
     </h2>
-    <!-- FALTA enllaç -->
-    <a href="{% url 'reservations:create_reservation' %}?id=de40fa65-a8b7-439c-9a8b-33e0ffa2bd86">
+    <a href="" id="btn_create_url" class=""
+      _="on click 
+        if my.classList does not include 'room-true'
+          remove .hidden from #alert-no-room
+          set {open: true} on #alert-no-room
+          halt default exit
+        end
+      ">
       <div class="w-full px-5 py-2.5 mt-12 mb-16 rounded-lg bg-primary-600 text-white font-semibold text-sm text-center cursor-pointer
         hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300
         md:hidden

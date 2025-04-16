@@ -14,7 +14,6 @@ from flowbite_classes.widgets import (
 from apps.reservations.models import Reservation
 from apps.reservations.services import calculate_discount_price
 from apps.rooms.choices import RoomTypeChoices
-from apps.rooms.models import Room
 
 from . import constants
 from .constants import END_TIME, END_TIME_MINUS_ONE, START_TIME, START_TIME_PLUS_ONE
@@ -125,6 +124,7 @@ class ReservationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request", None)
+        self.room = kwargs.pop("room", None)
         super(ReservationForm, self).__init__(*args, **kwargs)
         calculate_price_url = reverse("reservations:calculate_total_price")
         self.fields["start_time"].widget.attrs.update({"hx-post": calculate_price_url})
@@ -142,51 +142,48 @@ class ReservationForm(forms.ModelForm):
                     "max": constants.END_TIME.strftime("%H:%M"),
                 },
             )
-        if self.request:
-            id = self.request.GET.get("id")
-            room = Room.objects.get(id=id)
-            if room.room_type == RoomTypeChoices.MEETING_ROOM:
-                self.fields.pop("privacy", None)
-                self.fields.pop("description", None)
-                self.fields.pop("url", None)
-                self.fields.pop("poster", None)
-            self.fields["assistants"].widget.attrs.update(
-                {"min": "1", "max": str(room.capacity)}
-            )
-            if id == Setting.get("CATERING_ROOM"):
-                self.fields.pop("catering", None)
-            if Setting.get("TERMS_USE"):
-                self.fields["terms_use"].label = mark_safe(
-                    _(
-                        'I have read and agree with the <a href="{url}" '
-                        'target="_blank" style="color: '
-                        '#be3bc7; font-weight: bold;">rules of use of the space</a>'
-                    ).format(
-                        url=(
-                            f"{settings.AWS_S3_ENDPOINT_URL}/"
-                            f"{settings.AWS_STORAGE_BUCKET_NAME}/"
-                            f"{settings.AWS_PUBLIC_MEDIA_LOCATION}/"
-                            f"{Setting.get('TERMS_USE')}"
-                        )
+        if self.room.room_type == RoomTypeChoices.MEETING_ROOM:
+            self.fields.pop("privacy", None)
+            self.fields.pop("description", None)
+            self.fields.pop("url", None)
+            self.fields.pop("poster", None)
+        self.fields["assistants"].widget.attrs.update(
+            {"min": "1", "max": str(self.room.capacity)}
+        )
+        if self.room.pk == Setting.get("CATERING_ROOM"):
+            self.fields.pop("catering", None)
+        if Setting.get("TERMS_USE"):
+            self.fields["terms_use"].label = mark_safe(
+                _(
+                    'I have read and agree with the <a href="{url}" '
+                    'target="_blank" style="color: '
+                    '#be3bc7; font-weight: bold;">rules of use of the space</a>'
+                ).format(
+                    url=(
+                        f"{settings.AWS_S3_ENDPOINT_URL}/"
+                        f"{settings.AWS_STORAGE_BUCKET_NAME}/"
+                        f"{settings.AWS_PUBLIC_MEDIA_LOCATION}/"
+                        f"{Setting.get('TERMS_USE')}"
                     )
                 )
-            prices = {
-                "price": calculate_discount_price(
-                    self.request.user.entity.entity_type, room.price
-                ),
-                "price_half_day": calculate_discount_price(
-                    self.request.user.entity.entity_type,
-                    room.price_half_day,
-                ),
-                "price_all_day": calculate_discount_price(
-                    self.request.user.entity.entity_type,
-                    room.price_all_day,
-                ),
-            }
-            self.fields["reservation_type"].widget = CustomRadioSelect(
-                prices=prices,
             )
-            self.fields["data_policy"].help_text = Setting.get("DATA_POLICY")
+        prices = {
+            "price": calculate_discount_price(
+                self.request.user.entity.entity_type, self.room.price
+            ),
+            "price_half_day": calculate_discount_price(
+                self.request.user.entity.entity_type,
+                self.room.price_half_day,
+            ),
+            "price_all_day": calculate_discount_price(
+                self.request.user.entity.entity_type,
+                self.room.price_all_day,
+            ),
+        }
+        self.fields["reservation_type"].widget = CustomRadioSelect(
+            prices=prices,
+        )
+        self.fields["data_policy"].help_text = Setting.get("DATA_POLICY")
 
     def clean(self):
         cleaned_data = super().clean()

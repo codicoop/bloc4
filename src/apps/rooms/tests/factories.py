@@ -5,6 +5,7 @@ from apps.rooms.models import Room
 
 class RoomFactory(DjangoModelFactory):
     capacity = 10
+    price = 10
 
     class Meta:
         model = Room

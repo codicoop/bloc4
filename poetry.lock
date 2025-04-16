@@ -210,13 +210,13 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "codi-cooperatiu-internal-tools"
-version = "0.2"
+version = "0.2.1"
 description = "Codi Cooperatiu internal tools"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "codi_cooperatiu_internal_tools-0.2-py3-none-any.whl", hash = "sha256:de8de2d5ad07003e88242b788cca4c2543c7b2fe6a9f073a6be3f0312b4616db"},
-    {file = "codi_cooperatiu_internal_tools-0.2.tar.gz", hash = "sha256:44be362b5604a98e98fc3fed182d36eaa72f5becff2c079d3f8c6fc85ab81b32"},
+    {file = "codi_cooperatiu_internal_tools-0.2.1-py3-none-any.whl", hash = "sha256:e7993d20e77c6270364048fc554ea667d47a53521860c422ddaeb385164cbafa"},
+    {file = "codi_cooperatiu_internal_tools-0.2.1.tar.gz", hash = "sha256:d375126b15a25577626db618721d38b6ed8c279775f89f69f07221bd53582a4a"},
 ]
 
 [package.dependencies]
@@ -1537,4 +1537,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "592e7045243debcf7474c6726a86b550437f0299a2f63214f1b95db198a46318"
+content-hash = "4601ccf2986219c36968c1baf74bc7dc80b43f2c9a8be8653b4f5daedcd5a343"

@@ -101,7 +101,7 @@
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem">{% translate "Home" %}</a>
                 </li>
-                {% if request.user.has_admin_role %}
+                {% if request.user.has_admin_panel_access %}
                 <li>
                   <a href="{% url 'admin:index' %}"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -206,7 +206,7 @@
                 </a>
               </li>
               {% endif %}
-              {% if request.user.has_admin_role %}
+              {% if request.user.has_admin_panel_access %}
               <!-- Admin -->
               <li>
                 <a href="{% url 'admin:index' %}" id="id_menu_admin"

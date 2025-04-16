@@ -5,7 +5,11 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
-from flowbite_classes.widgets import FlowBiteDateInput, FlowBiteTimeInput
+from flowbite_classes.widgets import (
+    FlowBiteDateInput,
+    FlowBiteNumericIncrementalInput,
+    FlowBiteTimeInput,
+)
 
 from apps.reservations.models import Reservation
 from apps.reservations.services import calculate_discount_price
@@ -13,7 +17,7 @@ from apps.rooms.choices import RoomTypeChoices
 from apps.rooms.models import Room
 
 from . import constants
-from .widgets.custom_numeric import CustomNumericInput
+from .constants import END_TIME, END_TIME_MINUS_ONE, START_TIME, START_TIME_PLUS_ONE
 from .widgets.custom_radio import CustomRadioSelect
 
 
@@ -58,8 +62,6 @@ class ReservationForm(forms.ModelForm):
                 attrs={
                     "type": "time",
                     "step": 900,
-                    "min": constants.START_TIME.strftime("%H:%M"),
-                    "max": constants.END_TIME_MINUS_ONE.strftime("%H:%M"),
                     "hx-target": "#total_price",
                     "hx-swap": "outerHTML",
                     "hx-trigger": "change",
@@ -69,14 +71,17 @@ class ReservationForm(forms.ModelForm):
                 attrs={
                     "type": "time",
                     "step": 900,
-                    "min": constants.START_TIME_PLUS_ONE.strftime("%H:%M"),
-                    "max": constants.END_TIME.strftime("%H:%M"),
                     "hx-target": "#total_price",
                     "hx-swap": "outerHTML",
                     "hx-trigger": "change",
                 }
             ),
-            "assistants": CustomNumericInput(),
+            "assistants": FlowBiteNumericIncrementalInput(
+                attrs={
+                    "data-input-counter-min": 1,
+                    "data-input-counter-max": 500,
+                },
+            ),
             "catering": forms.CheckboxInput,
             "notes": forms.Textarea(),
             "activity_type": forms.Select(
@@ -119,13 +124,26 @@ class ReservationForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        request = kwargs.pop("request", None)
+        self.request = kwargs.pop("request", None)
         super(ReservationForm, self).__init__(*args, **kwargs)
         calculate_price_url = reverse("reservations:calculate_total_price")
         self.fields["start_time"].widget.attrs.update({"hx-post": calculate_price_url})
         self.fields["end_time"].widget.attrs.update({"hx-post": calculate_price_url})
-        if request:
-            id = request.GET.get("id")
+        if not self.request.user.is_administrator():
+            self.fields["start_time"].widget.attrs.update(
+                {
+                    "min": constants.START_TIME.strftime("%H:%M"),
+                    "max": constants.END_TIME_MINUS_ONE.strftime("%H:%M"),
+                },
+            )
+            self.fields["end_time"].widget.attrs.update(
+                {
+                    "min": constants.START_TIME_PLUS_ONE.strftime("%H:%M"),
+                    "max": constants.END_TIME.strftime("%H:%M"),
+                },
+            )
+        if self.request:
+            id = self.request.GET.get("id")
             room = Room.objects.get(id=id)
             if room.room_type == RoomTypeChoices.MEETING_ROOM:
                 self.fields.pop("privacy", None)
@@ -154,14 +172,14 @@ class ReservationForm(forms.ModelForm):
                 )
             prices = {
                 "price": calculate_discount_price(
-                    request.user.entity.entity_type, room.price
+                    self.request.user.entity.entity_type, room.price
                 ),
                 "price_half_day": calculate_discount_price(
-                    request.user.entity.entity_type,
+                    self.request.user.entity.entity_type,
                     room.price_half_day,
                 ),
                 "price_all_day": calculate_discount_price(
-                    request.user.entity.entity_type,
+                    self.request.user.entity.entity_type,
                     room.price_all_day,
                 ),
             }
@@ -182,4 +200,39 @@ class ReservationForm(forms.ModelForm):
                     )
                 },
             )
+        # April 2025, now admins should be able to make reservations outside
+        # the time span.
+        if not self.request.user.is_administrator() and not (
+            START_TIME <= cleaned_data.get("start_time") <= END_TIME_MINUS_ONE
+        ):
+            errors.update(
+                {
+                    "start_time": ValidationError(
+                        _(
+                            "The start time must be between "
+                            "{start_time} and {end_time}."
+                        ).format(
+                            start_time=START_TIME.strftime("%H:%M"),
+                            end_time=END_TIME_MINUS_ONE.strftime("%H:%M"),
+                        )
+                    )
+                },
+            )
+        if not self.request.user.is_administrator() and not (
+            START_TIME_PLUS_ONE <= cleaned_data.get("end_time") <= END_TIME
+        ):
+            errors.update(
+                {
+                    "end_time": ValidationError(
+                        _(
+                            "The end time must be between "
+                            "{start_time} and {end_time}."
+                        ).format(
+                            start_time=START_TIME_PLUS_ONE.strftime("%H:%M"),
+                            end_time=END_TIME.strftime("%H:%M"),
+                        )
+                    )
+                },
+            )
+        if errors:
             raise ValidationError(errors)

@@ -1,3 +1,4 @@
+import copy
 from datetime import date, timedelta
 
 from django.conf import settings
@@ -8,6 +9,7 @@ from django.urls import reverse
 from django.test.client import RequestFactory
 
 from apps.entities.tests.factories import EntityFactory
+from apps.reservations import constants
 from apps.reservations.choices import (
     ActivityTypeChoices,
     Bloc4TypeChoices,
@@ -38,7 +40,6 @@ class ReservationModelTest(TestCase):
         user = UserFactory()
         user.entity = entity
         request.user = user
-        print(f"{request.user.is_administrator()=}")
         base_data_yesterday = {
             "title": "Test reservation",
             "reservation_type": ReservationTypeChoices.HOURLY,
@@ -76,7 +77,6 @@ class ReservationModelTest(TestCase):
         form_error_too_early_data = base_data_tomorrow.copy()
         form_error_too_early_data["start_time"] = "02:00"
         form_error_too_early_data["end_time"] = "10:00"
-        print(f"{form_error_too_early_data=}")
         self.form_error_too_early = ReservationForm(
             data=form_error_too_early_data,
             request=request,
@@ -91,13 +91,14 @@ class ReservationModelTest(TestCase):
             room=room,
         )
         # Switching to an administrator user
-        request.user = admin_user
+        request_admin = copy.copy(request)
+        request_admin.user = admin_user
         form_allowed_before_initial_hour_data = base_data_tomorrow.copy()
         form_allowed_before_initial_hour_data["start_time"] = "02:00"
         form_allowed_before_initial_hour_data["end_time"] = "10:00"
         self.form_allowed_before_initial_hour = ReservationForm(
             data=form_allowed_before_initial_hour_data,
-            request=request,
+            request=request_admin,
             room=room,
         )
         form_allowed_after_last_hour_data = base_data_tomorrow.copy()
@@ -105,7 +106,7 @@ class ReservationModelTest(TestCase):
         form_allowed_after_last_hour_data["end_time"] = "22:00"
         self.form_allowed_after_last_hour = ReservationForm(
             data=form_allowed_after_last_hour_data,
-            request=request,
+            request=request_admin,
             room=room,
         )
         # This test was originally done with a standard user, but a normal
@@ -119,16 +120,11 @@ class ReservationModelTest(TestCase):
         form_error_more_20_hours_data["end_time"] = "23:00"
         self.form_error_more_20_hours = ReservationForm(
             data=form_error_more_20_hours_data,
-            request=request,
+            request=request_admin,
             room=room,
         )
 
     def test_form_errors(self):
-        print(f"{self.form_error_greater_current_date.errors=}")
-        print(f"{self.form_error_too_early.errors=}")
-        print(f"{self.form_error_too_late.errors=}")
-        print(f"{self.form_allowed_before_initial_hour.errors=}")
-        print(f"{self.form_allowed_after_last_hour.errors=}")
         self.assertFalse(self.form_error_greater_current_date.is_valid())
         self.assertFalse(self.form_error_no_full_hour.is_valid())
         self.assertFalse(self.form_error_more_20_hours.is_valid())
@@ -150,11 +146,27 @@ class ReservationModelTest(TestCase):
             )
             self.assertEqual(
                 self.form_error_too_early.errors["start_time"],
-                [_("The maximum standby time is 20 hours.")],
+                [
+                    _(
+                        "The start time must be between "
+                        "{start_time} and {end_time}."
+                    ).format(
+                        start_time=constants.START_TIME.strftime("%H:%M"),
+                        end_time=constants.END_TIME_MINUS_ONE.strftime("%H:%M"),
+                    )
+                ],
             )
             self.assertEqual(
                 self.form_error_too_late.errors["end_time"],
-                [_("The maximum standby time is 20 hours.")],
+                [
+                    _(
+                        "The end time must be between "
+                        "{start_time} and {end_time}."
+                    ).format(
+                        start_time=constants.START_TIME_PLUS_ONE.strftime("%H:%M"),
+                        end_time=constants.END_TIME.strftime("%H:%M"),
+                    ),
+                ],
             )
 
         # Thinks that should be allowed to do because is Administrator

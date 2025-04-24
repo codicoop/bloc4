@@ -3,10 +3,10 @@ from datetime import date, timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import Group
-from django.utils.translation import gettext_lazy as _
 from django.test import TestCase
-from django.urls import reverse
 from django.test.client import RequestFactory
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
 from apps.entities.tests.factories import EntityFactory
 from apps.reservations import constants
@@ -148,8 +148,7 @@ class ReservationModelTest(TestCase):
                 self.form_error_too_early.errors["start_time"],
                 [
                     _(
-                        "The start time must be between "
-                        "{start_time} and {end_time}."
+                        "The start time must be between " "{start_time} and {end_time}."
                     ).format(
                         start_time=constants.START_TIME.strftime("%H:%M"),
                         end_time=constants.END_TIME_MINUS_ONE.strftime("%H:%M"),
@@ -160,8 +159,7 @@ class ReservationModelTest(TestCase):
                 self.form_error_too_late.errors["end_time"],
                 [
                     _(
-                        "The end time must be between "
-                        "{start_time} and {end_time}."
+                        "The end time must be between " "{start_time} and {end_time}."
                     ).format(
                         start_time=constants.START_TIME_PLUS_ONE.strftime("%H:%M"),
                         end_time=constants.END_TIME.strftime("%H:%M"),

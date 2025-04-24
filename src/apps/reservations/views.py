@@ -148,9 +148,15 @@ def create_reservation_view(request):
             "room": room.id,
         },
         request=request,
+        room=room,
     )
     if request.method == "POST":
-        form = ReservationForm(request.POST, request.FILES, request=request)
+        form = ReservationForm(
+            request.POST,
+            request.FILES,
+            request=request,
+            room=room,
+        )
         # Validation of the date format
         try:
             datetime.strptime(form.data["date"], "%Y-%m-%d")

@@ -21,10 +21,13 @@ from apps.users.models import User
 class ReservationsListViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = self.client.login(
+        user = User.objects.get(email=settings.DJANGO_SUPERUSER_EMAIL)
+        user.email_verified = True
+        user.entity = EntityFactory()
+        user.save()
+        self.client.login(
             username=settings.DJANGO_SUPERUSER_EMAIL,
             password=settings.DJANGO_SUPERUSER_PASSWORD,
-            entity=EntityFactory(),
         )
 
     def test_get(self):
@@ -46,6 +49,7 @@ class CreateReservationViewTest(TestCase):
             name="Test",
             email="test@codi.coop",
             password=settings.DJANGO_SUPERUSER_PASSWORD,
+            email_verified=True,
             entity=self.entity,
         )
         self.user = self.client.login(
@@ -94,10 +98,13 @@ class CreateReservationViewTest(TestCase):
 class ReservationsCalendarViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = self.client.login(
+        user = User.objects.get(email=settings.DJANGO_SUPERUSER_EMAIL)
+        user.email_verified = True
+        user.entity = EntityFactory()
+        user.save()
+        self.client.login(
             username=settings.DJANGO_SUPERUSER_EMAIL,
             password=settings.DJANGO_SUPERUSER_PASSWORD,
-            entity=EntityFactory(),
         )
 
     def test_get(self):

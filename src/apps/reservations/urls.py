@@ -42,7 +42,9 @@ urlpatterns = [
         # dynamically client-side: when you select a span of time in the calendar
         # and when you click the "book a room" button that is visible for mobile
         # resolutions.
-        _("create/"), login_required(create_reservation_view), name="create_reservation"
+        _("create/"),
+        login_required(create_reservation_view),
+        name="create_reservation",
     ),
     path(
         _("details/<uuid:id>/"),

@@ -296,7 +296,7 @@ def populate_mail_templates(apps, schema_editor):
                     "subject": "Canvi d'espai de la reserva en Bloc4BCN",
                     "body": """
     <p>Hola {{ reserved_by }},</p>
-    <p>T'enviem aquest corre, perquè s'ha canviat la localització de la reserva per {{ entity }} el dia {{ date_reservation }} de {{ start_time_reservation }} a {{ end_time_reservation }}.</p>
+    <p>T'enviem aquest correu, perquè s'ha canviat la localització de la reserva per {{ entity }} el dia {{ date_reservation }} de {{ start_time_reservation }} a {{ end_time_reservation }}.</p>
     <p>El nou espai serà: {{ room }}.</p>
                             """,
                 },

@@ -78,7 +78,7 @@ class ReservationForm(forms.ModelForm):
             "assistants": FlowBiteNumericIncrementalInput(
                 attrs={
                     "data-input-counter-min": 1,
-                    "data-input-counter-max": 500,
+                    "data-input-counter-max": 9999,
                 },
             ),
             "catering": forms.CheckboxInput,
@@ -148,7 +148,11 @@ class ReservationForm(forms.ModelForm):
             self.fields.pop("url", None)
             self.fields.pop("poster", None)
         self.fields["assistants"].widget.attrs.update(
-            {"min": "1", "max": str(self.room.capacity)}
+            {   
+                "min": "1",
+                "max": str(self.room.capacity),
+                "data-input-counter-max": str(self.room.capacity)
+            }
         )
         if self.room.pk == Setting.get("CATERING_ROOM"):
             self.fields.pop("catering", None)

@@ -341,10 +341,10 @@ msgstr "Accepto la política de privacitat"
 #: apps/reservations/forms.py:161
 #, python-brace-format
 msgid ""
-"I have read and agree with the <a href=\"{url}\" target=\"_blank\" "
-"style=\"color: #be3bc7; font-weight: bold;\">rules of use of the space</a>"
+"I have read and agree with <a href=\"{url}\" target=\"_blank\" "
+"style=\"color: #be3bc7; font-weight: bold;\">the rules of use of the space</a>"
 msgstr ""
-"He llegit i accepto les <a href=\"{url}\" target=\"_blank\" style=\"color: "
+"He llegit i accepto <a href=\"{url}\" target=\"_blank\" style=\"color: "
 "#be3bc7; font-weight: bold;\">la normativa d'ús de l'espai</a>"
 
 #: apps/reservations/forms.py:199

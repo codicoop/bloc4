@@ -12,16 +12,11 @@ from django.utils.translation import gettext_lazy as _
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
+from apps.reservations import constants
 from apps.reservations.choices import (
     ActivityTypeChoices,
     Bloc4TypeChoices,
     ReservationTypeChoices,
-)
-from apps.reservations.constants import (
-    END_TIME,
-    END_TIME_MINUS_ONE,
-    START_TIME,
-    START_TIME_PLUS_ONE,
 )
 from apps.rooms.choices import RoomTypeChoices
 from project.models import BaseModel
@@ -111,9 +106,9 @@ class Reservation(BaseModel):
         default="",
     )
     activity_type = models.CharField(
-        _("Ateneu's activity"),
+        _("Does the activity belong to one of these services?"),
         choices=ActivityTypeChoices,
-        default=ActivityTypeChoices.BLOC4,
+        default=ActivityTypeChoices.NONE,
         blank=False,
         max_length=10,
     )
@@ -166,12 +161,14 @@ class Reservation(BaseModel):
             " publication of this event."
         ),
     )
-    total_price = models.FloatField(
+    base_price = models.DecimalField(
         _("Total price"),
         null=False,
         blank=False,
         default=0,
         validators=[MinValueValidator(0.0)],
+        decimal_places=2,
+        max_digits=6,
     )
     entity = models.ForeignKey(
         "entities.Entity",
@@ -207,9 +204,25 @@ class Reservation(BaseModel):
         null=False,
         blank=False,
         default=StatusChoices.PENDING,
-        help_text=_("Status of the reservation"),
+        help_text=_("The Status can only be modified by using the buttons below."),
         verbose_name=_("status"),
         max_length=20,
+    )
+    checked_in = models.BooleanField(_("checked in"), default=False)
+    is_billed = models.BooleanField(_("billed"), default=False)
+    billed_at = models.DateTimeField(
+        _("billed at"),
+        null=True,
+        editable=False,
+    )
+    billed_by = models.ForeignKey(
+        "users.User",
+        null=True,
+        blank=True,
+        related_name="billed_reservations",
+        on_delete=models.SET_NULL,
+        verbose_name=_("billed by"),
+        editable=False,
     )
 
     class Meta:
@@ -273,7 +286,6 @@ class Reservation(BaseModel):
                     )
                 }
             )
-            raise ValidationError(errors)
         if self.start_time and self.end_time:
             # Validates that the reservation end time is later than the start time.
             if self.end_time < self.start_time:
@@ -299,7 +311,6 @@ class Reservation(BaseModel):
                         )
                     },
                 )
-                raise ValidationError(errors)
             if datetime.strptime(str(self.end_time), "%H:%M:%S") - datetime.strptime(
                 str(self.start_time), "%H:%M:%S"
             ) > timedelta(hours=20):
@@ -310,37 +321,6 @@ class Reservation(BaseModel):
                         )
                     },
                 )
-                raise ValidationError(errors)
-            if not (START_TIME <= self.start_time <= END_TIME_MINUS_ONE):
-                errors.update(
-                    {
-                        "start_time": ValidationError(
-                            _(
-                                "The start time must be between "
-                                "{start_time} and {end_time}."
-                            ).format(
-                                start_time=START_TIME.strftime("%H:%M"),
-                                end_time=END_TIME_MINUS_ONE.strftime("%H:%M"),
-                            )
-                        )
-                    },
-                )
-                raise ValidationError(errors)
-            if not START_TIME_PLUS_ONE <= self.end_time <= END_TIME:
-                errors.update(
-                    {
-                        "end_time": ValidationError(
-                            _(
-                                "The end time must be between "
-                                "{start_time} and {end_time}."
-                            ).format(
-                                start_time=START_TIME_PLUS_ONE.strftime("%H:%M"),
-                                end_time=END_TIME.strftime("%H:%M"),
-                            )
-                        )
-                    },
-                )
-                raise ValidationError(errors)
             valid_minutes = [0, 15, 30, 45]
             if self.start_time.minute not in valid_minutes:
                 errors.update(
@@ -350,7 +330,6 @@ class Reservation(BaseModel):
                         )
                     },
                 )
-                raise ValidationError(errors)
             if self.end_time.minute not in valid_minutes:
                 errors.update(
                     {
@@ -359,7 +338,6 @@ class Reservation(BaseModel):
                         )
                     },
                 )
-                raise ValidationError(errors)
             try:
                 room = self.room
                 if room.room_type != RoomTypeChoices.MEETING_ROOM:
@@ -374,7 +352,6 @@ class Reservation(BaseModel):
                                 )
                             },
                         )
-                        raise ValidationError(errors)
                 if (
                     room.room_type == RoomTypeChoices.MEETING_ROOM
                     and self.privacy == Reservation.PrivacyChoices.PUBLIC
@@ -388,7 +365,6 @@ class Reservation(BaseModel):
                             )
                         },
                     )
-                    raise ValidationError(errors)
                 # Validation of room availability
                 room_reservation = (
                     Reservation.objects.filter(
@@ -426,7 +402,6 @@ class Reservation(BaseModel):
                             )
                         },
                     )
-                    raise ValidationError(errors)
             except AttributeError:
                 pass
         try:
@@ -442,7 +417,6 @@ class Reservation(BaseModel):
                             )
                         },
                     )
-                    raise ValidationError(errors)
         except AttributeError:
             pass
         try:
@@ -469,6 +443,21 @@ class Reservation(BaseModel):
                             )
                         },
                     )
-                    raise ValidationError(errors)
         except AttributeError:
             pass
+
+        if errors:
+            raise ValidationError(errors)
+
+    def vat(self):
+        return self.base_price * constants.VAT
+
+    def total_price(self):
+        return self.base_price + self.vat()
+
+    def mark_as_billed(self, user=None):
+        if user:
+            self.billed_by = user
+        self.billed_at = datetime.now()
+        self.is_billed = True
+        self.save()

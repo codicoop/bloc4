@@ -2,7 +2,13 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlencode
 
-from django.http import JsonResponse
+from django.contrib.auth.decorators import user_passes_test
+from django.http import (
+    HttpResponse,
+    HttpResponseNotFound,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse, reverse_lazy
 from django.utils import timezone
@@ -11,16 +17,15 @@ from django.views.generic import View
 from extra_settings.models import Setting
 
 from apps.entities.choices import EntityTypesChoices
+from apps.entities.models import Entity
+from apps.reservations import constants
 from apps.reservations.constants import MONTHS
 from apps.reservations.forms import ReservationForm
 from apps.reservations.models import Reservation
 from apps.reservations.services import (
-    calculate_discount_price,
-    calculate_reservation_price,
     convert_datetime_to_str,
     date_to_full_calendar_format,
-    delete_zeros,
-    get_monthly_bonus_totals,
+    get_filter_reservations_context,
     get_total_price,
     get_years_and_months,
     parse_time,
@@ -37,22 +42,15 @@ def reservations_list(request):
     now = timezone.now()
     reservations_all = Reservation.objects.filter(entity=entity)
     months_list, years_list = get_years_and_months(reservations_all)
-    reservations = reservations_all.filter(
-        date__year=now.year, date__month=now.month
-    ).order_by("date")
     context = {
         "is_monthly_bonus": False,
-        "amount_left": 0,
-        "total_price": 0,
-        "bonus_price": 0,
-        "reservations": reservations,
+        "reservations": None,  # The month filter dropdown triggers on load
         "months": months_list,
         "years": years_list,
         "month": MONTHS.get(now.month, "")[:3] + ".",
         "year": now.year,
+        "filter_reservations_url": reverse("reservations:filter_my_reservations"),
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity, now.month, now.year)
-    context.update(bonuses)
     return render(
         request,
         "reservations/reservations_list.html",
@@ -60,30 +58,65 @@ def reservations_list(request):
     )
 
 
-# htmx
-def filter_reservations(request):
-    bonuses = {}
-    entity = request.user.entity
-    context = {"is_monthly_bonus": False}
-    filter_year = request.POST.get("filter_year")
-    filter_month = request.POST.get("filter_month")
-    reservations = Reservation.objects.filter(
-        entity=entity, date__month=filter_month, date__year=filter_year
-    ).order_by("date")
+@user_passes_test(lambda u: u.is_staff)
+def reservations_list_summary(request):
+    now = timezone.now()
+    reservations_all = Reservation.objects.all()
+    months_list, years_list = get_years_and_months(reservations_all)
     context = {
-        "is_monthly_bonus": False,
         "amount_left": 0,
-        "total_price": 0,
         "bonus_price": 0,
-        "reservations": reservations,
-        "month": MONTHS.get(int(filter_month), "")[:3] + ".",
-        "year": filter_year,
+        "reservations": None,  # Initial list empty, they have to pick an Entity
+        "months": months_list,
+        "years": years_list,
+        "month": MONTHS.get(now.month, "")[:3] + ".",
+        "year": now.year,
+        "entities": Entity.objects.all(),
+        "filter_reservations_url": reverse("reservations:filter_reservations_summary"),
     }
-    bonuses = get_monthly_bonus_totals(reservations, entity, filter_month, filter_year)
-    context.update(bonuses)
     return render(
         request,
-        "reservations/components/reservations.html",
+        "reservations/reservations_list_summary.html",
+        context,
+    )
+
+
+def filter_my_reservations(request):
+    filter_year = request.POST.get("filter_year")
+    filter_month = request.POST.get("filter_month")
+    context = get_filter_reservations_context(
+        filter_year,
+        filter_month,
+        request.user.entity,
+    )
+    return render(
+        request,
+        "reservations/components/my_reservations.html",
+        context,
+    )
+
+
+@user_passes_test(lambda u: u.is_staff)
+def filter_reservations_summary(request):
+    if not request.POST.get("filter_entity"):
+        return HttpResponse("")
+
+    # In the reservations_list_summary view (only accessible by is_staff
+    # users) the organization filter dropdown is included.
+    # In the reservations_list view, it's not.
+    # Both views are based in the same template that will trigger the htmx
+    # request pointing to this filter_reservations view.
+    # Therefore, the filter_entity POST value should only arrive when we're
+    # in the Monthly summary section, meaning that only is_staff users can
+    # access it.
+    filter_entity = request.POST.get("filter_entity")
+    entity = get_object_or_404(Entity, id=filter_entity)
+    filter_year = request.POST.get("filter_year")
+    filter_month = request.POST.get("filter_month")
+    context = get_filter_reservations_context(filter_year, filter_month, entity)
+    return render(
+        request,
+        "reservations/components/reservations_summary.html",
         context,
     )
 
@@ -91,34 +124,39 @@ def filter_reservations(request):
 def create_reservation_view(request):
     start = request.GET.get("start")
     end = request.GET.get("end")
-    if not start or not end:
-        return redirect("reservations:reservations_calendar")
     try:
         id = uuid.UUID(request.GET.get("id"))
     except ValueError:
         return redirect("reservations:reservations_calendar")
     room = get_object_or_404(Room, id=id)
-    entity_type = request.user.entity.entity_type
-    if start and end:
+    start_datetime = None
+    if start:
         start_datetime = datetime.fromisoformat(start)
+    end_datetime = None
+    if end:
         end_datetime = datetime.fromisoformat(end)
-        date = start_datetime.date().strftime("%Y-%m-%d")
-        price_discount = calculate_discount_price(entity_type, room.price)
-        total_price = calculate_reservation_price(
-            start_datetime, end_datetime, price_discount
-        )
-        form = ReservationForm(
-            initial={
-                "date": date,
-                "start_time": start_datetime,
-                "end_time": end_datetime,
-                "entity": request.user.entity,
-                "room": room.id,
-            },
-            request=request,
-        )
+    date = None
+    defined_datetime = start_datetime or end_datetime
+    if defined_datetime:
+        date = defined_datetime.date().strftime("%Y-%m-%d")
+    form = ReservationForm(
+        initial={
+            "date": date,
+            "start_time": start_datetime,
+            "end_time": end_datetime,
+            "entity": request.user.entity,
+            "room": room.id,
+        },
+        request=request,
+        room=room,
+    )
     if request.method == "POST":
-        form = ReservationForm(request.POST, request.FILES, request=request)
+        form = ReservationForm(
+            request.POST,
+            request.FILES,
+            request=request,
+            room=room,
+        )
         # Validation of the date format
         try:
             datetime.strptime(form.data["date"], "%Y-%m-%d")
@@ -132,7 +170,7 @@ def create_reservation_view(request):
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.reserved_by = request.user
-            reservation.total_price = get_total_price(
+            reservation.base_price = get_total_price(
                 reservation.reservation_type,
                 reservation.entity.entity_type,
                 reservation.room,
@@ -140,9 +178,19 @@ def create_reservation_view(request):
                 reservation.end_time,
             )
             privilege = getattr(reservation.entity, "entity_privilege", None)
-            if privilege:
-                privilege = privilege.class_reservation_privilege
-            if privilege and reservation.room.room_type == RoomTypeChoices.CLASSROOM:
+            class_reservation_privilege = getattr(
+                privilege,
+                "class_reservation_privilege",
+                None,
+            )
+            if (
+                reservation.room.room_type == RoomTypeChoices.CLASSROOM
+                and class_reservation_privilege
+            ) or (
+                # In March 2025, they decide that all meeting room reservations
+                # will be automatically confirmed.
+                reservation.room.room_type == RoomTypeChoices.MEETING_ROOM
+            ):
                 reservation.status = Reservation.StatusChoices.CONFIRMED
                 send_mail_reservation(reservation, "reservation_confirmed_user")
             else:
@@ -169,38 +217,27 @@ def create_reservation_view(request):
                 except ValueError:
                     return redirect("reservations:reservations_success")
             return redirect("reservations:reservations_success")
-        elif form.data.get("end_time") and form.data.get("start_time"):
-            total_price = get_total_price(
-                form.data.get("reservation_type"),
-                entity_type,
-                room,
-                parse_time(form.data.get("start_time")),
-                parse_time(form.data.get("end_time")),
-            )
     return render(
         request,
         "reservations/create_reserves.html",
         {
             "form": form,
             "room": room,
-            "total_price": delete_zeros(total_price),
         },
     )
 
 
 def reservation_detail_view(request, id):
-    is_staff = request.user.is_staff
-    try:
-        reservation_id = uuid.UUID(id)
-        if is_staff:
-            reservation = get_object_or_404(Reservation, id=reservation_id)
-        else:
+    filter_params = {"id": id}
+    has_access_to_all_reservations = request.user.is_staff or request.user.is_janitor
+    if not has_access_to_all_reservations:
+        try:
             entity = request.user.entity
-            reservation = get_object_or_404(
-                Reservation, id=reservation_id, entity=entity
-            )
-    except ValueError:
-        return redirect("reservations:reservations_list")
+        except ValueError:
+            return redirect("reservations:reservations_list")
+        filter_params.update({"entity": entity})
+    reservation = get_object_or_404(Reservation, **filter_params)
+
     payment_info = None
     if (
         reservation.entity.entity_type
@@ -209,9 +246,18 @@ def reservation_detail_view(request, id):
         and not reservation.is_paid
     ):
         payment_info = Setting.get("PAYMENT_INFORMATION")
+
+    # Context and status vars
+    can_be_cancelled = not request.user.is_janitor and reservation.status in (
+        Reservation.StatusChoices.PENDING,
+        Reservation.StatusChoices.CONFIRMED,
+    )
+    can_be_checked_in = request.user.is_janitor
+
+    # POST actions
     if "cancel_reservation" in request.POST:
-        id = request.POST.get("cancel_reservation")
-        reservation = get_object_or_404(Reservation, id=id)
+        if not can_be_cancelled:
+            return HttpResponseNotFound(_("This reservation cannot be cancelled."))
         reservation.status = Reservation.StatusChoices.CANCELED
         reservation.canceled_by = request.user
         reservation.canceled_at = timezone.now()
@@ -219,20 +265,28 @@ def reservation_detail_view(request, id):
         send_mail_reservation(reservation, "reservation_canceled_user")
         send_mail_reservation(reservation, "reservation_canceled_bloc4")
         return redirect("reservations:reservations_cancelled")
+    if "check_in_reservation" in request.POST:
+        if not can_be_checked_in:
+            return HttpResponseNotFound(_("This reservation cannot be checked in."))
+        reservation.checked_in = True
+        reservation.save()
+        return HttpResponseRedirect(request.path_info)
+
     return render(
         request,
         "reservations/details.html",
         {
             "reservation": reservation,
-            "is_staff": is_staff,
             "payment_info": payment_info,
+            "can_be_cancelled": can_be_cancelled,
+            "can_be_checked_in": can_be_checked_in,
         },
     )
 
 
 # htmx
 def calculate_total_price(request):
-    total_price = 0
+    base_price = 0
     if request.htmx:
         entity_type = request.user.entity.entity_type
         room = get_object_or_404(Room, id=request.POST.get("room"))
@@ -240,14 +294,16 @@ def calculate_total_price(request):
         start_time = parse_time(request.POST.get("start_time"))
         end_time = parse_time(request.POST.get("end_time"))
         if start_time and end_time:
-            total_price = get_total_price(
+            base_price = get_total_price(
                 reservation_type, entity_type, room, start_time, end_time
             )
     return render(
         request,
         "reservations/total_price.html",
         {
-            "total_price": delete_zeros(total_price),
+            "base_price": base_price,
+            "tax": base_price * constants.VAT,
+            "total_price": base_price * (constants.VAT + 1),
         },
     )
 
@@ -323,7 +379,6 @@ def reservations_calendar_view(request):
     context["discount"] = EntityTypesChoices(
         request.user.entity.entity_type
     ).get_discount_percentage()
-    context["is_staff"] = request.user.is_staff
     if request.htmx:
         room_type = request.POST.get("room_type")
         if room_type != "all":
@@ -366,10 +421,30 @@ class AjaxCalendarFeed(View):
                 "backgroundColor": color,
                 "borderColor": color,
                 "textColor": CALENDAR_TEXT_COLOR,
-                "is_staff": request.user.is_staff,
                 "reservation_id": reservation.id,
             }
-            if request.user.is_staff:
+            if request.user.is_staff or request.user.is_janitor:
                 reservation_data["entity"] = reservation.entity.fiscal_name
             data.append(reservation_data)
         return JsonResponse(data, safe=False)
+
+
+# htmx
+@user_passes_test(lambda u: u.is_staff)
+def mark_reservations_as_billed(request, year, month, entity):
+    entity = get_object_or_404(Entity, id=entity)
+    Reservation.objects.filter(
+        entity=entity,
+        date__month=month,
+        date__year=year,
+    ).update(
+        is_billed=True,
+        billed_by=request.user,
+        billed_at=datetime.now(),
+    )
+    context = get_filter_reservations_context(year, month, entity)
+    return render(
+        request,
+        "reservations/components/reservations_summary.html",
+        context,
+    )

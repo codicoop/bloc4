@@ -5,7 +5,8 @@
 </h1>
 <div class="flex flex-wrap gap-4 mb-12">
   {% for room in rooms %}
-    <div class="room_card flex-1 grid grid-rows-2 max-w-80 bg-white border border-gray-200 p-4 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" id="card_{{ room.id }}">
+    <div class="room_card flex-1 grid grid-rows-2 max-w-80 bg-white border border-gray-200 p-4 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+      id="card_{{ room.id }}">
       <a href="{% url 'rooms:room_detail' id=room.id %}">
         <div class="rounded-t-lg min-h-[53%] max-h-48 overflow-hidden min-h">
           {% thumbnail room.picture "300" as im %}
@@ -18,15 +19,21 @@
           {{ room.name }}
         </h5>
         <p class="mb-1 font-normal text-sm text-gray-700 dark:text-gray-400">{% translate "Capacity" %}: {{ room.capacity }}</p>
-        <p class="mb-6 font-normal text-sm text-gray-700 dark:text-gray-400">{% translate "Price" %}: {{ room.price|calculate_discount:discount }} €/h, {{ room.price_half_day|calculate_discount:discount }} €/{% translate "half day" %}, {{ room.price_all_day|calculate_discount:discount }} €/{% translate "all day" %}</p>
+        <p class="mb-6 font-normal text-sm text-gray-700 dark:text-gray-400">{% translate "Price" %}: {{ room.price|calculate_discount:discount|floatformat:2 }} €/h, {{ room.price_half_day|calculate_discount:discount|floatformat:2 }} €/{% translate "half day" %}, {{ room.price_all_day|calculate_discount:discount|floatformat:2 }} €/{% translate "all day" %}</p>
         <div class="flex justify-between mt-auto">
           <label class="inline-flex items-center me-5 cursor-pointer">
             <input type="checkbox" class="room_toggle sr-only peer" data-id="{{ room.id }}"
-              id="id_{{room.id}}" onclick="addEventSource(this)"
+              id="id_{{ room.id }}" onclick="addEventSource(this)"
               _="init set my.checked to ''
                 on change
                   toggle .border-4 .border-primary-600 .shadow-lg on #card_{{ room.id }}
                   then
+                    if my.checked is true
+                      set #btn_create_url.href to '{% url 'reservations:create_reservation' %}?id={{ room.id }}'
+                      add .room-true to #btn_create_url
+                    else
+                      remove .room-true from #btn_create_url
+                    end
                     repeat for toggle in .room_toggle
                       set toggle.checked to '' unless toggle.id is #id_{{room.id}}.id
                     repeat for card in .room_card

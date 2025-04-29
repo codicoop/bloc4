@@ -2,6 +2,7 @@ import re
 
 from django.utils.html import strip_tags
 from django.utils.translation import get_language
+from extra_settings.models import Setting
 from post_office import mail as base_mail
 
 
@@ -28,6 +29,10 @@ def send(
 ):
     if not language:
         language = get_language()
+    if not sender:
+        # We're defaulting to None so post_office will use the default one,
+        # which is settings.DEFAULT_FROM_EMAIL.
+        sender = Setting.get("FROM_EMAIL") or None
     return base_mail.send(
         recipients=recipients,
         sender=sender,

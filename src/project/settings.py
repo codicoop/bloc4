@@ -224,6 +224,10 @@ VERIFICATION_REQUIRED_IGNORE_VIEW_NAMES = LOGIN_REQUIRED_IGNORE_VIEW_NAMES + [
     "registration:user_validation",
     "registration:send_verification_code",
     "registration:email_verification_complete",
+    # Monthly summary views. They filter to allow only is_staff users.
+    "reservations:list_summary",
+    "reservations:filter_reservations_summary",
+    "reservations:mark_reservations_as_billed",
 ]
 
 ################################################################################
@@ -380,6 +384,17 @@ EXTRA_SETTINGS_DEFAULTS = [
         "HTML de l'aplicació pública, el text alt del logo i altres llocs.",
     },
     {
+        "name": "FROM_EMAIL",
+        "type": "Setting.TYPE_EMAIL",
+        "value": "",
+        "description": (
+            "Remitent dels correus que genera l'aplicació. IMPORTANT: cal que "
+            "aquest remitent estigui autoritzat pel proveïdor on s'allotja "
+            "l'aplicació. SI INDIQUEU UN REMITENT NO AUTORITZAT, CAP DELS CORREUS "
+            "QUE GENERA L'APLICACIÓ S'ENVIARÀ CORRECTAMENT."
+        ),
+    },
+    {
         "name": "CONTACT_EMAIL",
         "type": "Setting.TYPE_EMAIL",
         "value": "",
@@ -493,4 +508,4 @@ CODI_COOP_ENABLE_MONKEY_PATCH = True
 # Beware that these CANNOT BE CHANGED once the instance is already deployed, or
 # you are going to end up with a new group with the new name while all the users
 # are still assigned to the previous group.
-GROUP_ADMINS = _("Administrators")
+GROUP_ADMINS = "Administrators"

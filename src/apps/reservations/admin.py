@@ -19,7 +19,7 @@ class ReservationAdmin(ModelAdmin):
         "start_time",
         "end_time",
         "room",
-        "total_price",
+        "base_price",
         "is_budgeted",
         "is_paid",
         "status",
@@ -71,14 +71,25 @@ class ReservationAdmin(ModelAdmin):
                     "is_budgeted",
                     "is_paid",
                     "payment_field",
-                    "total_price",
+                    "base_price",
                     "entity",
                     "reserved_by",
                     "canceled_by",
                     "canceled_at",
                     "status",
+                    "checked_in",
                     "actions_field",
                     "privacy",
+                )
+            },
+        ),
+        (
+            _("Billing information"),
+            {
+                "fields": (
+                    "is_billed",
+                    "billed_by",
+                    "billed_at",
                 )
             },
         ),
@@ -93,7 +104,14 @@ class ReservationAdmin(ModelAdmin):
             },
         ),
     )
-    readonly_fields = ("actions_field", "room_field", "payment_field")
+    readonly_fields = (
+        "actions_field",
+        "room_field",
+        "payment_field",
+        "billed_by",
+        "billed_at",
+    )
+    superuser_fields = ("status",)
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)
@@ -145,6 +163,11 @@ class ReservationAdmin(ModelAdmin):
                 "<uuid:reservation_id>/payment_reminder/",
                 self.admin_site.admin_view(self.notify_payment_reminder),
                 name="notify_payment_reminder",
+            ),
+            path(
+                "<uuid:reservation_id>/notify_date_or_time_changed/",
+                self.admin_site.admin_view(self.notify_date_or_time_changed),
+                name="notify_date_or_time_changed",
             ),
         ]
         return custom_urls + urls
@@ -211,6 +234,21 @@ class ReservationAdmin(ModelAdmin):
         )
         return self._redirect_to_change(reservation.id)
 
+    def notify_date_or_time_changed(self, request, reservation_id):
+        reservation = Reservation.objects.get(pk=reservation_id)
+        send_mail_reservation(
+            reservation,
+            "reservation_date_or_time_changed",
+        )
+        messages.success(
+            request,
+            _(
+                "An email has been sent to the entity to inform with a "
+                "payment reminder."
+            ),
+        )
+        return self._redirect_to_change(reservation.id)
+
     @admin.display(description=_("Actions"))
     def actions_field(self, obj):
         if obj is None:
@@ -246,6 +284,25 @@ class ReservationAdmin(ModelAdmin):
                 rejected_reservation_msg,
                 rejected_reservation_url,
                 rejected_reservation_text,
+            )
+        )
+
+        date_or_time_changed_msg = _(
+            "Are you sure you want to notify the user that the date and/or time"
+            " of the reservation have changed?"
+        )
+        date_or_time_changed_url = reverse(
+            "admin:notify_date_or_time_changed",
+            args=[obj.id],
+        )
+        date_or_time_changed_text = _(
+            "Notify the user that the date and/or time have changed"
+        )
+        buttons.append(
+            self._get_url_with_alert_msg(
+                date_or_time_changed_msg,
+                date_or_time_changed_url,
+                date_or_time_changed_text,
             )
         )
         return format_html("<br>".join(buttons))

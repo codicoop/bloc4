@@ -176,19 +176,24 @@ ben llarga i t'agrairem que ens informis de la situació.
     for template in templates:
         obj, created = mail_model.objects.update_or_create(
             name=template.get("id"),
+            language="",  # Empty language to get the "base" template.
             defaults={
                 "name": template.get("id"),
             },
         )
         for lang, translated_template in template.get("translated_templates").items():
-            obj.translated_templates.create(
-                language=lang,
-                subject=translated_template.get("subject"),
-                html_content=translated_template.get("body"),
-                content=textify(translated_template.get("body")),
-                # name field included due this bug:
-                # https://github.com/ui/django-post_office/issues/214
+            obj.translated_templates.update_or_create(
                 name=template.get("id"),
+                language=lang,
+                defaults={
+                    "language": lang,
+                    "subject": translated_template.get("subject"),
+                    "html_content": translated_template.get("body"),
+                    "content": textify(translated_template.get("body")),
+                    # name field included due this bug:
+                    # https://github.com/ui/django-post_office/issues/214
+                    "name": template.get("id"),
+                }
             )
 
 

@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django import template
 
 register = template.Library()
@@ -5,14 +7,13 @@ register = template.Library()
 
 @register.filter
 def calculate_discount(price, discount):
-    total = price + (price * discount)
-    if total.is_integer():
-        return int(total)
-    return round(total, 2)
-
-
-@register.filter
-def round_two(value):
-    if value.is_integer():
-        return int(value)
-    return round(value, 2)
+    """
+    The discount is related to the logged in user, so it comes in the request
+    information. By using this filter, we can iterate over all the rooms directly
+    in the template without having to first iterate them to calculate the
+    discounted prices and then pass them through the context.
+    This solution feels a bit weird, please refactor if it causes any problems.
+    """
+    price = Decimal(price)
+    discount = Decimal(discount)
+    return price + (price * discount)

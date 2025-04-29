@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-28 16:44+0100\n"
-"PO-Revision-Date: 2024-11-28 16:50+0100\n"
+"POT-Creation-Date: 2025-04-16 11:30+0200\n"
+"PO-Revision-Date: 2025-04-16 11:32+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -23,19 +23,23 @@ msgstr ""
 msgid "Entity Privileges"
 msgstr "Privilegis de l'entitat"
 
-#: apps/entities/choices.py:13
+#: apps/entities/choices.py:8
 msgid "Hosted entity"
-msgstr "Entitat allotjada"
+msgstr "Entitats allotjada"
 
-#: apps/entities/choices.py:14
+#: apps/entities/choices.py:9
 msgid "Bloc4 entity"
-msgstr "Entitat de Bloc4"
+msgstr "Entitats de Bloc4"
 
-#: apps/entities/choices.py:15
-msgid "Federated cooperative"
-msgstr "Cooperativa federada"
+#: apps/entities/choices.py:10
+msgid "Public sector and social economy entities"
+msgstr "Entitats de l'ESS i sector públic"
 
-#: apps/entities/choices.py:16
+#: apps/entities/choices.py:11
+msgid "Coòpolis and federated cooperatives"
+msgstr "Entitats sòcies de Coòpolis i federades"
+
+#: apps/entities/choices.py:12
 msgid "Other entities"
 msgstr "Altres entitats"
 
@@ -147,27 +151,31 @@ msgstr "Bonus mensual de l'entitat"
 msgid "Date"
 msgstr "Data"
 
-#: apps/entities/models.py:162
+#: apps/entities/models.py:163
 msgid "Amount"
 msgstr "Quantia"
 
-#: apps/entities/models.py:166
+#: apps/entities/models.py:170
 msgid "Monthly bonus"
 msgstr "Bonus mensual"
 
-#: apps/entities/models.py:167
+#: apps/entities/models.py:171
 msgid "Monthly bonuses"
 msgstr "Bonus mensuals"
 
-#: apps/entities/models.py:170
+#: apps/entities/models.py:174
 #, python-format
 msgid "Monthly bonus for %(entity)s in %(date)s"
 msgstr "Bonus mensual per %(entity)s a %(date)s"
 
-#: apps/entities/models.py:189
+#: apps/entities/models.py:192
 #, python-brace-format
-msgid "A record for {self.entity} "
-msgstr "Un recordatori per {self.entity}"
+msgid "A record for {entity} for {month} already exists."
+msgstr "Ja existeix un registre per {entity} i per {month}."
+
+#, python-brace-format
+#~ msgid "A record for {self.entity} "
+#~ msgstr "Un recordatori per {self.entity}"
 
 #~ msgid "General entity"
 #~ msgstr "Entitat general"

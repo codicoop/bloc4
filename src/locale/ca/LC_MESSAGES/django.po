@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-11 11:00+0100\n"
-"PO-Revision-Date: 2024-12-11 11:02+0100\n"
+"POT-Creation-Date: 2025-04-16 11:30+0200\n"
+"PO-Revision-Date: 2025-04-16 11:38+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -112,23 +112,27 @@ msgstr "Província"
 msgid "County"
 msgstr "Comarca"
 
-#: apps/reservations/admin.py:86
+#: apps/reservations/admin.py:87
+msgid "Billing information"
+msgstr "Informació sobre facturació"
+
+#: apps/reservations/admin.py:97
 msgid "Only for public training"
 msgstr "Només per formacions públiques"
 
-#: apps/reservations/admin.py:152
+#: apps/reservations/admin.py:175
 msgid "Change room"
 msgstr "Canvia la sala"
 
-#: apps/reservations/admin.py:156 apps/reservations/admin.py:187
+#: apps/reservations/admin.py:179 apps/reservations/admin.py:210
 msgid "Are you sure you want to notify the user?"
 msgstr "Segur que vols notificar l'usuari?"
 
-#: apps/reservations/admin.py:161
+#: apps/reservations/admin.py:184
 msgid "Notify the user the room is changed"
 msgstr "Notificar l'usuari que la sala ha canviat"
 
-#: apps/reservations/admin.py:177
+#: apps/reservations/admin.py:200
 msgid ""
 "An email has been sent to the entity to inform them that the room of the "
 "reservation has change."
@@ -136,41 +140,53 @@ msgstr ""
 "Un correu electrònic ha sigut enviat a l'entitat per informar del canvi de "
 "sala de la reserva."
 
-#: apps/reservations/admin.py:183
+#: apps/reservations/admin.py:206
 msgid "Payment reminder"
 msgstr "Recordatori de pagament"
 
-#: apps/reservations/admin.py:192
+#: apps/reservations/admin.py:215
 msgid "Notify the user a payment reminder"
 msgstr "Notifica l'usuari un recordatori de pagament"
 
-#: apps/reservations/admin.py:208
+#: apps/reservations/admin.py:231 apps/reservations/admin.py:246
 msgid "An email has been sent to the entity to inform with a payment reminder."
 msgstr ""
 "Un correu electrònic ha sigut enviat a l'entitat amb un recordatori de "
 "pagament."
 
-#: apps/reservations/admin.py:214
+#: apps/reservations/admin.py:252
 msgid "Actions"
 msgstr "Accions"
 
-#: apps/reservations/admin.py:219
+#: apps/reservations/admin.py:257
 msgid "Are you sure you want to confirm the reservation and notify the user?"
 msgstr "Segur que vols confirmar la reserva i notificar l'usuari?"
 
-#: apps/reservations/admin.py:225
+#: apps/reservations/admin.py:263
 msgid "Confirm reservation and notify the user"
 msgstr "Confirmar la reserva i notificar l'usuari"
 
-#: apps/reservations/admin.py:235
+#: apps/reservations/admin.py:273
 msgid "Are you sure you want to reject the reservation and notify the user?"
 msgstr "Segur que vols denegar la reserva i notificar l'usuari?"
 
-#: apps/reservations/admin.py:242
+#: apps/reservations/admin.py:280
 msgid "Confirm rejection of reservation and notify the user"
 msgstr "Denegar la reserva i notificar l'usuari"
 
-#: apps/reservations/admin.py:270
+#: apps/reservations/admin.py:291
+msgid ""
+"Are you sure you want to notify the user that the date and/or time of the "
+"reservation have changed?"
+msgstr ""
+"Segur que vols notificar l'usuari que la data i/o l'hora de la reserva han "
+"canviat?"
+
+#: apps/reservations/admin.py:299
+msgid "Notify the user that the date and/or time have changed"
+msgstr "Notificar l'usuari que la data i/o l'hora han canviat"
+
+#: apps/reservations/admin.py:327
 msgid ""
 "An email has been sent to the entity to inform them that the room "
 "reservation has been confirmed."
@@ -178,7 +194,7 @@ msgstr ""
 "Un correu electrònic ha sigut enviat a l'entitat per informar de la "
 "confirmació de la reserva de la sala."
 
-#: apps/reservations/admin.py:284
+#: apps/reservations/admin.py:341
 msgid ""
 "An email has been sent to the entity to inform them that the room "
 "reservation has been rejected."
@@ -186,216 +202,218 @@ msgstr ""
 "Un correu electrònic ha sigut enviat a l'entitat per informar de la "
 "denegació de la reserva de la sala."
 
-#: apps/reservations/choices.py:6 templates/reservations/temp.html:27
-#: templates/reservations/temp.html:209
-#: templates/reservations/widgets/custom_radio.html:16
+#: apps/reservations/choices.py:6
+#: templates/reservations/widgets/custom_radio.html:25
 msgid "Hourly reservation"
 msgstr "Reserva per hores"
 
-#: apps/reservations/choices.py:7 templates/reservations/temp.html:51
-#: templates/reservations/temp.html:233
-#: templates/reservations/widgets/custom_radio.html:47
+#: apps/reservations/choices.py:7
+#: templates/reservations/widgets/custom_radio.html:59
 msgid "Morning reservation"
 msgstr "Reserva de matí"
 
-#: apps/reservations/choices.py:8 templates/reservations/temp.html:74
-#: templates/reservations/temp.html:259
-#: templates/reservations/widgets/custom_radio.html:77
+#: apps/reservations/choices.py:8
+#: templates/reservations/widgets/custom_radio.html:97
 msgid "Afternoon reservation"
 msgstr "Reserva de tarda"
 
-#: apps/reservations/choices.py:9 templates/reservations/temp.html:97
-#: templates/reservations/temp.html:282
-#: templates/reservations/widgets/custom_radio.html:108
+#: apps/reservations/choices.py:9
+#: templates/reservations/widgets/custom_radio.html:136
 msgid "Whole day reservation"
 msgstr "Reserva de dia"
 
 #: apps/reservations/choices.py:13
-msgid "Reservation for Bloc4BCN services"
-msgstr "Reserva per serveis de Bloc4BCN"
-
-#: apps/reservations/choices.py:17
-msgid ""
-"Activity within the work plan of the Ateneu Cooperatiu de Barcelona or "
-"Bloc4BCN agreement"
-msgstr ""
-"Activitat dins del pla de treball de l'Ateneu Cooperatiu de Barcelona o de "
-"l'acord de Bloc4BCN"
-
-#: apps/reservations/choices.py:21
 msgid "None of the two"
 msgstr "Cap de les dues"
 
-#: apps/reservations/choices.py:25
+#: apps/reservations/choices.py:14
+msgid "Activity for Bloc4BCN services"
+msgstr "Activitat per serveis de Bloc4BCN"
+
+#: apps/reservations/choices.py:15
+msgid "Activity for the Ateneu Cooperatiu de Barcelona"
+msgstr "Activitat per l'Ateneu Cooperatiu de Barcelona"
+
+#: apps/reservations/choices.py:19
 msgid "ESS continuous training"
 msgstr "Formació contínua ESS"
 
-#: apps/reservations/choices.py:26
+#: apps/reservations/choices.py:20
 msgid "Accompaniment"
-msgstr "Acompanyament "
+msgstr "Acompanyament"
 
-#: apps/reservations/choices.py:27
+#: apps/reservations/choices.py:21
 msgid "Access to financing"
 msgstr "Accés al finançament"
 
-#: apps/reservations/choices.py:28
+#: apps/reservations/choices.py:22
 msgid "TechBloc4-Digitalization"
 msgstr "TechBloc4-Digitalització"
 
-#: apps/reservations/choices.py:29
+#: apps/reservations/choices.py:23
 msgid "Acts and events"
 msgstr "Actes i esdeveniments"
 
-#: apps/reservations/choices.py:30
+#: apps/reservations/choices.py:24
 msgid "Internationalization"
 msgstr "Internacionalització"
 
-#: apps/reservations/choices.py:31
+#: apps/reservations/choices.py:25
 msgid "ESS attention point"
 msgstr "Punt d’atenció ESS"
 
-#: apps/reservations/choices.py:32
+#: apps/reservations/choices.py:26
 msgid "Challenges"
-msgstr "Reptes "
+msgstr "Reptes"
 
-#: apps/reservations/choices.py:33
+#: apps/reservations/choices.py:27
 msgid "Communication and disclosure"
 msgstr "Comunicació i divulgació"
 
-#: apps/reservations/choices.py:34
+#: apps/reservations/choices.py:28
 msgid "Local intercooperation"
 msgstr "Intercooperació local"
 
-#: apps/reservations/choices.py:35
+#: apps/reservations/choices.py:29
 msgid "JovEES"
 msgstr "JovEES"
 
-#: apps/reservations/choices.py:36
+#: apps/reservations/choices.py:30
 msgid "Governance Spaces"
 msgstr "Espais de Governança"
 
-#: apps/reservations/choices.py:37
+#: apps/reservations/choices.py:31
 msgid "Diagnosis of ESS"
 msgstr "Diagnosi de l'ESS"
 
-#: apps/reservations/constants.py:17
+#: apps/reservations/constants.py:19
 msgid "January"
 msgstr "Gener"
 
-#: apps/reservations/constants.py:18
+#: apps/reservations/constants.py:20
 msgid "February"
 msgstr "Febrer"
 
-#: apps/reservations/constants.py:19
+#: apps/reservations/constants.py:21
 msgid "March"
 msgstr "Març"
 
-#: apps/reservations/constants.py:20
+#: apps/reservations/constants.py:22
 msgid "April"
 msgstr "Abril"
 
-#: apps/reservations/constants.py:21
+#: apps/reservations/constants.py:23
 msgid "May"
 msgstr "Maig"
 
-#: apps/reservations/constants.py:22
+#: apps/reservations/constants.py:24
 msgid "June"
 msgstr "Juny"
 
-#: apps/reservations/constants.py:23
+#: apps/reservations/constants.py:25
 msgid "July"
 msgstr "Juliol"
 
-#: apps/reservations/constants.py:24
+#: apps/reservations/constants.py:26
 msgid "August"
 msgstr "Agost"
 
-#: apps/reservations/constants.py:25
+#: apps/reservations/constants.py:27
 msgid "September"
 msgstr "Septembre"
 
-#: apps/reservations/constants.py:26
+#: apps/reservations/constants.py:28
 msgid "October"
 msgstr "Octubre"
 
-#: apps/reservations/constants.py:27
+#: apps/reservations/constants.py:29
 msgid "November"
 msgstr "Novembre"
 
-#: apps/reservations/constants.py:28
+#: apps/reservations/constants.py:30
 msgid "December"
 msgstr "Desembre"
 
-#: apps/reservations/forms.py:21
+#: apps/reservations/forms.py:26
 msgid "I agree to Privacy Policy"
 msgstr "Accepto la política de privacitat"
 
-#: apps/reservations/forms.py:140
+#: apps/reservations/forms.py:161
 #, python-brace-format
 msgid ""
-"I have read and agree with the <a href=\"{url}\" target=\"_blank\" "
-"style=\"color: #be3bc7; font-weight: bold;\">rules of use of the space</a>"
+"I have read and agree with <a href=\"{url}\" target=\"_blank\" "
+"style=\"color: #be3bc7; font-weight: bold;\">the rules of use of the space</a>"
 msgstr ""
-"He llegit i accepto les <a href=\"{url}\" target=\"_blank\" style=\"color: "
+"He llegit i accepto <a href=\"{url}\" target=\"_blank\" style=\"color: "
 "#be3bc7; font-weight: bold;\">la normativa d'ús de l'espai</a>"
 
-#: apps/reservations/forms.py:178
+#: apps/reservations/forms.py:199
 msgid "The date must be greater than the current date."
 msgstr "La data ha de ser posterior a l'actual."
 
-#: apps/reservations/models.py:37
+#: apps/reservations/forms.py:212
+#, python-brace-format
+msgid "The start time must be between {start_time} and {end_time}."
+msgstr "L'hora d'inici ha de ser entre {start_time} i {end_time}."
+
+#: apps/reservations/forms.py:228
+#, python-brace-format
+msgid "The end time must be between {start_time} and {end_time}."
+msgstr "L'hora de finalització ha de ser entre {start_time} i {end_time}."
+
+#: apps/reservations/models.py:32
 msgid "Pending"
 msgstr "Pendent"
 
-#: apps/reservations/models.py:38
+#: apps/reservations/models.py:33
 msgid "Confirmed"
 msgstr "Confirmada"
 
-#: apps/reservations/models.py:39
+#: apps/reservations/models.py:34
 msgid "Canceled"
 msgstr "Cancel·lada"
 
-#: apps/reservations/models.py:40
+#: apps/reservations/models.py:35
 msgid "Refused"
 msgstr "Denegada"
 
-#: apps/reservations/models.py:43
+#: apps/reservations/models.py:38
 msgid "Private training"
 msgstr "Esdeveniment privat"
 
-#: apps/reservations/models.py:44
+#: apps/reservations/models.py:39
 msgid "Public training"
 msgstr "Esdeveniment públic"
 
-#: apps/reservations/models.py:47 templates/reservations/details.html:75
+#: apps/reservations/models.py:42 templates/reservations/details.html:75
 msgid "Title"
 msgstr "Títol"
 
-#: apps/reservations/models.py:53
+#: apps/reservations/models.py:48
 msgid "Choose the option that interests you most"
 msgstr "Escull l'opció que et vagi millor"
 
-#: apps/reservations/models.py:60 templates/reservations/details.html:91
+#: apps/reservations/models.py:55 templates/reservations/details.html:91
 msgid "Date"
 msgstr "Data"
 
-#: apps/reservations/models.py:65
+#: apps/reservations/models.py:60
 msgid "Start time"
 msgstr "Hora inici"
 
-#: apps/reservations/models.py:70
+#: apps/reservations/models.py:65
 msgid "End time"
 msgstr "Hora final"
 
-#: apps/reservations/models.py:75 templates/reservations/details.html:111
+#: apps/reservations/models.py:70 templates/reservations/details.html:111
 msgid "Assistants"
 msgstr "Assistents"
 
-#: apps/reservations/models.py:83 apps/rooms/models.py:83
+#: apps/reservations/models.py:78 apps/rooms/models.py:83
 msgid "room"
 msgstr "sala"
 
-#: apps/reservations/models.py:88
+#: apps/reservations/models.py:83
 msgid ""
 "If you want to change the room and notify the user, first, change the room, "
 "save and then click the button to notify."
@@ -403,35 +421,35 @@ msgstr ""
 "Si vols canviar la sala i notificar l'usuari, primer canvia la sala, desa-ho "
 "i després fes click al botó de notificar."
 
-#: apps/reservations/models.py:93
+#: apps/reservations/models.py:88
 msgid "Is budgeted?"
 msgstr "Està pressupostada?"
 
-#: apps/reservations/models.py:98
+#: apps/reservations/models.py:93
 msgid "Is paid?"
 msgstr "Està pagada?"
 
-#: apps/reservations/models.py:103
+#: apps/reservations/models.py:98
 msgid "Do I need catering service?"
 msgstr "Necessites servei de càtering?"
 
-#: apps/reservations/models.py:108
+#: apps/reservations/models.py:103
 msgid "Do you need to tell us something?"
 msgstr "Vols dir-nos alguna cosa?"
 
-#: apps/reservations/models.py:114
-msgid "Ateneu's activity"
-msgstr "Activitat de l'Ateneu"
+#: apps/reservations/models.py:109
+msgid "Does the activity belong to one of these services?"
+msgstr "Forma part aquesta reserva d'algun d'aquests serveis?"
 
-#: apps/reservations/models.py:121
+#: apps/reservations/models.py:116
 msgid "Service type Bloc4BCN"
 msgstr "Servei de Bloc4BCN"
 
-#: apps/reservations/models.py:128
+#: apps/reservations/models.py:123
 msgid "Type of event"
 msgstr "Tipus d'esdeveniment"
 
-#: apps/reservations/models.py:134
+#: apps/reservations/models.py:129
 msgid ""
 "Public events must be open to all citizens and will be published in the "
 "Bloc4BCN Agenda, subject to approval."
@@ -439,13 +457,13 @@ msgstr ""
 "Els esdeveniments públics han de ser oberts a tots els ciutadans i serán "
 "publicats a l'agenda del Bloc4BCN, un cop sigui aprovat."
 
-#: apps/reservations/models.py:141 apps/rooms/models.py:68
-#: templates/reservations/details.html:142
+#: apps/reservations/models.py:136 apps/rooms/models.py:69
+#: templates/reservations/details.html:150
 msgid "Description"
 msgstr "Descripció"
 
-#: apps/reservations/models.py:145 apps/reservations/models.py:155
-#: apps/reservations/models.py:165
+#: apps/reservations/models.py:140 apps/reservations/models.py:150
+#: apps/reservations/models.py:160
 msgid ""
 "This information will be used in the Bloc4BCN Agenda publication of this "
 "event."
@@ -453,159 +471,193 @@ msgstr ""
 "Aquesta información es farà servir per la publicació d'una entrada a "
 "l'Agenda de Bloc4BCN sobre aquest esdeveniment."
 
-#: apps/reservations/models.py:150 templates/reservations/details.html:157
+#: apps/reservations/models.py:145 templates/reservations/details.html:165
 msgid "Poster"
 msgstr "Poster"
 
-#: apps/reservations/models.py:160
+#: apps/reservations/models.py:155
 msgid "URL of the activity"
 msgstr "Url de l'activitat"
 
-#: apps/reservations/models.py:170
+#: apps/reservations/models.py:165
 msgid "Total price"
 msgstr "Preu total"
 
-#: apps/reservations/models.py:178
+#: apps/reservations/models.py:175
 msgid "entity"
 msgstr "entitat"
 
-#: apps/reservations/models.py:186
+#: apps/reservations/models.py:183
 msgid "reserved by"
 msgstr "reservat per"
 
-#: apps/reservations/models.py:194
+#: apps/reservations/models.py:191
 msgid "canceled by"
 msgstr "cancel·lat per"
 
-#: apps/reservations/models.py:201
+#: apps/reservations/models.py:198
 msgid "canceled_at"
 msgstr "cancel·lat a"
 
-#: apps/reservations/models.py:210 templates/reservations/details.html:178
-msgid "Status of the reservation"
-msgstr "Estat de la reserva"
+#: apps/reservations/models.py:207
+msgid "The Status can only be modified by using the buttons below."
+msgstr ""
+"L'estat de la reserva només pot ser modificat a través dels botons d'acció a "
+"sota."
 
-#: apps/reservations/models.py:211
+#: apps/reservations/models.py:208
 msgid "status"
 msgstr "estat"
 
-#: apps/reservations/models.py:217
+#: apps/reservations/models.py:211
+#, fuzzy
+#| msgid "Checked in"
+msgid "checked in"
+msgstr "Registrat"
+
+#: apps/reservations/models.py:212
+msgid "billed"
+msgstr "Facturat"
+
+#: apps/reservations/models.py:214
+msgid "billed at"
+msgstr "Facturat a"
+
+#: apps/reservations/models.py:224
+msgid "billed by"
+msgstr "Facturat per"
+
+#: apps/reservations/models.py:230
 msgid "reservation"
 msgstr "reserva"
 
-#: apps/reservations/models.py:218
+#: apps/reservations/models.py:231
 msgid "reservations"
 msgstr "reserves"
 
-#: apps/reservations/models.py:270
+#: apps/reservations/models.py:283
 #, python-brace-format
 msgid "If ateneus'activity is {activity} this field is required."
 msgstr ""
 "Si l'activitat és de l'ateneu i és {activity}, aquest camp és obligatori."
 
-#: apps/reservations/models.py:283
+#: apps/reservations/models.py:295
 msgid "The end time must be greater than the start time."
-msgstr "L'hora de finalització ja de ser posterior a l'hora d'inici."
+msgstr "L'hora de finalització ha de ser posterior a l'hora d'inici."
 
-#: apps/reservations/models.py:296
+#: apps/reservations/models.py:308
 msgid "The reservation must have a minimum duration of one hour."
 msgstr "La durada mínima d'una reserva és d'una hora."
 
-#: apps/reservations/models.py:309
+#: apps/reservations/models.py:320
 msgid "The maximum standby time is 20 hours."
 msgstr "La durada máxima d'una reserva és de 20 hores."
 
-#: apps/reservations/models.py:319
-#, python-brace-format
-msgid "The start time must be between {start_time} and {end_time}."
-msgstr "L'hora d'inici ha de ser entre {start_time} i {end_time}."
-
-#: apps/reservations/models.py:334
-#, python-brace-format
-msgid "The end time must be between {start_time} and {end_time}."
-msgstr "L'hora de finalització ha de ser entre {start_time} i {end_time}."
-
-#: apps/reservations/models.py:349
+#: apps/reservations/models.py:329
 msgid "The start time must be in 00, 15, 30 or 45 minutes."
 msgstr ""
 "L'hora d'inici ha de ser a hores en punt, o quarts (00, 15, 30 o 45 minuts)."
 
-#: apps/reservations/models.py:358
+#: apps/reservations/models.py:337
 msgid "The end time must be in 00, 15, 30 or 45 minutes."
 msgstr ""
 "L'hora de finalització ha de ser a hores en punt, o quarts (00, 15, 30 o 45 "
 "minuts)."
 
-#: apps/reservations/models.py:373
+#: apps/reservations/models.py:351
 msgid "If training is public, this field is required."
 msgstr "Si l'esdeveniment és públic, aquest camp és obligatori."
 
-#: apps/reservations/models.py:386
+#: apps/reservations/models.py:363
 #, python-brace-format
 msgid "{room_type} cannot be used in public trainings."
 msgstr "{room_type} no es pot fer servir per esdeveniments públics."
 
-#: apps/reservations/models.py:413
+#: apps/reservations/models.py:389
 msgid "The room is not available for this time period."
 msgstr "La sala no està disponible a aquest període."
 
-#: apps/reservations/models.py:423
+#: apps/reservations/models.py:399
 #, python-brace-format
 msgid "The maximum capacity for this room is {capacity}."
 msgstr "Capacitat màxima de persones de la sala és {capacity}."
 
-#: apps/reservations/models.py:439
+#: apps/reservations/models.py:414
 #, python-brace-format
 msgid "This user belong to {entity}."
 msgstr "Aquest usuari pertany a {entity}."
 
-#: apps/reservations/models.py:461
+#: apps/reservations/models.py:435
 #, python-format
 msgid "The maximum advance reservation period is %(days)s days."
 msgstr "El període màxim de reserva anticipada és de %(days)s dies."
 
-#: apps/reservations/urls.py:23
+#: apps/reservations/urls.py:27
+msgid "summary"
+msgstr "resum"
+
+#: apps/reservations/urls.py:29
 msgid "calendar/"
 msgstr "calendari/"
 
-#: apps/reservations/urls.py:33
+#: apps/reservations/urls.py:39
 msgid "create/"
 msgstr "crear/"
 
-#: apps/reservations/urls.py:36
-msgid "details/<str:id>/"
-msgstr "detalls/<str:id>/"
+#: apps/reservations/urls.py:42
+msgid "details/<uuid:id>/"
+msgstr "detalls/<uuid:id>/"
 
-#: apps/reservations/urls.py:41
+#: apps/reservations/urls.py:52
+msgid "details/"
+msgstr "detalls/"
+
+#: apps/reservations/urls.py:58
 msgid "success/"
 msgstr "exit/"
 
-#: apps/reservations/urls.py:46
+#: apps/reservations/urls.py:63
 msgid "success/redirect/"
 msgstr "exit/redireccio/"
 
-#: apps/reservations/urls.py:51
+#: apps/reservations/urls.py:68
 msgid "cancelled/"
 msgstr "cancellada/"
 
-#: apps/reservations/urls.py:57
+#: apps/reservations/urls.py:74
 msgid "price/"
 msgstr "preu/"
 
-#: apps/reservations/urls.py:59
-msgid "filter/"
-msgstr "filtre/"
+#: apps/reservations/urls.py:77
+msgid "filter_summary/"
+msgstr "filtre_resum/"
 
-#: apps/reservations/views.py:256 apps/reservations/views.py:269
-#: apps/reservations/views.py:276
+#: apps/reservations/urls.py:82
+msgid "filter_my_reservations/"
+msgstr "filtre_reserves/"
+
+#: apps/reservations/urls.py:87
+msgid "mark_reservations_as_billed/<int:year>/<int:month>/<uuid:entity>/"
+msgstr "marcar_reserves_facturades/<int:year>/<int:month>/<uuid:entity>/"
+
+#: apps/reservations/views.py:254
+msgid "This reservation cannot be cancelled."
+msgstr "Aquesta reserva no pot ser cancelada."
+
+#: apps/reservations/views.py:264
+msgid "This reservation cannot be checked in."
+msgstr "Aquesta reserva no pot ser registrada com a presentada."
+
+#: apps/reservations/views.py:306 apps/reservations/views.py:319
+#: apps/reservations/views.py:326
 msgid "Successful reservation"
 msgstr "Reserva exitosa"
 
-#: apps/reservations/views.py:257
+#: apps/reservations/views.py:307
 msgid "Successful reservation."
 msgstr "Reserva exitosa."
 
-#: apps/reservations/views.py:271
+#: apps/reservations/views.py:321
 msgid ""
 "Successful reservation.<br><br> As you've selected you need  catering space "
 "outside the room, it's mandatory to make a reservation for it."
@@ -613,19 +665,19 @@ msgstr ""
 "Reserva exitosa.<br><br> Com has seleccionat que necessites espai de "
 "càtering fora de la sala, és obligatori que facis una reserva per això."
 
-#: apps/reservations/views.py:275
+#: apps/reservations/views.py:325
 msgid "Continue"
 msgstr "Continua"
 
-#: apps/reservations/views.py:295 apps/reservations/views.py:298
+#: apps/reservations/views.py:345 apps/reservations/views.py:348
 msgid "Reservation cancelled"
 msgstr "Reserva cancelada"
 
-#: apps/reservations/views.py:296
+#: apps/reservations/views.py:346
 msgid "Reservation cancelled."
 msgstr "Reserva cancelada."
 
-#: apps/reservations/views.py:319
+#: apps/reservations/views.py:369
 msgid "All"
 msgstr "Tots"
 
@@ -641,66 +693,42 @@ msgstr "Aules"
 msgid "Meeting room"
 msgstr "Sales de reunions"
 
-#: apps/rooms/models.py:17
-msgid "Name of the room"
-msgstr "Nom de la sala"
-
-#: apps/rooms/models.py:20
+#: apps/rooms/models.py:19
 msgid "Room code"
 msgstr "Codi de sala"
 
-#: apps/rooms/models.py:26
-msgid "Hourly price"
-msgstr "Preu per hora"
-
-#: apps/rooms/models.py:30
-msgid "Price per hour of the room"
-msgstr "Preu per hora de la sala"
+#: apps/rooms/models.py:25
+msgid "Hourly price (VAT not included)"
+msgstr "Preu hora (IVA no inclòs)"
 
 #: apps/rooms/models.py:33
-msgid "Half day price"
-msgstr "Preu per mig dia"
+msgid "Half day price (VAT not included)"
+msgstr "Preu mig dia (IVA no inclòs)"
 
-#: apps/rooms/models.py:37
-msgid "Price per half day of the room"
-msgstr "Preu per mig dia de la sala"
+#: apps/rooms/models.py:41
+msgid "All day price (VAT not included)"
+msgstr "Preu dia sencer (IVA no inclòs)"
 
-#: apps/rooms/models.py:40
-msgid "All day price"
-msgstr "Preu per tot el dia"
-
-#: apps/rooms/models.py:44
-msgid "Price per all day of the room"
-msgstr "Preu per tot el dia de la sala"
-
-#: apps/rooms/models.py:47 templates/rooms/rooms_filtered.html:20
+#: apps/rooms/models.py:49 templates/rooms/rooms_filtered.html:20
 msgid "Capacity"
 msgstr "Capacitat"
 
-#: apps/rooms/models.py:50
+#: apps/rooms/models.py:52
 msgid "Maximum seating capacity of the room"
 msgstr "Capacitat màxima de persones de la sala"
 
-#: apps/rooms/models.py:53
+#: apps/rooms/models.py:55
 msgid "Picture"
 msgstr "Imatge"
 
-#: apps/rooms/models.py:58
-msgid "Photo of the room"
-msgstr "Fotografia de la sala"
-
-#: apps/rooms/models.py:61 templates/reservations/details.html:149
-#: templates/rooms/room_detail.html:55
+#: apps/rooms/models.py:62 templates/reservations/details.html:157
+#: templates/rooms/room_detail.html:53
 msgid "Equipment"
 msgstr "Equipament"
 
-#: apps/rooms/models.py:65
+#: apps/rooms/models.py:66
 msgid "Available equipment in the room"
 msgstr "Equipament disponible a la sala"
-
-#: apps/rooms/models.py:72
-msgid "Description of the main aspects of the room."
-msgstr "Descripció de les principals característiques de la sala."
 
 #: apps/rooms/models.py:75
 msgid "Room type"
@@ -715,9 +743,8 @@ msgid "<uuid:id>/"
 msgstr "<uuid:id>/"
 
 #: templates/404.html:13 templates/500.html:13 templates/503.html:13
-#: templates/reservations/full_calendar.html:141
-#: templates/reservations/full_calendar.html:176
-#: templates/rooms/room_detail.html:103
+#: templates/reservations/calendar_filtered.js.html:168
+#: templates/reservations/calendar_filtered.js.html:203
 msgid "Go back"
 msgstr "Enrere"
 
@@ -770,15 +797,15 @@ msgstr "E-mail pendent de verificar"
 #: templates/registration/password_change_form.html:23
 #: templates/registration/send_verification_code.html:23
 #: templates/registration/signup.html:25
+#: templates/reservations/base_reservations_list.html:23
 #: templates/reservations/create_reserves.html:29
 #: templates/reservations/details.html:5 templates/reservations/details.html:19
-#: templates/reservations/full_calendar.html:33
-#: templates/reservations/reservations_list.html:23
-#: templates/reservations/temp.html:134 templates/rooms/room_detail.html:32
+#: templates/reservations/full_calendar.html:31
+#: templates/rooms/room_detail.html:30
 msgid "Home"
 msgstr "Inici"
 
-#: templates/base.html:108 templates/base.html:205
+#: templates/base.html:108 templates/base.html:217
 msgid "Administration panel"
 msgstr "Panell d'administració"
 
@@ -801,11 +828,15 @@ msgstr "Perfil"
 
 #: templates/base.html:193 templates/reservations/create_reserves.html:39
 #: templates/reservations/full_calendar.html:5
-#: templates/reservations/temp.html:144
 msgid "Reservations"
 msgstr "Reserves"
 
-#: templates/base.html:274
+#: templates/base.html:205
+#: templates/reservations/reservations_list_summary.html:5
+msgid "Monthly summary"
+msgstr "Resum mensual"
+
+#: templates/base.html:285
 msgid ""
 "We use cookies to optimize your experience and to analyze the web traffic. "
 "We don't sell data to third parties. If you continue navigating, we'll "
@@ -815,15 +846,15 @@ msgstr ""
 "trànsit web. No venem dades a tercers. Si continues navegant, entendrem que "
 "hi estàs d'acord."
 
-#: templates/base.html:286
+#: templates/base.html:297
 msgid "Accept"
 msgstr "Acceptar"
 
-#: templates/base.html:296
+#: templates/base.html:307
 msgid "Deny"
 msgstr "Denega"
 
-#: templates/base_form.html:53 templates/profile/details.html:88
+#: templates/base_form.html:53 templates/profile/details.html:104
 msgid "Save"
 msgstr "Desar"
 
@@ -881,8 +912,7 @@ msgstr "Si us plau, comprova els camps marcats en vermell."
 #: templates/flowbite_classes/fields/select.html:54
 #: templates/flowbite_classes/fields/time.html:24
 #: templates/flowbite_classes/fields/time.html:53
-#: templates/profile/details.html:50
-#: templates/reservations/widgets/custom_numeric.html:62
+#: templates/profile/details.html:51
 msgid "Show information"
 msgstr "Mostra la informació"
 
@@ -898,19 +928,19 @@ msgstr "Pàgina d'inici interna"
 msgid "Profile details"
 msgstr "Detalls del perfil"
 
-#: templates/profile/details.html:31
+#: templates/profile/details.html:32
 msgid "Your profile"
 msgstr "El teu perfil"
 
-#: templates/profile/details.html:33
+#: templates/profile/details.html:34
 msgid "Here you can see and edit your data."
 msgstr "Aquí pots veure i editar les teves dades."
 
-#: templates/profile/details.html:36
+#: templates/profile/details.html:37
 msgid "You are a janitor at Bloc4BCN"
 msgstr "Ets conserge al Bloc4BCN"
 
-#: templates/profile/details.html:54
+#: templates/profile/details.html:55
 msgid ""
 "You can't edit this information, if you want to change it, contact the "
 "administration."
@@ -918,75 +948,87 @@ msgstr ""
 "No pots modificar aquestes dades. Si necessites fer-ne un canvi, contacta "
 "amb l'administració."
 
-#: templates/profile/details.html:71
+#: templates/profile/details.html:72 templates/profile/details.html:87
 msgid "Warning!"
 msgstr "Alerta!"
 
-#: templates/profile/details.html:72
+#: templates/profile/details.html:73
+msgid ""
+"This user has no entity. You can't access the rest of the site until you "
+"have an entity assigned."
+msgstr ""
+"Aquest usuari no té cap entitat assignada. No podràs accedir a la resta de "
+"l'aplicació fins que tinguis una entitat assginada."
+
+#: templates/profile/details.html:74
+msgid " Please contact the administration."
+msgstr "Si us plau, contacta l'administració."
+
+#: templates/profile/details.html:88
 msgid "Your email is not verified. Before anything else, you must verify it."
 msgstr ""
 "El teu correu electrònic no està verificat. Per poder accedir a la resta "
 "d'apartats, primer cal verificar-lo."
 
-#: templates/profile/details.html:74
+#: templates/profile/details.html:90
 msgid "Verify email here."
 msgstr "Verifiqueu el correu electrònic aquí."
 
-#: templates/profile/details.html:103
+#: templates/profile/details.html:119
 #: templates/registration/password_change_form.html:5
 #: templates/registration/password_change_form.html:42
 msgid "Password change"
 msgstr "Modificar la contrasenya"
 
-#: templates/profile/details.html:105
+#: templates/profile/details.html:121
 msgid "Here you can change your password."
 msgstr "Aquí pots canviar la contrasenya."
 
-#: templates/profile/details.html:112
+#: templates/profile/details.html:128
 msgid "Change password"
 msgstr "Modificar la contrasenya"
 
-#: templates/profile/details.html:132
+#: templates/profile/details.html:148
 msgid "Your entity"
 msgstr "La teva entitat"
 
-#: templates/profile/details.html:139
+#: templates/profile/details.html:155
 msgid "Here you can view your entity's data."
 msgstr "Aquí pots veure les dades de la teva entitat."
 
-#: templates/profile/details.html:145
+#: templates/profile/details.html:161
 msgid "Email"
 msgstr "Correu electrònic"
 
-#: templates/profile/details.html:153
+#: templates/profile/details.html:169
 msgid "Fiscal name"
 msgstr "Nom fiscal"
 
-#: templates/profile/details.html:161
-msgid "VAT"
+#: templates/profile/details.html:177
+msgid "VAT number"
 msgstr "NIF"
 
-#: templates/profile/details.html:169
+#: templates/profile/details.html:185
 msgid "Town"
 msgstr "Municipi"
 
-#: templates/profile/details.html:177
+#: templates/profile/details.html:193
 msgid "Postal code"
 msgstr "Codi postal"
 
-#: templates/profile/details.html:185
+#: templates/profile/details.html:201
 msgid "Address"
 msgstr "Adreça"
 
-#: templates/profile/details.html:193
+#: templates/profile/details.html:209
 msgid "Country"
 msgstr "País"
 
-#: templates/profile/details.html:201
+#: templates/profile/details.html:217
 msgid "Responsible person"
 msgstr "Persona responsable"
 
-#: templates/profile/details.html:207
+#: templates/profile/details.html:223
 msgid "None assigned"
 msgstr "Cap assignat"
 
@@ -1111,104 +1153,218 @@ msgstr ""
 msgid "Set"
 msgstr "Estableix"
 
-#: templates/reservations/components/reservations.html:7
-msgid "Meeting rooms discount"
-msgstr "Descompte de sales de reunions"
+#: templates/reservations/base_reservations_list.html:6
+#: templates/rooms/room_detail.html:5
+msgid "Reservations List"
+msgstr "Llistat de reserves"
 
-#: templates/reservations/components/reservations.html:9
-msgid "Initial month discount hours"
-msgstr "Descompte d'hores mensuals inicial"
+#: templates/reservations/base_reservations_list.html:41
+msgid "Filter by"
+msgstr "Filtra per"
 
-#: templates/reservations/components/reservations.html:10
-#: templates/reservations/components/reservations.html:12
-#: templates/reservations/components/reservations.html:29
-#: templates/reservations/components/reservations.html:31
-msgid "hours"
-msgstr "hores"
+#: templates/reservations/calendar_filtered.js.html:147
+#: templates/reservations/calendar_filtered.js.html:182
+msgid "Alert!"
+msgstr "Atenció!"
 
-#: templates/reservations/components/reservations.html:11
-#: templates/reservations/components/reservations.html:30
-msgid "Discount hours left"
-msgstr "Hores de descompte que queden"
+#: templates/reservations/calendar_filtered.js.html:154
+#: templates/reservations/calendar_filtered.js.html:189
+#: templates/reservations/calendar_filtered.js.html:224
+msgid "Close"
+msgstr "Tancar"
 
-#: templates/reservations/components/reservations.html:13
-msgid "Total amount of the reservations"
-msgstr "Preu total de les reserves"
+#: templates/reservations/calendar_filtered.js.html:159
+msgid ""
+"Before being able to book a reservation, you have to select which room you "
+"want."
+msgstr "Abans de poder fer una reserva, has de seleccionar quina sala vols."
 
-#: templates/reservations/components/reservations.html:17
-#: templates/reservations/components/reservations.html:36
-msgid "Total to be invoiced (with bonus discount)"
-msgstr "Preu total per facturar (amb els descomptes)"
+#: templates/reservations/calendar_filtered.js.html:194
+msgid "The date of the reservation can not be before now."
+msgstr "La data i hora de la reserva no pot ser anterior a l'actual."
 
-#: templates/reservations/components/reservations.html:26
-msgid "Teaching rooms discount"
-msgstr "Descompte d'aules"
+#: templates/reservations/calendar_filtered.js.html:217
+#: templates/reservations/create_reserves.html:48
+msgid "New reservation"
+msgstr "Nova reserva"
 
-#: templates/reservations/components/reservations.html:28
-msgid "Initial year discount hours"
-msgstr "Descompte d'hores anuals inicial"
+#: templates/reservations/calendar_filtered.js.html:229
+msgid "Do you want to create a new reservation in this time?"
+msgstr "Vols crear una nova reserva durant aquest període?"
 
-#: templates/reservations/components/reservations.html:32
-msgid "Total amount of the resevations"
-msgstr "Quantiat total de les reserves"
+#: templates/reservations/calendar_filtered.js.html:238
+msgid "Book"
+msgstr "Reserva"
 
-#: templates/reservations/components/reservations.html:51
+#: templates/reservations/components/base_reservations.html:8
+#: templates/reservations/components/base_reservations.html:47
+msgid "Reservations of"
+msgstr "Reserves de"
+
+#: templates/reservations/components/base_reservations.html:15
+msgid "Totals"
+msgstr "Totals"
+
+#: templates/reservations/components/base_reservations.html:17
+msgid "Total meeting room reservations"
+msgstr "Reserves de sales de reunions"
+
+#: templates/reservations/components/base_reservations.html:19
+msgid "Total teaching room reservations"
+msgstr "Reserves d'aules"
+
+#: templates/reservations/components/base_reservations.html:21
+msgid "Total event room reservations"
+msgstr "Reserves d'espais d'esdeveniments"
+
+#: templates/reservations/components/base_reservations.html:26
+#: templates/reservations/components/base_reservations_totals.html:25
+#: templates/reservations/total_price.html:17
+msgid "Total"
+msgstr "Total"
+
+#: templates/reservations/components/base_reservations.html:27
+#: templates/reservations/components/base_reservations_totals.html:26
+msgid "(including discounts)"
+msgstr "(després d'impostos i descomptes)"
+
+#: templates/reservations/components/base_reservations.html:33
+msgid "Breakdown by room type:"
+msgstr "Desglossament per tipus de sala:"
+
+#: templates/reservations/components/base_reservations.html:62
 msgid "Reservation of"
 msgstr "Reserves de"
 
-#: templates/reservations/components/reservations.html:60
+#: templates/reservations/components/base_reservations.html:71
 #: templates/rooms/rooms_filtered.html:21
 msgid "Price"
 msgstr "Preu"
 
-#: templates/reservations/components/reservations.html:74
-msgid "You have made no reservations yet. When you do, they will appear here."
-msgstr "Encara no tens cap reserva feta. Quan en tinguis, apareixeran aquí."
+#: templates/reservations/components/base_reservations.html:88
+msgid ""
+"There are no reservations for this selection. Choose a different entity or "
+"time period."
+msgstr ""
+"No hi ha reserves per aquesta selección. Selecciona una entitat o període "
+"diferents."
+
+#: templates/reservations/components/base_reservations_totals.html:13
+msgid "Tax base of the reservations"
+msgstr "Base imponible de les reserves"
+
+#: templates/reservations/components/base_reservations_totals.html:17
+msgid "VAT amount of the reservations"
+msgstr "IVA de les reserves"
+
+#: templates/reservations/components/reservations_summary.html:11
+msgid "Invoiced month"
+msgstr "Mes facturat"
+
+#: templates/reservations/components/reservations_summary.html:31
+msgid "Mark month as invoiced"
+msgstr "Marcar mes com a facturat"
+
+#: templates/reservations/components/reservations_summary.html:45
+msgid "Action confirmation"
+msgstr "Acció de confirmació"
+
+#: templates/reservations/components/reservations_summary.html:61
+msgid "Are you sure that you want to mark this month as invoiced?"
+msgstr "Segur que vols marcar aquest mes com a facturat?"
+
+#: templates/reservations/components/reservations_summary.html:65
+msgid "The action can not be undone"
+msgstr "Aquesta acció és irreversible."
+
+#: templates/reservations/components/reservations_summary.html:68
+msgid ""
+"Doing this will mark all the reservations in this month as invoiced. If "
+"later you need to modify this state, you will have to do so individually "
+"through the administration panel."
+msgstr ""
+"Fer-ho marcarà totes les factures del mes com a facturades. Si després "
+"necessites modificar aquest estat ho hauràs de fer individualment factura "
+"per factura al panell d’administració."
+
+#: templates/reservations/components/reservations_summary.html:87
+msgid "Yes, I am sure"
+msgstr "Sí, segur."
+
+#: templates/reservations/components/reservations_summary.html:96
+msgid "No, cancel"
+msgstr "No, cancel·la."
+
+#: templates/reservations/components/reservations_totals_classrooms.html:5
+msgid "Classrooms"
+msgstr "Aules"
+
+#: templates/reservations/components/reservations_totals_classrooms.html:10
+msgid "Initial annual discount hours"
+msgstr "Descompte d'hores anuals inicial"
+
+#: templates/reservations/components/reservations_totals_classrooms.html:11
+#: templates/reservations/components/reservations_totals_classrooms.html:13
+#: templates/reservations/components/reservations_totals_event_rooms.html:11
+#: templates/reservations/components/reservations_totals_event_rooms.html:13
+#: templates/reservations/components/reservations_totals_meeting_rooms.html:11
+#: templates/reservations/components/reservations_totals_meeting_rooms.html:13
+msgid "hours"
+msgstr "hores"
+
+#: templates/reservations/components/reservations_totals_classrooms.html:12
+#: templates/reservations/components/reservations_totals_event_rooms.html:12
+#: templates/reservations/components/reservations_totals_meeting_rooms.html:12
+msgid "Discount hours left"
+msgstr "Hores de descompte que queden"
+
+#: templates/reservations/components/reservations_totals_event_rooms.html:5
+msgid "Event rooms"
+msgstr "Esdeveniments"
+
+#: templates/reservations/components/reservations_totals_event_rooms.html:10
+#: templates/reservations/components/reservations_totals_meeting_rooms.html:10
+msgid "Initial month discount hours"
+msgstr "Descompte d'hores mensuals inicial"
+
+#: templates/reservations/components/reservations_totals_meeting_rooms.html:5
+msgid "Meeting rooms"
+msgstr "Sales de reunions"
 
 #: templates/reservations/create_reserves.html:5
-#: templates/reservations/temp.html:5
 msgid "New Reservation"
 msgstr "Nova Reserva"
 
-#: templates/reservations/create_reserves.html:48
-#: templates/reservations/full_calendar.html:190
-#: templates/reservations/temp.html:153 templates/rooms/room_detail.html:117
-msgid "New reservation"
-msgstr "Nova reserva"
-
 #: templates/reservations/create_reserves.html:52
-#: templates/reservations/temp.html:157
 msgid ""
-"To book the Event Hall, fill up the form below and send it to the "
+"To book one of the Events rooms, fill up the form below and send it to the "
 "administration. Until they confirm or reject it, the reservation will appear "
 "as pending."
 msgstr ""
-"Si vols reservar una Sala d'Esdeveniments, omple el formulari de baix i "
+"Si vols reservar una sala d'Esdeveniments, omple el formulari de baix i "
 "envia'l a l'administració. Fins que no es confirmi o denegui, la reserva "
 "apareixerà com a pendent."
 
-#: templates/reservations/create_reserves.html:85
-#: templates/reservations/temp.html:189
+#: templates/reservations/create_reserves.html:90
 msgid "Selected room"
 msgstr "Sala seleccionada"
 
-#: templates/reservations/create_reserves.html:101
-#: templates/reservations/temp.html:299
+#: templates/reservations/create_reserves.html:104
 msgid "Create reservation"
 msgstr "Crear reserva"
 
 #: templates/reservations/details.html:31
-#: templates/reservations/full_calendar.html:44
-#: templates/reservations/full_calendar.html:62
-#: templates/reservations/reservations_list.html:35
-#: templates/rooms/room_detail.html:40
+#: templates/reservations/full_calendar.html:42
+#: templates/reservations/full_calendar.html:60
+#: templates/reservations/reservations_list.html:15
+#: templates/rooms/room_detail.html:38
 msgid "Room reservations"
 msgstr "Reserves de sala"
 
 #: templates/reservations/details.html:39
-#: templates/reservations/full_calendar.html:53
-#: templates/reservations/reservations_list.html:43
-#: templates/reservations/reservations_list.html:49
+#: templates/reservations/full_calendar.html:51
+#: templates/reservations/reservations_list.html:5
+#: templates/reservations/reservations_list.html:23
 msgid "Your reservations"
 msgstr "Les teves reserves"
 
@@ -1246,7 +1402,7 @@ msgstr "No s'ha mencionat cap assistent."
 
 #: templates/reservations/details.html:121
 msgid "Is the reservation paid for?"
-msgstr "Està la reserva pagada?"
+msgstr "Està pagada la reserva?"
 
 #: templates/reservations/details.html:125
 msgid "Yes"
@@ -1257,45 +1413,58 @@ msgid "No"
 msgstr "No"
 
 #: templates/reservations/details.html:131
+msgid "Tax base amount"
+msgstr "Preu base imponible"
+
+#: templates/reservations/details.html:137
+msgid "VAT amount"
+msgstr "Preu IVA"
+
+#: templates/reservations/details.html:143
 msgid "Total price of the reservation"
 msgstr "Preu total de la reserva"
 
-#: templates/reservations/details.html:137
-msgid "The price could not be estimated."
-msgstr "El preu de la reserva no s'ha pogut calcular."
-
-#: templates/reservations/details.html:161
+#: templates/reservations/details.html:169
 msgid "See poster"
 msgstr "Veure poster"
 
-#: templates/reservations/details.html:167
+#: templates/reservations/details.html:175
 msgid "Booked by"
 msgstr "Reservat per"
 
-#: templates/reservations/details.html:174
-#: templates/reservations/details.html:191
-#: templates/reservations/details.html:201
+#: templates/reservations/details.html:182
+#: templates/reservations/details.html:199
+#: templates/reservations/details.html:209
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: templates/reservations/details.html:185
+#: templates/reservations/details.html:186
+msgid "Status of the reservation"
+msgstr "Estat de la reserva"
+
+#: templates/reservations/details.html:193
 msgid "Canceled by"
 msgstr "Cancel·lat per"
 
-#: templates/reservations/details.html:195
+#: templates/reservations/details.html:203
 msgid "Canceled at"
 msgstr "Cancel·lat a"
 
-#: templates/reservations/details.html:211
-#: templates/reservations/details.html:242
+#: templates/reservations/details.html:219
+#: templates/reservations/details.html:250
 msgid "Cancel reservation"
 msgstr "Cancel·lar reserva"
 
-#: templates/reservations/details.html:220
+#: templates/reservations/details.html:228
 msgid "Delete confirmation"
 msgstr "Confirmació de cancel·lació"
 
-#: templates/reservations/details.html:232
+#: templates/reservations/details.html:235
+#: templates/reservations/details.html:298
+msgid "Close modal"
+msgstr "Tancar modal"
+
+#: templates/reservations/details.html:240
 msgid ""
 "Are you sure you want to delete this booking? The action can not be undone. "
 "If you delete the booking the administration will be notified."
@@ -1303,134 +1472,126 @@ msgstr ""
 "Segur que vols eliminar aquesta reserva? Aquesta acció no es pot desfer. Si "
 "elimines la reserva l'administració será notificada."
 
-#: templates/reservations/details.html:264
+#: templates/reservations/details.html:272
+msgid "The assistance to this reserve has been confirmed."
+msgstr "L'assistència a aquesta reserva ha sigut confirmada."
+
+#: templates/reservations/details.html:282
+msgid "Mark assitance to reserve"
+msgstr "Marcar l'assistència a la reserva"
+
+#: templates/reservations/details.html:291
+msgid "Confirm assitance to reserve"
+msgstr "Confirmar l'assistència a la reserva"
+
+#: templates/reservations/details.html:303
+msgid ""
+"Confirm that the entity members arrived to check them in for this "
+"reservation."
+msgstr ""
+"Confirmo que els membres de l'entitat han arribat i que s'ha enregistrat la "
+"reserva."
+
+#: templates/reservations/details.html:313
+msgid "Check-in reservation"
+msgstr "Registre de reserva"
+
+#: templates/reservations/details.html:336
 msgid "Payment information"
 msgstr "Informació de pagament"
 
-#: templates/reservations/full_calendar.html:65
+#: templates/reservations/full_calendar.html:63
 msgid "Choose a room type:"
 msgstr "Escull un tipus de sala:"
 
-#: templates/reservations/full_calendar.html:100
+#: templates/reservations/full_calendar.html:99
 msgid "To book a room, before you must choose a day and time on the calendar:"
 msgstr "Per reservar una sala, primer escull un dia i hora al calendari:"
 
-#: templates/reservations/full_calendar.html:110
+#: templates/reservations/full_calendar.html:103
+msgid ""
+"To book a room, can choose a day and time on the calendar or go directly to "
+"the form with the button."
+msgstr ""
+"Per reservar una sala, pots escollir un dia i hora al calendari o anar "
+"directament al formulari a través d'aquest botó."
+
+#: templates/reservations/full_calendar.html:111
+msgid "Book a room"
+msgstr "Reserva una sala"
+
+#: templates/reservations/full_calendar.html:122
 msgid "There is no rooms available."
 msgstr "No hi ha sales disponibles."
 
-#: templates/reservations/full_calendar.html:120
-#: templates/reservations/full_calendar.html:155
-#: templates/rooms/room_detail.html:82
-msgid "Alert!"
-msgstr "Atenció!"
+#: templates/reservations/reservations_list_summary.html:13
+msgid "Choose an organization"
+msgstr "Escull una entitat"
 
-#: templates/reservations/full_calendar.html:132
-msgid ""
-"Before being able to book a reservation, you have to select which room you "
-"want."
-msgstr "Abans de poder fer una reserva, has de seleccionar quina sala vols."
+#: templates/reservations/total_price.html:6
+msgid "Reserve price"
+msgstr "Preu de la reserva"
 
-#: templates/reservations/full_calendar.html:167
-#: templates/rooms/room_detail.html:94
-msgid "The date of the reservation can not be before now."
-msgstr "La data i hora de la reserva no pot ser anterior a l'actual."
+#: templates/reservations/total_price.html:9
+msgid "Tax base"
+msgstr "Preu base"
 
-#: templates/reservations/full_calendar.html:202
-#: templates/rooms/room_detail.html:129
-msgid "Do you want to create a new reservation in this time?"
-msgstr "Vols crear una nova reserva durant aquest període?"
+#: templates/reservations/total_price.html:13
+msgid "Taxes"
+msgstr "IVA"
 
-#: templates/reservations/reservations_list.html:6
-#: templates/rooms/room_detail.html:5
-msgid "Reservations List"
-msgstr "Llistat de reserves"
-
-#: templates/reservations/reservations_list.html:56
-msgid "Filter by"
-msgstr "Filtra per"
-
-#: templates/reservations/temp.html:28 templates/reservations/temp.html:210
-#: templates/reservations/widgets/custom_radio.html:17
+#: templates/reservations/widgets/custom_radio.html:26
 msgid "The rooms are booked in half-hour slots, starting at a quarter."
 msgstr ""
 "Les sales es reserven en blocs de mitja hora, començant a les hores en punt "
 "o als quarts."
 
-#: templates/reservations/temp.html:29 templates/reservations/temp.html:53
-#: templates/reservations/temp.html:76 templates/reservations/temp.html:99
-#: templates/reservations/temp.html:211 templates/reservations/temp.html:235
-#: templates/reservations/temp.html:261 templates/reservations/temp.html:284
-#: templates/reservations/widgets/custom_radio.html:18
-#: templates/reservations/widgets/custom_radio.html:49
-#: templates/reservations/widgets/custom_radio.html:79
-#: templates/reservations/widgets/custom_radio.html:110
+#: templates/reservations/widgets/custom_radio.html:27
+#: templates/reservations/widgets/custom_radio.html:61
+#: templates/reservations/widgets/custom_radio.html:99
+#: templates/reservations/widgets/custom_radio.html:138
 msgid "Price "
 msgstr "Preu "
 
-#: templates/reservations/temp.html:29 templates/reservations/temp.html:211
-#: templates/reservations/widgets/custom_radio.html:18
+#: templates/reservations/widgets/custom_radio.html:27
 msgid " €/hour"
 msgstr " €/hora"
 
-#: templates/reservations/temp.html:52 templates/reservations/temp.html:234
+#: templates/reservations/widgets/custom_radio.html:60
 msgid ""
 "Rooms are reserved for a whole morning, with space available from 8:00 to "
 "14:00"
 msgstr ""
 "Les sales es reserven tot el matí, tenint l'espai disponible de 8:00 a 14:00"
 
-#: templates/reservations/temp.html:53 templates/reservations/temp.html:235
-#: templates/reservations/widgets/custom_radio.html:49
+#: templates/reservations/widgets/custom_radio.html:61
 msgid " €/morning"
 msgstr " €/matí"
 
-#: templates/reservations/temp.html:75 templates/reservations/temp.html:260
+#: templates/reservations/widgets/custom_radio.html:98
 msgid ""
 "Rooms are reserved for an entire afternoon, with the space available from "
-"14:00 to 18:00."
+"14:00 to 20:00."
 msgstr ""
 "Les sales es reserven tota la tarda, tenint l'espai disponible de 14:00 a "
-"18:00."
+"20:00."
 
-#: templates/reservations/temp.html:76 templates/reservations/temp.html:261
-#: templates/reservations/widgets/custom_radio.html:79
+#: templates/reservations/widgets/custom_radio.html:99
 msgid " €/afternoon"
 msgstr " €/tarda"
 
-#: templates/reservations/temp.html:98 templates/reservations/temp.html:283
-#: templates/reservations/widgets/custom_radio.html:109
+#: templates/reservations/widgets/custom_radio.html:137
 msgid ""
 "Rooms are reserved for a whole day, with the space available from 8:00 to "
-"18:00."
+"20:00."
 msgstr ""
-"Les sales es reserven tot el dia, tenint l'espai disponible de 8:00 a 18:00."
+"Les sales es reserven tot el dia, tenint l'espai disponible de 8:00 a 20:00."
 
-#: templates/reservations/temp.html:99 templates/reservations/temp.html:284
-#: templates/reservations/widgets/custom_radio.html:110
+#: templates/reservations/widgets/custom_radio.html:138
 msgid " €/day"
 msgstr " €/dia"
 
-#: templates/reservations/total_price.html:3
-msgid "Reserve price"
-msgstr "Preu de la reserva"
-
-#: templates/reservations/widgets/custom_radio.html:48
-msgid ""
-"Rooms are reserved for a whole morning, with space available from 8:00 to "
-"13:00"
-msgstr ""
-"Les sales es reserven tot el matí, tenint l'espai disponible de 8:00 a 13:00"
-
-#: templates/reservations/widgets/custom_radio.html:78
-msgid ""
-"Rooms are reserved for an entire afternoon, with the space available from "
-"13:00 to 18:00."
-msgstr ""
-"Les sales es reserven tota la tarda, tenint l'espai disponible de 13:00 a "
-"18:00."
-
-#: templates/rooms/room_detail.html:71
+#: templates/rooms/room_detail.html:69
 msgid "Availability"
 msgstr "Disponibilitat"
 
@@ -1454,6 +1615,90 @@ msgstr "Selecciona"
 msgid "info"
 msgstr "info"
 
+#~ msgid "This user has no entity."
+#~ msgstr "Aquest usuari no pertany a cap entitat."
+
+#~ msgid "Ateneu's activity"
+#~ msgstr "Activitat de l'Ateneu"
+
+#~ msgid "filter/"
+#~ msgstr "filtre/"
+
+#~ msgid "Meeting rooms discount"
+#~ msgstr "Descompte de sales de reunions"
+
+#~ msgid "Teaching rooms discount"
+#~ msgstr "Descompte d'aules"
+
+#~ msgid "Total amount of the resevations"
+#~ msgstr "Quantiat total de les reserves"
+
+#~ msgid "Total to be invoiced (with bonus discount)"
+#~ msgstr "Preu total per facturar (amb els descomptes)"
+
+#~ msgid ""
+#~ "You have made no reservations yet. When you do, they will appear here."
+#~ msgstr "Encara no tens cap reserva feta. Quan en tinguis, apareixeran aquí."
+
+#~ msgid "Base to be invoiced"
+#~ msgstr "Base imponible a facturar"
+
+#~ msgid "Teaching rooms"
+#~ msgstr "Aules"
+
+#~ msgid "Total amount of the reservations"
+#~ msgstr "Preu total de les reserves"
+
+#~ msgid "Total to be invoiced"
+#~ msgstr "Total a facturar"
+
+#~ msgid "Name of the room"
+#~ msgstr "Nom de la sala"
+
+#~ msgid "Hourly price"
+#~ msgstr "Preu per hora"
+
+#~ msgid "Price per hour of the room"
+#~ msgstr "Preu per hora de la sala"
+
+#~ msgid "Half day price"
+#~ msgstr "Preu per mig dia"
+
+#~ msgid "Price per half day of the room"
+#~ msgstr "Preu per mig dia de la sala"
+
+#~ msgid "All day price"
+#~ msgstr "Preu per tot el dia"
+
+#~ msgid "Price per all day of the room"
+#~ msgstr "Preu per tot el dia de la sala"
+
+#~ msgid "Photo of the room"
+#~ msgstr "Fotografia de la sala"
+
+#~ msgid "Description of the main aspects of the room."
+#~ msgstr "Descripció de les principals característiques de la sala."
+
+#~ msgid "VAT"
+#~ msgstr "NIF"
+
+#~ msgid "The price could not be estimated."
+#~ msgstr "El preu de la reserva no s'ha pogut calcular."
+
+#~ msgid ""
+#~ "Rooms are reserved for a whole morning, with space available from 8:00 to "
+#~ "13:00"
+#~ msgstr ""
+#~ "Les sales es reserven tot el matí, tenint l'espai disponible de 8:00 a "
+#~ "13:00"
+
+#~ msgid ""
+#~ "Rooms are reserved for an entire afternoon, with the space available from "
+#~ "13:00 to 18:00."
+#~ msgstr ""
+#~ "Les sales es reserven tota la tarda, tenint l'espai disponible de 13:00 a "
+#~ "18:00."
+
 #, fuzzy
 #~| msgid "This field will be used for the public add of the event."
 #~ msgid ""
@@ -1469,9 +1714,6 @@ msgstr "info"
 
 #~ msgid "Please check the fields marked in red"
 #~ msgstr "Si us plau, comprova els camps marcats en vermell"
-
-#~ msgid "Close error alert"
-#~ msgstr "Tanca l'alerta d'error"
 
 #~ msgid "Form error"
 #~ msgstr "Error de formulari"

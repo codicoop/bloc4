@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="w-full grid grid-cols-2 gap-2 p-5 border border-gray-200 rounded-b-xl">
-        {% if is_staff %}
+        {% if request.user.is_staff %}
           <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
             {% translate "Admin URL" %}
           </p>
@@ -128,14 +128,22 @@
           {% endif %}
         </p>
         <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'Tax base amount' %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {{ reservation.base_price}} €
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
+          {% translate 'VAT amount' %}
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 col-start-2">
+          {{ reservation.vat|floatformat:2 }} €
+        </p>
+        <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
           {% translate 'Total price of the reservation' %}
         </p>
         <p class="text-gray-700 dark:text-gray-400 col-start-2">
-          {% if reservation.total_price %}
-            {{ reservation.total_price|round_two}} €
-          {% else %}
-            {% translate 'The price could not be estimated.' %}
-          {% endif %}
+          {{ reservation.total_price|floatformat:2 }} €
         </p>
         {% if reservation.privacy == 'public' %}
           <p class="text-gray-700 dark:text-gray-400 font-bold col-start-1">
@@ -202,7 +210,7 @@
             {% endif %}
           </p>
         {% endif %}
-        {% if reservation.status == reservation.StatusChoices.PENDING or reservation.status == reservation.StatusChoices.CONFIRMED %}
+        {% if can_be_cancelled %}
           <!-- Modal toggle -->
           <button data-modal-target="default-modal-{{ reservation.id }}" data-modal-show="default-modal-{{ reservation.id }}"
             class="relative flex items-center justify-center p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
@@ -214,17 +222,17 @@
           <div id="default-modal-{{ reservation.id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative p-4 w-full max-w-2xl max-h-full">
               <!-- Modal content -->
-              <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
+              <div class="relative max-w-md mx-auto bg-white rounded-lg shadow dark:bg-gray-700">
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                   <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                     {% translate 'Delete confirmation' %}
                   </h3>
                   <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                  data-modal-hide="default-modal-{{ reservation.id }}">
+                    data-modal-hide="default-modal-{{ reservation.id }}">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                     </svg>
-                    <span class="sr-only">Close modal</span>
+                    <span class="sr-only">{% translate "Close modal" %}</span>
                   </button>
                 </div>
                 <div class="p-4 md:p-5 space-y-4">
@@ -246,6 +254,70 @@
               </div>
             </div>
           </div>
+        {% endif %}
+        {% if can_be_checked_in %}
+          {% if reservation.checked_in %}
+            <hr class="h-px my-4 bg-primary-200 border-0 dark:bg-primary-700 col-span-2">
+            <div class="col-span-2 flex gap-4 items-center">
+              <svg class="fill-primary-500 w-10 h-10" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1989_192423)">
+                  <path d="M10 0C8.02219 0 6.08879 0.58649 4.4443 1.6853C2.79981 2.78412 1.51809 4.3459 0.761209 6.17316C0.00433284 8.00042 -0.1937 10.0111 0.192152 11.9509C0.578004 13.8907 1.53041 15.6725 2.92894 17.0711C4.32746 18.4696 6.10929 19.422 8.0491 19.8078C9.98891 20.1937 11.9996 19.9957 13.8268 19.2388C15.6541 18.4819 17.2159 17.2002 18.3147 15.5557C19.4135 13.9112 20 11.9778 20 10C19.9971 7.34873 18.9426 4.80688 17.0679 2.93215C15.1931 1.05741 12.6513 0.0029116 10 0ZM13.707 8.707L9.707 12.707C9.51947 12.8945 9.26517 12.9998 9 12.9998C8.73484 12.9998 8.48053 12.8945 8.293 12.707L6.293 10.707C6.11085 10.5184 6.01005 10.2658 6.01233 10.0036C6.01461 9.7414 6.11978 9.49059 6.30518 9.30518C6.49059 9.11977 6.74141 9.0146 7.0036 9.01232C7.2658 9.01005 7.5184 9.11084 7.707 9.293L9 10.586L12.293 7.293C12.4816 7.11084 12.7342 7.01005 12.9964 7.01232C13.2586 7.0146 13.5094 7.11977 13.6948 7.30518C13.8802 7.49059 13.9854 7.7414 13.9877 8.0036C13.99 8.26579 13.8892 8.5184 13.707 8.707Z"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_1989_192423">
+                    <rect width="20" height="20" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+              <p class="text-gray-700">{% translate "The assistance to this reserve has been confirmed." %}</p>
+            </div>
+          {% else %}
+            <!-- Modal toggle -->
+            <button data-modal-target="check-in-modal-{{ reservation.id }}"
+              data-modal-show="check-in-modal-{{ reservation.id }}"
+              class="relative flex items-center justify-center p-2 mt-6 rounded-md border-2
+              border-primary-300 bg-primary-300 col-span-2
+              hover:bg-primary-400 hover:border-primary-400"
+                type="button" id="pre_check_in">
+                {% translate 'Mark assitance to reserve' %}
+            </button>
+            <!-- Main modal -->
+            <div id="check-in-modal-{{ reservation.id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+              <div class="relative p-4 w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-md">
+                  <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                      {% translate 'Confirm assitance to reserve' %}
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-hide="check-in-modal-{{ reservation.id }}">
+                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                      </svg>
+                      <span class="sr-only">{% translate "Close modal" %}</span>
+                    </button>
+                  </div>
+                  <div class="p-4 md:p-5 space-y-4">
+                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                      {% translate "Confirm that the entity members arrived to check them in for this reservation." %}
+                    </p>
+                  </div>
+                  <!-- Modal footer -->
+                  <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <form method="post" action="" class="w-full">
+                      {% csrf_token %}
+                      <button data-modal-hide="check-in-modal-{{ reservation.id }}" type="submit"
+                        class="relative flex items-center justify-center w-full p-2 mt-6 rounded-md border-2 border-primary-300 col-span-2
+                        hover:bg-primary-300" name="check_in_reservation" value="true" id="id_check_in_reservation_{{ reservation.id }}">
+                        {% translate 'Check-in reservation' %}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
         {% endif %}
       </div>
     </div>

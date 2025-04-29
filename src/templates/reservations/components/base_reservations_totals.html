@@ -1,0 +1,30 @@
+{% load i18n static %}
+<div class=" max-w-2xl bg-white border rounded-xl overflow-hidden
+  md:col-start-2
+    {% if last_row_accent %} border-accent {% else %} border-primary-200 {% endif %}">
+  <div class="px-3 pt-2 pb-1 grid grid-cols-6 text-gray-900">
+    <h3 class="col-span-4 pb-1 text-lg font-bold text-balance">
+      {% block card_title %}{% endblock %}
+    </h3>
+    <h3 class="col-start-5 pb-1 col-span-2 text-right text-lg font-bold">{{ month }} {{ year }} </h3>
+    
+    {% block discount %}{% endblock %}
+    
+    <p class="col-span-4 text-balance text-md">{% translate 'Tax base of the reservations' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">
+      {{ values.base_price|floatformat:2 }} €
+    </p>
+    <p class="col-span-4 text-balance text-md">{% translate 'VAT amount of the reservations' %}</p>
+    <p class="col-start-5 col-span-2 text-right text-md">
+      {{ values.vat|floatformat:2 }} €
+    </p>
+  </div>
+  <div class="px-3 pb-2 pt-1 grid grid-cols-6 text-gray-900
+    {% if last_row_accent %} bg-accent {% else %} bg-primary-200 {% endif %}">
+    <p class="col-span-4 font-bold text-balance">
+      {% translate 'Total' %}
+      <span class="font-light">{% translate '(including discounts)' %}</span>
+    </p>
+    <p class="col-start-5 col-span-2 font-bold text-right">{{ values.total_price|floatformat:2 }} €</p>
+  </div>
+</div>
